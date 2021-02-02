@@ -12,7 +12,7 @@ fi
 
 # Build
 mkdir workspace
-echo "../assets/" > workspace/assets.ini
+echo -n "../assets/" > workspace/assets.ini
 mvn clean install
 
 # Deploy (Client)
