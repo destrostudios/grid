@@ -19,7 +19,7 @@ mvn clean install
 rm -rf "${CLIENT}"*
 mv assets "${CLIENT}"
 mv grid-client/target/libs "${CLIENT}"
-mv grid-client/target/grid-client-application-0.0.1.jar "${CLIENT}Grid.jar"
+mv grid-client/target/grid-client-0.0.1.jar "${CLIENT}Grid.jar"
 echo "./assets/" > "${CLIENT}assets.ini"
 curl https://destrostudios.com:8080/apps/6/updateFiles
 
