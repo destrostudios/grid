@@ -1,5 +1,6 @@
 package com.destrostudios.grid.client;
 
+import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.shared.MultipleOutputStream;
 
 import java.io.FileNotFoundException;
@@ -17,7 +18,10 @@ public class Main {
             System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
             System.setErr(new PrintStream(new MultipleOutputStream(System.err, logFileOutputStream)));
         } catch (FileNotFoundException ex) {
+            System.err.println("Error while accessing log file: " + ex.getMessage());
         }
+        FileAssets.readRootFile();
+        BlockAssets.registerBlocks();
         new ClientApplication().start();
     }
 }

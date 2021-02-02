@@ -1,6 +1,5 @@
 package com.destrostudios.grid.client;
 
-import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.appstates.GameAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
@@ -17,8 +16,6 @@ import java.awt.image.BufferedImage;
 
 public class ClientApplication extends SimpleApplication {
 
-    public static String ASSETS_ROOT = "../assets/";
-
     public ClientApplication() {
         settings = new AppSettings(true);
         settings.setWidth(1600);
@@ -26,10 +23,10 @@ public class ClientApplication extends SimpleApplication {
         settings.setVSync(true);
         settings.setTitle("Grid");
         settings.setIcons(new BufferedImage[] {
-            ImageUtil.getImage(ASSETS_ROOT + "textures/icon/16.png"),
-            ImageUtil.getImage(ASSETS_ROOT + "textures/icon/32.png"),
-            ImageUtil.getImage(ASSETS_ROOT + "textures/icon/64.png"),
-            ImageUtil.getImage(ASSETS_ROOT + "textures/icon/128.png")
+            FileAssets.getImage("textures/icon/16.png"),
+            FileAssets.getImage("textures/icon/32.png"),
+            FileAssets.getImage("textures/icon/64.png"),
+            FileAssets.getImage("textures/icon/128.png")
         });
         setShowSettings(false);
         setPauseOnLostFocus(false);
@@ -37,8 +34,7 @@ public class ClientApplication extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        BlockAssets.registerBlocks();
-        assetManager.registerLocator(ASSETS_ROOT, FileLocator.class);
+        assetManager.registerLocator(FileAssets.ROOT, FileLocator.class);
         setDisplayStatView(false);
         setDisplayFps(false);
 
