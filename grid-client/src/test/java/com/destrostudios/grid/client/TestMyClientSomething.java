@@ -10,18 +10,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestMyClient{
+public class TestMyClientSomething {
 
-    private MyClient myClient;
+    private MyClientSomething myClientSomething;
     private MySharedSomething mySharedSomethingMock = mock(MySharedSomething.class);
 
     @Before
     public void setup() {
-        myClient = new MyClient(mySharedSomethingMock);
+        myClientSomething = new MyClientSomething(mySharedSomethingMock);
     }
 
     @Test
     public void fieldAssigned() {
-        assertNotNull(myClient.getMySharedSomething());
+        assertNotNull(myClientSomething.getMySharedSomething());
     }
 }

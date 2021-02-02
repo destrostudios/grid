@@ -61,3 +61,6 @@ nbactions.xml
 # IntelliJ specific #
 .idea
 *.iml
+
+# Grid specific #
+workspace

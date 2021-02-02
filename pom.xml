@@ -13,6 +13,7 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.cubes>f57a9164812a16c628c7d9fd2988a45696b6bbe8</version.cubes>
         <version.grid>0.0.1</version.grid>
         <version.jme3>3.2.1-stable</version.jme3>
         <version.junit>4.11</version.junit>
@@ -63,11 +64,6 @@
             </dependency>
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
-                <artifactId>jme3-networking</artifactId>
-                <version>${version.jme3}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-lwjgl</artifactId>
                 <version>${version.jme3}</version>
             </dependency>
@@ -78,7 +74,7 @@
             </dependency>
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
-                <artifactId>jme3-terrain</artifactId>
+                <artifactId>jme3-jogg</artifactId>
                 <version>${version.jme3}</version>
             </dependency>
             <dependency>
@@ -86,15 +82,11 @@
                 <artifactId>jme3-effects</artifactId>
                 <version>${version.jme3}</version>
             </dependency>
+            <!--Cubes-->
             <dependency>
-                <groupId>org.jmonkeyengine</groupId>
-                <artifactId>jme3-niftygui</artifactId>
-                <version>${version.jme3}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jmonkeyengine</groupId>
-                <artifactId>jme3-jogg</artifactId>
-                <version>${version.jme3}</version>
+                <groupId>com.github.destroflyer.cubes</groupId>
+                <artifactId>cubes</artifactId>
+                <version>${version.cubes}</version>
             </dependency>
             <!--Lombok-->
             <dependency>
