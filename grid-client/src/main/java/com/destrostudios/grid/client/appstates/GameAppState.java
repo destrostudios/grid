@@ -8,10 +8,14 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Box;
 import com.jme3.util.SkyFactory;
 
 public class GameAppState extends BaseAppState implements ActionListener {
@@ -38,6 +42,10 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addMapping("key_s", new KeyTrigger(KeyInput.KEY_S));
         mainApplication.getInputManager().addMapping("key_d", new KeyTrigger(KeyInput.KEY_D));
         mainApplication.getInputManager().addListener(this, "key_w", "key_a", "key_s", "key_d");
+
+        Geometry box = createBox();
+        box.setLocalTranslation(1.5f, 4, 1.5f);
+        mainApplication.getRootNode().attachChild(box);
     }
 
     @Override
@@ -50,5 +58,14 @@ public class GameAppState extends BaseAppState implements ActionListener {
     @Override
     public void onAction(String actionName, boolean isPressed, float tpf) {
         System.out.println(actionName + "\t" + isPressed);
+    }
+
+    private Geometry createBox() {
+        Geometry geometry = new Geometry(null, new Box(1, 1, 1));
+        Material material = new Material(mainApplication.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
+        material.setBoolean("UseMaterialColors", true);
+        material.setColor("Diffuse", ColorRGBA.Red);
+        geometry.setMaterial(material);
+        return geometry;
     }
 }
