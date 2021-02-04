@@ -27,4 +27,8 @@ public class FileAssets {
         }
         return null;
     }
+
+    public static boolean exists(String filePath) {
+        return new File(ROOT + filePath).exists();
+    }
 }

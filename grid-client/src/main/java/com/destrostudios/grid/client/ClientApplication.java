@@ -42,7 +42,7 @@ public class ClientApplication extends SimpleApplication {
         ambientLight.setColor(ColorRGBA.White);
         rootNode.addLight(ambientLight);
         DirectionalLight directionalLight = new DirectionalLight();
-        Vector3f lightDirection = new Vector3f(-0.8f, -1, -0.8f).normalizeLocal();
+        Vector3f lightDirection = new Vector3f(-0.5f, -1, -0.5f).normalizeLocal();
         directionalLight.setDirection(lightDirection);
         directionalLight.setColor(new ColorRGBA(1, 1, 1, 1));
         rootNode.addLight(directionalLight);

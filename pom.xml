@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.cubes>f57a9164812a16c628c7d9fd2988a45696b6bbe8</version.cubes>
         <version.grid>0.0.1</version.grid>
+        <version.jdom>2.0.6</version.jdom>
         <version.jme3>3.2.1-stable</version.jme3>
         <version.junit>4.11</version.junit>
         <version.lombok>1.18.12</version.lombok>
@@ -88,6 +89,12 @@
                 <groupId>com.github.destroflyer.cubes</groupId>
                 <artifactId>cubes</artifactId>
                 <version>${version.cubes}</version>
+            </dependency>
+            <!--JDOM-->
+            <dependency>
+                <groupId>org.jdom</groupId>
+                <artifactId>jdom2</artifactId>
+                <version>${version.jdom}</version>
             </dependency>
             <!--Lombok-->
             <dependency>

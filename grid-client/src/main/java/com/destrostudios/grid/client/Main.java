@@ -6,13 +6,10 @@ import com.destrostudios.grid.shared.MultipleOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Main {
 
-    public static void main(String[] args){
-        Logger.getLogger("").setLevel(Level.SEVERE);
+    public static void main(String[] args) {
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
             System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
@@ -22,6 +19,7 @@ public class Main {
         }
         FileAssets.readRootFile();
         BlockAssets.registerBlocks();
+        JMonkeyUtil.disableLogger();
         new ClientApplication().start();
     }
 }
