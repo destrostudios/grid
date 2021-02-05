@@ -1,6 +1,8 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.client.appstates.GameAppState;
+import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.game.Game;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.light.AmbientLight;

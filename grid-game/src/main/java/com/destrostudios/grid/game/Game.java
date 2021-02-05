@@ -19,9 +19,9 @@ import javax.swing.*;
 import java.util.logging.Logger;
 
 @Getter
-public class Game extends JPanel {
+public class Game {
     private final static Logger logger = Logger.getGlobal();
-    private final static EventBus eventbus = new EventBus("");
+    private final static EventBus eventbus = new EventBus();
 
     private final EntityWorld world;
 
@@ -32,7 +32,7 @@ public class Game extends JPanel {
         this.world = new EntityWorld();
         this.systemController = new ComponentSystemController();
         this.gamePreferences = new GamePreferences();
-        fillTestGameData();
+//        fillTestGameData();
     }
 
     public static void main(String[] args) {
@@ -46,8 +46,8 @@ public class Game extends JPanel {
         world.addComponent(playerEntity, new PlayerComponent("Icecold"));
         this.addListener(new PositionUpdateListener(world));
 
-        update(0, new PositionComponent(0, 1));
-        update(0, new PositionComponent(2, 1));
+//        update(0, new PositionComponent(0, 1));
+//        update(0, new PositionComponent(2, 1));
     }
 
     public void addListener(ComponentUpdateListener<?> listener) {

@@ -17,9 +17,9 @@ public class PositionUpdateListener implements ComponentUpdateListener<Component
     @Override
     public void handleEvent(ComponentUpdateEvent<PositionComponent> event) {
         final PositionComponent positionComponent = event.getComponent();
-        boolean hasMovinAndPosComp = world.hasComponents(event.getEntity(), event.getComponent().getClass(), MovingComponent.class);
+        boolean hasMovingAndPosComp = world.hasComponents(event.getEntity(), event.getComponent().getClass(), MovingComponent.class);
 
-        if (hasMovinAndPosComp) {
+        if (hasMovingAndPosComp) {
             world.remove(event.getEntity(), PositionComponent.class);
             world.addComponent(event.getEntity(), positionComponent);
             logger.info(String.format("Entity %s moved to (%s|%s)", event.getEntity(), positionComponent.getX(), positionComponent.getY()));
