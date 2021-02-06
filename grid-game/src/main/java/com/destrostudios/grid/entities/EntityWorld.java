@@ -1,10 +1,13 @@
 package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
-import lombok.Getter;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 
 public class EntityWorld implements EntityData {
@@ -25,9 +28,10 @@ public class EntityWorld implements EntityData {
      *
      * @return entity
      */
+    @Override
     public int createEntity() {
-        final Optional<Integer> maxValue = world.keySet().stream().max(Integer::compare);
-        final int entity = maxValue.orElse(0) + 1;
+        Optional<Integer> maxValue = world.keySet().stream().max(Integer::compare);
+        int entity = maxValue.orElse(0) + 1;
         world.put(entity, null);
         return entity;
     }
@@ -57,16 +61,20 @@ public class EntityWorld implements EntityData {
      */
     @Override
     public void remove(int entity, Class<?> component) {
-        Optional<Component> componentOpt = world.get(entity).stream()
+        List<Component> components = world.get(entity);
+        if (components == null) {
+            return;
+        }
+        Optional<Component> componentOpt = components.stream()
                 .filter(component::isInstance)
                 .findFirst();
-        componentOpt.ifPresent(value -> world.remove(entity, value));
+        componentOpt.ifPresent(value -> components.remove(value));
     }
 
     @Override
     public List<Integer> list(Class<?> component) {
         return world.entrySet().stream()
-                .filter(e -> component.isInstance(e.getValue()))
+                .filter(e -> e.getValue().stream().anyMatch(component::isInstance))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
@@ -77,6 +85,7 @@ public class EntityWorld implements EntityData {
      * @param entity
      * @param component
      */
+    @Override
     public void addComponent(int entity, Component component) {
         if (component != null) {
             remove(entity, component.getClass());

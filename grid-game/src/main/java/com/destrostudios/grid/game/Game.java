@@ -5,18 +5,15 @@ import com.destrostudios.grid.components.MovingComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-
+import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.update.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.ComponentUpdateListener;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
-import com.destrostudios.grid.preferences.GamePreferences;
 import com.google.common.eventbus.EventBus;
-import jakarta.xml.bind.JAXBException;
-import lombok.Getter;
-
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
+import lombok.Getter;
 
 @Getter
 public class Game {
@@ -38,8 +35,8 @@ public class Game {
         world.addComponent(playerEntity, new MovingComponent());
         world.addComponent(playerEntity, new PlayerComponent("Icecold"));
         this.addListener(new PositionUpdateListener(world));
-        update(0, new PositionComponent(0, 1));
-        update(0, new PositionComponent(2, 1));
+        update(playerEntity, new PositionComponent(0, 1));
+        update(playerEntity, new PositionComponent(2, 1));
     }
 
     public void intializeGame(String gameState) {
