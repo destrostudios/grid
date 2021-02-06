@@ -79,6 +79,7 @@ public class EntityWorld implements EntityData {
      */
     public void addComponent(int entity, Component component) {
         if (component != null) {
+            remove(entity, component.getClass());
             List<Component> components = world.computeIfAbsent(entity, (e) -> new ArrayList<>());
             components.add(component);
         }
