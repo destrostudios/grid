@@ -1,8 +1,6 @@
 package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import lombok.Getter;
 
 import java.util.*;
@@ -81,7 +79,7 @@ public class EntityWorld implements EntityData {
      */
     public void addComponent(int entity, Component component) {
         if (component != null) {
-            List<Component> components = world.putIfAbsent(entity, new ArrayList<>());
+            List<Component> components = world.computeIfAbsent(entity, (e) -> new ArrayList<>());
             components.add(component);
         }
     }

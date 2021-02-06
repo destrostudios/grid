@@ -15,7 +15,6 @@ import jakarta.xml.bind.JAXBException;
 import lombok.Getter;
 
 
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +29,7 @@ public class Game {
 
     public Game() {
         this.world = new EntityWorld();
-        this.gamePreferences = new GamePreferences();
+        this.gamePreferences = new GamePreferences(20, 20);
     }
 
     public void fillTestGameData() {
