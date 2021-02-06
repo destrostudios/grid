@@ -19,12 +19,8 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.util.SkyFactory;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public class GameAppState extends BaseAppState implements ActionListener {
@@ -64,7 +60,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         world.addComponent(playerEntity, new PlayerComponent("Icecold"));
         game.addListener(new PositionUpdateListener(world));
 
-       modelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
+        modelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
         modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         modelObject.playAnimation("idle", 11.267f);
         mainApplication.getRootNode().attachChild(modelObject);

@@ -1,15 +1,33 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.client.blocks.BlockAssets;
+import com.destrostudios.grid.game.Game;
+import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
-
+import com.destrostudios.grid.update.ComponentUpdateEvent;
+import com.destrostudios.turnbasedgametools.network.client.GamesClient;
+import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        NetworkGridService gameService = new NetworkGridService();
+        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>("localhost", NetworkUtil.PORT, 10_000, gameService);
+
+        for (int i = 0; i < 10; i++) {
+            if (!client.getGames().isEmpty()) {
+                System.out.println(client.getGames().iterator().next().state.getWorld().getWorld());
+                break;
+            }
+            System.out.println("No games available, waiting...");
+            Thread.sleep(500);
+        }
+
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
             System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));

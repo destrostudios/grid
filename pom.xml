@@ -11,11 +11,13 @@
         <module>grid-game</module>
         <module>grid-server</module>
         <module>grid-shared</module>
+        <module>grid-network</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.cubes>f57a9164812a16c628c7d9fd2988a45696b6bbe8</version.cubes>
         <version.grid>0.0.1</version.grid>
+        <version.turn-based-game-tools>f1d2819008da0fe2cd4e6cb55ee599cb2604e711</version.turn-based-game-tools>
         <version.jdom>2.0.6</version.jdom>
         <version.jme3>3.2.1-stable</version.jme3>
         <version.junit>4.11</version.junit>
@@ -61,6 +63,29 @@
                 <artifactId>grid-shared</artifactId>
                 <version>${version.grid}</version>
             </dependency>
+            <dependency>
+                <groupId>com.destrostudios.grid</groupId>
+                <artifactId>grid-network</artifactId>
+                <version>${version.grid}</version>
+            </dependency>
+
+            <!--turn-based-game-tools-->
+            <dependency>
+                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <artifactId>network-shared</artifactId>
+                <version>${version.turn-based-game-tools}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <artifactId>network-server</artifactId>
+                <version>${version.turn-based-game-tools}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <artifactId>network-client</artifactId>
+                <version>${version.turn-based-game-tools}</version>
+            </dependency>
+
             <!--jMonkeyEngine-->
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
