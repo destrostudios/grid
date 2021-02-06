@@ -1,8 +1,6 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.client.appstates.GameAppState;
-import com.destrostudios.grid.components.PositionComponent;
-import com.destrostudios.grid.game.Game;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.light.AmbientLight;
@@ -13,22 +11,24 @@ import com.jme3.post.FilterPostProcessor;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.water.WaterFilter;
-
 import java.awt.image.BufferedImage;
 
 public class ClientApplication extends SimpleApplication {
 
-    public ClientApplication() {
+    private final GameProxy gameProxy;
+
+    public ClientApplication(GameProxy gameProxy) {
+        this.gameProxy = gameProxy;
         settings = new AppSettings(true);
         settings.setWidth(1600);
         settings.setHeight(900);
         settings.setVSync(true);
         settings.setTitle("Grid");
-        settings.setIcons(new BufferedImage[] {
-            FileAssets.getImage("textures/icon/16.png"),
-            FileAssets.getImage("textures/icon/32.png"),
-            FileAssets.getImage("textures/icon/64.png"),
-            FileAssets.getImage("textures/icon/128.png")
+        settings.setIcons(new BufferedImage[]{
+                FileAssets.getImage("textures/icon/16.png"),
+                FileAssets.getImage("textures/icon/32.png"),
+                FileAssets.getImage("textures/icon/64.png"),
+                FileAssets.getImage("textures/icon/128.png")
         });
         setShowSettings(false);
         setPauseOnLostFocus(false);
@@ -66,6 +66,6 @@ public class ClientApplication extends SimpleApplication {
         flyCam.setMoveSpeed(100);
         flyCam.setEnabled(false);
 
-        stateManager.attach(new GameAppState());
+        stateManager.attach(new GameAppState(gameProxy));
     }
 }

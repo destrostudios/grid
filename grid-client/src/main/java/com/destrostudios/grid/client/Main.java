@@ -27,6 +27,9 @@ public class Main {
             System.out.println("No games available, waiting...");
             Thread.sleep(500);
         }
+        if (client.getGames().isEmpty()) {
+            throw new RuntimeException("No game found");
+        }
 
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
@@ -38,6 +41,6 @@ public class Main {
         FileAssets.readRootFile();
         BlockAssets.registerBlocks();
         JMonkeyUtil.disableLogger();
-        new ClientApplication().start();
+        new ClientApplication(new GameProxy(client.getGames().iterator().next().id, client)).start();
     }
 }

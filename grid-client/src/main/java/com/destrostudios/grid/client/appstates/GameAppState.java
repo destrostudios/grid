@@ -2,13 +2,14 @@ package com.destrostudios.grid.client.appstates;
 
 import com.destroflyer.jme3.cubes.BlockTerrainControl;
 import com.destroflyer.jme3.cubes.Vector3Int;
+import com.destrostudios.grid.client.GameProxy;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.models.ModelObject;
-import com.destrostudios.grid.components.MovingComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.game.Game;
+import com.destrostudios.grid.update.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -21,14 +22,24 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.util.SkyFactory;
+import java.util.List;
 import java.util.Optional;
 
 public class GameAppState extends BaseAppState implements ActionListener {
 
+    private final GameProxy gameProxy;
     private Node blockTerrainNode;
     private ModelObject modelObject;
     private Game game;
     private int playerEntity;
+
+    public GameAppState(GameProxy gameProxy) {
+        this.gameProxy = gameProxy;
+        this.game = gameProxy.getGame();
+        EntityWorld world = game.getWorld();
+        List<Integer> list = world.list(PlayerComponent.class);
+        this.playerEntity = list.get(0);
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -52,13 +63,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addMapping("key_d", new KeyTrigger(KeyInput.KEY_D));
         mainApplication.getInputManager().addListener(this, "key_w", "key_a", "key_s", "key_d");
 
-        game = new Game();
-        EntityWorld world = game.getWorld();
-        playerEntity = world.createEntity();
-        world.addComponent(playerEntity, new PositionComponent(0, 0));
-        world.addComponent(playerEntity, new MovingComponent());
-        world.addComponent(playerEntity, new PlayerComponent("Icecold"));
-        game.addListener(new PositionUpdateListener(world));
+        game.addListener(new PositionUpdateListener(game.getWorld()));
 
         modelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
         modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
@@ -105,16 +110,16 @@ public class GameAppState extends BaseAppState implements ActionListener {
             PositionComponent positionComponent = componentOpt.get();
             switch (actionName) {
                 case "key_w":
-                    game.update(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() - 1));
+                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() - 1)));
                     break;
                 case "key_a":
-                    game.update(playerEntity, new PositionComponent(positionComponent.getX() - 1, positionComponent.getY()));
+                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() - 1, positionComponent.getY())));
                     break;
                 case "key_s":
-                    game.update(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() + 1));
+                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() + 1)));
                     break;
                 case "key_d":
-                    game.update(playerEntity, new PositionComponent(positionComponent.getX() + 1, positionComponent.getY()));
+                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() + 1, positionComponent.getY())));
                     break;
             }
             updatePlayerPosition();
