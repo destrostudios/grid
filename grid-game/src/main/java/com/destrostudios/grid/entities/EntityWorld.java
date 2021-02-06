@@ -5,18 +5,21 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import lombok.Getter;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class EntityWorld implements EntityData {
 
     @Getter
-    private final Multimap<Integer, Component> world;
+    private final Map<Integer, List<Component>> world;
+
+    public EntityWorld(Map<Integer, List<Component>> world) {
+        this.world = world;
+    }
 
     public EntityWorld() {
-        this.world = MultimapBuilder.linkedHashKeys().linkedHashSetValues().build();
+        this.world = new LinkedHashMap<>();
     }
 
     /**
@@ -25,8 +28,8 @@ public class EntityWorld implements EntityData {
      * @return entity
      */
     public int createEntity() {
-        final Optional<Integer> maxValue = world.keys().stream().max(Integer::compare);
-        final int entity = maxValue.orElse(0);
+        final Optional<Integer> maxValue = world.keySet().stream().max(Integer::compare);
+        final int entity = maxValue.orElse(0) + 1;
         world.put(entity, null);
         return entity;
     }
@@ -64,7 +67,7 @@ public class EntityWorld implements EntityData {
 
     @Override
     public List<Integer> list(Class<?> component) {
-        return world.entries().stream()
+        return world.entrySet().stream()
                 .filter(e -> component.isInstance(e.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
@@ -77,10 +80,10 @@ public class EntityWorld implements EntityData {
      * @param component
      */
     public void addComponent(int entity, Component component) {
-        world.put(entity, component);
+        if (component != null) {
+            List<Component> components = world.putIfAbsent(entity, new ArrayList<>());
+            components.add(component);
+        }
     }
 
-    public String printState() {
-        return "";
-    }
 }

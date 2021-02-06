@@ -10,33 +10,27 @@ import com.destrostudios.grid.update.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.ComponentUpdateListener;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
 import com.destrostudios.grid.preferences.GamePreferences;
-import com.destrostudios.grid.systems.ComponentSystemController;
 import com.google.common.eventbus.EventBus;
+import jakarta.xml.bind.JAXBException;
 import lombok.Getter;
 
 
-import javax.swing.*;
+import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Getter
 public class Game {
     private final static Logger logger = Logger.getGlobal();
-    private final static EventBus eventbus = new EventBus();
 
-    private final EntityWorld world;
-
-    private final ComponentSystemController systemController;
+    private final EventBus eventbus = new EventBus();
     private final GamePreferences gamePreferences;
+
+    private EntityWorld world;
 
     public Game() {
         this.world = new EntityWorld();
-        this.systemController = new ComponentSystemController();
         this.gamePreferences = new GamePreferences();
-//        fillTestGameData();
-    }
-
-    public static void main(String[] args) {
-        Game game = new Game();
     }
 
     public void fillTestGameData() {
@@ -45,9 +39,16 @@ public class Game {
         world.addComponent(playerEntity, new MovingComponent());
         world.addComponent(playerEntity, new PlayerComponent("Icecold"));
         this.addListener(new PositionUpdateListener(world));
+        update(0, new PositionComponent(0, 1));
+        update(0, new PositionComponent(2, 1));
+    }
 
-//        update(0, new PositionComponent(0, 1));
-//        update(0, new PositionComponent(2, 1));
+    public void intializeGame(String gameState) {
+        try {
+            world = GameStateConverter.unmarshal(gameState);
+        } catch (JAXBException e) {
+            logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
+        }
     }
 
     public void addListener(ComponentUpdateListener<?> listener) {
@@ -60,6 +61,19 @@ public class Game {
 
     public void update(int entity, Component component) {
         eventbus.post(new ComponentUpdateEvent<>(entity, component));
+    }
+
+    public <E extends Component> void update(ComponentUpdateEvent<E> component) {
+        eventbus.post(component);
+    }
+
+    public String getState() {
+        try {
+            return GameStateConverter.marshal(world);
+        } catch (JAXBException e) {
+            logger.log(Level.WARNING, e, () -> "Couldn´t marshal game state!");
+        }
+        return "";
     }
 
 }

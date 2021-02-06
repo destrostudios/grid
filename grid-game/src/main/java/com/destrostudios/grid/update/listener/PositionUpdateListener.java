@@ -24,6 +24,5 @@ public class PositionUpdateListener implements ComponentUpdateListener<Component
             world.addComponent(event.getEntity(), positionComponent);
             logger.info(String.format("Entity %s moved to (%s|%s)", event.getEntity(), positionComponent.getX(), positionComponent.getY()));
         }
-
     }
 }

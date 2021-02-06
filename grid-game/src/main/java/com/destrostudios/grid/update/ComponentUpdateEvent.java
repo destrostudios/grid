@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ComponentUpdateEvent<E extends Component> {
-
     private final int entity;
     private final E component;
 }
