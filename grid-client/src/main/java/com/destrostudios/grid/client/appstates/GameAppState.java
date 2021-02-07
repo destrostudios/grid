@@ -30,12 +30,11 @@ public class GameAppState extends BaseAppState implements ActionListener {
     private final GameProxy gameProxy;
     private Node blockTerrainNode;
     private ModelObject modelObject;
-    private Game game;
     private int playerEntity;
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
-        this.game = gameProxy.getGame();
+        Game game = gameProxy.getGame();
         EntityWorld world = game.getWorld();
         List<Integer> list = world.list(PlayerComponent.class);
         this.playerEntity = list.get(0);
@@ -63,7 +62,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addMapping("key_d", new KeyTrigger(KeyInput.KEY_D));
         mainApplication.getInputManager().addListener(this, "key_w", "key_a", "key_s", "key_d");
 
-        game.addListener(new PositionUpdateListener(game.getWorld()));
+        gameProxy.addListener(new PositionUpdateListener(gameProxy.getGame().getWorld()));
 
         modelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
         modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
@@ -83,7 +82,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
     }
 
     private void updatePlayerPosition() {
-        Optional<PositionComponent> component = game.getWorld().getComponent(playerEntity, PositionComponent.class);
+        Optional<PositionComponent> component = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
         if (component.isPresent()) {
             PositionComponent positionComponent = component.get();
             modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
@@ -107,7 +106,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     @Override
     public void onAction(String actionName, boolean isPressed, float tpf) {
-        Optional<PositionComponent> componentOpt = game.getWorld().getComponent(playerEntity, PositionComponent.class);
+        Optional<PositionComponent> componentOpt = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
         if (componentOpt.isPresent() && isPressed) {
             PositionComponent positionComponent = componentOpt.get();
             switch (actionName) {

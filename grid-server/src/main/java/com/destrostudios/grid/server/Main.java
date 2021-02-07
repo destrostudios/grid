@@ -17,7 +17,7 @@ public class Main {
         NetworkGridService gameService = new NetworkGridService();
         GamesServer<Game, ComponentUpdateEvent<?>> server = new GamesServer<>(NetworkUtil.PORT, gameService);
         UUID gameId = server.startNewGame();
-        server.addListener(new Listener() {
+        server.addConnectionListener(new Listener() {
             @Override
             public void connected(Connection connection) {
                 server.spectate(connection, gameId);
