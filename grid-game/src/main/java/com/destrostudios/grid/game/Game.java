@@ -5,6 +5,7 @@ import com.destrostudios.grid.components.MovingComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.game.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.update.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.ComponentUpdateListener;
@@ -27,6 +28,13 @@ public class Game {
     public Game() {
         this.world = new EntityWorld();
         this.gamePreferences = new GamePreferences(20, 20);
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.fillTestGameData();
+        System.out.println(game.getState());
+        game.intializeGame(game.getState());
     }
 
     public void fillTestGameData() {

@@ -68,7 +68,7 @@ public class EntityWorld implements EntityData {
         Optional<Component> componentOpt = components.stream()
                 .filter(component::isInstance)
                 .findFirst();
-        componentOpt.ifPresent(value -> components.remove(value));
+        componentOpt.ifPresent(components::remove);
     }
 
     @Override

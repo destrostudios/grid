@@ -1,5 +1,6 @@
-package com.destrostudios.grid.game;
+package com.destrostudios.grid.game.gamestate;
 
+import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.entities.EntityWorld;
 
 import javax.xml.bind.JAXBContext;
@@ -8,12 +9,18 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameStateConverter {
 
     public static String marshal(EntityWorld world) throws JAXBException {
         GameState gameState = new GameState();
-        gameState.setWorld(world.getWorld());
+//        mapWrapper.addEntry();
+        Map<Integer, ComponentsWrapper> componentsByEntity = world.getWorld().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> new ComponentsWrapper(e.getValue())));
+        gameState.setWorld(componentsByEntity);
         JAXBContext context = JAXBContext.newInstance(GameState.class);
         Marshaller mar= context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -25,9 +32,10 @@ public class GameStateConverter {
     public static EntityWorld unmarshal(String worldString) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(GameState.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        unmarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         StringReader sr = new StringReader(worldString);
         GameState state = (GameState) unmarshaller.unmarshal(sr);
-        return new EntityWorld(state.getWorld());
+        Map<Integer, List<Component>> entities = state.getWorld().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getComponents()));
+        return new EntityWorld(entities);
     }
 }
