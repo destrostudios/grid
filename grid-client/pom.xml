@@ -68,6 +68,12 @@
             <groupId>com.destrostudios.grid</groupId>
             <artifactId>grid-game</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

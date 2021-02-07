@@ -29,6 +29,7 @@
         <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
         <version.maven-source-plugin>3.2.0</version.maven-source-plugin>
         <version.mockito>1.9.5</version.mockito>
+        <version.slf4j>2.0.0-alpha1</version.slf4j>
     </properties>
     <repositories>
         <repository>
@@ -168,6 +169,13 @@
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-impl</artifactId>
                 <version>${jaxb.api.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${version.slf4j}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
