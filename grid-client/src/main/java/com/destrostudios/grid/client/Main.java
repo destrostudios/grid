@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.UUID;
 
 public class Main {
 
@@ -21,15 +22,16 @@ public class Main {
 
         for (int i = 0; i < 10; i++) {
             if (!client.getGames().isEmpty()) {
-                System.out.println(client.getGames().iterator().next().state.getWorld().getWorld());
+                System.out.println(client.getGames().iterator().next().getState().getWorld().getWorld());
                 break;
             }
             System.out.println("No games available, waiting...");
             Thread.sleep(500);
         }
         if (client.getGames().isEmpty()) {
-            throw new RuntimeException("No game found");
+            throw new RuntimeException("No game found, is the server running?");
         }
+        UUID gameId = client.getGames().iterator().next().getId();
 
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
@@ -41,6 +43,6 @@ public class Main {
         FileAssets.readRootFile();
         BlockAssets.registerBlocks();
         JMonkeyUtil.disableLogger();
-        new ClientApplication(new GameProxy(client.getGames().iterator().next().id, client)).start();
+        new ClientApplication(new GameProxy(gameId, client)).start();
     }
 }

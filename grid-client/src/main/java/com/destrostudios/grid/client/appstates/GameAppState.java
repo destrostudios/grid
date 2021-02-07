@@ -71,7 +71,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getRootNode().attachChild(modelObject);
 
         updatePlayerPosition();
-        mainApplication.getRootNode().attachChild(modelObject);
 
         addDemoModel("aland", 1, 13, "idle", 11.267f);
         addDemoModel("alice", 2, 6, "idle1", 1.867f);
@@ -93,6 +92,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     @Override
     public void update(float tpf) {
+        if (gameProxy.update()) {
+            updatePlayerPosition();
+        }
         super.update(tpf);
     }
 
@@ -110,19 +112,18 @@ public class GameAppState extends BaseAppState implements ActionListener {
             PositionComponent positionComponent = componentOpt.get();
             switch (actionName) {
                 case "key_w":
-                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() - 1)));
+                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() - 1)));
                     break;
                 case "key_a":
-                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() - 1, positionComponent.getY())));
+                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() - 1, positionComponent.getY())));
                     break;
                 case "key_s":
-                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() + 1)));
+                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() + 1)));
                     break;
                 case "key_d":
-                    gameProxy.applyAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() + 1, positionComponent.getY())));
+                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() + 1, positionComponent.getY())));
                     break;
             }
-            updatePlayerPosition();
             System.out.println(actionName + "\t" + isPressed);
         }
     }
