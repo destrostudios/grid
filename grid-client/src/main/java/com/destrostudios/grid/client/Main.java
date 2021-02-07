@@ -16,9 +16,12 @@ import java.util.UUID;
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        startGame("destrostudios.com");
+    }
 
+    static void startGame(String hostUrl) throws IOException, InterruptedException {
         NetworkGridService gameService = new NetworkGridService();
-        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>("destrostudios.com", NetworkUtil.PORT, 10_000, gameService);
+        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>(hostUrl, NetworkUtil.PORT, 10_000, gameService);
 
         for (int i = 0; i < 10; i++) {
             if (!client.getGames().isEmpty()) {

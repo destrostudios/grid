@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.cubes>f57a9164812a16c628c7d9fd2988a45696b6bbe8</version.cubes>
         <version.grid>0.0.1</version.grid>
-        <version.turn-based-game-tools>3d3d1d6ee39d945831299c4ca3694d80917a1556</version.turn-based-game-tools>
+        <version.turn-based-game-tools>6f2be6d77f5fb04841869071d1a765b60c6bdb66</version.turn-based-game-tools>
         <version.jdom>2.0.6</version.jdom>
         <version.jme3>3.2.1-stable</version.jme3>
         <version.junit>4.11</version.junit>

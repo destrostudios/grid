@@ -51,6 +51,13 @@ public class GameProxy {
         client.sendAction(gameId, action);
     }
 
+    public Integer getPlayerEntity() {
+        return client.getGame(gameId).getTags().stream()
+                .filter(x -> x instanceof Integer)
+                .map(x -> (Integer) x)
+                .findFirst()
+                .orElse(null);
+    }
 
     public void addListener(ComponentUpdateListener<?> listener) {
         listeners.add(listener);

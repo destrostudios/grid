@@ -5,10 +5,7 @@ import com.destroflyer.jme3.cubes.Vector3Int;
 import com.destrostudios.grid.client.GameProxy;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.models.ModelObject;
-import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
-import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.game.Game;
 import com.destrostudios.grid.update.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
 import com.jme3.app.Application;
@@ -22,7 +19,6 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.util.SkyFactory;
-import java.util.List;
 import java.util.Optional;
 
 public class GameAppState extends BaseAppState implements ActionListener {
@@ -30,14 +26,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
     private final GameProxy gameProxy;
     private Node blockTerrainNode;
     private ModelObject modelObject;
-    private int playerEntity;
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
-        Game game = gameProxy.getGame();
-        EntityWorld world = game.getWorld();
-        List<Integer> list = world.list(PlayerComponent.class);
-        this.playerEntity = list.get(0);
     }
 
     @Override
@@ -82,6 +73,11 @@ public class GameAppState extends BaseAppState implements ActionListener {
     }
 
     private void updatePlayerPosition() {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity == null) {
+            //spectating only
+            return;
+        }
         Optional<PositionComponent> component = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
         if (component.isPresent()) {
             PositionComponent positionComponent = component.get();
@@ -106,6 +102,11 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     @Override
     public void onAction(String actionName, boolean isPressed, float tpf) {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity == null) {
+            //spectating only
+            return;
+        }
         Optional<PositionComponent> componentOpt = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
         if (componentOpt.isPresent() && isPressed) {
             PositionComponent positionComponent = componentOpt.get();
