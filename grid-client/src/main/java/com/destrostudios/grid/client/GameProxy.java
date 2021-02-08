@@ -1,8 +1,8 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.game.Game;
-import com.destrostudios.grid.update.ComponentUpdateEvent;
-import com.destrostudios.grid.update.listener.ComponentUpdateListener;
+import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
+import com.destrostudios.grid.update.eventbus.Listener;
 import com.destrostudios.turnbasedgametools.network.client.GamesClient;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class GameProxy {
 
     private final UUID gameId;
     private final GamesClient<Game, ComponentUpdateEvent<?>> client;
-    private final List<ComponentUpdateListener<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
+    private final List<Listener<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
 
     /**
      * Apply any game-state updates that are available
@@ -26,13 +26,13 @@ public class GameProxy {
     public boolean update() {
         Game game = getGame();
         // add all listeners to current game-state reference
-        for (ComponentUpdateListener<?> listener : listeners) {
+        for (Listener<?> listener : listeners) {
             game.addListener(listener);
         }
         boolean updated = client.updateGame(gameId);
         // and remove them again after the update
-        for (ComponentUpdateListener<?> listener : listeners) {
-            game.removeListener(listener);
+        for (Listener<?> listener : listeners) {
+            game.addListener(listener);
         }
         return updated;
     }
@@ -59,11 +59,11 @@ public class GameProxy {
                 .orElse(null);
     }
 
-    public void addListener(ComponentUpdateListener<?> listener) {
+    public void addListener(Listener<?> listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(ComponentUpdateListener<?> listener) {
+    public void removeListener(Listener<?> listener) {
         listeners.remove(listener);
     }
 

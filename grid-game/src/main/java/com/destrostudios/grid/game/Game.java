@@ -1,50 +1,63 @@
 package com.destrostudios.grid.game;
 
-import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.MovingComponent;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.game.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
-import com.destrostudios.grid.update.ComponentUpdateEvent;
-import com.destrostudios.grid.update.listener.ComponentUpdateListener;
-import com.destrostudios.grid.update.listener.PositionUpdateListener;
-import com.google.common.eventbus.EventBus;
+import com.destrostudios.grid.update.listener.*;
+import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
+import com.destrostudios.grid.update.eventbus.ComponentEventBus;
+import com.destrostudios.grid.update.eventbus.Listener;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
+
 import lombok.Getter;
 
 @Getter
 public class Game {
     private final static Logger logger = Logger.getGlobal();
 
-    private final EventBus eventbus = new EventBus();
+    private final ComponentEventBus ownComponentEventBus;
     private final GamePreferences gamePreferences;
 
     private EntityWorld world;
 
     public Game() {
         this.world = new EntityWorld();
+        this.ownComponentEventBus = new ComponentEventBus();
         this.gamePreferences = new GamePreferences(20, 20);
     }
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.fillTestGameData();
+        game.initGame();
         System.out.println(game.getState());
         game.intializeGame(game.getState());
+        game.update(new ComponentUpdateEvent<>(1, new RoundComponent()));
+        game.update(new ComponentUpdateEvent<>(1, new PositionComponent(3, 3)));
+        System.out.println(game.getState());
+
     }
 
-    public void fillTestGameData() {
+    public void initGame() {
+        addPlayer("destroflyer", 0);
+        addPlayer("etherblood", 1);
+        this.addListener(new RoundUpdateListener());
+        this.addListener(new PositionUpdateListener());
+    }
+
+
+    public void addPlayer(String name, int team) {
         int playerEntity = world.createEntity();
-        world.addComponent(playerEntity, new PositionComponent(0, 0));
+        world.addComponent(playerEntity, new PositionComponent((int) (20 * Math.random()), (int) (20 * Math.random())));
         world.addComponent(playerEntity, new MovingComponent());
-        world.addComponent(playerEntity, new PlayerComponent("Icecold"));
-        this.addListener(new PositionUpdateListener(world));
-        update(playerEntity, new PositionComponent(0, 1));
-        update(playerEntity, new PositionComponent(2, 1));
+        world.addComponent(playerEntity, new PlayerComponent(name));
+        world.addComponent(playerEntity, new TeamComponent(team));
+        if (team == 0) {
+            world.addComponent(playerEntity, new RoundComponent());
+        }
     }
 
     public void intializeGame(String gameState) {
@@ -55,20 +68,20 @@ public class Game {
         }
     }
 
-    public void addListener(ComponentUpdateListener<?> listener) {
-        eventbus.register(listener);
+    public void addListener(Listener<? extends Component> listener) {
+        ownComponentEventBus.register(listener);
     }
 
-    public void removeListener(ComponentUpdateListener<?> listener) {
-        eventbus.unregister(listener);
+    public void removeOwnListener(Listener<Component> listener) {
+        ownComponentEventBus.unregister(listener);
     }
 
     public void update(int entity, Component component) {
-        eventbus.post(new ComponentUpdateEvent<>(entity, component));
+        ownComponentEventBus.publish(new ComponentUpdateEvent<>(entity, component), world);
     }
 
-    public <E extends Component> void update(ComponentUpdateEvent<E> component) {
-        eventbus.post(component);
+    public void update(ComponentUpdateEvent<? extends Component> component) {
+        ownComponentEventBus.publish(component, world);
     }
 
     public String getState() {

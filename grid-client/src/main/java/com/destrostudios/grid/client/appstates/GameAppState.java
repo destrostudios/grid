@@ -6,10 +6,11 @@ import com.destroflyer.jme3.cubes.Vector3Int;
 import com.destrostudios.grid.client.GameProxy;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.models.ModelObject;
+import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.update.ComponentUpdateEvent;
+import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -62,7 +63,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addMapping("mouse_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         mainApplication.getInputManager().addListener(this, "key_w", "key_a", "key_s", "key_d", "mouse_left", "mouse_right");
 
-        gameProxy.addListener(new PositionUpdateListener(gameProxy.getGame().getWorld()));
+        gameProxy.addListener(new PositionUpdateListener());
 
         modelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
         modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
@@ -170,6 +171,10 @@ public class GameAppState extends BaseAppState implements ActionListener {
     }
 
     public void onButtonClicked(int buttonIndex) {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (buttonIndex == 0) {
+            gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new RoundComponent()));
+        }
         System.out.println("GUI button #" + buttonIndex + " pressed");
     }
 }

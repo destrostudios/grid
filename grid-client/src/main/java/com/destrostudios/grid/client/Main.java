@@ -4,7 +4,7 @@ import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.game.Game;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
-import com.destrostudios.grid.update.ComponentUpdateEvent;
+import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.turnbasedgametools.network.client.GamesClient;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
 import java.io.FileNotFoundException;
@@ -21,7 +21,7 @@ public class Main {
 
     static void startGame(String hostUrl) throws IOException, InterruptedException {
         NetworkGridService gameService = new NetworkGridService();
-        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>(hostUrl, NetworkUtil.PORT, 10_000, gameService);
+        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>("destrostudios.com", NetworkUtil.PORT, 10_000, gameService);
 
         for (int i = 0; i < 10; i++) {
             if (!client.getGames().isEmpty()) {

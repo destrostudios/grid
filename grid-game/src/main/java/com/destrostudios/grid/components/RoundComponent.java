@@ -1,4 +1,4 @@
 package com.destrostudios.grid.components;
 
-public class RoundComponent implements Component{
+public class RoundComponent implements Component {
 }

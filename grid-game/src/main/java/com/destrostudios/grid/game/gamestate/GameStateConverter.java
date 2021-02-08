@@ -15,6 +15,23 @@ import java.util.stream.Collectors;
 
 public class GameStateConverter {
 
+    public static String marshal(Component component) throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(Component.class);
+        Marshaller mar = context.createMarshaller();
+        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        StringWriter sw = new StringWriter();
+        mar.marshal(component, sw);
+        return sw.toString();
+    }
+
+    public static Component unmarshalComponent(String component) throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(Component.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        StringReader sr = new StringReader(component);
+        return (Component) unmarshaller.unmarshal(sr);
+    }
+
+
     public static String marshal(EntityWorld world) throws JAXBException {
         GameState gameState = new GameState();
 //        mapWrapper.addEntry();
@@ -22,7 +39,7 @@ public class GameStateConverter {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> new ComponentsWrapper(e.getValue())));
         gameState.setWorld(componentsByEntity);
         JAXBContext context = JAXBContext.newInstance(GameState.class);
-        Marshaller mar= context.createMarshaller();
+        Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         StringWriter sw = new StringWriter();
         mar.marshal(gameState, sw);

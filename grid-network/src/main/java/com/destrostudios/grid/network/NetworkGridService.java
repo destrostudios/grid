@@ -5,7 +5,7 @@ import com.destrostudios.grid.components.MovingComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.game.Game;
-import com.destrostudios.grid.update.ComponentUpdateEvent;
+import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.turnbasedgametools.network.shared.GameService;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkRandom;
 import com.esotericsoftware.kryo.Kryo;
@@ -73,12 +73,12 @@ public class NetworkGridService implements GameService<Game, ComponentUpdateEven
     @Override
     public Game startNewGame() {
         Game game = new Game();
-        game.fillTestGameData();
+        game.initGame();
         return game;
     }
 
     @Override
-    public Game applyAction(Game state, ComponentUpdateEvent<?> action, NetworkRandom random) {
+    public Game applyAction(Game state, ComponentUpdateEvent<? extends Component> action, NetworkRandom random) {
         state.update(action);
         return state;
     }

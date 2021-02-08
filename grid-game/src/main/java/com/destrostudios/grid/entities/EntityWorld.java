@@ -79,6 +79,15 @@ public class EntityWorld implements EntityData {
                 .collect(Collectors.toList());
     }
 
+    public <E extends Component> List<E> listComponents(Class<E> component) {
+        List<Integer> entities = list(component);
+        return entities.stream()
+                .map(entity -> getComponent(entity, component))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
+
     /**
      * adds a component for that entity
      *

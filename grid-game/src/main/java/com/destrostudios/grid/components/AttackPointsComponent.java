@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AttackPointsComponent implements Component{
+public class AttackPointsComponent implements Component {
     private final int attackPoints;
 }

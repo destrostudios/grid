@@ -3,7 +3,7 @@ package com.destrostudios.grid.server;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.game.Game;
 import com.destrostudios.grid.network.NetworkGridService;
-import com.destrostudios.grid.update.ComponentUpdateEvent;
+import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.turnbasedgametools.network.server.GamesServer;
 import com.destrostudios.turnbasedgametools.network.server.ServerGameData;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;

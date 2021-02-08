@@ -1,9 +1,6 @@
 package com.destrostudios.grid.game.gamestate;
 
-import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.MovingComponent;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.*;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Arrays;
@@ -28,6 +25,10 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
                 return new MovingComponent();
             case PLAYER:
                 return new PlayerComponent(split[1]);
+            case TEAM:
+                return new TeamComponent(Integer.parseInt(split[1]));
+            case ACTIVE_ROUND:
+                return new RoundComponent();
             case DEFAUlT:
                 break;
         }
@@ -36,29 +37,15 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
 
     @Override
     public String marshal(Component component) throws Exception {
-        AdapterValues adapterValues = AdapterValues.fromClass(component.getClass());
-
-        switch (adapterValues) {
-            case POSITION:
-                PositionComponent positionComponent = (PositionComponent) AdapterValues.POSITION.getClassz().cast(component);
-                return positionComponent.toMarshalString();
-            case MOVING:
-                MovingComponent movingComponent = (MovingComponent) AdapterValues.MOVING.getClassz().cast(component);
-                return movingComponent.toMarshalString();
-            case PLAYER:
-                PlayerComponent playerComponent = (PlayerComponent) AdapterValues.PLAYER.getClassz().cast(component);
-                return playerComponent.toMarshalString();
-            case DEFAUlT:
-                break;
-
-        }
-        return "";
+        return component.toMarshalString();
     }
 
     public enum AdapterValues {
         POSITION(PositionComponent.class),
         MOVING(MovingComponent.class),
         PLAYER(PlayerComponent.class),
+        TEAM(TeamComponent.class),
+        ACTIVE_ROUND(RoundComponent.class),
         DEFAUlT(Component.class);
 
         private final Class<? extends Component> classz;
