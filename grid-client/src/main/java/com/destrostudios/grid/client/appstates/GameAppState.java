@@ -67,24 +67,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         gameProxy.addListener(new PositionUpdateListener());
 
-        addDemoModel("aland", 1, 13, "idle", 11.267f);
-        addDemoModel("alice", 2, 6, "idle1", 1.867f);
-        addDemoModel("dosaz", 5, 1, "idle", 7.417f);
-        addDemoModel("dwarf_warrior", 7, 7, "idle1", 7.875f);
-        addDemoModel("elven_archer", 10, 2, "idle1", 5.1f);
-        addDemoModel("garmon", 10, 12, "idle2", 10);
-        addDemoModel("scarlet", 13, 5, "idle", 2);
-        addDemoModel("tristan", 14, 9, "idle1", 7.567f);
-
         udpateVisuals();
-    }
-
-    private void addDemoModel(String name, int tileX, int tileY, String idleAnimationName, float idleAnimationLoopDuration) {
-        ModelObject modelObject = new ModelObject(mainApplication.getAssetManager(), "models/" + name + "/skin_default.xml");
-        modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        modelObject.setLocalTranslation((tileX + 0.5f) * 3, 3, (tileY + 0.5f) * 3);
-        modelObject.playAnimation(idleAnimationName, idleAnimationLoopDuration);
-        mainApplication.getRootNode().attachChild(modelObject);
     }
 
     @Override
@@ -99,9 +82,17 @@ public class GameAppState extends BaseAppState implements ActionListener {
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
             ModelObject modelObject = playerModels.computeIfAbsent(playerEntity, pe -> {
-                ModelObject newModelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
-                newModelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-                newModelObject.playAnimation("idle", 11.267f);
+                ModelObject newModelObject = null;
+                switch ((int) (Math.random() * 8)) {
+                    case 0: newModelObject = createCharacterModel("aland",  "idle", 11.267f); break;
+                    case 1: newModelObject = createCharacterModel("alice", "idle1", 1.867f); break;
+                    case 2: newModelObject = createCharacterModel("dosaz", "idle", 7.417f); break;
+                    case 3: newModelObject = createCharacterModel("dwarf_warrior", "idle1", 7.875f); break;
+                    case 4: newModelObject = createCharacterModel("elven_archer", "idle1", 5.1f); break;
+                    case 5: newModelObject = createCharacterModel("garmon", "idle2", 10); break;
+                    case 6: newModelObject = createCharacterModel("scarlet", "idle", 2); break;
+                    case 7: newModelObject = createCharacterModel("tristan", "idle1", 7.567f); break;
+                }
                 mainApplication.getRootNode().attachChild(newModelObject);
                 return newModelObject;
             });
@@ -114,6 +105,13 @@ public class GameAppState extends BaseAppState implements ActionListener {
         guiAppState.setCurrentPlayer(activePlayerName);
         guiAppState.setMP(99);
         guiAppState.setAP(42);
+    }
+
+    private ModelObject createCharacterModel(String name, String idleAnimationName, float idleAnimationLoopDuration) {
+        ModelObject modelObject = new ModelObject(mainApplication.getAssetManager(), "models/" + name + "/skin_default.xml");
+        modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        modelObject.playAnimation(idleAnimationName, idleAnimationLoopDuration);
+        return modelObject;
     }
 
     @Override
