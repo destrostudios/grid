@@ -72,8 +72,8 @@ public class ClientApplication extends SimpleApplication {
         flyCam.setMoveSpeed(100);
         flyCam.setEnabled(false);
 
-        stateManager.attach(new GameAppState(gameProxy));
         stateManager.attach(new GuiAppState());
+        stateManager.attach(new GameAppState(gameProxy));
     }
 
     public CollisionResults getRayCastingResults_Cursor(Spatial spatial) {

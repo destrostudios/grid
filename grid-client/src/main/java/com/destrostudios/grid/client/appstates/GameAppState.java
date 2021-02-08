@@ -6,7 +6,9 @@ import com.destroflyer.jme3.cubes.Vector3Int;
 import com.destrostudios.grid.client.GameProxy;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.models.ModelObject;
+import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.update.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
 import com.jme3.app.Application;
@@ -67,8 +69,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
         modelObject.playAnimation("idle", 11.267f);
         mainApplication.getRootNode().attachChild(modelObject);
 
-        updatePlayerPosition();
-
         addDemoModel("aland", 1, 13, "idle", 11.267f);
         addDemoModel("alice", 2, 6, "idle1", 1.867f);
         addDemoModel("dosaz", 5, 1, "idle", 7.417f);
@@ -77,6 +77,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
         addDemoModel("garmon", 10, 12, "idle2", 10);
         addDemoModel("scarlet", 13, 5, "idle", 2);
         addDemoModel("tristan", 14, 9, "idle1", 7.567f);
+
+        udpateVisuals();
     }
 
     private void addDemoModel(String name, int tileX, int tileY, String idleAnimationName, float idleAnimationLoopDuration) {
@@ -90,22 +92,31 @@ public class GameAppState extends BaseAppState implements ActionListener {
     @Override
     public void update(float tpf) {
         if (gameProxy.update()) {
-            updatePlayerPosition();
+            udpateVisuals();
         }
         super.update(tpf);
     }
 
-    private void updatePlayerPosition() {
+    private void udpateVisuals() {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (playerEntity == null) {
             // spectating only
             return;
         }
-        Optional<PositionComponent> component = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
-        if (component.isPresent()) {
-            PositionComponent positionComponent = component.get();
+
+        EntityWorld entityWorld = gameProxy.getGame().getWorld();
+
+        Optional<PositionComponent> positionComponentOptional = entityWorld.getComponent(playerEntity, PositionComponent.class);
+        if (positionComponentOptional.isPresent()) {
+            PositionComponent positionComponent = positionComponentOptional.get();
             modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
         }
+
+        String playerName = entityWorld.getComponent(playerEntity, PlayerComponent.class).get().getName();
+        GuiAppState guiAppState = getAppState(GuiAppState.class);
+        guiAppState.setCurrentPlayer(playerName);
+        guiAppState.setMP(99);
+        guiAppState.setAP(42);
     }
 
     @Override
