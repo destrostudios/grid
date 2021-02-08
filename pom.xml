@@ -23,7 +23,7 @@
         <version.jdom>2.0.6</version.jdom>
         <version.jme3>3.2.1-stable</version.jme3>
         <version.junit>4.11</version.junit>
-        <version.groovy>3.0.6</version.groovy>
+        <version.groovy>3.0.7</version.groovy>
         <version.lemur>1.11.0</version.lemur>
         <version.lemur-proto>1.10.0</version.lemur-proto>
         <version.lombok>1.18.12</version.lombok>
@@ -130,6 +130,7 @@
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
                 <version>${version.groovy}</version>
+                <type>pom</type>
             </dependency>
             <!--Cubes-->
             <dependency>
