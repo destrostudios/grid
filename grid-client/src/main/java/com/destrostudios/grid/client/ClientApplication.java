@@ -2,6 +2,7 @@ package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.client.appstates.GameAppState;
 import com.destrostudios.grid.client.appstates.GuiAppState;
+import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.collision.CollisionResults;
@@ -16,7 +17,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.water.WaterFilter;
-
 import java.awt.image.BufferedImage;
 
 public class ClientApplication extends SimpleApplication {
@@ -31,10 +31,10 @@ public class ClientApplication extends SimpleApplication {
         settings.setVSync(true);
         settings.setTitle("Grid");
         settings.setIcons(new BufferedImage[]{
-            FileAssets.getImage("textures/icon/16.png"),
-            FileAssets.getImage("textures/icon/32.png"),
-            FileAssets.getImage("textures/icon/64.png"),
-            FileAssets.getImage("textures/icon/128.png")
+                FileAssets.getImage("textures/icon/16.png"),
+                FileAssets.getImage("textures/icon/32.png"),
+                FileAssets.getImage("textures/icon/64.png"),
+                FileAssets.getImage("textures/icon/128.png")
         });
         setShowSettings(false);
         setPauseOnLostFocus(false);

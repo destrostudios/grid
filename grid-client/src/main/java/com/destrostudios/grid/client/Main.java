@@ -1,6 +1,8 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.client.blocks.BlockAssets;
+import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
+import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.game.Game;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
@@ -16,12 +18,10 @@ import java.util.UUID;
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        startGame("destrostudios.com");
+        startGame(getClientProxy("destrostudios.com"));
     }
 
-    static void startGame(String hostUrl) throws IOException, InterruptedException {
-        GameProxy gameProxy = getGameProxy(hostUrl);
-
+    static void startGame(GameProxy gameProxy) throws IOException, InterruptedException {
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
             System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
@@ -35,7 +35,7 @@ public class Main {
         new ClientApplication(gameProxy).start();
     }
 
-    private static GameProxy getGameProxy(String hostUrl) throws IOException, InterruptedException {
+    static GameProxy getClientProxy(String hostUrl) throws IOException, InterruptedException {
         NetworkGridService gameService = new NetworkGridService();
         GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>(hostUrl, NetworkUtil.PORT, 10_000, gameService);
 
@@ -51,6 +51,6 @@ public class Main {
             throw new RuntimeException("No game found, is the server running?");
         }
         UUID gameId = client.getGames().iterator().next().getId();
-        return new GameProxy(gameId, client);
+        return new ClientGameProxy(gameId, client);
     }
 }
