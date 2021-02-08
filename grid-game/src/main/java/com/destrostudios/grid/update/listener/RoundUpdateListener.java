@@ -19,12 +19,14 @@ public class RoundUpdateListener implements Listener<RoundComponent> {
     @Override
     public void handle(ComponentUpdateEvent<RoundComponent> componentUpdateEvent, EntityWorld entityWorld) {
         List<Integer> playerEntities = entityWorld.list(PlayerComponent.class);
-        int activePlayerEntity = componentUpdateEvent.getEntity();
-
-        if (playerEntities.size() == 1) {
+        int activePlayerEntity = entityWorld.list(RoundComponent.class).stream()
+                .findFirst()
+                .orElse(-1);
+        
+        if (playerEntities.size() == 1 || activePlayerEntity == -1) {
             logger.warning("Just one player, cant switch turn!");
 
-        } else {
+        } else if (activePlayerEntity == componentUpdateEvent.getEntity()) {
             Optional<Integer> newActivePlayer = playerEntities.stream()
                     .filter(i -> i != activePlayerEntity)
                     .findFirst();

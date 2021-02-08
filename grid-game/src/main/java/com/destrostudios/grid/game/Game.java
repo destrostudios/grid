@@ -47,8 +47,7 @@ public class Game {
         this.addListener(new PositionUpdateListener());
     }
 
-
-    public void addPlayer(String name, int team) {
+    private void addPlayer(String name, int team) {
         int playerEntity = world.createEntity();
         world.addComponent(playerEntity, new PositionComponent((int) (20 * Math.random()), (int) (20 * Math.random())));
         world.addComponent(playerEntity, new MovingComponent());
@@ -57,6 +56,24 @@ public class Game {
         if (team == 0) {
             world.addComponent(playerEntity, new RoundComponent());
         }
+    }
+
+    public String componentToXml(Component component) {
+        try {
+            return GameStateConverter.marshal(component);
+        } catch (JAXBException e) {
+            logger.log(Level.WARNING, e, () -> "Couldn´t marshal component!");
+        }
+        return "";
+    }
+
+    public Component xmlToComponent(String xml) {
+        try {
+            return GameStateConverter.unmarshalComponent(xml);
+        } catch (JAXBException e) {
+            logger.log(Level.WARNING, e, () -> "Couldn´t unmarshal component!");
+        }
+        return null;
     }
 
     public void intializeGame(String gameState) {
