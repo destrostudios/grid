@@ -49,7 +49,7 @@ public class Game {
 
     private void addPlayer(String name, int team) {
         int playerEntity = world.createEntity();
-        world.addComponent(playerEntity, new PositionComponent((int) (20 * Math.random()), (int) (20 * Math.random())));
+        world.addComponent(playerEntity, new PositionComponent((int) (16 * Math.random()), (int) (16 * Math.random())));
         world.addComponent(playerEntity, new MovingComponent());
         world.addComponent(playerEntity, new PlayerComponent(name));
         world.addComponent(playerEntity, new TeamComponent(team));

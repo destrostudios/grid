@@ -26,6 +26,8 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.util.SkyFactory;
+
+import java.util.HashMap;
 import java.util.Optional;
 
 public class GameAppState extends BaseAppState implements ActionListener {
@@ -33,7 +35,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
     private final GameProxy gameProxy;
     private Node blockTerrainNode;
     private BlockTerrainControl blockTerrainControl;
-    private ModelObject modelObject;
+    private HashMap<Integer, ModelObject> playerModels = new HashMap<>();
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
@@ -65,11 +67,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         gameProxy.addListener(new PositionUpdateListener());
 
-        modelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
-        modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        modelObject.playAnimation("idle", 11.267f);
-        mainApplication.getRootNode().attachChild(modelObject);
-
         addDemoModel("aland", 1, 13, "idle", 11.267f);
         addDemoModel("alice", 2, 6, "idle1", 1.867f);
         addDemoModel("dosaz", 5, 1, "idle", 7.417f);
@@ -99,23 +96,22 @@ public class GameAppState extends BaseAppState implements ActionListener {
     }
 
     private void udpateVisuals() {
-        Integer playerEntity = gameProxy.getPlayerEntity();
-        if (playerEntity == null) {
-            // spectating only
-            return;
-        }
-
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
-
-        Optional<PositionComponent> positionComponentOptional = entityWorld.getComponent(playerEntity, PositionComponent.class);
-        if (positionComponentOptional.isPresent()) {
-            PositionComponent positionComponent = positionComponentOptional.get();
+        for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
+            ModelObject modelObject = playerModels.computeIfAbsent(playerEntity, pe -> {
+                ModelObject newModelObject = new ModelObject(mainApplication.getAssetManager(), "models/aland/skin_default.xml");
+                newModelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+                newModelObject.playAnimation("idle", 11.267f);
+                mainApplication.getRootNode().attachChild(newModelObject);
+                return newModelObject;
+            });
+            PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class).get();
             modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
         }
-
-        String playerName = entityWorld.getComponent(playerEntity, PlayerComponent.class).get().getName();
+        int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
+        String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
         GuiAppState guiAppState = getAppState(GuiAppState.class);
-        guiAppState.setCurrentPlayer(playerName);
+        guiAppState.setCurrentPlayer(activePlayerName);
         guiAppState.setMP(99);
         guiAppState.setAP(42);
     }
