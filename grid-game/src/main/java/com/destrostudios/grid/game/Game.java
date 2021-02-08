@@ -4,6 +4,7 @@ import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.game.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
+import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.update.listener.*;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.eventbus.ComponentEventBus;
@@ -30,17 +31,7 @@ public class Game {
         this.gamePreferences = new GamePreferences(20, 20);
     }
 
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.initGame();
-        System.out.println(game.getState());
-        game.intializeGame(game.getState());
-        game.update(new ComponentUpdateEvent<>(1, new RoundComponent()));
-        game.update(new ComponentUpdateEvent<>(1, new PositionComponent(3, 3)));
-        System.out.println(game.getState());
-    }
-
-    public void initGame() {
+    public void initGame(StartGameInfo startGameInfo) {
         addPlayer("destroflyer", 0);
         addPlayer("etherblood", 1);
         this.addListener(new RoundUpdateListener());

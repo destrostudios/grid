@@ -2,6 +2,7 @@ package com.destrostudios.grid.network;
 
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.game.Game;
+import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.turnbasedgametools.network.shared.GameService;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkRandom;
@@ -82,7 +83,7 @@ public class NetworkGridService implements GameService<Game, ComponentUpdateEven
     @Override
     public Game startNewGame() {
         Game game = new Game();
-        game.initGame();
+        game.initGame(StartGameInfo.getTestGameInfo());
         return game;
     }
 
