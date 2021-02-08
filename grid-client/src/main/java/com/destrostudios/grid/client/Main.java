@@ -21,7 +21,7 @@ public class Main {
         startGame(getClientProxy("destrostudios.com"));
     }
 
-    static void startGame(GameProxy gameProxy) throws IOException, InterruptedException {
+    static void startGame(GameProxy gameProxy) {
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
             System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
@@ -41,7 +41,6 @@ public class Main {
 
         for (int i = 0; i < 10; i++) {
             if (!client.getGames().isEmpty()) {
-                System.out.println(client.getGames().iterator().next().getState().getWorld().getWorld());
                 break;
             }
             System.out.println("No games available, waiting...");
