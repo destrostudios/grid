@@ -1,16 +1,22 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.client.appstates.GameAppState;
+import com.destrostudios.grid.client.appstates.GuiAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
+import com.jme3.collision.CollisionResults;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Ray;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
+import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.water.WaterFilter;
+
 import java.awt.image.BufferedImage;
 
 public class ClientApplication extends SimpleApplication {
@@ -25,10 +31,10 @@ public class ClientApplication extends SimpleApplication {
         settings.setVSync(true);
         settings.setTitle("Grid");
         settings.setIcons(new BufferedImage[]{
-                FileAssets.getImage("textures/icon/16.png"),
-                FileAssets.getImage("textures/icon/32.png"),
-                FileAssets.getImage("textures/icon/64.png"),
-                FileAssets.getImage("textures/icon/128.png")
+            FileAssets.getImage("textures/icon/16.png"),
+            FileAssets.getImage("textures/icon/32.png"),
+            FileAssets.getImage("textures/icon/64.png"),
+            FileAssets.getImage("textures/icon/128.png")
         });
         setShowSettings(false);
         setPauseOnLostFocus(false);
@@ -67,5 +73,22 @@ public class ClientApplication extends SimpleApplication {
         flyCam.setEnabled(false);
 
         stateManager.attach(new GameAppState(gameProxy));
+        stateManager.attach(new GuiAppState());
+    }
+
+    public CollisionResults getRayCastingResults_Cursor(Spatial spatial) {
+        return getRayCastingResults_Screen(spatial, inputManager.getCursorPosition());
+    }
+
+    public CollisionResults getRayCastingResults_Screen(Spatial spatial, Vector2f screenLocation) {
+        Vector3f cursorRayOrigin = cam.getWorldCoordinates(screenLocation, 0);
+        Vector3f cursorRayDirection = cam.getWorldCoordinates(screenLocation, 1).subtractLocal(cursorRayOrigin).normalizeLocal();
+        return getRayCastingResults(spatial, new Ray(cursorRayOrigin, cursorRayDirection));
+    }
+
+    private CollisionResults getRayCastingResults(Spatial spatial, Ray ray) {
+        CollisionResults results = new CollisionResults();
+        spatial.collideWith(ray, results);
+        return results;
     }
 }

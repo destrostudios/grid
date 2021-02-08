@@ -45,6 +45,18 @@
             <artifactId>jme3-effects</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.simsilica</groupId>
+            <artifactId>lemur</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.simsilica</groupId>
+            <artifactId>lemur-proto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.destroflyer.cubes</groupId>
             <artifactId>cubes</artifactId>
         </dependency>

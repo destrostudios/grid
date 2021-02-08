@@ -17,20 +17,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.cubes>f57a9164812a16c628c7d9fd2988a45696b6bbe8</version.cubes>
         <version.grid>0.0.1</version.grid>
-        <version.turn-based-game-tools>6f2be6d77f5fb04841869071d1a765b60c6bdb66</version.turn-based-game-tools>
+        <version.guava>30.1-jre</version.guava>
+        <version.javax.activation>1.1.1</version.javax.activation>
+        <version.jaxb-api>2.3.0</version.jaxb-api>
         <version.jdom>2.0.6</version.jdom>
         <version.jme3>3.2.1-stable</version.jme3>
         <version.junit>4.11</version.junit>
-        <version.guava>30.1-jre</version.guava>
-        <jaxb.api.version>2.3.0</jaxb.api.version>
-        <version.javax.activation>1.1.1</version.javax.activation>
+        <version.groovy>3.0.6</version.groovy>
+        <version.lemur>1.11.0</version.lemur>
+        <version.lemur-proto>1.10.0</version.lemur-proto>
         <version.lombok>1.18.12</version.lombok>
         <version.maven-assembly-plugin>3.1.1</version.maven-assembly-plugin>
         <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
-        <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
         <version.maven-source-plugin>3.2.0</version.maven-source-plugin>
+        <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
         <version.mockito>1.9.5</version.mockito>
         <version.slf4j>2.0.0-alpha1</version.slf4j>
+        <version.turn-based-game-tools>6f2be6d77f5fb04841869071d1a765b60c6bdb66</version.turn-based-game-tools>
     </properties>
     <repositories>
         <repository>
@@ -70,7 +73,6 @@
                 <artifactId>grid-network</artifactId>
                 <version>${version.grid}</version>
             </dependency>
-
             <!--turn-based-game-tools-->
             <dependency>
                 <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
@@ -87,7 +89,6 @@
                 <artifactId>network-client</artifactId>
                 <version>${version.turn-based-game-tools}</version>
             </dependency>
-
             <!--jMonkeyEngine-->
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
@@ -104,7 +105,6 @@
                 <artifactId>jme3-desktop</artifactId>
                 <version>${version.jme3}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-jogg</artifactId>
@@ -114,6 +114,22 @@
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-effects</artifactId>
                 <version>${version.jme3}</version>
+            </dependency>
+            <!--Lemur-->
+            <dependency>
+                <groupId>com.simsilica</groupId>
+                <artifactId>lemur</artifactId>
+                <version>${version.lemur}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simsilica</groupId>
+                <artifactId>lemur-proto</artifactId>
+                <version>${version.lemur-proto}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${version.groovy}</version>
             </dependency>
             <!--Cubes-->
             <dependency>
@@ -157,19 +173,17 @@
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
-                <version>${jaxb.api.version}</version>
+                <version>${version.jaxb-api}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-core</artifactId>
-                <version>${jaxb.api.version}</version>
+                <version>${version.jaxb-api}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-impl</artifactId>
-                <version>${jaxb.api.version}</version>
+                <version>${version.jaxb-api}</version>
             </dependency>
             <dependency>
                 <groupId>javax.activation</groupId>

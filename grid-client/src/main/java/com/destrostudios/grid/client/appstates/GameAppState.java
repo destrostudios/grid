@@ -1,5 +1,6 @@
 package com.destrostudios.grid.client.appstates;
 
+import com.destroflyer.jme3.cubes.BlockNavigator;
 import com.destroflyer.jme3.cubes.BlockTerrainControl;
 import com.destroflyer.jme3.cubes.Vector3Int;
 import com.destrostudios.grid.client.GameProxy;
@@ -10,9 +11,12 @@ import com.destrostudios.grid.update.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -25,6 +29,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     private final GameProxy gameProxy;
     private Node blockTerrainNode;
+    private BlockTerrainControl blockTerrainControl;
     private ModelObject modelObject;
 
     public GameAppState(GameProxy gameProxy) {
@@ -38,7 +43,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         blockTerrainNode = new Node();
         blockTerrainNode.setShadowMode(RenderQueue.ShadowMode.Receive);
-        BlockTerrainControl blockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(1, 1, 1));
+        blockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(1, 1, 1));
         blockTerrainControl.setBlockArea(new Vector3Int(), new Vector3Int(16, 1, 16), BlockAssets.BLOCK_GRASS);
         blockTerrainNode.addControl(blockTerrainControl);
         mainApplication.getRootNode().attachChild(blockTerrainNode);
@@ -51,7 +56,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addMapping("key_a", new KeyTrigger(KeyInput.KEY_A));
         mainApplication.getInputManager().addMapping("key_s", new KeyTrigger(KeyInput.KEY_S));
         mainApplication.getInputManager().addMapping("key_d", new KeyTrigger(KeyInput.KEY_D));
-        mainApplication.getInputManager().addListener(this, "key_w", "key_a", "key_s", "key_d");
+        mainApplication.getInputManager().addMapping("mouse_left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        mainApplication.getInputManager().addMapping("mouse_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+        mainApplication.getInputManager().addListener(this, "key_w", "key_a", "key_s", "key_d", "mouse_left", "mouse_right");
 
         gameProxy.addListener(new PositionUpdateListener(gameProxy.getGame().getWorld()));
 
@@ -72,17 +79,12 @@ public class GameAppState extends BaseAppState implements ActionListener {
         addDemoModel("tristan", 14, 9, "idle1", 7.567f);
     }
 
-    private void updatePlayerPosition() {
-        Integer playerEntity = gameProxy.getPlayerEntity();
-        if (playerEntity == null) {
-            //spectating only
-            return;
-        }
-        Optional<PositionComponent> component = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
-        if (component.isPresent()) {
-            PositionComponent positionComponent = component.get();
-            modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
-        }
+    private void addDemoModel(String name, int tileX, int tileY, String idleAnimationName, float idleAnimationLoopDuration) {
+        ModelObject modelObject = new ModelObject(mainApplication.getAssetManager(), "models/" + name + "/skin_default.xml");
+        modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        modelObject.setLocalTranslation((tileX + 0.5f) * 3, 3, (tileY + 0.5f) * 3);
+        modelObject.playAnimation(idleAnimationName, idleAnimationLoopDuration);
+        mainApplication.getRootNode().attachChild(modelObject);
     }
 
     @Override
@@ -91,6 +93,19 @@ public class GameAppState extends BaseAppState implements ActionListener {
             updatePlayerPosition();
         }
         super.update(tpf);
+    }
+
+    private void updatePlayerPosition() {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity == null) {
+            // spectating only
+            return;
+        }
+        Optional<PositionComponent> component = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
+        if (component.isPresent()) {
+            PositionComponent positionComponent = component.get();
+            modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
+        }
     }
 
     @Override
@@ -104,7 +119,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
     public void onAction(String actionName, boolean isPressed, float tpf) {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (playerEntity == null) {
-            //spectating only
+            // spectating only
             return;
         }
         Optional<PositionComponent> componentOpt = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
@@ -123,16 +138,27 @@ public class GameAppState extends BaseAppState implements ActionListener {
                 case "key_d":
                     gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() + 1, positionComponent.getY())));
                     break;
+                case "mouse_left":
+                case "mouse_right":
+                    Vector3Int clickedPosition = getHoveredPosition();
+                    if (clickedPosition != null) {
+                        gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(clickedPosition.getX(), clickedPosition.getZ())));
+                    }
+                    break;
             }
-            System.out.println(actionName + "\t" + isPressed);
         }
     }
 
-    private void addDemoModel(String name, int tileX, int tileY, String idleAnimationName, float idleAnimationLoopDuration) {
-        ModelObject modelObject = new ModelObject(mainApplication.getAssetManager(), "models/" + name + "/skin_default.xml");
-        modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        modelObject.setLocalTranslation((tileX + 0.5f) * 3, 3, (tileY + 0.5f) * 3);
-        modelObject.playAnimation(idleAnimationName, idleAnimationLoopDuration);
-        mainApplication.getRootNode().attachChild(modelObject);
+    private Vector3Int getHoveredPosition() {
+        CollisionResults results = mainApplication.getRayCastingResults_Cursor(blockTerrainNode);
+        if (results.size() > 0) {
+            Vector3f collisionContactPoint = results.getClosestCollision().getContactPoint();
+            return BlockNavigator.getPointedBlockLocation(blockTerrainControl, collisionContactPoint, false);
+        }
+        return null;
+    }
+
+    public void onButtonClicked(int buttonIndex) {
+        System.out.println("GUI button #" + buttonIndex + " pressed");
     }
 }
