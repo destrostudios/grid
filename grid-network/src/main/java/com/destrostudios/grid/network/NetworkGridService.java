@@ -1,9 +1,6 @@
 package com.destrostudios.grid.network;
 
-import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.MovingComponent;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.game.Game;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.turnbasedgametools.network.shared.GameService;
@@ -56,6 +53,18 @@ public class NetworkGridService implements GameService<Game, ComponentUpdateEven
             }
         });
         kryo.register(MovingComponent.class);
+        kryo.register(RoundComponent.class);
+        kryo.register(TeamComponent.class, new Serializer<TeamComponent>() {
+            @Override
+            public void write(Kryo kryo, Output output, TeamComponent o) {
+                output.writeInt(o.getTeam());
+            }
+
+            @Override
+            public TeamComponent read(Kryo kryo, Input input, Class aClass) {
+                return new TeamComponent(input.readInt());
+            }
+        });
         kryo.register(PositionComponent.class, new Serializer<PositionComponent>() {
             @Override
             public void write(Kryo kryo, Output output, PositionComponent object) {

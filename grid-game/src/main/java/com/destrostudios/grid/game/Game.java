@@ -38,7 +38,6 @@ public class Game {
         game.update(new ComponentUpdateEvent<>(1, new RoundComponent()));
         game.update(new ComponentUpdateEvent<>(1, new PositionComponent(3, 3)));
         System.out.println(game.getState());
-
     }
 
     public void initGame() {
