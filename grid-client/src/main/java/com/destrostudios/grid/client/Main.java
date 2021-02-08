@@ -20,8 +20,24 @@ public class Main {
     }
 
     static void startGame(String hostUrl) throws IOException, InterruptedException {
+        GameProxy gameProxy = getGameProxy(hostUrl);
+
+        try {
+            FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
+            System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
+            System.setErr(new PrintStream(new MultipleOutputStream(System.err, logFileOutputStream)));
+        } catch (FileNotFoundException ex) {
+            System.err.println("Error while accessing log file: " + ex.getMessage());
+        }
+        FileAssets.readRootFile();
+        BlockAssets.registerBlocks();
+        JMonkeyUtil.disableLogger();
+        new ClientApplication(gameProxy).start();
+    }
+
+    private static GameProxy getGameProxy(String hostUrl) throws IOException, InterruptedException {
         NetworkGridService gameService = new NetworkGridService();
-        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>("destrostudios.com", NetworkUtil.PORT, 10_000, gameService);
+        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>(hostUrl, NetworkUtil.PORT, 10_000, gameService);
 
         for (int i = 0; i < 10; i++) {
             if (!client.getGames().isEmpty()) {
@@ -35,17 +51,6 @@ public class Main {
             throw new RuntimeException("No game found, is the server running?");
         }
         UUID gameId = client.getGames().iterator().next().getId();
-
-        try {
-            FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
-            System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
-            System.setErr(new PrintStream(new MultipleOutputStream(System.err, logFileOutputStream)));
-        } catch (FileNotFoundException ex) {
-            System.err.println("Error while accessing log file: " + ex.getMessage());
-        }
-        FileAssets.readRootFile();
-        BlockAssets.registerBlocks();
-        JMonkeyUtil.disableLogger();
-        new ClientApplication(new GameProxy(gameId, client)).start();
+        return new GameProxy(gameId, client);
     }
 }
