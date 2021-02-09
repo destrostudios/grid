@@ -46,7 +46,7 @@ public class PositionUpdateListener implements Listener<PositionComponent> {
         }
         PositionComponent positionComponent = componentOpt.get();
         PositionComponent updatePositionComponent = componentUpdateEvent.getComponent();
-        return Math.abs((updatePositionComponent.getX() - positionComponent.getX()) + (updatePositionComponent.getY()) - positionComponent.getY());
+        return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) +  Math.abs(updatePositionComponent.getY() - positionComponent.getY());
     }
 
     @Override
