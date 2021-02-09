@@ -1,6 +1,9 @@
 package com.destrostudios.grid.client.gameproxy;
 
+import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.game.Game;
+import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.eventbus.Listener;
 import com.destrostudios.turnbasedgametools.network.client.GamesClient;
@@ -13,6 +16,7 @@ import lombok.AllArgsConstructor;
 public class ClientGameProxy implements GameProxy {
 
     private final UUID gameId;
+    private final PlayerInfo player;
     private final GamesClient<Game, ComponentUpdateEvent<?>> client;
     private final List<Listener<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
 
@@ -43,11 +47,12 @@ public class ClientGameProxy implements GameProxy {
 
     @Override
     public Integer getPlayerEntity() {
-        return client.getGame(gameId).getTags().stream()
-                .filter(x -> x instanceof Integer)
-                .map(x -> (Integer) x)
-                .findFirst()
-                .orElse(null);
+        EntityWorld world = getGame().getWorld();
+        List<Integer> list = world.list(PlayerComponent.class);
+        Integer playerEntity = list.stream()
+                .filter(entity -> world.getComponent(entity, PlayerComponent.class).get().getName().equals(player.getLogin())) // TODO: use Id instead
+                .findFirst().orElse(null);
+        return playerEntity;
     }
 
     @Override
