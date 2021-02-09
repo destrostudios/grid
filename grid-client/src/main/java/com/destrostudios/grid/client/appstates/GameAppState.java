@@ -3,6 +3,8 @@ package com.destrostudios.grid.client.appstates;
 import com.destroflyer.jme3.cubes.BlockNavigator;
 import com.destroflyer.jme3.cubes.BlockTerrainControl;
 import com.destroflyer.jme3.cubes.Vector3Int;
+import com.destrostudios.grid.client.JMonkeyUtil;
+import com.destrostudios.grid.client.PlayerModel;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.models.ModelObject;
@@ -25,7 +27,10 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.util.SkyFactory;
+import com.simsilica.lemur.Panel;
+import com.simsilica.lemur.ProgressBar;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -35,7 +40,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
     private final GameProxy gameProxy;
     private Node blockTerrainNode;
     private BlockTerrainControl blockTerrainControl;
-    private HashMap<Integer, ModelObject> playerModels = new HashMap<>();
+    private HashMap<Integer, PlayerModel> playerModels = new HashMap<>();
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
@@ -67,37 +72,36 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         gameProxy.addListener(new PositionUpdateListener());
 
-        udpateVisuals();
+        updateVisuals();
     }
 
     @Override
     public void update(float tpf) {
         if (gameProxy.update()) {
-            udpateVisuals();
+            updateVisuals();
         }
         super.update(tpf);
     }
 
-    private void udpateVisuals() {
+    private void updateVisuals() {
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
-            ModelObject modelObject = playerModels.computeIfAbsent(playerEntity, pe -> {
-                ModelObject newModelObject = null;
-                switch ((int) (Math.random() * 8)) {
-                    case 0: newModelObject = createCharacterModel("aland",  "idle", 11.267f); break;
-                    case 1: newModelObject = createCharacterModel("alice", "idle1", 1.867f); break;
-                    case 2: newModelObject = createCharacterModel("dosaz", "idle", 7.417f); break;
-                    case 3: newModelObject = createCharacterModel("dwarf_warrior", "idle1", 7.875f); break;
-                    case 4: newModelObject = createCharacterModel("elven_archer", "idle1", 5.1f); break;
-                    case 5: newModelObject = createCharacterModel("garmon", "idle2", 10); break;
-                    case 6: newModelObject = createCharacterModel("scarlet", "idle", 2); break;
-                    case 7: newModelObject = createCharacterModel("tristan", "idle1", 7.567f); break;
-                }
-                mainApplication.getRootNode().attachChild(newModelObject);
-                return newModelObject;
+            PlayerModel playerModel = playerModels.computeIfAbsent(playerEntity, pe -> {
+                PlayerModel newPlayerModel = new PlayerModel(mainApplication.getAssetManager());
+                mainApplication.getRootNode().attachChild(newPlayerModel.getModelObject());
+                mainApplication.getGuiNode().attachChild(newPlayerModel.getHealthBar());
+                return newPlayerModel;
             });
+
+            ModelObject modelObject = playerModel.getModelObject();
             PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class).get();
             modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
+
+            ProgressBar healthBar = playerModel.getHealthBar();
+            healthBar.setProgressPercent(0.5);
+            healthBar.setMessage("13 / 26");
+            // Wait for next frame so that the first frame of a potential new animation is considered for the height
+            mainApplication.enqueue(() -> placeAbove(healthBar, modelObject));
         }
         int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
@@ -107,11 +111,10 @@ public class GameAppState extends BaseAppState implements ActionListener {
         guiAppState.setAP(42);
     }
 
-    private ModelObject createCharacterModel(String name, String idleAnimationName, float idleAnimationLoopDuration) {
-        ModelObject modelObject = new ModelObject(mainApplication.getAssetManager(), "models/" + name + "/skin_default.xml");
-        modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        modelObject.playAnimation(idleAnimationName, idleAnimationLoopDuration);
-        return modelObject;
+    private void placeAbove(Panel panel, Spatial spatial) {
+        Vector3f screenPosition = mainApplication.getCamera().getScreenCoordinates(spatial.getWorldTranslation().add(0, JMonkeyUtil.getWorldSize(spatial).getY() + 1, 0));
+        screenPosition.subtractLocal(panel.getPreferredSize().getX() / 2, 0, 0);
+        panel.setLocalTranslation(screenPosition);
     }
 
     @Override

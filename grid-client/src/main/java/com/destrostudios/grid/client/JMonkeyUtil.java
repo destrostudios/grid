@@ -2,6 +2,7 @@ package com.destrostudios.grid.client;
 
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.SkeletonControl;
+import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -38,6 +39,14 @@ public class JMonkeyUtil {
     public static void lookAtDirection(Spatial spatial, Vector3f direction) {
         Vector3f lookAtLocation = spatial.getWorldTranslation().add(direction);
         spatial.lookAt(lookAtLocation, Vector3f.UNIT_Y);
+    }
+
+    public static Vector3f getWorldSize(Spatial spatial){
+        if (spatial.getWorldBound() instanceof BoundingBox) {
+            BoundingBox boundingBox = (BoundingBox) spatial.getWorldBound();
+            return new Vector3f(2 * boundingBox.getXExtent(), 2 * boundingBox.getYExtent(), 2 * boundingBox.getZExtent());
+        }
+        return new Vector3f();
     }
 
     public static void copyAnimation(AnimChannel sourceAnimationChannel, AnimChannel targetAnimationChannel) {
