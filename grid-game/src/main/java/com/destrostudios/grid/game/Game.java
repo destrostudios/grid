@@ -1,20 +1,27 @@
 package com.destrostudios.grid.game;
 
-import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.AttackPointsComponent;
+import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.components.HealthPointsComponent;
+import com.destrostudios.grid.components.MaxHealthComponent;
+import com.destrostudios.grid.components.MovementPointsComponent;
+import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.RoundComponent;
+import com.destrostudios.grid.components.TeamComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.game.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.grid.update.listener.*;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.eventbus.ComponentEventBus;
+import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.eventbus.Listener;
-
+import com.destrostudios.grid.update.listener.PositionUpdateListener;
+import com.destrostudios.grid.update.listener.RoundUpdateListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
-
 import lombok.Getter;
 
 @Getter
@@ -22,7 +29,7 @@ public class Game {
     private final static Logger logger = Logger.getGlobal();
 
     // TODO: 09.02.2021 should not be hardcoded
-    private final static int MAX_HEALT = 100;
+    private final static int MAX_HEALTH = 100;
     private final static int STARTING_TEAM = 1;
     public final static int MAX_MP = 10;
     public final static int MAX_AP = 10;
@@ -61,8 +68,8 @@ public class Game {
         world.addComponent(playerEntity, new AttackPointsComponent(MAX_AP));
         world.addComponent(playerEntity, new PlayerComponent(name));
         world.addComponent(playerEntity, new TeamComponent(team));
-        world.addComponent(playerEntity, new HealthPointsComponent(MAX_HEALT));
-        world.addComponent(playerEntity, new MaxHealthComponent(MAX_HEALT));
+        world.addComponent(playerEntity, new HealthPointsComponent(MAX_HEALTH));
+        world.addComponent(playerEntity, new MaxHealthComponent(MAX_HEALTH));
 
         if (team == STARTING_TEAM) {
             world.addComponent(playerEntity, new RoundComponent());

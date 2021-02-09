@@ -1,6 +1,6 @@
 package com.destrostudios.grid.client.gameproxy;
 
-import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.game.Game;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.eventbus.Listener;
@@ -35,7 +35,7 @@ public class SimpleGameProxy implements GameProxy {
 
     @Override
     public Integer getPlayerEntity() {
-        List<Integer> list = game.getWorld().list(PlayerComponent.class);
+        List<Integer> list = game.getWorld().list(RoundComponent.class);
         return list.isEmpty() ? null : list.get(0);
     }
 

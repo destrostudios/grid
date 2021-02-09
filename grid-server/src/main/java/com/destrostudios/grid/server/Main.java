@@ -12,6 +12,7 @@ import com.destrostudios.turnbasedgametools.network.server.GamesServer;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.minlog.Log;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        Log.DEBUG();
         System.err.println("WARNING: Using jwt service without validation.");
         JwtService jwtService = new NoValidateJwtService();
 

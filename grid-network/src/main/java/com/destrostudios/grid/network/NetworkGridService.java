@@ -1,7 +1,10 @@
 package com.destrostudios.grid.network;
 
+import com.destrostudios.grid.components.AttackPointsComponent;
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.MovingComponent;
+import com.destrostudios.grid.components.HealthPointsComponent;
+import com.destrostudios.grid.components.MaxHealthComponent;
+import com.destrostudios.grid.components.MovementPointsComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.components.RoundComponent;
