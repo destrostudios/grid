@@ -4,6 +4,7 @@ import com.destrostudios.grid.client.models.ModelObject;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.simsilica.lemur.ProgressBar;
 import lombok.Getter;
@@ -12,6 +13,8 @@ public class PlayerModel {
 
     public PlayerModel(AssetManager assetManager) {
         modelObject = getRandomModel(assetManager);
+        // Calculate it here (in t-pose) before animations start changing the bounding box
+        height = JMonkeyUtil.getWorldSize(modelObject).getY();
 
         healthBar = new ProgressBar();
         healthBar.setPreferredSize(new Vector3f(100, 20, 1));
@@ -19,6 +22,8 @@ public class PlayerModel {
     }
     @Getter
     private ModelObject modelObject;
+    @Getter
+    private float height;
     @Getter
     private ProgressBar healthBar;
 
@@ -41,5 +46,11 @@ public class PlayerModel {
         modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         modelObject.playAnimation(idleAnimationName, idleAnimationLoopDuration);
         return modelObject;
+    }
+
+    public void updateHealthBarPosition(Camera camera) {
+        Vector3f screenPosition = camera.getScreenCoordinates(modelObject.getWorldTranslation().add(0, height + 1, 0));
+        screenPosition.subtractLocal(healthBar.getPreferredSize().getX() / 2, 0, 0);
+        healthBar.setLocalTranslation(screenPosition);
     }
 }

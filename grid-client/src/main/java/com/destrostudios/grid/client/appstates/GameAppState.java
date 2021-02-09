@@ -3,7 +3,6 @@ package com.destrostudios.grid.client.appstates;
 import com.destroflyer.jme3.cubes.BlockNavigator;
 import com.destroflyer.jme3.cubes.BlockTerrainControl;
 import com.destroflyer.jme3.cubes.Vector3Int;
-import com.destrostudios.grid.client.JMonkeyUtil;
 import com.destrostudios.grid.client.PlayerModel;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
@@ -25,9 +24,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.util.SkyFactory;
-import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.ProgressBar;
 
 import java.util.HashMap;
@@ -100,8 +97,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             ProgressBar healthBar = playerModel.getHealthBar();
             healthBar.setProgressPercent((float) healthPointsComponent.getHealth() / (float) maxHealthComponent.getMaxHealth());
             healthBar.setMessage(String.format("%s / %s", healthPointsComponent.getHealth(), maxHealthComponent.getMaxHealth()));
-            // Wait for next frame so that the first frame of a potential new animation is considered for the height
-            mainApplication.enqueue(() -> placeAbove(healthBar, modelObject));
+            playerModel.updateHealthBarPosition(mainApplication.getCamera());
         }
         int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
@@ -112,12 +108,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
         guiAppState.setCurrentPlayer(activePlayerName);
         guiAppState.setMP(movementPointsComponent.getMovementPoints());
         guiAppState.setAP(attackPointsComponent.getAttackPoints());
-    }
-
-    private void placeAbove(Panel panel, Spatial spatial) {
-        Vector3f screenPosition = mainApplication.getCamera().getScreenCoordinates(spatial.getWorldTranslation().add(0, JMonkeyUtil.getWorldSize(spatial).getY() + 1, 0));
-        screenPosition.subtractLocal(panel.getPreferredSize().getX() / 2, 0, 0);
-        panel.setLocalTranslation(screenPosition);
     }
 
     @Override
