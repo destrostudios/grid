@@ -24,6 +24,7 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length == 0) {
             System.out.println("First argument must be a jwt (usually passed by the destrostudios launcher).");
+            return;
         }
         startGame(getClientProxy("destrostudios.com", args[0]));
     }

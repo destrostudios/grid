@@ -7,7 +7,13 @@ import com.destrostudios.grid.client.PlayerModel;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.models.ModelObject;
-import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.AttackPointsComponent;
+import com.destrostudios.grid.components.HealthPointsComponent;
+import com.destrostudios.grid.components.MaxHealthComponent;
+import com.destrostudios.grid.components.MovementPointsComponent;
+import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
@@ -27,7 +33,6 @@ import com.jme3.scene.Node;
 import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.Label;
 import com.simsilica.lemur.ProgressBar;
-
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -170,7 +175,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
     public void onButtonClicked(int buttonIndex) {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (buttonIndex == 0) {
-            gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new RoundComponent()));
+            if (playerEntity != null) {
+                gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new RoundComponent()));
+            }
         }
         System.out.println("GUI button #" + buttonIndex + " pressed");
     }
