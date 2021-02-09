@@ -6,6 +6,8 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
+import com.simsilica.lemur.Label;
+import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.ProgressBar;
 import lombok.Getter;
 
@@ -16,6 +18,10 @@ public class PlayerModel {
         // Calculate it here (in t-pose) before animations start changing the bounding box
         height = JMonkeyUtil.getWorldSize(modelObject).getY();
 
+        lblName = new Label("");
+        lblName.setFontSize(14);
+        lblName.setColor(ColorRGBA.White);
+
         healthBar = new ProgressBar();
         healthBar.setPreferredSize(new Vector3f(100, 20, 1));
         healthBar.getLabel().setColor(ColorRGBA.White);
@@ -24,6 +30,8 @@ public class PlayerModel {
     private ModelObject modelObject;
     @Getter
     private float height;
+    @Getter
+    private Label lblName;
     @Getter
     private ProgressBar healthBar;
 
@@ -48,9 +56,14 @@ public class PlayerModel {
         return modelObject;
     }
 
-    public void updateHealthBarPosition(Camera camera) {
+    public void updateGuiControlPositions(Camera camera) {
+        placeAboveModel(camera, healthBar, 0);
+        placeAboveModel(camera, lblName, 20);
+    }
+
+    private void placeAboveModel(Camera camera, Panel panel, int additionalScreenY) {
         Vector3f screenPosition = camera.getScreenCoordinates(modelObject.getWorldTranslation().add(0, height + 1, 0));
-        screenPosition.subtractLocal(healthBar.getPreferredSize().getX() / 2, 0, 0);
-        healthBar.setLocalTranslation(screenPosition);
+        screenPosition.addLocal(panel.getPreferredSize().getX() / -2, additionalScreenY, 0);
+        panel.setLocalTranslation(screenPosition);
     }
 }

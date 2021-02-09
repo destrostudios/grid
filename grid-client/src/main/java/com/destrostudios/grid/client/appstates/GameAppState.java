@@ -25,6 +25,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.util.SkyFactory;
+import com.simsilica.lemur.Label;
 import com.simsilica.lemur.ProgressBar;
 
 import java.util.HashMap;
@@ -84,6 +85,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             PlayerModel playerModel = playerModels.computeIfAbsent(playerEntity, pe -> {
                 PlayerModel newPlayerModel = new PlayerModel(mainApplication.getAssetManager());
                 mainApplication.getRootNode().attachChild(newPlayerModel.getModelObject());
+                mainApplication.getGuiNode().attachChild(newPlayerModel.getLblName());
                 mainApplication.getGuiNode().attachChild(newPlayerModel.getHealthBar());
                 return newPlayerModel;
             });
@@ -94,10 +96,15 @@ public class GameAppState extends BaseAppState implements ActionListener {
             MaxHealthComponent maxHealthComponent = entityWorld.getComponent(playerEntity, MaxHealthComponent.class).get();
             modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
 
+            Label lblName = playerModel.getLblName();
+            String name = entityWorld.getComponent(playerEntity, PlayerComponent.class).get().getName();
+            lblName.setText(name);
+
             ProgressBar healthBar = playerModel.getHealthBar();
             healthBar.setProgressPercent((float) healthPointsComponent.getHealth() / (float) maxHealthComponent.getMaxHealth());
             healthBar.setMessage(String.format("%s / %s", healthPointsComponent.getHealth(), maxHealthComponent.getMaxHealth()));
-            playerModel.updateHealthBarPosition(mainApplication.getCamera());
+
+            playerModel.updateGuiControlPositions(mainApplication.getCamera());
         }
         int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
