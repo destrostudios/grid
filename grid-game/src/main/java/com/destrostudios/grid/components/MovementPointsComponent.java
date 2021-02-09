@@ -4,13 +4,13 @@ import com.destrostudios.grid.game.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
-public class AttackPointsComponent implements Component {
-    private final int attackPoints;
+@Getter
+public class MovementPointsComponent implements Component {
+    private final int movementPoints;
 
     @Override
     public String toMarshalString() {
-        return AttackPointsComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + attackPoints;
+        return MovementPointsComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + movementPoints;
     }
 }

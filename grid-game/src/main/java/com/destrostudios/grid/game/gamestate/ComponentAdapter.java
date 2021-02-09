@@ -21,8 +21,14 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
             case POSITION:
                 String[] values = split[1].split(VALUE_SEPERATOR);
                 return new PositionComponent(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
-            case MOVING:
-                return new MovingComponent();
+            case MOVEMENT_POINTS:
+                return new MovementPointsComponent(Integer.parseInt(split[1]));
+            case ATTACK_POINTS:
+                return new AttackPointsComponent(Integer.parseInt(split[1]));
+            case MAX_HEALTH_POINTS:
+                return new MaxHealthComponent(Integer.parseInt(split[1]));
+            case HEALTH_POINTS:
+                return new HealthPointsComponent(Integer.parseInt(split[1]));
             case PLAYER:
                 return new PlayerComponent(split[1]);
             case TEAM:
@@ -42,7 +48,10 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
 
     public enum AdapterValues {
         POSITION(PositionComponent.class),
-        MOVING(MovingComponent.class),
+        MOVEMENT_POINTS(MovementPointsComponent.class),
+        ATTACK_POINTS(AttackPointsComponent.class),
+        MAX_HEALTH_POINTS(MaxHealthComponent.class),
+        HEALTH_POINTS(HealthPointsComponent.class),
         PLAYER(PlayerComponent.class),
         TEAM(TeamComponent.class),
         ACTIVE_ROUND(RoundComponent.class),

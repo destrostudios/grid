@@ -8,9 +8,7 @@ import com.destrostudios.grid.client.PlayerModel;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.models.ModelObject;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.PositionComponent;
-import com.destrostudios.grid.components.RoundComponent;
+import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.listener.PositionUpdateListener;
@@ -95,20 +93,25 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
             ModelObject modelObject = playerModel.getModelObject();
             PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class).get();
+            HealthPointsComponent healthPointsComponent = entityWorld.getComponent(playerEntity, HealthPointsComponent.class).get();
+            MaxHealthComponent maxHealthComponent = entityWorld.getComponent(playerEntity, MaxHealthComponent.class).get();
             modelObject.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
 
             ProgressBar healthBar = playerModel.getHealthBar();
-            healthBar.setProgressPercent(0.5);
-            healthBar.setMessage("13 / 26");
+            healthBar.setProgressPercent((float) healthPointsComponent.getHealth() / (float) maxHealthComponent.getMaxHealth());
+            healthBar.setMessage(String.format("%s / %s", healthPointsComponent.getHealth(), maxHealthComponent.getMaxHealth()));
             // Wait for next frame so that the first frame of a potential new animation is considered for the height
             mainApplication.enqueue(() -> placeAbove(healthBar, modelObject));
         }
         int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
+        AttackPointsComponent attackPointsComponent = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).get();
+        MovementPointsComponent movementPointsComponent = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).get();
+
         GuiAppState guiAppState = getAppState(GuiAppState.class);
         guiAppState.setCurrentPlayer(activePlayerName);
-        guiAppState.setMP(99);
-        guiAppState.setAP(42);
+        guiAppState.setMP(movementPointsComponent.getMovementPoints());
+        guiAppState.setAP(attackPointsComponent.getAttackPoints());
     }
 
     private void placeAbove(Panel panel, Spatial spatial) {

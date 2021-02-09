@@ -53,7 +53,52 @@ public class NetworkGridService implements GameService<Game, ComponentUpdateEven
                 return new PlayerComponent(input.readString());
             }
         });
-        kryo.register(MovingComponent.class);
+        kryo.register(MovementPointsComponent.class, new Serializer<MovementPointsComponent>() {
+            @Override
+            public void write(Kryo kryo, Output output, MovementPointsComponent object) {
+                output.writeInt(object.getMovementPoints());
+            }
+
+            @Override
+            public MovementPointsComponent read(Kryo kryo, Input input, Class type) {
+                return new MovementPointsComponent(input.readInt());
+            }
+        });
+        kryo.register(HealthPointsComponent.class, new Serializer<HealthPointsComponent>() {
+            @Override
+            public void write(Kryo kryo, Output output, HealthPointsComponent object) {
+                output.writeInt(object.getHealth());
+            }
+
+            @Override
+            public HealthPointsComponent read(Kryo kryo, Input input, Class type) {
+                return new HealthPointsComponent(input.readInt());
+            }
+        });
+        kryo.register(MaxHealthComponent.class, new Serializer<MaxHealthComponent>() {
+            @Override
+            public void write(Kryo kryo, Output output, MaxHealthComponent object) {
+                output.writeInt(object.getMaxHealth());
+            }
+
+            @Override
+            public MaxHealthComponent read(Kryo kryo, Input input, Class type) {
+                return new MaxHealthComponent(input.readInt());
+            }
+        });
+        kryo.register(AttackPointsComponent.class, new Serializer<AttackPointsComponent>() {
+            @Override
+            public void write(Kryo kryo, Output output, AttackPointsComponent object) {
+                output.writeInt(object.getAttackPoints());
+            }
+
+            @Override
+            public AttackPointsComponent read(Kryo kryo, Input input, Class type) {
+                return new AttackPointsComponent(input.readInt());
+            }
+        });
+
+
         kryo.register(RoundComponent.class);
         kryo.register(TeamComponent.class, new Serializer<TeamComponent>() {
             @Override

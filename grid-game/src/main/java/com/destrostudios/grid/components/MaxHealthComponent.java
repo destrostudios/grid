@@ -6,11 +6,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AttackPointsComponent implements Component {
-    private final int attackPoints;
+public class MaxHealthComponent implements Component {
+    private final int maxHealth;
 
     @Override
     public String toMarshalString() {
-        return AttackPointsComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + attackPoints;
+        return MaxHealthComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + maxHealth;
     }
 }

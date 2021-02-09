@@ -1,8 +1,11 @@
 package com.destrostudios.grid.update.listener;
 
+import com.destrostudios.grid.components.AttackPointsComponent;
+import com.destrostudios.grid.components.MovementPointsComponent;
 import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.game.Game;
 import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.update.eventbus.Listener;
 import lombok.AllArgsConstructor;
@@ -19,22 +22,33 @@ public class RoundUpdateListener implements Listener<RoundComponent> {
     @Override
     public void handle(ComponentUpdateEvent<RoundComponent> componentUpdateEvent, EntityWorld entityWorld) {
         List<Integer> playerEntities = entityWorld.list(PlayerComponent.class);
+        boolean hasRoundComponent = entityWorld.hasComponents(componentUpdateEvent.getEntity(), RoundComponent.class);
         int activePlayerEntity = entityWorld.list(RoundComponent.class).stream()
                 .findFirst()
                 .orElse(-1);
-        
+
         if (playerEntities.size() == 1 || activePlayerEntity == -1) {
             logger.warning("Just one player, cant switch turn!");
 
-        } else if (activePlayerEntity == componentUpdateEvent.getEntity()) {
+        } else if (hasRoundComponent) {
+            // TODO: 09.02.2021 this should depend on the "round order"
             Optional<Integer> newActivePlayer = playerEntities.stream()
                     .filter(i -> i != activePlayerEntity)
                     .findFirst();
             int nextActivePlayerEntity = newActivePlayer.orElse(activePlayerEntity);
-            entityWorld.remove(activePlayerEntity, RoundComponent.class);
+            resetBattleComponents(activePlayerEntity, entityWorld);
             entityWorld.addComponent(nextActivePlayerEntity, new RoundComponent());
             logger.info(String.format("Switched activen round from player %s to player %s", activePlayerEntity, nextActivePlayerEntity));
         }
+    }
+
+    private void resetBattleComponents(int playerEntity, EntityWorld entityWorld) {
+        entityWorld.remove(playerEntity, AttackPointsComponent.class);
+        entityWorld.remove(playerEntity, MovementPointsComponent.class);
+        entityWorld.remove(playerEntity, RoundComponent.class);
+        entityWorld.addComponent(playerEntity, new MovementPointsComponent(Game.MAX_MP));
+        entityWorld.addComponent(playerEntity, new AttackPointsComponent(Game.MAX_MP));
+
     }
 
     @Override

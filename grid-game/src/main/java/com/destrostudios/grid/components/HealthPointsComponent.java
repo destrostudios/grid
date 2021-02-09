@@ -6,11 +6,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AttackPointsComponent implements Component {
-    private final int attackPoints;
+public class HealthPointsComponent implements Component {
+    private final int health;
 
     @Override
     public String toMarshalString() {
-        return AttackPointsComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + attackPoints;
+        return HealthPointsComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + health;
     }
 }
