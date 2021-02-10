@@ -62,18 +62,23 @@ public class GridGame {
     private void initMap() {
         for (int x = 0; x < MAP_X; x++) {
             for (int y = 0; y < MAP_Y; y++) {
-                int entity = world.createEntity();
+                int fieldComponent = world.createEntity();
                 int finalX = x;
                 int finalY = y;
                 boolean isFree = world.listComponents(PositionComponent.class).stream()
                         .noneMatch(positionComponent -> positionComponent.getX() == finalX && positionComponent.getY() == finalY);
-                if (Math.random() > 0.2) {
-                    world.addComponent(entity, new WalkableComponent());
-                    world.addComponent(entity, new PositionComponent(x, y));
+                if (!isFree || Math.random() > 0.2) {
+                    // add walkable component
+                    world.addComponent(fieldComponent, new WalkableComponent());
+                    world.addComponent(fieldComponent, new PositionComponent(x, y));
 
-                    if (Math.random() < 0.1 && isFree) {
-                        world.addComponent(entity, new TreeComponent());
-                    }
+                } else if (Math.random() < 0.1) {
+                    // add tree component
+                    world.addComponent(fieldComponent, new WalkableComponent());
+                    world.addComponent(fieldComponent, new PositionComponent(x, y));
+                    int treeComponent = world.createEntity();
+                    world.addComponent(treeComponent, new PositionComponent(x, y));
+                    world.addComponent(treeComponent, new TreeComponent());
                 }
             }
         }

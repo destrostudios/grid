@@ -2,8 +2,10 @@ package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public interface EntityData {
     int createEntity();
@@ -15,6 +17,14 @@ public interface EntityData {
     void remove(int entity, Class<?> component);
 
     List<Integer> list(Class<?> component); // all entities which have the specified component
+
+    default List<Integer> list(Class<?>... components) {
+        return Arrays.stream(components)
+                .flatMap(c -> list(c).stream())
+                .filter(e -> hasComponents(e, components))
+                .distinct()
+                .collect(Collectors.toList());
+    }
 
     default boolean hasComponents(int entity, Class<?>... classz) {
         for (Class<?> aClass : classz) {

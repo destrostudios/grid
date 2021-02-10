@@ -1,7 +1,6 @@
 package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.gamestate.GameState;
 import com.destrostudios.grid.gamestate.GameStateConverter;
 import lombok.Getter;
@@ -34,6 +33,10 @@ public class EntityWorld implements EntityData {
         } catch (Exception e) {
             logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
         }
+    }
+
+    public List<Component> getComponents(int entity) {
+        return world.get(entity);
     }
 
     /**
@@ -95,6 +98,7 @@ public class EntityWorld implements EntityData {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
+
 
     public <E extends Component> List<E> listComponents(Class<E> component) {
         List<Integer> entities = list(component);
