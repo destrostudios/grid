@@ -20,7 +20,6 @@ public class GameStateConverter {
         Map<Integer, ComponentsWrapper> componentsByEntity = world.getWorld().entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> new ComponentsWrapper(e.getValue())));
         gameState.setWorld(componentsByEntity);
-        gameState.setMap(world.getMap().getMap());
         JAXBContext context = JAXBContext.newInstance(GameState.class);
         Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);

@@ -9,12 +9,12 @@ import com.destrostudios.grid.eventbus.Listener;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 @AllArgsConstructor
 public class PositionUpdateListener implements Listener<PositionComponent> {
     private final static Logger logger = Logger.getLogger(PositionUpdateListener.class.getSimpleName());
-
 
     @Override
     public void handle(ComponentUpdateEvent<PositionComponent> componentUpdateEvent, EntityWorld entityWorld) {
@@ -32,12 +32,10 @@ public class PositionUpdateListener implements Listener<PositionComponent> {
 
             if (neededMovementPoints > 0 && movementPoints >= neededMovementPoints) {
                 // update the movementpoints and add new position
-                entityWorld.getMap().removeFromMap(oldPosition);
                 entityWorld.remove(entity, MovementPointsComponent.class);
                 entityWorld.addComponent(entity, new MovementPointsComponent(movementPoints - neededMovementPoints));
                 entityWorld.remove(entity, PositionComponent.class);
                 entityWorld.addComponent(entity, newPosition);
-                entityWorld.getMap().addEntityToMap(entity, newPosition);
                 logger.info(String.format("Entity %s moved to (%s|%s) and used %s MP", entity, newPosition.getX(), newPosition.getY(),
                         neededMovementPoints));
             }

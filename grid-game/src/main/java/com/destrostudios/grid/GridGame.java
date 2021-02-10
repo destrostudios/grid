@@ -3,7 +3,6 @@ package com.destrostudios.grid;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.ActionDispatcher;
 import com.destrostudios.grid.components.*;
-import com.destrostudios.grid.entities.EntityMap;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.ComponentEventBus;
 import com.destrostudios.grid.eventbus.Listener;
@@ -37,7 +36,7 @@ public class GridGame {
     private final EntityWorld world;
 
     public GridGame() {
-        this.world = new EntityWorld(new EntityMap(MAP_X, MAP_Y));
+        this.world = new EntityWorld();
         this.ownComponentEventBus = new ComponentEventBus();
         this.gamePreferences = new GamePreferences(MAP_X, MAP_Y);
         this.actionDispatcher = new ActionDispatcher();
@@ -51,7 +50,7 @@ public class GridGame {
             addPlayer(playerInfo.getLogin(), 2);
         }
         addListener();
-        addSampleTrees();
+        initMap();
     }
 
     private void addListener() {
@@ -59,18 +58,22 @@ public class GridGame {
         this.addListener(new PositionUpdateListener());
     }
 
-    private void addSampleTrees() {
-        for (int i = 0; i < 10; i++) {
-            int x = (int) (Math.random() * MAP_X);
-            int y = (int) (Math.random() * MAP_Y);
-            boolean isFree = world.listComponents(PositionComponent.class).stream()
-                    .noneMatch(positionComponent -> positionComponent.getX() == x && positionComponent.getY() == y);
-            if (isFree) {
-                int treeEntity = world.createEntity();
-                PositionComponent component = new PositionComponent(x, y);
-                world.addComponent(treeEntity, component);
-                world.addComponent(treeEntity, new TreeComponent());
-                world.addToMap(treeEntity, component);
+
+    private void initMap() {
+        for (int x = 0; x < MAP_X; x++) {
+            for (int y = 0; y < MAP_Y; y++) {
+                int entity = world.createEntity();
+                int finalX = x;
+                int finalY = y;
+                boolean isFree = world.listComponents(PositionComponent.class).stream()
+                        .noneMatch(positionComponent -> positionComponent.getX() == finalX && positionComponent.getY() == finalY);
+                if (Math.random() > 0.2) {
+                    world.addComponent(entity, new WalkableComponent());
+                    world.addComponent(entity, new PositionComponent(x, y));
+                    if (Math.random() < 0.1 && isFree) {
+                        world.addComponent(entity, new TreeComponent());
+                    }
+                }
             }
         }
     }
@@ -80,7 +83,6 @@ public class GridGame {
         PositionComponent component = new PositionComponent((int) (gamePreferences.getMapSizeX() * Math.random()),
                 (int) (gamePreferences.getMapSizeY() * Math.random()));
         world.addComponent(playerEntity, component);
-        world.addToMap(playerEntity, component);
         world.addComponent(playerEntity, new MovementPointsComponent(MAX_MP));
         world.addComponent(playerEntity, new AttackPointsComponent(MAX_AP));
         world.addComponent(playerEntity, new PlayerComponent(name));

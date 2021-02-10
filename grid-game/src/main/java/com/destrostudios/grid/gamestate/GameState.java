@@ -19,11 +19,4 @@ public class GameState {
     @XmlElement(name = "Components")
     private Map<Integer, ComponentsWrapper> world;
 
-
-    @Getter
-    @Setter
-    @XmlElement(name = "Map")
-    private int[][] map;
-
-
 }

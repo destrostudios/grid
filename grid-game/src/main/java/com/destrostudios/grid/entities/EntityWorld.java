@@ -17,12 +17,10 @@ public class EntityWorld implements EntityData {
 
     @Getter
     private final Map<Integer, List<Component>> world;
-    @Getter
-    private final EntityMap map;
 
-    public EntityWorld(EntityMap map) {
+
+    public EntityWorld() {
         this.world = new LinkedHashMap<>();
-        this.map = map;
     }
 
     public void initializeWorld(String worldState) {
@@ -33,7 +31,6 @@ public class EntityWorld implements EntityData {
             Map<Integer, List<Component>> entities = state.getWorld().entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getComponents()));
             this.world.putAll(entities);
-            this.map.setMap(state.getMap());
         } catch (Exception e) {
             logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
         }
@@ -123,7 +120,4 @@ public class EntityWorld implements EntityData {
         }
     }
 
-    public void addToMap(int entity, PositionComponent component) {
-        this.map.addEntityToMap(entity, component);
-    }
 }
