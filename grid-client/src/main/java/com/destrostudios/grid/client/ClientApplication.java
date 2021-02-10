@@ -13,6 +13,7 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
@@ -68,6 +69,9 @@ public class ClientApplication extends SimpleApplication {
         waterFilter.setUseRipples(false);
         waterFilter.setReflectionDisplace(0);
         filterPostProcessor.addFilter(waterFilter);
+
+        SSAOFilter ssaoFilter = new SSAOFilter(3, 25, 6, 0.1f);
+        filterPostProcessor.addFilter(ssaoFilter);
 
         flyCam.setMoveSpeed(100);
         flyCam.setEnabled(false);
