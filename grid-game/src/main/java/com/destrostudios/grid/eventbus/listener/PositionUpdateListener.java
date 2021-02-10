@@ -18,25 +18,35 @@ public class PositionUpdateListener implements Listener<PositionComponent> {
 
     @Override
     public void handle(ComponentUpdateEvent<PositionComponent> componentUpdateEvent, EntityWorld entityWorld) {
-        PositionComponent positionComponent = componentUpdateEvent.getComponent();
         int entity = componentUpdateEvent.getEntity();
+        PositionComponent newPosition = componentUpdateEvent.getComponent();
+        PositionComponent oldPosition = entityWorld.getComponent(entity, PositionComponent.class).get();
+
         boolean canMove = entityWorld.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, RoundComponent.class);
+
         Optional<MovementPointsComponent> mpComponent = entityWorld.getComponent(entity, MovementPointsComponent.class);
 
-        if (canMove && mpComponent.isPresent()) {
+        if (canMove && isPositionIsFree(entityWorld, newPosition) && mpComponent.isPresent()) {
             int neededMovementPoints = getNeededMovementPoints(entityWorld, componentUpdateEvent);
             int movementPoints = mpComponent.get().getMovementPoints();
 
             if (neededMovementPoints > 0 && movementPoints >= neededMovementPoints) {
                 // update the movementpoints and add new position
+                entityWorld.getMap().removeFromMap(oldPosition);
                 entityWorld.remove(entity, MovementPointsComponent.class);
                 entityWorld.addComponent(entity, new MovementPointsComponent(movementPoints - neededMovementPoints));
                 entityWorld.remove(entity, PositionComponent.class);
-                entityWorld.addComponent(entity, positionComponent);
-                logger.info(String.format("Entity %s moved to (%s|%s) and used %s MP", entity, positionComponent.getX(), positionComponent.getY(),
+                entityWorld.addComponent(entity, newPosition);
+                entityWorld.getMap().addEntityToMap(entity, newPosition);
+                logger.info(String.format("Entity %s moved to (%s|%s) and used %s MP", entity, newPosition.getX(), newPosition.getY(),
                         neededMovementPoints));
             }
         }
+    }
+
+    private boolean isPositionIsFree(EntityWorld entityWorld, PositionComponent newPosition) {
+        return entityWorld.listComponents(PositionComponent.class).stream()
+                .noneMatch(pc -> pc.getX() == newPosition.getX() && pc.getY() == newPosition.getY());
     }
 
     private int getNeededMovementPoints(EntityWorld entityWorld, ComponentUpdateEvent<PositionComponent> componentUpdateEvent) {
@@ -46,7 +56,7 @@ public class PositionUpdateListener implements Listener<PositionComponent> {
         }
         PositionComponent positionComponent = componentOpt.get();
         PositionComponent updatePositionComponent = componentUpdateEvent.getComponent();
-        return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) +  Math.abs(updatePositionComponent.getY() - positionComponent.getY());
+        return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) + Math.abs(updatePositionComponent.getY() - positionComponent.getY());
     }
 
     @Override

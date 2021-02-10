@@ -1,6 +1,7 @@
 package com.destrostudios.grid.eventbus;
 
 import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.entities.EntityMap;
 import com.destrostudios.grid.entities.EntityWorld;
 
 import java.util.ArrayList;

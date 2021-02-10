@@ -5,6 +5,7 @@ import com.destrostudios.grid.components.AttackPointsComponent;
 import com.destrostudios.grid.components.MovementPointsComponent;
 import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.entities.EntityMap;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.ComponentUpdateEvent;
 import com.destrostudios.grid.eventbus.Listener;
