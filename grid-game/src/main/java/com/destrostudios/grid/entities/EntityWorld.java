@@ -45,7 +45,7 @@ public class EntityWorld implements EntityData {
     public int createEntity() {
         Optional<Integer> maxValue = world.keySet().stream().max(Integer::compare);
         int entity = maxValue.orElse(0) + 1;
-        world.put(entity, null);
+        world.put(entity, new ArrayList<>());
         return entity;
     }
 

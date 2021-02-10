@@ -70,6 +70,7 @@ public class GridGame {
                 if (Math.random() > 0.2) {
                     world.addComponent(entity, new WalkableComponent());
                     world.addComponent(entity, new PositionComponent(x, y));
+
                     if (Math.random() < 0.1 && isFree) {
                         world.addComponent(entity, new TreeComponent());
                     }
