@@ -37,6 +37,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
     private Node blockTerrainNode;
     private BlockTerrainControl blockTerrainControl;
     private HashMap<Integer, PlayerModel> playerModels = new HashMap<>();
+    private HashMap<Integer, ModelObject> treeModels = new HashMap<>();
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
@@ -79,6 +80,24 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     private void updateVisuals() {
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
+
+        blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(16, 1, 16));
+        for (int playerEntity : entityWorld.list(WalkableComponent.class)) {
+            PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class).get();
+            blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), BlockAssets.BLOCK_GRASS);
+        }
+
+        for (int playerEntity : entityWorld.list(TreeComponent.class)) {
+            ModelObject treeModel = treeModels.computeIfAbsent(playerEntity, pe -> {
+                ModelObject newTreeModel = new ModelObject(mainApplication.getAssetManager(), "models/tree/skin.xml");
+                mainApplication.getRootNode().attachChild(newTreeModel);
+                return newTreeModel;
+            });
+
+            PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class).get();
+            treeModel.setLocalTranslation((positionComponent.getX() + 0.5f) * 3, 3, (positionComponent.getY() + 0.5f) * 3);
+        }
+
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
             PlayerModel playerModel = playerModels.computeIfAbsent(playerEntity, pe -> {
                 PlayerModel newPlayerModel = new PlayerModel(mainApplication.getAssetManager());
