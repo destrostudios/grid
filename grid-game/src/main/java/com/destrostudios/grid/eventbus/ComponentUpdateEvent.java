@@ -1,4 +1,4 @@
-package com.destrostudios.grid.update.eventbus;
+package com.destrostudios.grid.eventbus;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AllArgsConstructor;

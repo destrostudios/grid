@@ -1,18 +1,19 @@
 package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.grid.components.RoundComponent;
-import com.destrostudios.grid.game.Game;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
-import com.destrostudios.grid.update.eventbus.Listener;
+import com.destrostudios.grid.GridGame;
+import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.eventbus.Listener;
+
 import java.util.List;
 
 public class SimpleGameProxy implements GameProxy {
 
-    private final Game game;
+    private final GridGame gridGame;
     private boolean updated = false;
 
-    public SimpleGameProxy(Game game) {
-        this.game = game;
+    public SimpleGameProxy(GridGame gridGame) {
+        this.gridGame = gridGame;
     }
 
     @Override
@@ -23,29 +24,29 @@ public class SimpleGameProxy implements GameProxy {
     }
 
     @Override
-    public Game getGame() {
-        return game;
+    public GridGame getGame() {
+        return gridGame;
     }
 
     @Override
-    public void requestAction(ComponentUpdateEvent<?> action) {
-        game.update(action);
+    public void requestAction(Action action) {
+        gridGame.registerAction(action);
         updated = true;
     }
 
     @Override
     public Integer getPlayerEntity() {
-        List<Integer> list = game.getWorld().list(RoundComponent.class);
+        List<Integer> list = gridGame.getWorld().list(RoundComponent.class);
         return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
     public void addListener(Listener<?> listener) {
-        game.addListener(listener);
+        gridGame.addListener(listener);
     }
 
     @Override
     public void removeListener(Listener listener) {
-        game.removeOwnListener(listener);
+        gridGame.removeListener(listener);
     }
 }

@@ -1,31 +1,25 @@
-package com.destrostudios.grid.game;
+package com.destrostudios.grid;
 
-import com.destrostudios.grid.components.AttackPointsComponent;
-import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.HealthPointsComponent;
-import com.destrostudios.grid.components.MaxHealthComponent;
-import com.destrostudios.grid.components.MovementPointsComponent;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.PositionComponent;
-import com.destrostudios.grid.components.RoundComponent;
-import com.destrostudios.grid.components.TeamComponent;
+import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.game.gamestate.GameStateConverter;
+import com.destrostudios.grid.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.grid.update.eventbus.ComponentEventBus;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
-import com.destrostudios.grid.update.eventbus.Listener;
-import com.destrostudios.grid.update.listener.PositionUpdateListener;
-import com.destrostudios.grid.update.listener.RoundUpdateListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
+import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.actions.ActionDispatcher;
+import com.destrostudios.grid.eventbus.ComponentEventBus;
+import com.destrostudios.grid.eventbus.Listener;
+import com.destrostudios.grid.eventbus.listener.PositionUpdateListener;
+import com.destrostudios.grid.eventbus.listener.RoundUpdateListener;
 import lombok.Getter;
 
+import javax.xml.bind.JAXBException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Getter
-public class Game {
+public class GridGame {
     private final static Logger logger = Logger.getGlobal();
 
     // TODO: 09.02.2021 should not be hardcoded
@@ -36,13 +30,15 @@ public class Game {
 
     private final ComponentEventBus ownComponentEventBus;
     private final GamePreferences gamePreferences;
+    private final ActionDispatcher actionDispatcher;
 
-    private EntityWorld world;
+    private final EntityWorld world;
 
-    public Game() {
+    public GridGame() {
         this.world = new EntityWorld();
         this.ownComponentEventBus = new ComponentEventBus();
         this.gamePreferences = new GamePreferences(16, 16);
+        this.actionDispatcher = new ActionDispatcher();
     }
 
     public void initGame(StartGameInfo startGameInfo) {
@@ -76,47 +72,20 @@ public class Game {
         }
     }
 
-    public String componentToXml(Component component) {
-        try {
-            return GameStateConverter.marshal(component);
-        } catch (JAXBException e) {
-            logger.log(Level.WARNING, e, () -> "Couldn´t marshal component!");
-        }
-        return "";
-    }
-
-    public Component xmlToComponent(String xml) {
-        try {
-            return GameStateConverter.unmarshalComponent(xml);
-        } catch (JAXBException e) {
-            logger.log(Level.WARNING, e, () -> "Couldn´t unmarshal component!");
-        }
-        return null;
-    }
-
     public void intializeGame(String gameState) {
-        try {
-            world = GameStateConverter.unmarshal(gameState);
-            addListener();
-        } catch (JAXBException e) {
-            logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
-        }
+        world.initializeWorld(gameState);
     }
 
     public void addListener(Listener<? extends Component> listener) {
-        ownComponentEventBus.register(listener);
+        actionDispatcher.addListener(listener);
     }
 
-    public void removeOwnListener(Listener<Component> listener) {
-        ownComponentEventBus.unregister(listener);
+    public void removeListener(Listener<Component> listener) {
+        actionDispatcher.removeListener(listener);
     }
 
-    public void update(int entity, Component component) {
-        ownComponentEventBus.publish(new ComponentUpdateEvent<>(entity, component), world);
-    }
-
-    public void update(ComponentUpdateEvent<? extends Component> component) {
-        ownComponentEventBus.publish(component, world);
+    public void registerAction(Action action) {
+        actionDispatcher.dispatchAction(action, world);
     }
 
     public String getState() {

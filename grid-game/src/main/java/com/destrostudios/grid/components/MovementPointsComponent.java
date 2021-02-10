@@ -1,6 +1,6 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.game.gamestate.ComponentAdapter;
+import com.destrostudios.grid.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

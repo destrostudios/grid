@@ -1,8 +1,8 @@
 package com.destrostudios.grid.client.gameproxy;
 
-import com.destrostudios.grid.game.Game;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
-import com.destrostudios.grid.update.eventbus.Listener;
+import com.destrostudios.grid.GridGame;
+import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.eventbus.Listener;
 
 public interface GameProxy {
 
@@ -22,9 +22,9 @@ public interface GameProxy {
      *
      * @return current game-state
      */
-    Game getGame();
+    GridGame getGame();
 
-    void requestAction(ComponentUpdateEvent<?> action);
+    void requestAction(Action action);
 
     Integer getPlayerEntity();
 

@@ -1,11 +1,11 @@
-package com.destrostudios.grid.update.listener;
+package com.destrostudios.grid.eventbus.listener;
 
 import com.destrostudios.grid.components.MovementPointsComponent;
 import com.destrostudios.grid.components.PositionComponent;
 import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
-import com.destrostudios.grid.update.eventbus.Listener;
+import com.destrostudios.grid.eventbus.ComponentUpdateEvent;
+import com.destrostudios.grid.eventbus.Listener;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;

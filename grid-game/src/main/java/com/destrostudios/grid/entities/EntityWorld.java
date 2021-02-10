@@ -1,16 +1,17 @@
 package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.destrostudios.grid.gamestate.GameStateConverter;
 import lombok.Getter;
+
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 public class EntityWorld implements EntityData {
+    private final static Logger logger = Logger.getGlobal();
 
     @Getter
     private final Map<Integer, List<Component>> world;
@@ -21,6 +22,16 @@ public class EntityWorld implements EntityData {
 
     public EntityWorld() {
         this.world = new LinkedHashMap<>();
+    }
+
+    public void initializeWorld(String worldState) {
+        this.world.clear();
+        ;
+        try {
+            this.world.putAll(GameStateConverter.unmarshal(worldState));
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
+        }
     }
 
     /**
@@ -47,7 +58,11 @@ public class EntityWorld implements EntityData {
      */
     @Override
     public <T> Optional<T> getComponent(int entity, Class<T> component) {
-        return world.get(entity).stream()
+        List<Component> components = world.get(entity);
+        if (components == null) {
+            return Optional.empty();
+        }
+        return components.stream()
                 .filter(component::isInstance)
                 .map(component::cast)
                 .findFirst();

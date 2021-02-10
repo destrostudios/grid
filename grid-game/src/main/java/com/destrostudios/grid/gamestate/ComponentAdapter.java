@@ -1,4 +1,4 @@
-package com.destrostudios.grid.game.gamestate;
+package com.destrostudios.grid.gamestate;
 
 import com.destrostudios.grid.components.*;
 

@@ -5,14 +5,15 @@ import com.destrostudios.authtoken.NoValidateJwtService;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
-import com.destrostudios.grid.game.Game;
+import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.network.messages.Identify;
 import com.destrostudios.grid.shared.MultipleOutputStream;
 import com.destrostudios.grid.shared.PlayerInfo;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
+import com.destrostudios.grid.actions.Action;
 import com.destrostudios.turnbasedgametools.network.client.GamesClient;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class Main {
 
     static GameProxy getClientProxy(String hostUrl, String jwt) throws IOException, InterruptedException {
         NetworkGridService gameService = new NetworkGridService();
-        GamesClient<Game, ComponentUpdateEvent<?>> client = new GamesClient<>(hostUrl, NetworkUtil.PORT, 10_000, gameService);
+        GamesClient<GridGame, Action> client = new GamesClient<>(hostUrl, NetworkUtil.PORT, 10_000, gameService);
         client.getKryoClient().sendTCP(new Identify(jwt));
 
         for (int i = 0; i < 10; i++) {

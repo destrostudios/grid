@@ -1,13 +1,13 @@
-package com.destrostudios.grid.update.listener;
+package com.destrostudios.grid.eventbus.listener;
 
+import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.components.AttackPointsComponent;
 import com.destrostudios.grid.components.MovementPointsComponent;
 import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.game.Game;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
-import com.destrostudios.grid.update.eventbus.Listener;
+import com.destrostudios.grid.eventbus.ComponentUpdateEvent;
+import com.destrostudios.grid.eventbus.Listener;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -46,8 +46,8 @@ public class RoundUpdateListener implements Listener<RoundComponent> {
         entityWorld.remove(playerEntity, AttackPointsComponent.class);
         entityWorld.remove(playerEntity, MovementPointsComponent.class);
         entityWorld.remove(playerEntity, RoundComponent.class);
-        entityWorld.addComponent(playerEntity, new MovementPointsComponent(Game.MAX_MP));
-        entityWorld.addComponent(playerEntity, new AttackPointsComponent(Game.MAX_MP));
+        entityWorld.addComponent(playerEntity, new MovementPointsComponent(GridGame.MAX_MP));
+        entityWorld.addComponent(playerEntity, new AttackPointsComponent(GridGame.MAX_MP));
 
     }
 

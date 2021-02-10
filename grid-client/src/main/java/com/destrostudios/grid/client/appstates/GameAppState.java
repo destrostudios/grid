@@ -9,7 +9,8 @@ import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.update.eventbus.ComponentUpdateEvent;
+import com.destrostudios.grid.actions.PositionUpdateAction;
+import com.destrostudios.grid.actions.SkipRoundAction;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResults;
@@ -133,22 +134,22 @@ public class GameAppState extends BaseAppState implements ActionListener {
             PositionComponent positionComponent = componentOpt.get();
             switch (actionName) {
                 case "key_w":
-                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() - 1)));
+                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX(), positionComponent.getY() - 1, Integer.toString(playerEntity)));
                     break;
                 case "key_a":
-                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() - 1, positionComponent.getY())));
+                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX() - 1, positionComponent.getY(), Integer.toString(playerEntity)));
                     break;
                 case "key_s":
-                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX(), positionComponent.getY() + 1)));
+                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX(), positionComponent.getY() + 1, Integer.toString(playerEntity)));
                     break;
                 case "key_d":
-                    gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(positionComponent.getX() + 1, positionComponent.getY())));
+                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX() + 1, positionComponent.getY(), Integer.toString(playerEntity)));
                     break;
                 case "mouse_left":
                 case "mouse_right":
                     Vector3Int clickedPosition = getHoveredPosition();
                     if (clickedPosition != null) {
-                        gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new PositionComponent(clickedPosition.getX(), clickedPosition.getZ())));
+                        gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), Integer.toString(playerEntity)));
                     }
                     break;
             }
@@ -168,7 +169,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (buttonIndex == 0) {
             if (playerEntity != null) {
-                gameProxy.requestAction(new ComponentUpdateEvent<>(playerEntity, new RoundComponent()));
+                gameProxy.requestAction(new SkipRoundAction(Integer.toString(playerEntity)));
             }
         }
     }

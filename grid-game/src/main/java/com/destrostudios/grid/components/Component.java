@@ -1,8 +1,7 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.game.gamestate.ComponentAdapter;
+import com.destrostudios.grid.gamestate.ComponentAdapter;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlJavaTypeAdapter(ComponentAdapter.class)
