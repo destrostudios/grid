@@ -59,13 +59,10 @@ public class GameAppState extends BaseAppState implements ActionListener {
         camera.setLocation(new Vector3f(22.621658f, 25.577982f, 75.90648f));
         camera.setRotation(new Quaternion(-8.6209044E-4f, 0.9749797f, -0.22225966f, -0.003803968f));
 
-        mainApplication.getInputManager().addMapping("key_w", new KeyTrigger(KeyInput.KEY_W));
-        mainApplication.getInputManager().addMapping("key_a", new KeyTrigger(KeyInput.KEY_A));
-        mainApplication.getInputManager().addMapping("key_s", new KeyTrigger(KeyInput.KEY_S));
-        mainApplication.getInputManager().addMapping("key_d", new KeyTrigger(KeyInput.KEY_D));
+        mainApplication.getInputManager().addMapping("key_delete", new KeyTrigger(KeyInput.KEY_DELETE));
         mainApplication.getInputManager().addMapping("mouse_left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         mainApplication.getInputManager().addMapping("mouse_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        mainApplication.getInputManager().addListener(this, "key_w", "key_a", "key_s", "key_d", "mouse_left", "mouse_right");
+        mainApplication.getInputManager().addListener(this, "key_delete", "mouse_left", "mouse_right");
 
         updateVisuals();
     }
@@ -150,25 +147,19 @@ public class GameAppState extends BaseAppState implements ActionListener {
         }
         Optional<PositionComponent> componentOpt = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
         if (componentOpt.isPresent() && isPressed) {
-            PositionComponent positionComponent = componentOpt.get();
             switch (actionName) {
-                case "key_w":
-                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX(), positionComponent.getY() - 1, Integer.toString(playerEntity)));
-                    break;
-                case "key_a":
-                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX() - 1, positionComponent.getY(), Integer.toString(playerEntity)));
-                    break;
-                case "key_s":
-                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX(), positionComponent.getY() + 1, Integer.toString(playerEntity)));
-                    break;
-                case "key_d":
-                    gameProxy.requestAction(new PositionUpdateAction(positionComponent.getX() + 1, positionComponent.getY(), Integer.toString(playerEntity)));
+                case "key_delete":
+                    trySkipRound();
                     break;
                 case "mouse_left":
                 case "mouse_right":
                     Vector3Int clickedPosition = getHoveredPosition();
                     if (clickedPosition != null) {
-                        gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), Integer.toString(playerEntity)));
+                        PositionComponent positionComponent = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class).get();
+                        int distance = Math.abs(clickedPosition.getX() - positionComponent.getX()) + Math.abs(clickedPosition.getZ() - positionComponent.getY());
+                        if (distance == 1) {
+                            gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), Integer.toString(playerEntity)));
+                        }
                     }
                     break;
             }
@@ -185,11 +176,15 @@ public class GameAppState extends BaseAppState implements ActionListener {
     }
 
     public void onButtonClicked(int buttonIndex) {
-        Integer playerEntity = gameProxy.getPlayerEntity();
         if (buttonIndex == 0) {
-            if (playerEntity != null) {
-                gameProxy.requestAction(new SkipRoundAction(Integer.toString(playerEntity)));
-            }
+            trySkipRound();
+        }
+    }
+
+    private void trySkipRound() {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity != null) {
+            gameProxy.requestAction(new SkipRoundAction(Integer.toString(playerEntity)));
         }
     }
 }
