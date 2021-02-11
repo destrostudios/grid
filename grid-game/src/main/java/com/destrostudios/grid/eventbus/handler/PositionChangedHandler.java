@@ -1,25 +1,30 @@
-package com.destrostudios.grid.eventbus.listener;
+package com.destrostudios.grid.eventbus.handler;
 
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.ComponentUpdateEvent;
-import com.destrostudios.grid.eventbus.Listener;
+import com.destrostudios.grid.eventbus.NewEventbus;
+import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
+import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
 import lombok.AllArgsConstructor;
 
-import java.nio.file.Watchable;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class PositionUpdateListener implements Listener<PositionComponent> {
-    private final static Logger logger = Logger.getLogger(PositionUpdateListener.class.getSimpleName());
+public class PositionChangedHandler implements NewEventHandler<PositionChangedEvent> {
+    private final static Logger logger = Logger.getLogger(PositionChangedHandler.class.getSimpleName());
+
+    private final NewEventbus eventbusInstance;
 
     @Override
-    public void handle(ComponentUpdateEvent<PositionComponent> componentUpdateEvent, EntityWorld entityWorld) {
+    public void onEvent(PositionChangedEvent componentUpdateEvent, Supplier<EntityWorld> supplier) {
+        logger.info("Processing event " + componentUpdateEvent);
+        EntityWorld entityWorld = supplier.get();
         int entity = componentUpdateEvent.getEntity();
-        PositionComponent newPosition = componentUpdateEvent.getComponent();
+        PositionComponent newPosition = componentUpdateEvent.getPositionComponent();
 
         boolean entityCanMove = entityWorld.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, RoundComponent.class);
         boolean positionIsFree = isPositionIsFree(entityWorld, newPosition, entity);
@@ -27,15 +32,13 @@ public class PositionUpdateListener implements Listener<PositionComponent> {
         int neededMovementPoints = getWalkedDistance(entityWorld, componentUpdateEvent);
         int movementPoints = entityWorld.getComponent(entity, MovementPointsComponent.class).get().getMovementPoints();
 
-        if (positionIsFree && entityCanMove && neededMovementPoints == 1 && movementPoints > 0 ) {
-
+        if (positionIsFree && entityCanMove && neededMovementPoints == 1 && movementPoints > 0) {
             // update the movementpoints and add new position
-            entityWorld.remove(entity, MovementPointsComponent.class);
-            entityWorld.addComponent(entity, new MovementPointsComponent(movementPoints - neededMovementPoints));
+
             entityWorld.remove(entity, PositionComponent.class);
             entityWorld.addComponent(entity, newPosition);
-            logger.info(String.format("Entity %s moved to (%s|%s) and used %s MP", entity, newPosition.getX(), newPosition.getY(),
-                    neededMovementPoints));
+            logger.info(String.format("Entity %s moved to (%s|%s)", entity, newPosition.getX(), newPosition.getY()));
+            eventbusInstance.addEvent(new MovementPointsChangedEvent(entity, movementPoints - 1));
         }
     }
 
@@ -57,18 +60,24 @@ public class PositionUpdateListener implements Listener<PositionComponent> {
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithTree;
     }
 
-    private int getWalkedDistance(EntityWorld entityWorld, ComponentUpdateEvent<PositionComponent> componentUpdateEvent) {
+    private int getWalkedDistance(EntityWorld entityWorld, PositionChangedEvent componentUpdateEvent) {
         Optional<PositionComponent> componentOpt = entityWorld.getComponent(componentUpdateEvent.getEntity(), PositionComponent.class);
         if (componentOpt.isEmpty()) {
             return -1;
         }
         PositionComponent positionComponent = componentOpt.get();
-        PositionComponent updatePositionComponent = componentUpdateEvent.getComponent();
+        PositionComponent updatePositionComponent = componentUpdateEvent.getPositionComponent();
         return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) + Math.abs(updatePositionComponent.getY() - positionComponent.getY());
     }
 
+
     @Override
-    public Class<PositionComponent> supports() {
-        return PositionComponent.class;
+    public NewEventbus getEventBusInstance() {
+        return eventbusInstance;
+    }
+
+    @Override
+    public Class<PositionChangedEvent> getEventClass() {
+        return PositionChangedEvent.class;
     }
 }

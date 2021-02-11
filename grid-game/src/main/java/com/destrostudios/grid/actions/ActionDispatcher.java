@@ -1,38 +1,21 @@
 package com.destrostudios.grid.actions;
 
-import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.PositionComponent;
-import com.destrostudios.grid.components.RoundComponent;
-import com.destrostudios.grid.entities.EntityMap;
-import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.ComponentEventBus;
-import com.destrostudios.grid.eventbus.ComponentUpdateEvent;
-import com.destrostudios.grid.eventbus.Listener;
+import com.destrostudios.grid.eventbus.events.NewEvent;
+import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
+import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 
 public class ActionDispatcher {
-    private final ComponentEventBus eventBus;
 
-    public ActionDispatcher() {
-        this.eventBus = new ComponentEventBus();
-    }
-
-    public void addListener(Listener<? extends Component> listener) {
-        this.eventBus.register(listener);
-    }
-
-    public void dispatchAction(Action action, EntityWorld world) {
+    public static NewEvent dispatchAction(Action action) {
         int entity = Integer.parseInt(action.getPlayerIdentifier());
         if (action instanceof PositionUpdateAction) {
             PositionUpdateAction posAction = (PositionUpdateAction) action;
-            eventBus.publish(new ComponentUpdateEvent<>(entity, new PositionComponent(posAction.getNewX(), posAction.getNewY())), world);
+            return new PositionChangedEvent(entity, new PositionComponent(posAction.getNewX(), posAction.getNewY()));
         } else if (action instanceof SkipRoundAction) {
-            eventBus.publish(new ComponentUpdateEvent<>(entity, new RoundComponent()), world);
+            return new RoundSkippedEvent(entity);
         } else {
             throw new UnsupportedOperationException();
         }
-    }
-
-    public void removeListener(Listener<Component> listener) {
-        this.eventBus.unregister(listener);
     }
 }

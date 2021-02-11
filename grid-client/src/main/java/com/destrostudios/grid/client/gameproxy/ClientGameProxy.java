@@ -1,11 +1,12 @@
 package com.destrostudios.grid.client.gameproxy;
 
+import com.destrostudios.grid.GridGame;
+import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.GridGame;
+import com.destrostudios.grid.eventbus.events.NewEvent;
+import com.destrostudios.grid.eventbus.handler.NewEventHandler;
 import com.destrostudios.grid.shared.PlayerInfo;
-import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.eventbus.Listener;
 import com.destrostudios.turnbasedgametools.network.client.GamesClient;
 import lombok.AllArgsConstructor;
 
@@ -19,19 +20,19 @@ public class ClientGameProxy implements GameProxy {
     private final UUID gameId;
     private final PlayerInfo player;
     private final GamesClient<GridGame, Action> client;
-    private final List<Listener<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
+    private final List<NewEventHandler<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
 
     @Override
     public boolean update() {
         GridGame gridGame = getGame();
         // add all listeners to current game-state reference
-        for (Listener<?> listener : listeners) {
-            gridGame.addListener(listener);
+        for (NewEventHandler<?> listener : listeners) {
+            gridGame.addListener(null, listener);
         }
         boolean updated = client.updateGame(gameId);
         // and remove them again after the update
-        for (Listener listener : listeners) {
-            gridGame.removeListener(listener);
+        for (NewEventHandler listener : listeners) {
+            gridGame.removeInstantHandler(listener);
         }
         return updated;
     }
@@ -57,13 +58,13 @@ public class ClientGameProxy implements GameProxy {
     }
 
     @Override
-    public void addListener(Listener<?> listener) {
-        listeners.add(listener);
+    public  <E extends NewEvent> void addListener(NewEventHandler<E> handler) {
+        listeners.add(handler);
     }
 
     @Override
-    public void removeListener(Listener<?> listener) {
-        listeners.remove(listener);
+    public  <E extends NewEvent> void removeListener(NewEventHandler<E> handler) {
+        listeners.remove(handler);
     }
 
 }
