@@ -8,6 +8,7 @@ import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 public class ActionDispatcher {
 
     public static Event dispatchAction(Action action) {
+        // TODO: Check if action is valid
         int entity = Integer.parseInt(action.getPlayerIdentifier());
         if (action instanceof PositionUpdateAction) {
             PositionUpdateAction posAction = (PositionUpdateAction) action;

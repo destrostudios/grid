@@ -4,6 +4,7 @@ import com.destroflyer.jme3.cubes.BlockNavigator;
 import com.destroflyer.jme3.cubes.BlockTerrainControl;
 import com.destroflyer.jme3.cubes.Vector3Int;
 import com.destrostudios.grid.actions.PositionUpdateAction;
+import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.PositionUtil;
 import com.destrostudios.grid.client.animations.Animation;
@@ -13,6 +14,9 @@ import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.actions.SkipRoundAction;
+import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResults;
@@ -35,6 +39,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class GameAppState extends BaseAppState implements ActionListener {
 
@@ -71,6 +76,33 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addListener(this, "key_delete", "mouse_left", "mouse_right");
 
         updateVisuals();
+
+        gameProxy.addPreHandler(new EventHandler<PositionChangedEvent>() {
+
+            @Override
+            public void onEvent(PositionChangedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+                int playerEntity = event.getEntity();
+                PositionComponent positionComponent = event.getPositionComponent();
+                playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
+            }
+
+            @Override
+            public Class<PositionChangedEvent> getEventClass() {
+                return PositionChangedEvent.class;
+            }
+        });
+        gameProxy.addResolvedHandler(new EventHandler<>() {
+
+            @Override
+            public void onEvent(Event event, Supplier<EntityWorld> entityWorldSupplier) {
+                updateVisuals();
+            }
+
+            @Override
+            public Class<Event> getEventClass() {
+                return Event.class;
+            }
+        });
     }
 
     private void addSky(String skyName) {
@@ -85,9 +117,11 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     @Override
     public void update(float tpf) {
-        if (gameProxy.update()) {
-            updateVisuals();
-        }
+        do {
+            while (gameProxy.triggeredHandlersInQueue() && playingAnimations.isEmpty()) {
+                gameProxy.triggerNextHandler();
+            }
+        } while (gameProxy.applyNextAction());
         for (Animation animation : playingAnimations.toArray(new Animation[0])) {
             animation.update(tpf);
             if (animation.isFinished()) {
@@ -176,13 +210,13 @@ public class GameAppState extends BaseAppState implements ActionListener {
                 case "mouse_right":
                     Vector3Int clickedPosition = getHoveredPosition();
                     if (clickedPosition != null) {
-                        PositionComponent positionComponent = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class).get();
-                        int distance = Math.abs(clickedPosition.getX() - positionComponent.getX()) + Math.abs(clickedPosition.getZ() - positionComponent.getY());
-                        if (distance == 1) {
-                            gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), Integer.toString(playerEntity)));
-
-                            // Can be enabled to test animations until we introduced proper events
-                            // playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), clickedPosition.getX(), clickedPosition.getZ()));
+                        int movementPoints = gameProxy.getGame().getWorld().getComponent(playerEntity, MovementPointsComponent.class).get().getMovementPoints();
+                        if (movementPoints > 0) {
+                            PositionComponent positionComponent = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class).get();
+                            int distance = Math.abs(clickedPosition.getX() - positionComponent.getX()) + Math.abs(clickedPosition.getZ() - positionComponent.getY());
+                            if (distance == 1) {
+                                gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), Integer.toString(playerEntity)));
+                            }
                         }
                     }
                     break;

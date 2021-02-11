@@ -10,12 +10,11 @@ public interface GameProxy {
     // intention of this interface is to hide the client from our gui code.
     // It will simplify supporting non-networked games later
 
-    /**
-     * Apply any game-state updates that are available
-     *
-     * @return whether the game-state was updated
-     */
-    boolean update();
+    boolean applyNextAction();
+
+    boolean triggeredHandlersInQueue();
+
+    void triggerNextHandler();
 
     /**
      * WARNING:
@@ -29,7 +28,11 @@ public interface GameProxy {
 
     Integer getPlayerEntity();
 
-    void addListener(EventHandler<? extends Event> handler);
+    void addPreHandler(EventHandler<? extends Event> handler);
 
-    void removeListener(EventHandler<? extends Event> handler);
+    void removePreHandler(EventHandler<? extends Event> handler);
+
+    void addResolvedHandler(EventHandler<? extends Event> handler);
+
+    void removeResolvedHandler(EventHandler<? extends Event> handler);
 }

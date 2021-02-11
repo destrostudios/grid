@@ -45,7 +45,7 @@ public class Main {
     }
 
     static GameProxy getClientProxy(String hostUrl, String jwt) throws IOException, InterruptedException {
-        NetworkGridService gameService = new NetworkGridService();
+        NetworkGridService gameService = new NetworkGridService(false);
         GamesClient<GridGame, Action> client = new GamesClient<>(hostUrl, NetworkUtil.PORT, 10_000, gameService);
         client.getKryoClient().sendTCP(new Identify(jwt));
 

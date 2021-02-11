@@ -45,17 +45,6 @@ public class GridGame {
         this.eventBus = new Eventbus(() -> world);
     }
 
-    public static void main(String[] args) {
-        GridGame gridGame = new GridGame();
-        gridGame.initGame(StartGameInfo.getTestGameInfo());
-        gridGame.addNewEvent(new PositionChangedEvent(1, new PositionComponent(5, 5)));
-        gridGame.triggerAllNewEvents();
-        gridGame.addNewEvent(new MovementPointsChangedEvent(1, -1));
-        gridGame.triggerAllNewEvents();
-        gridGame.addNewEvent(new RoundSkippedEvent(1));
-        gridGame.triggerAllNewEvents();
-    }
-
     public void initGame(StartGameInfo startGameInfo) {
         for (PlayerInfo playerInfo : startGameInfo.getTeam1()) {
             addPlayer(playerInfo.getLogin(), 1);
@@ -67,26 +56,25 @@ public class GridGame {
         initMap();
     }
 
-    public void addNewEvent(Event event) {
-        this.eventBus.addEvent(event);
+    public void triggerEvent(Event event) {
+        this.eventBus.triggerEvent(event);
     }
 
-    public void triggerNewEvent() {
-        this.eventBus.triggerNextEvent();
+    public boolean triggeredHandlersInQueue() {
+        return eventBus.triggeredHandlersInQueue();
     }
 
-    public void triggerAllNewEvents() {
-        this.eventBus.triggerAllEvents();
+    public void triggerNextHandler() {
+        eventBus.triggerNextHandler();
     }
 
     private void addInstantHandler() {
 //        this.addListener(new RoundUpdateListener());
 //        this.addListener(new PositionUpdateListener());
-        eventBus.addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(eventBus));
-        eventBus.addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(eventBus));
-        eventBus.addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
+        addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(eventBus));
+        addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(eventBus));
+        addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
     }
-
 
     private void initMap() {
         for (int x = 0; x < MAP_X; x++) {
@@ -135,25 +123,32 @@ public class GridGame {
     }
 
 
-    public <E extends Event> void addInstantHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
+    public void addInstantHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
         this.eventBus.addInstantHandler(classz, handler);
     }
 
-    public <E extends Event> void addPreHandler(Class<E> classz, EventHandler<E> handler) {
+    public void addPreHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
         this.eventBus.addPreHandler(classz, handler);
     }
 
-    public <E extends Event> void addResolveHandler(Class<E> classz, EventHandler<E> handler) {
-        this.eventBus.addResolveHandler(classz, handler);
+    public void addResolvedHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
+        this.eventBus.addResolvedHandler(classz, handler);
     }
 
     public void removeInstantHandler(EventHandler<? extends Event> handler) {
         this.eventBus.removeInstantHandler(handler.getEventClass(), handler);
     }
 
+    public void removePreHandler(EventHandler<? extends Event> handler) {
+        this.eventBus.removePreHandler(handler.getEventClass(), handler);
+    }
+
+    public void removeResolvedHandler(EventHandler<? extends Event> handler) {
+        this.eventBus.removeResolvedHandler(handler.getEventClass(), handler);
+    }
+
     public void registerAction(Action action) {
-        addNewEvent(ActionDispatcher.dispatchAction(action));
-        eventBus.triggerAllEvents();
+        triggerEvent(ActionDispatcher.dispatchAction(action));
     }
 
     public String getState() {

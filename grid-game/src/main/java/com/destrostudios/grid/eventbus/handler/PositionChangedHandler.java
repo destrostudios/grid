@@ -38,7 +38,7 @@ public class PositionChangedHandler implements EventHandler<PositionChangedEvent
             entityWorld.remove(entity, PositionComponent.class);
             entityWorld.addComponent(entity, newPosition);
             logger.info(String.format("Entity %s moved to (%s|%s)", entity, newPosition.getX(), newPosition.getY()));
-            eventbusInstance.addEvent(new MovementPointsChangedEvent(entity, movementPoints - 1));
+            eventbusInstance.triggerEvent(new MovementPointsChangedEvent(entity, movementPoints - 1));
         }
     }
 

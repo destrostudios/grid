@@ -20,21 +20,35 @@ public class ClientGameProxy implements GameProxy {
     private final UUID gameId;
     private final PlayerInfo player;
     private final GamesClient<GridGame, Action> client;
-    private final List<EventHandler<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
+    // proxy the listeners since the game reference may change
+    private final List<EventHandler<?>> preListeners = new ArrayList<>();
+    private final List<EventHandler<?>> resolvedListeners = new ArrayList<>();
 
     @Override
-    public boolean update() {
+    public boolean applyNextAction() {
         GridGame gridGame = getGame();
-        // add all listeners to current game-state reference
-        for (EventHandler<? extends Event> listener : listeners) {
-            gridGame.addInstantHandler(listener.getEventClass(), listener);
+        // Ensure that the listeners are on the (potentially new) game instance
+        for (EventHandler<? extends Event> listener : preListeners) {
+            gridGame.removePreHandler(listener);
+            gridGame.addPreHandler(listener.getEventClass(), listener);
         }
-        boolean updated = client.updateGame(gameId);
-        // and remove them again after the update
-        for (EventHandler<? extends Event> listener : listeners) {
-            gridGame.removeInstantHandler(listener);
+        for (EventHandler<? extends Event> listener : resolvedListeners) {
+            gridGame.removeResolvedHandler(listener);
+            gridGame.addResolvedHandler(listener.getEventClass(), listener);
         }
-        return updated;
+        return client.applyNextAction(gameId);
+    }
+
+    @Override
+    public boolean triggeredHandlersInQueue() {
+        GridGame gridGame = getGame();
+        return gridGame.triggeredHandlersInQueue();
+    }
+
+    @Override
+    public void triggerNextHandler() {
+        GridGame gridGame = getGame();
+        gridGame.triggerNextHandler();
     }
 
     @Override
@@ -58,13 +72,22 @@ public class ClientGameProxy implements GameProxy {
     }
 
     @Override
-    public void addListener(EventHandler<? extends Event> handler) {
-        listeners.add(handler);
+    public void addPreHandler(EventHandler<? extends Event> handler) {
+        preListeners.add(handler);
     }
 
     @Override
-    public void removeListener(EventHandler<? extends Event> handler) {
-        listeners.remove(handler);
+    public void addResolvedHandler(EventHandler<? extends Event> handler) {
+        resolvedListeners.add(handler);
     }
 
+    @Override
+    public void removePreHandler(EventHandler<? extends Event> handler) {
+        preListeners.remove(handler);
+    }
+
+    @Override
+    public void removeResolvedHandler(EventHandler<? extends Event> handler) {
+        resolvedListeners.remove(handler);
+    }
 }

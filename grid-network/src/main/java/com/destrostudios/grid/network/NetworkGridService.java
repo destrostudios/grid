@@ -15,6 +15,10 @@ import com.esotericsoftware.kryo.io.Output;
 
 public class NetworkGridService implements GameService<GridGame, Action> {
 
+    public NetworkGridService(boolean resolveActions) {
+        this.resolveActions = resolveActions;
+    }
+    private boolean resolveActions;
 
     @Override
     public void initialize(Kryo kryo) {
@@ -47,6 +51,11 @@ public class NetworkGridService implements GameService<GridGame, Action> {
     @Override
     public GridGame applyAction(GridGame state, Action action, NetworkRandom random) {
         state.registerAction(action);
+        if (resolveActions) {
+            while (state.triggeredHandlersInQueue()) {
+                state.triggerNextHandler();
+            }
+        }
         return state;
     }
 

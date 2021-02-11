@@ -6,22 +6,38 @@ import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class SimpleGameProxy implements GameProxy {
 
     private final GridGame gridGame;
-    private boolean updated = false;
+    private final Queue<Action> actions;
 
     public SimpleGameProxy(GridGame gridGame) {
         this.gridGame = gridGame;
+        actions = new LinkedList<>();
     }
 
     @Override
-    public boolean update() {
-        boolean result = updated;
-        updated = false;
-        return result;
+    public boolean applyNextAction() {
+        Action action = actions.poll();
+        if (action != null) {
+            gridGame.registerAction(action);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean triggeredHandlersInQueue() {
+        return gridGame.triggeredHandlersInQueue();
+    }
+
+    @Override
+    public void triggerNextHandler() {
+        gridGame.triggerNextHandler();
     }
 
     @Override
@@ -31,8 +47,7 @@ public class SimpleGameProxy implements GameProxy {
 
     @Override
     public void requestAction(Action action) {
-        gridGame.registerAction(action);
-        updated = true;
+        actions.add(action);
     }
 
     @Override
@@ -42,12 +57,22 @@ public class SimpleGameProxy implements GameProxy {
     }
 
     @Override
-    public void addListener(EventHandler<? extends Event> handler) {
-        gridGame.addInstantHandler(handler.getEventClass(), handler);
+    public void addPreHandler(EventHandler<? extends Event> handler) {
+        gridGame.addPreHandler(handler.getEventClass(), handler);
     }
 
     @Override
-    public void removeListener(EventHandler<? extends Event> handler) {
-        gridGame.removeInstantHandler(handler);
+    public void removePreHandler(EventHandler<? extends Event> handler) {
+        gridGame.removePreHandler(handler);
+    }
+
+    @Override
+    public void addResolvedHandler(EventHandler<? extends Event> handler) {
+        gridGame.addResolvedHandler(handler.getEventClass(), handler);
+    }
+
+    @Override
+    public void removeResolvedHandler(EventHandler<? extends Event> handler) {
+        gridGame.removeResolvedHandler(handler);
     }
 }

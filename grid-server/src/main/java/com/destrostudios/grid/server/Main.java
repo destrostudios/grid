@@ -27,7 +27,7 @@ public class Main {
         JwtService jwtService = new NoValidateJwtService();
 
         System.out.println("Unsafe access warnings are a known issue, see: https://github.com/EsotericSoftware/kryonet/issues/154");
-        NetworkGridService gameService = new NetworkGridService();
+        NetworkGridService gameService = new NetworkGridService(true);
         GamesServer<GridGame, Action> server = new GamesServer<>(NetworkUtil.PORT, gameService);
         UUID gameId = server.startNewGame();
 
