@@ -29,7 +29,7 @@ public interface GameProxy {
 
     Integer getPlayerEntity();
 
-    <E extends Event> void addListener(EventHandler<E> handler);
+    void addListener(EventHandler<? extends Event> handler);
 
-    <E extends Event> void removeListener(EventHandler<E> handler);
+    void removeListener(EventHandler<? extends Event> handler);
 }

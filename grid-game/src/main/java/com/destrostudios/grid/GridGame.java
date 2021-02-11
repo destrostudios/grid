@@ -5,12 +5,12 @@ import com.destrostudios.grid.actions.ActionDispatcher;
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
-import com.destrostudios.grid.eventbus.handler.MovementPointsChangedHandler;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.eventbus.handler.MovementPointsChangedHandler;
 import com.destrostudios.grid.eventbus.handler.PositionChangedHandler;
 import com.destrostudios.grid.eventbus.handler.RoundSkippedHandler;
 import com.destrostudios.grid.gamestate.GameStateConverter;
@@ -63,7 +63,7 @@ public class GridGame {
         for (PlayerInfo playerInfo : startGameInfo.getTeam2()) {
             addPlayer(playerInfo.getLogin(), 2);
         }
-        addListener();
+        addInstantHandler();
         initMap();
     }
 
@@ -79,7 +79,7 @@ public class GridGame {
         this.eventBus.triggerAllEvents();
     }
 
-    private void addListener() {
+    private void addInstantHandler() {
 //        this.addListener(new RoundUpdateListener());
 //        this.addListener(new PositionUpdateListener());
         eventBus.addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(eventBus));
@@ -135,11 +135,19 @@ public class GridGame {
     }
 
 
-    public <E extends Event> void addListener(Class<E> classz, EventHandler<E> handler) {
+    public <E extends Event> void addInstantHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
         this.eventBus.addInstantHandler(classz, handler);
     }
 
-    public <E extends Event> void removeInstantHandler(EventHandler<E> handler) {
+    public <E extends Event> void addPreHandler(Class<E> classz, EventHandler<E> handler) {
+        this.eventBus.addPreHandler(classz, handler);
+    }
+
+    public <E extends Event> void addResolveHandler(Class<E> classz, EventHandler<E> handler) {
+        this.eventBus.addResolveHandler(classz, handler);
+    }
+
+    public void removeInstantHandler(EventHandler<? extends Event> handler) {
         this.eventBus.removeInstantHandler(handler.getEventClass(), handler);
     }
 

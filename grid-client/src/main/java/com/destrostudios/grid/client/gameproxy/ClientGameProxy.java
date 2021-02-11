@@ -26,12 +26,12 @@ public class ClientGameProxy implements GameProxy {
     public boolean update() {
         GridGame gridGame = getGame();
         // add all listeners to current game-state reference
-        for (EventHandler<?> listener : listeners) {
-            gridGame.addListener(null, listener);
+        for (EventHandler<? extends Event> listener : listeners) {
+            gridGame.addInstantHandler(listener.getEventClass(), listener);
         }
         boolean updated = client.updateGame(gameId);
         // and remove them again after the update
-        for (EventHandler listener : listeners) {
+        for (EventHandler<? extends Event> listener : listeners) {
             gridGame.removeInstantHandler(listener);
         }
         return updated;
@@ -58,12 +58,12 @@ public class ClientGameProxy implements GameProxy {
     }
 
     @Override
-    public  <E extends Event> void addListener(EventHandler<E> handler) {
+    public void addListener(EventHandler<? extends Event> handler) {
         listeners.add(handler);
     }
 
     @Override
-    public  <E extends Event> void removeListener(EventHandler<E> handler) {
+    public void removeListener(EventHandler<? extends Event> handler) {
         listeners.remove(handler);
     }
 

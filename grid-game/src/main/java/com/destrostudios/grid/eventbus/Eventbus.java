@@ -61,11 +61,11 @@ public class Eventbus {
         }
     }
 
-    public <E extends Event> void addInstantHandler(Class<E> eventClass, EventHandler<E> handler) {
+    public void addInstantHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
         this.instantHandlers.put(eventClass, (EventHandler<Event>) handler);
     }
 
-    public <E extends Event> void removeInstantHandler(Class<E> eventClass, EventHandler<E> handler) {
+    public void removeInstantHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
         this.instantHandlers.remove(eventClass, handler);
     }
 

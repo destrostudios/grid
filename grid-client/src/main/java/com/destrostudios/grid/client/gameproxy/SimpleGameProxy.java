@@ -42,12 +42,12 @@ public class SimpleGameProxy implements GameProxy {
     }
 
     @Override
-    public <E extends Event> void addListener(EventHandler<E> handler) {
-        gridGame.addListener(handler.getEventClass(), handler);
+    public void addListener(EventHandler<? extends Event> handler) {
+        gridGame.addInstantHandler(handler.getEventClass(), handler);
     }
 
     @Override
-    public <E extends Event> void removeListener(EventHandler<E> handler) {
+    public void removeListener(EventHandler<? extends Event> handler) {
         gridGame.removeInstantHandler(handler);
     }
 }
