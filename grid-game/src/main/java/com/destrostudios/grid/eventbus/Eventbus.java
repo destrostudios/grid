@@ -5,14 +5,13 @@ import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.Queues;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.Stack;
 import java.util.function.Supplier;
 
 public class Eventbus {
 
-    private final ArrayBlockingQueue<Event> eventQueue;
+    private final Stack<Event> eventStack;
 
     private final Multimap<Class<?>, EventHandler<Event>> preHandlers;
     private final Multimap<Class<?>, EventHandler<Event>> instantHandlers;
@@ -22,29 +21,29 @@ public class Eventbus {
 
     public Eventbus(Supplier<EntityWorld> entityWorldSupplier) {
         this.entityWorldSupplier = entityWorldSupplier;
-        this.eventQueue = Queues.newArrayBlockingQueue(1000);
+        this.eventStack = new Stack<>();
         this.preHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();
         this.instantHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();
         this.resolvedHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();
     }
 
     public boolean eventsInQueue() {
-        return !eventQueue.isEmpty();
+        return !eventStack.isEmpty();
     }
 
     public void addEvent(Event e) {
-        eventQueue.add(e);
+        eventStack.push(e);
     }
 
     public void triggerNextEvent() {
-        Event event = eventQueue.poll();
+        Event event = eventStack.pop();
         if (event != null) {
             triggerEvent(event);
         }
     }
 
     public void triggerAllEvents() {
-        while (!eventQueue.isEmpty()) {
+        while (!eventStack.isEmpty()) {
             triggerNextEvent();
         }
     }
