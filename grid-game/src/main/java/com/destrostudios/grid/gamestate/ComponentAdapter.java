@@ -1,9 +1,18 @@
 package com.destrostudios.grid.gamestate;
 
-import com.destrostudios.grid.components.*;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import com.destrostudios.grid.components.AttackPointsComponent;
+import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.components.HealthPointsComponent;
+import com.destrostudios.grid.components.MaxHealthComponent;
+import com.destrostudios.grid.components.MovementPointsComponent;
+import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.RoundComponent;
+import com.destrostudios.grid.components.TeamComponent;
+import com.destrostudios.grid.components.TreeComponent;
+import com.destrostudios.grid.components.WalkableComponent;
 import java.util.Arrays;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class ComponentAdapter extends XmlAdapter<String, Component> {
     public static final String CLASS_SEPERATOR = ":";
@@ -35,6 +44,10 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
                 return new TeamComponent(Integer.parseInt(split[1]));
             case ACTIVE_ROUND:
                 return new RoundComponent();
+            case WALKABLE:
+                return new WalkableComponent();
+            case TREE:
+                return new TreeComponent();
             case DEFAUlT:
                 break;
         }
@@ -55,6 +68,8 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
         PLAYER(PlayerComponent.class),
         TEAM(TeamComponent.class),
         ACTIVE_ROUND(RoundComponent.class),
+        WALKABLE(WalkableComponent.class),
+        TREE(TreeComponent.class),
         DEFAUlT(Component.class);
 
         private final Class<? extends Component> classz;
