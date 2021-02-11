@@ -3,8 +3,8 @@ package com.destrostudios.grid.client.gameproxy;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.RoundComponent;
-import com.destrostudios.grid.eventbus.events.NewEvent;
-import com.destrostudios.grid.eventbus.handler.NewEventHandler;
+import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 
 import java.util.List;
 
@@ -42,12 +42,12 @@ public class SimpleGameProxy implements GameProxy {
     }
 
     @Override
-    public <E extends NewEvent> void addListener(NewEventHandler<E> handler) {
+    public <E extends Event> void addListener(EventHandler<E> handler) {
         gridGame.addListener(handler.getEventClass(), handler);
     }
 
     @Override
-    public <E extends NewEvent> void removeListener(NewEventHandler<E> handler) {
+    public <E extends Event> void removeListener(EventHandler<E> handler) {
         gridGame.removeInstantHandler(handler);
     }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class RoundSkippedEvent implements NewEvent {
+public class RoundSkippedEvent implements Event {
     private final int entity;
 
 }

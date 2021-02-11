@@ -4,8 +4,8 @@ import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.NewEvent;
-import com.destrostudios.grid.eventbus.handler.NewEventHandler;
+import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.turnbasedgametools.network.client.GamesClient;
 import lombok.AllArgsConstructor;
@@ -20,18 +20,18 @@ public class ClientGameProxy implements GameProxy {
     private final UUID gameId;
     private final PlayerInfo player;
     private final GamesClient<GridGame, Action> client;
-    private final List<NewEventHandler<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
+    private final List<EventHandler<?>> listeners = new ArrayList<>();// proxy the listeners since the game reference may change
 
     @Override
     public boolean update() {
         GridGame gridGame = getGame();
         // add all listeners to current game-state reference
-        for (NewEventHandler<?> listener : listeners) {
+        for (EventHandler<?> listener : listeners) {
             gridGame.addListener(null, listener);
         }
         boolean updated = client.updateGame(gameId);
         // and remove them again after the update
-        for (NewEventHandler listener : listeners) {
+        for (EventHandler listener : listeners) {
             gridGame.removeInstantHandler(listener);
         }
         return updated;
@@ -58,12 +58,12 @@ public class ClientGameProxy implements GameProxy {
     }
 
     @Override
-    public  <E extends NewEvent> void addListener(NewEventHandler<E> handler) {
+    public  <E extends Event> void addListener(EventHandler<E> handler) {
         listeners.add(handler);
     }
 
     @Override
-    public  <E extends NewEvent> void removeListener(NewEventHandler<E> handler) {
+    public  <E extends Event> void removeListener(EventHandler<E> handler) {
         listeners.remove(handler);
     }
 

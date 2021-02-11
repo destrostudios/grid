@@ -2,8 +2,8 @@ package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.eventbus.events.NewEvent;
-import com.destrostudios.grid.eventbus.handler.NewEventHandler;
+import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 
 public interface GameProxy {
 
@@ -29,7 +29,7 @@ public interface GameProxy {
 
     Integer getPlayerEntity();
 
-    <E extends NewEvent> void addListener(NewEventHandler<E> handler);
+    <E extends Event> void addListener(EventHandler<E> handler);
 
-    <E extends NewEvent> void removeListener(NewEventHandler<E> handler);
+    <E extends Event> void removeListener(EventHandler<E> handler);
 }

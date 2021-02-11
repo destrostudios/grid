@@ -4,13 +4,13 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.ActionDispatcher;
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.NewEventbus;
+import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
-import com.destrostudios.grid.eventbus.events.NewEvent;
+import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 import com.destrostudios.grid.eventbus.handler.MovementPointsChangedHandler;
-import com.destrostudios.grid.eventbus.handler.NewEventHandler;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.destrostudios.grid.eventbus.handler.PositionChangedHandler;
 import com.destrostudios.grid.eventbus.handler.RoundSkippedHandler;
 import com.destrostudios.grid.gamestate.GameStateConverter;
@@ -37,12 +37,12 @@ public class GridGame {
 
     private final GamePreferences gamePreferences;
     private final EntityWorld world;
-    private final NewEventbus newEventBus;
+    private final Eventbus eventBus;
 
     public GridGame() {
         this.world = new EntityWorld();
         this.gamePreferences = new GamePreferences(MAP_X, MAP_Y);
-        this.newEventBus = new NewEventbus(() -> world);
+        this.eventBus = new Eventbus(() -> world);
     }
 
     public static void main(String[] args) {
@@ -67,24 +67,24 @@ public class GridGame {
         initMap();
     }
 
-    public void addNewEvent(NewEvent event) {
-        this.newEventBus.addEvent(event);
+    public void addNewEvent(Event event) {
+        this.eventBus.addEvent(event);
     }
 
     public void triggerNewEvent() {
-        this.newEventBus.triggerNextEvent();
+        this.eventBus.triggerNextEvent();
     }
 
     public void triggerAllNewEvents() {
-        this.newEventBus.triggerAllEvents();
+        this.eventBus.triggerAllEvents();
     }
 
     private void addListener() {
 //        this.addListener(new RoundUpdateListener());
 //        this.addListener(new PositionUpdateListener());
-        newEventBus.addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(newEventBus));
-        newEventBus.addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(newEventBus));
-        newEventBus.addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(newEventBus));
+        eventBus.addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(eventBus));
+        eventBus.addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(eventBus));
+        eventBus.addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
     }
 
 
@@ -135,17 +135,17 @@ public class GridGame {
     }
 
 
-    public <E extends NewEvent> void addListener(Class<E> classz, NewEventHandler<E> handler) {
-        this.newEventBus.addInstantHandler(classz, handler);
+    public <E extends Event> void addListener(Class<E> classz, EventHandler<E> handler) {
+        this.eventBus.addInstantHandler(classz, handler);
     }
 
-    public <E extends NewEvent> void removeInstantHandler(NewEventHandler<E> handler) {
-        this.newEventBus.removeInstantHandler(handler.getEventClass(), handler);
+    public <E extends Event> void removeInstantHandler(EventHandler<E> handler) {
+        this.eventBus.removeInstantHandler(handler.getEventClass(), handler);
     }
 
     public void registerAction(Action action) {
         addNewEvent(ActionDispatcher.dispatchAction(action));
-        newEventBus.triggerAllEvents();
+        eventBus.triggerAllEvents();
     }
 
     public String getState() {

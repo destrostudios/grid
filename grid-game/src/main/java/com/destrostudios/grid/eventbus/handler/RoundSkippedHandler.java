@@ -6,7 +6,7 @@ import com.destrostudios.grid.components.MovementPointsComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.NewEventbus;
+import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 import lombok.AllArgsConstructor;
@@ -17,11 +17,11 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 @AllArgsConstructor
-public class RoundSkippedHandler implements NewEventHandler<RoundSkippedEvent> {
+public class RoundSkippedHandler implements EventHandler<RoundSkippedEvent> {
 
     private final static Logger logger = Logger.getLogger(RoundSkippedHandler.class.getSimpleName());
 
-    private final NewEventbus instance;
+    private final Eventbus instance;
 
     private void resetBattleComponents(int playerEntity, EntityWorld entityWorld) {
         entityWorld.remove(playerEntity, AttackPointsComponent.class);
@@ -56,11 +56,6 @@ public class RoundSkippedHandler implements NewEventHandler<RoundSkippedEvent> {
             logger.info(String.format("Switched activen round from player %s to player %s", activePlayerEntity, nextActivePlayerEntity));
             instance.addEvent(new MovementPointsChangedEvent(event.getEntity(), GridGame.MAX_MP));
         }
-    }
-
-    @Override
-    public NewEventbus getEventBusInstance() {
-        return instance;
     }
 
     @Override

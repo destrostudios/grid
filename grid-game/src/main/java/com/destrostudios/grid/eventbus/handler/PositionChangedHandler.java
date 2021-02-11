@@ -2,7 +2,7 @@ package com.destrostudios.grid.eventbus.handler;
 
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.NewEventbus;
+import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
 import lombok.AllArgsConstructor;
@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class PositionChangedHandler implements NewEventHandler<PositionChangedEvent> {
+public class PositionChangedHandler implements EventHandler<PositionChangedEvent> {
     private final static Logger logger = Logger.getLogger(PositionChangedHandler.class.getSimpleName());
 
-    private final NewEventbus eventbusInstance;
+    private final Eventbus eventbusInstance;
 
     @Override
     public void onEvent(PositionChangedEvent componentUpdateEvent, Supplier<EntityWorld> supplier) {
@@ -70,11 +70,6 @@ public class PositionChangedHandler implements NewEventHandler<PositionChangedEv
         return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) + Math.abs(updatePositionComponent.getY() - positionComponent.getY());
     }
 
-
-    @Override
-    public NewEventbus getEventBusInstance() {
-        return eventbusInstance;
-    }
 
     @Override
     public Class<PositionChangedEvent> getEventClass() {
