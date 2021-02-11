@@ -2,7 +2,16 @@ package com.destrostudios.grid;
 
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.ActionDispatcher;
-import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.AttackPointsComponent;
+import com.destrostudios.grid.components.HealthPointsComponent;
+import com.destrostudios.grid.components.MaxHealthComponent;
+import com.destrostudios.grid.components.MovementPointsComponent;
+import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.RoundComponent;
+import com.destrostudios.grid.components.TeamComponent;
+import com.destrostudios.grid.components.TreeComponent;
+import com.destrostudios.grid.components.WalkableComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.Event;
@@ -17,11 +26,10 @@ import com.destrostudios.grid.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
-import lombok.Getter;
-
-import javax.xml.bind.JAXBException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
+import lombok.Getter;
 
 @Getter
 public class GridGame {
@@ -120,6 +128,7 @@ public class GridGame {
 
     public void intializeGame(String gameState) {
         world.initializeWorld(gameState);
+        addInstantHandler();
     }
 
 
