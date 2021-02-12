@@ -33,13 +33,11 @@ import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.Label;
-import com.simsilica.lemur.ProgressBar;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class GameAppState extends BaseAppState implements ActionListener {
 
@@ -81,6 +79,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             int playerEntity = event.getEntity();
             PositionComponent positionComponent = event.getPositionComponent();
             playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
+            // playAnimation(new HealthAnimation(playerVisuals.get(playerEntity), (int) (Math.random() * 100)));
         });
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
     }
@@ -151,9 +150,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
             String name = entityWorld.getComponent(playerEntity, PlayerComponent.class).get().getName();
             lblName.setText(name);
 
-            ProgressBar healthBar = playerVisual.getHealthBar();
-            healthBar.setProgressPercent((float) healthPointsComponent.getHealth() / (float) maxHealthComponent.getMaxHealth());
-            healthBar.setMessage(String.format("%s / %s", healthPointsComponent.getHealth(), maxHealthComponent.getMaxHealth()));
+            playerVisual.setMaximumHealth(maxHealthComponent.getMaxHealth());
+            playerVisual.setCurrentHealth(healthPointsComponent.getHealth());
         }
         int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();

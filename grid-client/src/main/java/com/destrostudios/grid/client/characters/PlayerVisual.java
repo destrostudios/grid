@@ -74,4 +74,18 @@ public class PlayerVisual {
     public void playWalkAnimation(float walkSpeed) {
         modelObject.playAnimation(characterModel.getWalkAnimationName(), (characterModel.getWalkStepDistance() / walkSpeed));
     }
+
+    public void setMaximumHealth(float maximumHealth) {
+        healthBar.getModel().setMaximum(maximumHealth);
+        updateHealthBarLabel();
+    }
+
+    public void setCurrentHealth(float health) {
+        healthBar.setProgressValue(health);
+        updateHealthBarLabel();
+    }
+
+    private void updateHealthBarLabel() {
+        healthBar.setMessage(String.format("%s / %s", (int) healthBar.getProgressValue(), (int) healthBar.getModel().getMaximum()));
+    }
 }
