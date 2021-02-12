@@ -4,16 +4,13 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.ActionDispatcher;
 import com.destrostudios.grid.actions.ActionNotAllowedException;
 import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.spells.AttackPointCostComponent;
+import com.destrostudios.grid.components.spells.DamageComponent;
+import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.events.Event;
-import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
-import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
-import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
-import com.destrostudios.grid.eventbus.handler.EventHandler;
-import com.destrostudios.grid.eventbus.handler.MovementPointsChangedHandler;
-import com.destrostudios.grid.eventbus.handler.PositionChangedHandler;
-import com.destrostudios.grid.eventbus.handler.RoundSkippedHandler;
+import com.destrostudios.grid.eventbus.events.*;
+import com.destrostudios.grid.eventbus.handler.*;
 import com.destrostudios.grid.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.shared.PlayerInfo;
@@ -77,6 +74,9 @@ public class GridGame {
         addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(eventBus));
         addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(eventBus));
         addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
+        addInstantHandler(AttackPointsChangedEvent.class, new AttackPointsChangedHandler());
+        addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler());
+        addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
     }
 
     private void initMap() {
@@ -105,6 +105,10 @@ public class GridGame {
     }
 
     private void addPlayer(String name, int team) {
+        int spell = world.createEntity();
+        world.addComponent(spell, new AttackPointCostComponent((int) (Math.random() * 10)));
+        world.addComponent(spell, new DamageComponent((int) (Math.random() * 50)));
+
         int playerEntity = world.createEntity();
         PositionComponent component = new PositionComponent((int) (gamePreferences.getMapSizeX() * Math.random()),
                 (int) (gamePreferences.getMapSizeY() * Math.random()));
@@ -115,6 +119,7 @@ public class GridGame {
         world.addComponent(playerEntity, new TeamComponent(team));
         world.addComponent(playerEntity, new HealthPointsComponent(MAX_HEALTH));
         world.addComponent(playerEntity, new MaxHealthComponent(MAX_HEALTH));
+        world.addComponent(playerEntity, new SpellComponent(spell));
 
         if (team == STARTING_TEAM) {
             world.addComponent(playerEntity, new RoundComponent());

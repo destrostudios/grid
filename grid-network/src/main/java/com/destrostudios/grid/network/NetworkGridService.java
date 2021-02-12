@@ -2,6 +2,7 @@ package com.destrostudios.grid.network;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.network.messages.Identify;
@@ -40,6 +41,7 @@ public class NetworkGridService implements GameService<GridGame, Action> {
         });
         kryo.register(PositionUpdateAction.class);
         kryo.register(SkipRoundAction.class);
+        kryo.register(CastSpellAction.class);
     }
 
     @Override

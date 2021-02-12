@@ -6,6 +6,7 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
+import com.destrostudios.grid.eventbus.events.SpellCastedEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -28,6 +29,9 @@ public class ActionDispatcher {
             return new PositionChangedEvent(entity, new PositionComponent(posAction.getNewX(), posAction.getNewY()));
         } else if (action instanceof SkipRoundAction) {
             return new RoundSkippedEvent(entity);
+        } else if (action instanceof CastSpellAction) {
+            CastSpellAction castSpellAction = (CastSpellAction) action;
+            return new SpellCastedEvent(castSpellAction.getSpell(), entity, castSpellAction.getTargetEntity());
         } else {
             throw new ActionNotAllowedException("Unsupported Action");
         }

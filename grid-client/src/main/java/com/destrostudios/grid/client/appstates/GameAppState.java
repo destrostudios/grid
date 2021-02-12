@@ -3,18 +3,22 @@ package com.destrostudios.grid.client.appstates;
 import com.destroflyer.jme3.cubes.BlockNavigator;
 import com.destroflyer.jme3.cubes.BlockTerrainControl;
 import com.destroflyer.jme3.cubes.Vector3Int;
+import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
-import com.destrostudios.grid.client.animations.AnnouncementAnimation;
-import com.destrostudios.grid.client.animations.WalkAnimation;
-import com.destrostudios.grid.client.characters.PlayerVisual;
+import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.PositionUtil;
 import com.destrostudios.grid.client.animations.Animation;
+import com.destrostudios.grid.client.animations.AnnouncementAnimation;
+import com.destrostudios.grid.client.animations.HealthAnimation;
+import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.blocks.BlockAssets;
+import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.actions.SkipRoundAction;
+import com.destrostudios.grid.eventbus.events.DamageTakenEvent;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
@@ -76,12 +80,12 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addListener(this, "key_delete", "mouse_left", "mouse_right");
 
         updateVisuals();
+        gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
 
         gameProxy.addPreHandler(PositionChangedEvent.class, (EventHandler<PositionChangedEvent>) (event, entityWorldSupplier) -> {
             int playerEntity = event.getEntity();
             PositionComponent positionComponent = event.getPositionComponent();
             playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
-            // playAnimation(new HealthAnimation(playerVisuals.get(playerEntity), (int) (Math.random() * 100)));
         });
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
         gameProxy.addResolvedHandler(RoundSkippedEvent.class, (event, entityWorldSupplier) -> {
@@ -89,6 +93,12 @@ public class GameAppState extends BaseAppState implements ActionListener {
             int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
+        });
+        gameProxy.addPreHandler(DamageTakenEvent.class, (EventHandler<DamageTakenEvent>) (event, entityWorldSupplier) -> {
+            int targetEntity = event.getTargetEntity();
+            int health = gameProxy.getGame().getWorld().getComponent(targetEntity, HealthPointsComponent.class).get().getHealth();
+            playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), health - event.getDamage()));
+
         });
     }
 
@@ -227,6 +237,21 @@ public class GameAppState extends BaseAppState implements ActionListener {
     public void onButtonClicked(int buttonIndex) {
         if (buttonIndex == 0) {
             trySkipRound();
+        } else if (buttonIndex == 1) {
+            tryCastSpell();
+        }
+    }
+
+    private void tryCastSpell() {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity != null) {
+            EntityWorld world = gameProxy.getGame().getWorld();
+            Optional<SpellComponent> component = world.getComponent(playerEntity, SpellComponent.class);
+            Optional<Integer> targetEntity = world.list(PlayerComponent.class).stream()
+                    .filter(e -> !world.hasComponents(e, RoundComponent.class))
+                    .findFirst();
+            int spell = component.get().getSpell();
+            gameProxy.requestAction(new CastSpellAction(targetEntity.get(), Integer.toString(playerEntity), spell));
         }
     }
 

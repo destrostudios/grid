@@ -11,6 +11,11 @@ import com.destrostudios.grid.components.RoundComponent;
 import com.destrostudios.grid.components.TeamComponent;
 import com.destrostudios.grid.components.TreeComponent;
 import com.destrostudios.grid.components.WalkableComponent;
+import com.destrostudios.grid.components.spells.AttackPointCostComponent;
+import com.destrostudios.grid.components.spells.DamageComponent;
+import com.destrostudios.grid.components.spells.SpellComponent;
+import com.destrostudios.grid.eventbus.events.AttackPointsChangedEvent;
+
 import java.util.Arrays;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -27,6 +32,12 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
         AdapterValues adapterValues = AdapterValues.fromSimpleName(split[0]);
 
         switch (adapterValues) {
+            case ATTACK_POINTS_COST:
+                return new AttackPointCostComponent(Integer.parseInt(split[1]));
+            case DAMAGE:
+                return new DamageComponent(Integer.parseInt(split[1]));
+            case SPELL:
+                return new SpellComponent(Integer.parseInt(split[1]));
             case POSITION:
                 String[] values = split[1].split(VALUE_SEPERATOR);
                 return new PositionComponent(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
@@ -60,6 +71,9 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
     }
 
     public enum AdapterValues {
+        ATTACK_POINTS_COST(AttackPointsComponent.class),
+        DAMAGE(DamageComponent.class),
+        SPELL(SpellComponent.class),
         POSITION(PositionComponent.class),
         MOVEMENT_POINTS(MovementPointsComponent.class),
         ATTACK_POINTS(AttackPointsComponent.class),
