@@ -6,7 +6,6 @@ import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -31,11 +30,11 @@ public class Eventbus {
         this.triggeredHandlers = new LinkedList<>();
     }
 
-    private void calculateHandlerVorEvent(Event e, boolean isSubevent) {
+    private void calculateHandlerForEvent(Event e, boolean isSubevent) {
         List<TriggeredEventHandler> handler = new ArrayList<>();
-        handler.addAll(calculateHandlerVorEvent(e, preHandlers));
-        handler.addAll(calculateHandlerVorEvent(e, instantHandlers));
-        handler.addAll(calculateHandlerVorEvent(e, resolvedHandlers));
+        handler.addAll(calculateHandlerForEvent(e, preHandlers));
+        handler.addAll(calculateHandlerForEvent(e, instantHandlers));
+        handler.addAll(calculateHandlerForEvent(e, resolvedHandlers));
 
         if (!isSubevent) {
             // add on tail of Dequeue, if main event
@@ -55,7 +54,7 @@ public class Eventbus {
      */
     public void registerMainEvents(Event... events) {
         for (Event event : events) {
-            calculateHandlerVorEvent(event, false);
+            calculateHandlerForEvent(event, false);
         }
     }
 
@@ -66,11 +65,11 @@ public class Eventbus {
      */
     public void registerSubEvents(Event... subevents) {
         for (Event event : Lists.reverse(List.of(subevents))) {
-            calculateHandlerVorEvent(event, true);
+            calculateHandlerForEvent(event, true);
         }
     }
 
-    private <E extends Event> List<TriggeredEventHandler> calculateHandlerVorEvent(E e, Multimap<Class<?>, EventHandler<? extends Event>> handlers) {
+    private <E extends Event> List<TriggeredEventHandler> calculateHandlerForEvent(E e, Multimap<Class<?>, EventHandler<? extends Event>> handlers) {
         List<TriggeredEventHandler> handler = new ArrayList<>();
         for (Class<?> eventClass : handlers.keySet()) {
             if (eventClass.isAssignableFrom(e.getClass())) {
