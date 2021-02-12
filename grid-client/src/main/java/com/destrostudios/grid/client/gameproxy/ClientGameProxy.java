@@ -7,19 +7,18 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.destrostudios.grid.shared.PlayerInfo;
-import com.destrostudios.turnbasedgametools.network.client.GamesClient;
-import lombok.AllArgsConstructor;
-
+import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ClientGameProxy implements GameProxy {
 
     private final UUID gameId;
     private final PlayerInfo player;
-    private final GamesClient<GridGame, Action> client;
+    private final GameClientModule<GridGame, Action> client;
     // proxy the listeners since the game reference may change
     private final List<EventHandler<?>> preListeners = new ArrayList<>();
     private final List<EventHandler<?>> resolvedListeners = new ArrayList<>();
