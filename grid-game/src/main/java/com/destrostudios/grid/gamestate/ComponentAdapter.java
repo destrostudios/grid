@@ -41,7 +41,7 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
             case HEALTH_POINTS:
                 return new HealthPointsComponent(Integer.parseInt(split[1]));
             case PLAYER:
-                return new PlayerComponent(split[1]);
+                return new PlayerComponent();
             case TEAM:
                 return new TeamComponent(Integer.parseInt(split[1]));
             case ACTIVE_ROUND:

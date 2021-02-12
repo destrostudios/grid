@@ -106,9 +106,7 @@ public class GridGame {
 
     private void addPlayer(String name, int team) {
         int spell = world.createEntity();
-        world.addComponent(spell, new AttackPointCostComponent(Math.min((int) (Math.random() * 10), 1)));
-        world.addComponent(spell, new DamageComponent((int) (Math.random() * 50) + 1));
-        world.addComponent(spell, new NameComponent(team == 1 ? "Destrobomb" : "Etherbeam"));
+        addSpellComponents(team, spell);
 
         int playerEntity = world.createEntity();
         PositionComponent component = new PositionComponent((int) (gamePreferences.getMapSizeX() * Math.random()),
@@ -116,7 +114,8 @@ public class GridGame {
         world.addComponent(playerEntity, component);
         world.addComponent(playerEntity, new MovementPointsComponent(MAX_MP));
         world.addComponent(playerEntity, new AttackPointsComponent(MAX_AP));
-        world.addComponent(playerEntity, new PlayerComponent(name));
+        world.addComponent(playerEntity, new PlayerComponent());
+        world.addComponent(playerEntity, new NameComponent(name));
         world.addComponent(playerEntity, new TeamComponent(team));
         world.addComponent(playerEntity, new HealthPointsComponent(MAX_HEALTH));
         world.addComponent(playerEntity, new MaxHealthComponent(MAX_HEALTH));
@@ -125,6 +124,12 @@ public class GridGame {
         if (team == STARTING_TEAM) {
             world.addComponent(playerEntity, new RoundComponent());
         }
+    }
+
+    private void addSpellComponents(int team, int spell) {
+        world.addComponent(spell, new AttackPointCostComponent(Math.min((int) (Math.random() * 10), 1)));
+        world.addComponent(spell, new DamageComponent((int) (Math.random() * 50) + 1));
+        world.addComponent(spell, new NameComponent(team == 1 ? "Destrobomb" : "Etherbeam"));
     }
 
     public void intializeGame(String gameState) {

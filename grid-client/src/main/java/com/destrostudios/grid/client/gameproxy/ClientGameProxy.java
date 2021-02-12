@@ -2,6 +2,7 @@ package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.components.NameComponent;
 import com.destrostudios.grid.components.PlayerComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
@@ -67,7 +68,8 @@ public class ClientGameProxy implements GameProxy {
         EntityWorld world = getGame().getWorld();
         List<Integer> list = world.list(PlayerComponent.class);
         Integer playerEntity = list.stream()
-                .filter(entity -> world.getComponent(entity, PlayerComponent.class).get().getName().equals(player.getLogin())) // TODO: use Id instead
+                .filter(entity -> world.hasComponents(entity, PlayerComponent.class))
+                .filter(entity -> world.getComponent(entity, NameComponent.class).get().getName().equals(player.getLogin())) // TODO: use Id instead
                 .findFirst().orElse(null);
         return playerEntity;
     }

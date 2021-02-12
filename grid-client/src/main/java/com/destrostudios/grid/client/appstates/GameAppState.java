@@ -91,7 +91,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         gameProxy.addResolvedHandler(RoundSkippedEvent.class, (event, entityWorldSupplier) -> {
             EntityWorld entityWorld = gameProxy.getGame().getWorld();
             int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
-            String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
+            String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
         gameProxy.addPreHandler(DamageTakenEvent.class, (EventHandler<DamageTakenEvent>) (event, entityWorldSupplier) -> {
@@ -165,14 +165,14 @@ public class GameAppState extends BaseAppState implements ActionListener {
             modelObject.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), 3, PositionUtil.get3dCoordinate(positionComponent.getY()));
 
             Label lblName = playerVisual.getLblName();
-            String name = entityWorld.getComponent(playerEntity, PlayerComponent.class).get().getName();
+            String name = entityWorld.getComponent(playerEntity, NameComponent.class).get().getName();
             lblName.setText(name);
 
             playerVisual.setMaximumHealth(maxHealthComponent.getMaxHealth());
             playerVisual.setCurrentHealth(healthPointsComponent.getHealth());
         }
         int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
-        String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
+        String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
         AttackPointsComponent attackPointsComponent = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).get();
         MovementPointsComponent movementPointsComponent = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).get();
 
