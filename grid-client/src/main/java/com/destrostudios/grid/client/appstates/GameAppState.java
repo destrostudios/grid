@@ -4,6 +4,7 @@ import com.destroflyer.jme3.cubes.BlockNavigator;
 import com.destroflyer.jme3.cubes.BlockTerrainControl;
 import com.destroflyer.jme3.cubes.Vector3Int;
 import com.destrostudios.grid.actions.PositionUpdateAction;
+import com.destrostudios.grid.client.animations.AnnouncementAnimation;
 import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.PositionUtil;
@@ -16,6 +17,7 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
+import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -82,6 +84,12 @@ public class GameAppState extends BaseAppState implements ActionListener {
             // playAnimation(new HealthAnimation(playerVisuals.get(playerEntity), (int) (Math.random() * 100)));
         });
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
+        gameProxy.addResolvedHandler(RoundSkippedEvent.class, (event, entityWorldSupplier) -> {
+            EntityWorld entityWorld = gameProxy.getGame().getWorld();
+            int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
+            String activePlayerName = entityWorld.getComponent(activePlayerEntity, PlayerComponent.class).get().getName();
+            playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
+        });
     }
 
     private void addSky(String skyName) {
