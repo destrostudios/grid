@@ -25,9 +25,4 @@ public class MovementPointsChangedHandler implements EventHandler<MovementPoints
         entityWorld.addComponent(entity, new MovementPointsComponent(event.getMovementPoints()));
         logger.info(String.format("MP of %s set from %s to %s", entity, movementPointsComponent.getMovementPoints(), event.getMovementPoints()));
     }
-
-    @Override
-    public Class<MovementPointsChangedEvent> getEventClass() {
-        return MovementPointsChangedEvent.class;
-    }
 }

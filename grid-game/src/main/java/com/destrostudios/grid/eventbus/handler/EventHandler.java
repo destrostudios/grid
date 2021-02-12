@@ -8,6 +8,4 @@ import java.util.function.Supplier;
 
 public interface EventHandler<E extends Event> {
     void onEvent(E event, Supplier<EntityWorld> entityWorldSupplier);
-
-    Class<E> getEventClass();
 }

@@ -77,32 +77,12 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         updateVisuals();
 
-        gameProxy.addPreHandler(new EventHandler<PositionChangedEvent>() {
-
-            @Override
-            public void onEvent(PositionChangedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
-                int playerEntity = event.getEntity();
-                PositionComponent positionComponent = event.getPositionComponent();
-                playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
-            }
-
-            @Override
-            public Class<PositionChangedEvent> getEventClass() {
-                return PositionChangedEvent.class;
-            }
+        gameProxy.addPreHandler(PositionChangedEvent.class, (EventHandler<PositionChangedEvent>) (event, entityWorldSupplier) -> {
+            int playerEntity = event.getEntity();
+            PositionComponent positionComponent = event.getPositionComponent();
+            playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
         });
-        gameProxy.addResolvedHandler(new EventHandler<>() {
-
-            @Override
-            public void onEvent(Event event, Supplier<EntityWorld> entityWorldSupplier) {
-                updateVisuals();
-            }
-
-            @Override
-            public Class<Event> getEventClass() {
-                return Event.class;
-            }
-        });
+        gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
     }
 
     private void addSky(String skyName) {

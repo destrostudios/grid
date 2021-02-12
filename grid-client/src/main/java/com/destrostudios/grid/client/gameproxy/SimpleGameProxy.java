@@ -57,22 +57,22 @@ public class SimpleGameProxy implements GameProxy {
     }
 
     @Override
-    public void addPreHandler(EventHandler<? extends Event> handler) {
-        gridGame.addPreHandler(handler.getEventClass(), handler);
+    public void addPreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        gridGame.addPreHandler(eventClass, handler);
     }
 
     @Override
-    public void removePreHandler(EventHandler<? extends Event> handler) {
-        gridGame.removePreHandler(handler);
+    public void removePreHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler) {
+        gridGame.removePreHandler(eventClass, handler);
     }
 
     @Override
-    public void addResolvedHandler(EventHandler<? extends Event> handler) {
-        gridGame.addResolvedHandler(handler.getEventClass(), handler);
+    public void addResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler) {
+        gridGame.addResolvedHandler(eventClass, handler);
     }
 
     @Override
-    public void removeResolvedHandler(EventHandler<? extends Event> handler) {
-        gridGame.removeResolvedHandler(handler);
+    public void removeResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler) {
+        gridGame.removeResolvedHandler(eventClass, handler);
     }
 }

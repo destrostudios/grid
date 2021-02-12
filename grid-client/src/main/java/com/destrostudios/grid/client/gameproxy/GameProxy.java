@@ -28,11 +28,11 @@ public interface GameProxy {
 
     Integer getPlayerEntity();
 
-    void addPreHandler(EventHandler<? extends Event> handler);
+    void addPreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler);
 
-    void removePreHandler(EventHandler<? extends Event> handler);
+    void removePreHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler);
 
-    void addResolvedHandler(EventHandler<? extends Event> handler);
+    void addResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler);
 
-    void removeResolvedHandler(EventHandler<? extends Event> handler);
+    void removeResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler);
 }

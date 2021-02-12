@@ -34,11 +34,10 @@ public class PositionChangedHandler implements EventHandler<PositionChangedEvent
 
         if (positionIsFree && entityCanMove && neededMovementPoints == 1 && movementPoints > 0) {
             // update the movementpoints and add new position
-
             entityWorld.remove(entity, PositionComponent.class);
             entityWorld.addComponent(entity, newPosition);
             logger.info(String.format("Entity %s moved to (%s|%s)", entity, newPosition.getX(), newPosition.getY()));
-            eventbusInstance.triggerEvent(new MovementPointsChangedEvent(entity, movementPoints - 1));
+            eventbusInstance.registerSubEvents(new MovementPointsChangedEvent(entity, movementPoints - 1));
         }
     }
 
@@ -70,9 +69,4 @@ public class PositionChangedHandler implements EventHandler<PositionChangedEvent
         return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) + Math.abs(updatePositionComponent.getY() - positionComponent.getY());
     }
 
-
-    @Override
-    public Class<PositionChangedEvent> getEventClass() {
-        return PositionChangedEvent.class;
-    }
 }

@@ -2,16 +2,8 @@ package com.destrostudios.grid;
 
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.ActionDispatcher;
-import com.destrostudios.grid.components.AttackPointsComponent;
-import com.destrostudios.grid.components.HealthPointsComponent;
-import com.destrostudios.grid.components.MaxHealthComponent;
-import com.destrostudios.grid.components.MovementPointsComponent;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.PositionComponent;
-import com.destrostudios.grid.components.RoundComponent;
-import com.destrostudios.grid.components.TeamComponent;
-import com.destrostudios.grid.components.TreeComponent;
-import com.destrostudios.grid.components.WalkableComponent;
+import com.destrostudios.grid.actions.ActionNotAllowedException;
+import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.Event;
@@ -26,10 +18,11 @@ import com.destrostudios.grid.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
+import lombok.Getter;
+
+import javax.xml.bind.JAXBException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
-import lombok.Getter;
 
 @Getter
 public class GridGame {
@@ -46,11 +39,13 @@ public class GridGame {
     private final GamePreferences gamePreferences;
     private final EntityWorld world;
     private final Eventbus eventBus;
+    private final ActionDispatcher actionDispatcher;
 
     public GridGame() {
         this.world = new EntityWorld();
         this.gamePreferences = new GamePreferences(MAP_X, MAP_Y);
         this.eventBus = new Eventbus(() -> world);
+        this.actionDispatcher = new ActionDispatcher(() -> world);
     }
 
     public void initGame(StartGameInfo startGameInfo) {
@@ -64,8 +59,8 @@ public class GridGame {
         initMap();
     }
 
-    public void triggerEvent(Event event) {
-        this.eventBus.triggerEvent(event);
+    public void registerEvent(Event event) {
+        this.eventBus.registerMainEvents(event);
     }
 
     public boolean triggeredHandlersInQueue() {
@@ -131,7 +126,6 @@ public class GridGame {
         addInstantHandler();
     }
 
-
     public void addInstantHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
         this.eventBus.addInstantHandler(classz, handler);
     }
@@ -144,20 +138,24 @@ public class GridGame {
         this.eventBus.addResolvedHandler(classz, handler);
     }
 
-    public void removeInstantHandler(EventHandler<? extends Event> handler) {
-        this.eventBus.removeInstantHandler(handler.getEventClass(), handler);
+    public void removeInstantHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        this.eventBus.removeInstantHandler(eventClass, handler);
     }
 
-    public void removePreHandler(EventHandler<? extends Event> handler) {
-        this.eventBus.removePreHandler(handler.getEventClass(), handler);
+    public void removePreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        this.eventBus.removePreHandler(eventClass, handler);
     }
 
-    public void removeResolvedHandler(EventHandler<? extends Event> handler) {
-        this.eventBus.removeResolvedHandler(handler.getEventClass(), handler);
+    public void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        this.eventBus.removeResolvedHandler(eventClass, handler);
     }
 
     public void registerAction(Action action) {
-        triggerEvent(ActionDispatcher.dispatchAction(action));
+        try {
+            registerEvent(actionDispatcher.dispatchAction(action));
+        } catch (ActionNotAllowedException e) {
+            logger.log(Level.WARNING, e, () -> "Action not allowed: " + e.getMessage() +"");
+        }
     }
 
     public String getState() {

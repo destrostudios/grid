@@ -8,10 +8,12 @@ import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class ClientGameProxy implements GameProxy {
@@ -20,20 +22,20 @@ public class ClientGameProxy implements GameProxy {
     private final PlayerInfo player;
     private final GameClientModule<GridGame, Action> client;
     // proxy the listeners since the game reference may change
-    private final List<EventHandler<?>> preListeners = new ArrayList<>();
-    private final List<EventHandler<?>> resolvedListeners = new ArrayList<>();
+    private final Map<Class<? extends Event>, EventHandler<?>> preListeners = new LinkedHashMap<>();
+    private final Map<Class<? extends Event>, EventHandler<?>> resolvedListeners = new LinkedHashMap<>();
 
     @Override
     public boolean applyNextAction() {
         GridGame gridGame = getGame();
         // Ensure that the listeners are on the (potentially new) game instance
-        for (EventHandler<? extends Event> listener : preListeners) {
-            gridGame.removePreHandler(listener);
-            gridGame.addPreHandler(listener.getEventClass(), listener);
+        for (Map.Entry<Class<? extends Event>, EventHandler<?>> entry : preListeners.entrySet()) {
+            gridGame.removePreHandler(entry.getKey(), entry.getValue());
+            gridGame.addPreHandler(entry.getKey(), entry.getValue());
         }
-        for (EventHandler<? extends Event> listener : resolvedListeners) {
-            gridGame.removeResolvedHandler(listener);
-            gridGame.addResolvedHandler(listener.getEventClass(), listener);
+        for (Map.Entry<Class<? extends Event>, EventHandler<?>> entry : resolvedListeners.entrySet()) {
+            gridGame.removeResolvedHandler(entry.getKey(), entry.getValue());
+            gridGame.addResolvedHandler(entry.getKey(), entry.getValue());
         }
         return client.applyNextAction(gameId);
     }
@@ -71,22 +73,22 @@ public class ClientGameProxy implements GameProxy {
     }
 
     @Override
-    public void addPreHandler(EventHandler<? extends Event> handler) {
-        preListeners.add(handler);
+    public void addPreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        preListeners.put(eventClass, handler);
     }
 
     @Override
-    public void addResolvedHandler(EventHandler<? extends Event> handler) {
-        resolvedListeners.add(handler);
+    public void addResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        resolvedListeners.put(eventClass, handler);
     }
 
     @Override
-    public void removePreHandler(EventHandler<? extends Event> handler) {
-        preListeners.remove(handler);
+    public void removePreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        preListeners.remove(eventClass, handler);
     }
 
     @Override
-    public void removeResolvedHandler(EventHandler<? extends Event> handler) {
-        resolvedListeners.remove(handler);
+    public void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+        resolvedListeners.remove(eventClass, handler);
     }
 }

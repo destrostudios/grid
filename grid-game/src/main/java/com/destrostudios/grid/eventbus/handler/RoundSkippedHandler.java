@@ -54,12 +54,8 @@ public class RoundSkippedHandler implements EventHandler<RoundSkippedEvent> {
             resetBattleComponents(activePlayerEntity, entityWorld);
             entityWorld.addComponent(nextActivePlayerEntity, new RoundComponent());
             logger.info(String.format("Switched activen round from player %s to player %s", activePlayerEntity, nextActivePlayerEntity));
-            instance.triggerEvent(new MovementPointsChangedEvent(event.getEntity(), GridGame.MAX_MP));
+            instance.registerSubEvents(new MovementPointsChangedEvent(event.getEntity(), GridGame.MAX_MP));
         }
     }
 
-    @Override
-    public Class<RoundSkippedEvent> getEventClass() {
-        return RoundSkippedEvent.class;
-    }
 }

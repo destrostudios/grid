@@ -9,5 +9,5 @@ import lombok.Getter;
 @Getter
 public class TriggeredEventHandler {
     private Event event;
-    private EventHandler<Event> eventHandler;
+    private EventHandler eventHandler;
 }
