@@ -106,8 +106,9 @@ public class GridGame {
 
     private void addPlayer(String name, int team) {
         int spell = world.createEntity();
-        world.addComponent(spell, new AttackPointCostComponent((int) (Math.random() * 10)));
-        world.addComponent(spell, new DamageComponent((int) (Math.random() * 50)));
+        world.addComponent(spell, new AttackPointCostComponent(Math.min((int) (Math.random() * 10), 1)));
+        world.addComponent(spell, new DamageComponent((int) (Math.random() * 50) + 1));
+        world.addComponent(spell, new NameComponent(team == 1 ? "Destrobomb" : "Etherbeam"));
 
         int playerEntity = world.createEntity();
         PositionComponent component = new PositionComponent((int) (gamePreferences.getMapSizeX() * Math.random()),
@@ -159,7 +160,7 @@ public class GridGame {
         try {
             registerEvent(actionDispatcher.dispatchAction(action));
         } catch (ActionNotAllowedException e) {
-            logger.log(Level.WARNING, e, () -> "Action not allowed: " + e.getMessage() +"");
+            logger.log(Level.WARNING, e, () -> "Action not allowed: " + e.getMessage() + "");
         }
     }
 

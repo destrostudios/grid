@@ -1,23 +1,12 @@
 package com.destrostudios.grid.gamestate;
 
-import com.destrostudios.grid.components.AttackPointsComponent;
-import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.HealthPointsComponent;
-import com.destrostudios.grid.components.MaxHealthComponent;
-import com.destrostudios.grid.components.MovementPointsComponent;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.PositionComponent;
-import com.destrostudios.grid.components.RoundComponent;
-import com.destrostudios.grid.components.TeamComponent;
-import com.destrostudios.grid.components.TreeComponent;
-import com.destrostudios.grid.components.WalkableComponent;
+import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
 import com.destrostudios.grid.components.spells.DamageComponent;
 import com.destrostudios.grid.components.spells.SpellComponent;
-import com.destrostudios.grid.eventbus.events.AttackPointsChangedEvent;
 
-import java.util.Arrays;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Arrays;
 
 public class ComponentAdapter extends XmlAdapter<String, Component> {
     public static final String CLASS_SEPERATOR = ":";
@@ -34,6 +23,8 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
         switch (adapterValues) {
             case ATTACK_POINTS_COST:
                 return new AttackPointCostComponent(Integer.parseInt(split[1]));
+            case NAME:
+                return new NameComponent(split[1]);
             case DAMAGE:
                 return new DamageComponent(Integer.parseInt(split[1]));
             case SPELL:
@@ -71,6 +62,7 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
     }
 
     public enum AdapterValues {
+        NAME(NameComponent.class),
         ATTACK_POINTS_COST(AttackPointsComponent.class),
         DAMAGE(DamageComponent.class),
         SPELL(SpellComponent.class),
