@@ -25,14 +25,14 @@ public class Main {
             System.out.println("First argument must be a jwt (usually passed by the destrostudios launcher).");
             return;
         }
-        startApplication(args[0], "destrostudios.com");
+        startApplication("destrostudios.com", args[0]);
     }
 
     static ClientApplication startApplication(String hostUrl, String jwt) throws IOException {
         return startApplication(getToolsClient(hostUrl, jwt), jwt);
     }
 
-    static ClientApplication startApplication(ToolsClient toolsClient, String jwt) throws IOException {
+    static ClientApplication startApplication(ToolsClient toolsClient, String jwt) {
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
             System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
