@@ -4,6 +4,8 @@ import com.destrostudios.grid.client.appstates.GameAppState;
 import com.destrostudios.grid.client.appstates.GameGuiAppState;
 import com.destrostudios.grid.client.appstates.MenuAppState;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
+import com.destrostudios.grid.shared.PlayerInfo;
+import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.collision.CollisionResults;
@@ -23,15 +25,20 @@ import com.jme3.util.SkyFactory;
 import com.jme3.water.WaterFilter;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.style.BaseStyles;
+import lombok.Getter;
 
 import java.awt.image.BufferedImage;
 
 public class ClientApplication extends SimpleApplication {
 
-    private final GameProxy gameProxy;
+    @Getter
+    private final ToolsClient toolsClient;
+    @Getter
+    private final PlayerInfo playerInfo;
 
-    public ClientApplication(GameProxy gameProxy) {
-        this.gameProxy = gameProxy;
+    public ClientApplication(ToolsClient toolsClient, PlayerInfo playerInfo) {
+        this.toolsClient = toolsClient;
+        this.playerInfo = playerInfo;
         settings = new AppSettings(true);
         settings.setWidth(1600);
         settings.setHeight(900);
@@ -100,7 +107,8 @@ public class ClientApplication extends SimpleApplication {
         rootNode.attachChild(SkyFactory.createSky(assetManager, textureWest, textureEast, textureNorth, textureSouth, textureUp, textureDown));
     }
 
-    public void startGame() {
+    public void startGame(GameProxy gameProxy) {
+        stateManager.detach(stateManager.getState(MenuAppState.class));
         stateManager.attach(new GameGuiAppState());
         stateManager.attach(new GameAppState(gameProxy));
     }

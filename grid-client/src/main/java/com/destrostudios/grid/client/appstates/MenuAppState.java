@@ -1,6 +1,8 @@
 package com.destrostudios.grid.client.appstates;
 
+import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
 import com.destrostudios.grid.shared.PlayerInfo;
+import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.ColorRGBA;
@@ -12,10 +14,7 @@ import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -26,7 +25,7 @@ public class MenuAppState extends BaseAppState {
     private Container buttonContainerPlayers;
     private Container buttonContainerGames;
     private HashMap<Integer, Button> buttonsPlayers = new HashMap<>();
-    private HashMap<String, Button> buttonsGames = new HashMap<>();
+    private HashMap<UUID, Button> buttonsGames = new HashMap<>();
     private LinkedList<Button> tmpButtonsToRemove = new LinkedList<>();
 
     @Override
@@ -110,28 +109,20 @@ public class MenuAppState extends BaseAppState {
 
         updateButtons(buttonContainerPlayers, buttonsPlayers, players, PlayerInfo::getId, PlayerInfo::getLogin, player -> {
             System.out.println("Start game with player #" + player.getId());
-            startGame();
         });
     }
 
     private void updateGamesContainer() {
-        // TODO: Get from tools
-        List<String> games = new LinkedList<>();
-        games.add("egoVidiTe vs Yalee");
-        games.add("TeMMeZz vs ellimak1");
+        GameClientModule<?, ?> gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
+        Set<UUID> games = gameClientModule.getGamesList();
 
-        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), Function.identity(), game -> {
-            System.out.println("Spectate game '" + game + "'");
-            startGame();
+        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), UUID::toString, gameUUID -> {
+            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), mainApplication.getToolsClient().getModule(GameClientModule.class));
+            mainApplication.startGame(clientGameProxy);
         });
     }
 
-    private void startGame() {
-        mainApplication.getStateManager().detach(this);
-        mainApplication.startGame();
-    }
-
-    private <K, O> void updateButtons(Container buttonContainer, HashMap<K, Button> buttons, List<O> objects, Function<O, K> getKey, Function<O, String> getText, Consumer<O> action) {
+    private <K, O> void updateButtons(Container buttonContainer, HashMap<K, Button> buttons, Collection<O> objects, Function<O, K> getKey, Function<O, String> getText, Consumer<O> action) {
         for (Map.Entry<K, Button> entry : buttons.entrySet()) {
             if (objects.stream().noneMatch(object -> getKey.apply(object) == entry.getKey())) {
                 tmpButtonsToRemove.add(entry.getValue());
