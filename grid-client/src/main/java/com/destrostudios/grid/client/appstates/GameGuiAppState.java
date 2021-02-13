@@ -3,12 +3,12 @@ package com.destrostudios.grid.client.appstates;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
+import com.jme3.system.AppSettings;
 import com.simsilica.lemur.*;
 import com.simsilica.lemur.component.SpringGridLayout;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
-import com.simsilica.lemur.style.BaseStyles;
 
-public class GuiAppState extends BaseAppState {
+public class GameGuiAppState extends BaseAppState {
 
     private Label lblCurrentPlayer;
     private Label lblMP;
@@ -17,12 +17,10 @@ public class GuiAppState extends BaseAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        GuiGlobals.initialize(mainApplication);
-        BaseStyles.loadGlassStyle();
-        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
 
-        int totalWidth = mainApplication.getContext().getSettings().getWidth();
-        int totalHeight = mainApplication.getContext().getSettings().getHeight();
+        AppSettings appSettings = mainApplication.getContext().getSettings();
+        int totalWidth = appSettings.getWidth();
+        int totalHeight = appSettings.getHeight();
 
         // Labels
 
