@@ -1,8 +1,9 @@
 package com.destrostudios.grid.client.appstates;
 
+import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
-import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.ColorRGBA;
@@ -24,9 +25,9 @@ public class MenuAppState extends BaseAppState {
     private int containerWidth;
     private Container buttonContainerPlayers;
     private Container buttonContainerGames;
-    private HashMap<Integer, Button> buttonsPlayers = new HashMap<>();
+    private HashMap<Long, Button> buttonsPlayers = new HashMap<>();
     private HashMap<UUID, Button> buttonsGames = new HashMap<>();
-    private LinkedList<Button> tmpButtonsToRemove = new LinkedList<>();
+    private LinkedList<Object> tmpButtonKeysToRemove = new LinkedList<>();
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -101,14 +102,11 @@ public class MenuAppState extends BaseAppState {
     }
 
     private void updatePlayersContainer() {
-        // TODO: Get from tools
-        List<PlayerInfo> players = new LinkedList<>();
-        players.add(new PlayerInfo(1, "destroflyer"));
-        players.add(new PlayerInfo(2, "Etherblood"));
-        players.add(new PlayerInfo(3, "Icecold"));
+        JwtClientModule jwtClientModule = mainApplication.getToolsClient().getModule(JwtClientModule.class);
+        List<JwtAuthenticationUser> players = jwtClientModule.onlineUsers();
 
-        updateButtons(buttonContainerPlayers, buttonsPlayers, players, PlayerInfo::getId, PlayerInfo::getLogin, player -> {
-            System.out.println("Start game with player #" + player.getId());
+        updateButtons(buttonContainerPlayers, buttonsPlayers, players, player -> player.id, player -> player.login, player -> {
+            System.out.println("Start game with player '" + player.login + " (#" + player.id + ")");
         });
     }
 
@@ -125,13 +123,14 @@ public class MenuAppState extends BaseAppState {
     private <K, O> void updateButtons(Container buttonContainer, HashMap<K, Button> buttons, Collection<O> objects, Function<O, K> getKey, Function<O, String> getText, Consumer<O> action) {
         for (Map.Entry<K, Button> entry : buttons.entrySet()) {
             if (objects.stream().noneMatch(object -> getKey.apply(object) == entry.getKey())) {
-                tmpButtonsToRemove.add(entry.getValue());
+                tmpButtonKeysToRemove.add(entry.getKey());
             }
         }
-        for (Button button : tmpButtonsToRemove) {
-            buttonContainerPlayers.removeChild(button);
+        for (Object key : tmpButtonKeysToRemove) {
+            Button button = buttons.remove(key);
+            buttonContainer.removeChild(button);
         }
-        tmpButtonsToRemove.clear();
+        tmpButtonKeysToRemove.clear();
         for (O object : objects) {
             K key = getKey.apply(object);
             if (!buttons.containsKey(key)) {
