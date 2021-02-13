@@ -33,7 +33,7 @@
         <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
         <version.mockito>1.9.5</version.mockito>
         <version.slf4j>2.0.0-alpha1</version.slf4j>
-        <version.turn-based-game-tools>2c903b6bfdd7ecdea655077f07bc8840a37c6c95</version.turn-based-game-tools>
+        <version.turn-based-game-tools>1e5811a36e767124f307fb75a696e2249b4d231c</version.turn-based-game-tools>
         <version.jackson>2.12.1</version.jackson>
     </properties>
     <repositories>

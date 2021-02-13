@@ -13,7 +13,7 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class NetworkGridService implements GameService<GridGame, Action> {
+public class NetworkGridService implements GameService<GridGame, Action, StartGameInfo> {
 
     public NetworkGridService(boolean resolveActions) {
         this.resolveActions = resolveActions;
@@ -39,12 +39,13 @@ public class NetworkGridService implements GameService<GridGame, Action> {
         kryo.register(PositionUpdateAction.class);
         kryo.register(SkipRoundAction.class);
         kryo.register(CastSpellAction.class);
+        kryo.register(StartGameInfo.class);
     }
 
     @Override
-    public GridGame startNewGame() {
+    public GridGame startNewGame(StartGameInfo params) {
         GridGame gridGame = new GridGame();
-        gridGame.initGame(StartGameInfo.getTestGameInfo());
+        gridGame.initGame(params);
         return gridGame;
     }
 

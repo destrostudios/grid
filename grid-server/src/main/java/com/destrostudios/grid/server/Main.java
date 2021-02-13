@@ -5,6 +5,7 @@ import com.destrostudios.authtoken.NoValidateJwtService;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.network.NetworkGridService;
+import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.server.ToolsServer;
 import com.destrostudios.turnbasedgametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.turnbasedgametools.network.server.modules.game.ServerGameData;
@@ -27,14 +28,14 @@ public class Main {
         System.out.println("Unsafe access warnings are a known issue, see: https://github.com/EsotericSoftware/kryonet/issues/154");
         NetworkGridService gameService = new NetworkGridService(true);
         Server kryoServer = new Server(10_000_000, 10_000_000);
-        GameServerModule<GridGame, Action> gameModule = new GameServerModule<>(gameService, kryoServer::getConnections);
+        GameServerModule<GridGame, Action, StartGameInfo> gameModule = new GameServerModule<>(gameService, kryoServer::getConnections);
         JwtServerModule jwtModule = new JwtServerModule(jwtService, kryoServer::getConnections);
         NetworkModule loginAutoJoinModule = new NetworkModule() {
 
             @Override
             public void received(Connection connection, Object object) {
                 if (object instanceof Login) {
-                    for (ServerGameData<GridGame, Action> game : gameModule.getGames()) {
+                    for (ServerGameData<GridGame> game : gameModule.getGames()) {
                         gameModule.join(connection, game.id);
                     }
                 }
@@ -43,7 +44,7 @@ public class Main {
         ToolsServer server = new ToolsServer(kryoServer, gameModule, jwtModule, loginAutoJoinModule);
         server.start(NetworkUtil.PORT);
 
-        gameModule.startNewGame();
+        gameModule.startNewGame(StartGameInfo.getTestGameInfo());
         System.out.println("Server started.");
     }
 }

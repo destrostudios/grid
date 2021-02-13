@@ -13,9 +13,19 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
-import com.simsilica.lemur.*;
-
-import java.util.*;
+import com.simsilica.lemur.Button;
+import com.simsilica.lemur.Container;
+import com.simsilica.lemur.HAlignment;
+import com.simsilica.lemur.Insets3f;
+import com.simsilica.lemur.Label;
+import com.simsilica.lemur.VAlignment;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -111,7 +121,7 @@ public class MenuAppState extends BaseAppState {
     }
 
     private void updateGamesContainer() {
-        GameClientModule<?, ?> gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
+        GameClientModule<?, ?, ?> gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
         Set<UUID> games = gameClientModule.getGamesList();
 
         updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), UUID::toString, gameUUID -> {

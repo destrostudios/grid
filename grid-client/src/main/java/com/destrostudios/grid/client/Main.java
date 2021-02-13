@@ -8,6 +8,7 @@ import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
 import com.destrostudios.grid.shared.PlayerInfo;
+import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
 import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
@@ -51,7 +52,7 @@ public class Main {
     private static ToolsClient getToolsClient(String hostUrl, String jwt) throws IOException {
         NetworkGridService gameService = new NetworkGridService(false);
         Client kryoClient = new Client(10_000_000, 10_000_000);
-        GameClientModule<GridGame, Action> gameModule = new GameClientModule<>(gameService, kryoClient);
+        GameClientModule<GridGame, Action, StartGameInfo> gameModule = new GameClientModule<>(gameService, kryoClient);
         JwtClientModule jwtModule = new JwtClientModule(kryoClient);
         ToolsClient client = new ToolsClient(kryoClient, gameModule, jwtModule);
         client.start(10_000, hostUrl, NetworkUtil.PORT);
