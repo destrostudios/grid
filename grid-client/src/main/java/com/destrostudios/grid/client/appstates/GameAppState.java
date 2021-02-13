@@ -33,8 +33,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
-import com.jme3.texture.Texture;
-import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.Label;
 
 import java.util.HashMap;
@@ -58,8 +56,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        addSky("miramar");
-
         blockTerrainNode = new Node();
         blockTerrainNode.setShadowMode(RenderQueue.ShadowMode.Receive);
         blockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(1, 1, 1));
@@ -95,16 +91,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
             int targetEntity = event.getEntity();
             playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), event.getNewHealthPoints()));
         });
-    }
-
-    private void addSky(String skyName) {
-        Texture textureWest = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/left.png");
-        Texture textureEast = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/right.png");
-        Texture textureNorth = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/front.png");
-        Texture textureSouth = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/back.png");
-        Texture textureUp = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/up.png");
-        Texture textureDown = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/down.png");
-        mainApplication.getRootNode().attachChild(SkyFactory.createSky(mainApplication.getAssetManager(), textureWest, textureEast, textureNorth, textureSouth, textureUp, textureDown));
     }
 
     @Override
@@ -171,10 +157,10 @@ public class GameAppState extends BaseAppState implements ActionListener {
         AttackPointsComponent attackPointsComponent = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).get();
         MovementPointsComponent movementPointsComponent = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).get();
 
-        GuiAppState guiAppState = getAppState(GuiAppState.class);
-        guiAppState.setCurrentPlayer(activePlayerName);
-        guiAppState.setMP(movementPointsComponent.getMovementPoints());
-        guiAppState.setAP(attackPointsComponent.getAttackPoints());
+        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
+        gameGuiAppState.setCurrentPlayer(activePlayerName);
+        gameGuiAppState.setMP(movementPointsComponent.getMovementPoints());
+        gameGuiAppState.setAP(attackPointsComponent.getAttackPoints());
     }
 
     @Override

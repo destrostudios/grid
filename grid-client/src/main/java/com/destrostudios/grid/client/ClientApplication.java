@@ -1,7 +1,8 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.client.appstates.GameAppState;
-import com.destrostudios.grid.client.appstates.GuiAppState;
+import com.destrostudios.grid.client.appstates.GameGuiAppState;
+import com.destrostudios.grid.client.appstates.MenuAppState;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
@@ -17,7 +18,12 @@ import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
+import com.jme3.texture.Texture;
+import com.jme3.util.SkyFactory;
 import com.jme3.water.WaterFilter;
+import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.style.BaseStyles;
+
 import java.awt.image.BufferedImage;
 
 public class ClientApplication extends SimpleApplication {
@@ -32,10 +38,10 @@ public class ClientApplication extends SimpleApplication {
         settings.setVSync(true);
         settings.setTitle("Grid");
         settings.setIcons(new BufferedImage[]{
-                FileAssets.getImage("textures/icon/16.png"),
-                FileAssets.getImage("textures/icon/32.png"),
-                FileAssets.getImage("textures/icon/64.png"),
-                FileAssets.getImage("textures/icon/128.png")
+            FileAssets.getImage("textures/icon/16.png"),
+            FileAssets.getImage("textures/icon/32.png"),
+            FileAssets.getImage("textures/icon/64.png"),
+            FileAssets.getImage("textures/icon/128.png")
         });
         setShowSettings(false);
         setPauseOnLostFocus(false);
@@ -73,10 +79,29 @@ public class ClientApplication extends SimpleApplication {
         SSAOFilter ssaoFilter = new SSAOFilter(3, 25, 6, 0.1f);
         filterPostProcessor.addFilter(ssaoFilter);
 
-        flyCam.setMoveSpeed(100);
+        addSky("miramar");
+
         flyCam.setEnabled(false);
 
-        stateManager.attach(new GuiAppState());
+        GuiGlobals.initialize(this);
+        BaseStyles.loadGlassStyle();
+        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+
+        stateManager.attach(new MenuAppState());
+    }
+
+    private void addSky(String skyName) {
+        Texture textureWest = assetManager.loadTexture("textures/skies/" + skyName + "/left.png");
+        Texture textureEast = assetManager.loadTexture("textures/skies/" + skyName + "/right.png");
+        Texture textureNorth = assetManager.loadTexture("textures/skies/" + skyName + "/front.png");
+        Texture textureSouth = assetManager.loadTexture("textures/skies/" + skyName + "/back.png");
+        Texture textureUp = assetManager.loadTexture("textures/skies/" + skyName + "/up.png");
+        Texture textureDown = assetManager.loadTexture("textures/skies/" + skyName + "/down.png");
+        rootNode.attachChild(SkyFactory.createSky(assetManager, textureWest, textureEast, textureNorth, textureSouth, textureUp, textureDown));
+    }
+
+    public void startGame() {
+        stateManager.attach(new GameGuiAppState());
         stateManager.attach(new GameAppState(gameProxy));
     }
 
