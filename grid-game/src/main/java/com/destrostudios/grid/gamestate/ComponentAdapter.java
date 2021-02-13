@@ -1,12 +1,22 @@
 package com.destrostudios.grid.gamestate;
 
-import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.AttackPointsComponent;
+import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.components.HealthPointsComponent;
+import com.destrostudios.grid.components.MaxHealthComponent;
+import com.destrostudios.grid.components.MovementPointsComponent;
+import com.destrostudios.grid.components.NameComponent;
+import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.RoundComponent;
+import com.destrostudios.grid.components.TeamComponent;
+import com.destrostudios.grid.components.TreeComponent;
+import com.destrostudios.grid.components.WalkableComponent;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
 import com.destrostudios.grid.components.spells.DamageComponent;
 import com.destrostudios.grid.components.spells.SpellComponent;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Arrays;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class ComponentAdapter extends XmlAdapter<String, Component> {
     public static final String CLASS_SEPERATOR = ":";
@@ -63,7 +73,7 @@ public class ComponentAdapter extends XmlAdapter<String, Component> {
 
     public enum AdapterValues {
         NAME(NameComponent.class),
-        ATTACK_POINTS_COST(AttackPointsComponent.class),
+        ATTACK_POINTS_COST(AttackPointCostComponent.class),
         DAMAGE(DamageComponent.class),
         SPELL(SpellComponent.class),
         POSITION(PositionComponent.class),
