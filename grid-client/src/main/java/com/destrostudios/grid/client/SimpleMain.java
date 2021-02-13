@@ -8,13 +8,12 @@ import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
 public class SimpleMain {
 
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) {
         ClientApplication clientApplication = Main.startApplication((ToolsClient) null, getTestJwt(0));
         GridGame gridGame = new GridGame();
         gridGame.initGame(StartGameInfo.getTestGameInfo());
