@@ -18,8 +18,6 @@
         <version.cubes>f57a9164812a16c628c7d9fd2988a45696b6bbe8</version.cubes>
         <version.grid>0.0.1</version.grid>
         <version.guava>30.1-jre</version.guava>
-        <version.javax.activation>1.1.1</version.javax.activation>
-        <version.jaxb-api>2.3.0</version.jaxb-api>
         <version.jdom>2.0.6</version.jdom>
         <version.jme3>3.2.1-stable</version.jme3>
         <version.junit>4.12</version.junit>
@@ -198,26 +196,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${version.guava}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${version.jaxb-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-core</artifactId>
-                <version>${version.jaxb-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>${version.jaxb-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>${version.javax.activation}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
             <dependency>
