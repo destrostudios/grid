@@ -18,10 +18,7 @@ import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.DamageTakenEvent;
-import com.destrostudios.grid.eventbus.events.Event;
-import com.destrostudios.grid.eventbus.events.PositionChangedEvent;
-import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
+import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -82,7 +79,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         updateVisuals();
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
 
-        gameProxy.addPreHandler(PositionChangedEvent.class, (EventHandler<PositionChangedEvent>) (event, entityWorldSupplier) -> {
+        gameProxy.addPreHandler(MoveEvent.class, (EventHandler<MoveEvent>) (event, entityWorldSupplier) -> {
             int playerEntity = event.getEntity();
             PositionComponent positionComponent = event.getPositionComponent();
             playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
@@ -94,11 +91,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
-        gameProxy.addPreHandler(DamageTakenEvent.class, (EventHandler<DamageTakenEvent>) (event, entityWorldSupplier) -> {
-            int targetEntity = event.getTargetEntity();
-            int health = gameProxy.getGame().getWorld().getComponent(targetEntity, HealthPointsComponent.class).get().getHealth();
-            playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), health - event.getDamage()));
-
+        gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
+            int targetEntity = event.getEntity();
+            playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), event.getNewHealthPoints()));
         });
     }
 

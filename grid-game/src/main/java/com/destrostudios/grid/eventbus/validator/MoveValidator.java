@@ -1,36 +1,28 @@
-package com.destrostudios.grid.eventbus.handler;
+package com.destrostudios.grid.eventbus.validator;
 
 import com.destrostudios.grid.components.*;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
-import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
-import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-public class PositionChangedHandler implements EventHandler<MoveEvent> {
-    private final static Logger logger = Logger.getLogger(PositionChangedHandler.class.getSimpleName());
-
-    private final Eventbus eventbusInstance;
+public class MoveValidator implements EventValidator<MoveEvent> {
 
     @Override
-    public void onEvent(MoveEvent componentUpdateEvent, Supplier<EntityWorld> supplier) {
-        int entity = componentUpdateEvent.entity;
+    public boolean validate(MoveEvent componentUpdateEvent, Supplier<EntityWorld> supplier) {
         EntityWorld entityWorld = supplier.get();
+        int entity = componentUpdateEvent.getEntity();
         PositionComponent newPosition = componentUpdateEvent.getPositionComponent();
-        // update the movementpoints and add new position
-        entityWorld.remove(entity, PositionComponent.class);
-        entityWorld.addComponent(entity, newPosition);
+
+        boolean entityCanMove = entityWorld.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, RoundComponent.class);
+        boolean positionIsFree = isPositionIsFree(entityWorld, newPosition, entity);
+        int neededMovementPoints = getWalkedDistance(entityWorld, componentUpdateEvent);
         int movementPoints = entityWorld.getComponent(entity, MovementPointsComponent.class).get().getMovementPoints();
 
-        logger.info(String.format("Entity %s moved to (%s|%s)", entity, newPosition.getX(), newPosition.getY()));
-        eventbusInstance.registerSubEvents(new MovementPointsChangedEvent(entity, movementPoints - 1));
+        return positionIsFree && entityCanMove && neededMovementPoints == 1 && movementPoints > 0;
     }
 
     private boolean isPositionIsFree(EntityWorld entityWorld, PositionComponent newPosition, int entity) {
@@ -60,5 +52,4 @@ public class PositionChangedHandler implements EventHandler<MoveEvent> {
         PositionComponent updatePositionComponent = componentUpdateEvent.getPositionComponent();
         return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) + Math.abs(updatePositionComponent.getY() - positionComponent.getY());
     }
-
 }

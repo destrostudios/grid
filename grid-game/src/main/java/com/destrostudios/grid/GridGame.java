@@ -11,6 +11,8 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.handler.*;
+import com.destrostudios.grid.eventbus.validator.EventValidator;
+import com.destrostudios.grid.eventbus.validator.MoveValidator;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.serialization.GameStateSerializer;
 import com.destrostudios.grid.serialization.MapLoader;
@@ -81,12 +83,14 @@ public class GridGame {
     }
 
     private void addInstantHandler() {
-        addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(eventBus));
+        addInstantHandler(MoveEvent.class, new PositionChangedHandler(eventBus));
         addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(eventBus));
         addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
         addInstantHandler(AttackPointsChangedEvent.class, new AttackPointsChangedHandler());
-        addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler());
+        addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler(eventBus));
         addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
+        addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler());
+        addValidator(MoveEvent.class, new MoveValidator());
     }
 
 
@@ -113,8 +117,8 @@ public class GridGame {
 
     private void addSpellComponents(int team, int spell) {
         Random rand = new Random();
-        world.addComponent(spell, new AttackPointCostComponent(Math.min(rand.nextInt(10), 1)));
-        world.addComponent(spell, new DamageComponent(Math.min(rand.nextInt(10),1)));
+        world.addComponent(spell, new AttackPointCostComponent(rand.nextInt(10)));
+        world.addComponent(spell, new DamageComponent(rand.nextInt(50)));
         world.addComponent(spell, new NameComponent(team == 1 ? "Destrobomb" : "Etherbeam"));
     }
 
@@ -127,6 +131,14 @@ public class GridGame {
         return world.getWorld();
     }
 
+    public void addValidator(Class<? extends Event> classz, EventValidator<? extends Event> validator) {
+        this.eventBus.addEventValidator(classz, validator);
+    }
+
+    public void removeValidator(Class<? extends Event> classz, EventValidator<? extends Event> validator) {
+        this.eventBus.removeEventValidator(classz, validator);
+    }
+
     public void addInstantHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
         this.eventBus.addInstantHandler(classz, handler);
     }
@@ -137,10 +149,6 @@ public class GridGame {
 
     public void addResolvedHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
         this.eventBus.addResolvedHandler(classz, handler);
-    }
-
-    public void removeInstantHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
-        this.eventBus.removeInstantHandler(eventClass, handler);
     }
 
     public void removePreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {

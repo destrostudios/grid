@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PositionChangedEvent implements Event {
+public class MoveEvent implements Event {
     public final int entity;
     public final PositionComponent positionComponent;
 
