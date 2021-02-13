@@ -1,16 +1,15 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MovementPointsComponent implements Component {
-    private final int movementPoints;
+    private int movementPoints;
 
-    @Override
-    public String toMarshalString() {
-        return MovementPointsComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + movementPoints;
-    }
 }

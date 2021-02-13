@@ -1,6 +1,5 @@
-package com.destrostudios.grid.gamestate;
+package com.destrostudios.grid.serialization;
 
-import com.destrostudios.grid.entities.EntityMap;
 import lombok.Getter;
 import lombok.Setter;
 

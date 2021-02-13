@@ -1,18 +1,16 @@
 package com.destrostudios.grid.components.spells;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AttackPointCostComponent implements Component {
-    private final int attackPointCosts;
+    private int attackPointCosts;
 
-    @Override
-    public String toMarshalString() {
-        return AttackPointCostComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + attackPointCosts;
-    }
 }

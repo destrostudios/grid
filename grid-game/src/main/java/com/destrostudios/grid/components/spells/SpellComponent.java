@@ -1,18 +1,16 @@
 package com.destrostudios.grid.components.spells;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class SpellComponent implements Component {
-    private final int spell;
+    private int spell;
 
-    @Override
-    public String toMarshalString() {
-        return SpellComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + spell;
-    }
 }

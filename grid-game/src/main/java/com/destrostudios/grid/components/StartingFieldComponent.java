@@ -1,7 +1,9 @@
 package com.destrostudios.grid.components;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class WalkableComponent implements Component{
+@Getter
+public class StartingFieldComponent implements Component{
 }

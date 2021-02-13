@@ -1,8 +1,9 @@
 package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.gamestate.GameState;
-import com.destrostudios.grid.gamestate.GameStateConverter;
+import com.destrostudios.grid.serialization.GameState;
+import com.destrostudios.grid.serialization.GameStateSerializer;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.*;
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
+@EqualsAndHashCode
 public class EntityWorld implements EntityData {
     private final static Logger logger = Logger.getGlobal();
 
@@ -26,7 +28,7 @@ public class EntityWorld implements EntityData {
         this.world.clear();
         System.out.println(worldState);
         try {
-            GameState state = GameStateConverter.unmarshal(worldState);
+            GameState state = GameStateSerializer.readGamestate(worldState);
             Map<Integer, List<Component>> entities = state.getWorld().entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getComponents()));
             this.world.putAll(entities);

@@ -11,13 +11,17 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.handler.*;
-import com.destrostudios.grid.gamestate.GameStateConverter;
 import com.destrostudios.grid.preferences.GamePreferences;
+import com.destrostudios.grid.serialization.GameStateSerializer;
+import com.destrostudios.grid.serialization.MapLoader;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 
-import javax.xml.bind.JAXBException;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,8 +32,8 @@ public class GridGame {
     // TODO: 09.02.2021 should not be hardcoded
     private final static int MAX_HEALTH = 100;
     private final static int STARTING_TEAM = 1;
-    private final static int MAP_X = 16;
-    private final static int MAP_Y = 16;
+    public final static int MAP_X = 16;
+    public final static int MAP_Y = 16;
     public final static int MAX_MP = 10;
     public final static int MAX_AP = 10;
 
@@ -46,15 +50,23 @@ public class GridGame {
     }
 
     public void initGame(StartGameInfo startGameInfo) {
+        world.getWorld().putAll(MapLoader.readMap());
+        List<Integer> startingEntities = world.list(WalkableComponent.class, StartingFieldComponent.class);
+        Random rand = new Random();
         for (PlayerInfo playerInfo : startGameInfo.getTeam1()) {
-            addPlayer(playerInfo.getLogin(), 1);
+            int random = rand.nextInt(startingEntities.size());
+            Integer startEntity = startingEntities.get(random);
+            startingEntities.remove(random);
+            addPlayer(playerInfo.getLogin(), 1, world.getComponent(startEntity, PositionComponent.class).get());
         }
         for (PlayerInfo playerInfo : startGameInfo.getTeam2()) {
-            addPlayer(playerInfo.getLogin(), 2);
+            int random = rand.nextInt(startingEntities.size());
+            Integer startEntity = startingEntities.get(random);
+            addPlayer(playerInfo.getLogin(), 2, world.getComponent(startEntity, PositionComponent.class).get());
         }
         addInstantHandler();
-        initMap();
     }
+
 
     public void registerEvent(Event event) {
         this.eventBus.registerMainEvents(event);
@@ -69,8 +81,6 @@ public class GridGame {
     }
 
     private void addInstantHandler() {
-//        this.addListener(new RoundUpdateListener());
-//        this.addListener(new PositionUpdateListener());
         addInstantHandler(PositionChangedEvent.class, new PositionChangedHandler(eventBus));
         addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(eventBus));
         addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
@@ -79,42 +89,17 @@ public class GridGame {
         addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
     }
 
-    private void initMap() {
-        for (int x = 0; x < MAP_X; x++) {
-            for (int y = 0; y < MAP_Y; y++) {
-                int fieldComponent = world.createEntity();
-                int finalX = x;
-                int finalY = y;
-                boolean isFree = world.listComponents(PositionComponent.class).stream()
-                        .noneMatch(positionComponent -> positionComponent.getX() == finalX && positionComponent.getY() == finalY);
-                if (!isFree || Math.random() > 0.2) {
-                    // add walkable component
-                    world.addComponent(fieldComponent, new WalkableComponent());
-                    world.addComponent(fieldComponent, new PositionComponent(x, y));
 
-                } else if (Math.random() < 0.1) {
-                    // add tree component
-                    world.addComponent(fieldComponent, new WalkableComponent());
-                    world.addComponent(fieldComponent, new PositionComponent(x, y));
-                    int treeComponent = world.createEntity();
-                    world.addComponent(treeComponent, new PositionComponent(x, y));
-                    world.addComponent(treeComponent, new TreeComponent());
-                }
-            }
-        }
-    }
-
-    private void addPlayer(String name, int team) {
+    private void addPlayer(String name, int team, PositionComponent positionComponent) {
         int spell = world.createEntity();
         addSpellComponents(team, spell);
 
         int playerEntity = world.createEntity();
-        PositionComponent component = new PositionComponent((int) (gamePreferences.getMapSizeX() * Math.random()),
-                (int) (gamePreferences.getMapSizeY() * Math.random()));
-        world.addComponent(playerEntity, component);
+        world.addComponent(playerEntity, positionComponent);
         world.addComponent(playerEntity, new MovementPointsComponent(MAX_MP));
         world.addComponent(playerEntity, new AttackPointsComponent(MAX_AP));
         world.addComponent(playerEntity, new PlayerComponent());
+        world.addComponent(playerEntity, new ObstacleComponent());
         world.addComponent(playerEntity, new NameComponent(name));
         world.addComponent(playerEntity, new TeamComponent(team));
         world.addComponent(playerEntity, new HealthPointsComponent(MAX_HEALTH));
@@ -127,14 +112,19 @@ public class GridGame {
     }
 
     private void addSpellComponents(int team, int spell) {
-        world.addComponent(spell, new AttackPointCostComponent(Math.min((int) (Math.random() * 10), 1)));
-        world.addComponent(spell, new DamageComponent((int) (Math.random() * 50) + 1));
+        Random rand = new Random();
+        world.addComponent(spell, new AttackPointCostComponent(Math.min(rand.nextInt(10), 1)));
+        world.addComponent(spell, new DamageComponent(Math.min(rand.nextInt(10),1)));
         world.addComponent(spell, new NameComponent(team == 1 ? "Destrobomb" : "Etherbeam"));
     }
 
     public void intializeGame(String gameState) {
         world.initializeWorld(gameState);
         addInstantHandler();
+    }
+
+    public Map<Integer, List<Component>> getComponents() {
+        return world.getWorld();
     }
 
     public void addInstantHandler(Class<? extends Event> classz, EventHandler<? extends Event> handler) {
@@ -171,11 +161,12 @@ public class GridGame {
 
     public String getState() {
         try {
-            return GameStateConverter.marshal(world);
-        } catch (JAXBException e) {
+            return GameStateSerializer.getGamestateString(world);
+        } catch (JsonProcessingException e) {
             logger.log(Level.WARNING, e, () -> "Couldn´t marshal game state!");
         }
         return "";
     }
+
 
 }

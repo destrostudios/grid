@@ -1,4 +1,4 @@
-package com.destrostudios.grid.gamestate;
+package com.destrostudios.grid.serialization;
 
 import com.destrostudios.grid.components.Component;
 import java.util.ArrayList;

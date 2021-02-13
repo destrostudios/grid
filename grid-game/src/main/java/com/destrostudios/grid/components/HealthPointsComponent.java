@@ -1,16 +1,15 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class HealthPointsComponent implements Component {
-    private final int health;
+    private  int health;
 
-    @Override
-    public String toMarshalString() {
-        return HealthPointsComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + health;
-    }
 }

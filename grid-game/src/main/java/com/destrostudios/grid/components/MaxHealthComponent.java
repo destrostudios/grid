@@ -1,16 +1,15 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MaxHealthComponent implements Component {
-    private final int maxHealth;
+    private int maxHealth;
 
-    @Override
-    public String toMarshalString() {
-        return MaxHealthComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + maxHealth;
-    }
 }

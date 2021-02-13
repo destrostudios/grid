@@ -1,17 +1,16 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.gamestate.ComponentAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class TeamComponent implements Component {
-    private final int team;
+    private int team;
 
-    @Override
-    public String toMarshalString() {
-        return TeamComponent.class.getSimpleName() + ComponentAdapter.CLASS_SEPERATOR + team;
-    }
 }

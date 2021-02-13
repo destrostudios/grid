@@ -1,11 +1,8 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.gamestate.ComponentAdapter;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@Getter
+@NoArgsConstructor
 public class PlayerComponent implements Component {
 }
 
