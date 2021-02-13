@@ -5,7 +5,6 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
-import com.destrostudios.grid.network.messages.Identify;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.shared.modules.game.GameService;
 import com.destrostudios.turnbasedgametools.network.shared.modules.game.NetworkRandom;
@@ -24,8 +23,6 @@ public class NetworkGridService implements GameService<GridGame, Action> {
 
     @Override
     public void initialize(Kryo kryo) {
-        kryo.register(Identify.class);// TODO: this belongs into an identify network-module
-
         kryo.register(GridGame.class, new Serializer<GridGame>() {
             @Override
             public void write(Kryo kryo, Output output, GridGame object) {

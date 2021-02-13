@@ -22,11 +22,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.destrostudios</groupId>
-            <artifactId>auth-token</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
