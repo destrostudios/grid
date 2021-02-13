@@ -55,16 +55,16 @@ public class Main {
         jwtModule.login(jwt);
 
         for (int i = 0; i < 10; i++) {
-            if (!gameModule.getGames().isEmpty()) {
+            if (!gameModule.getJoinedGames().isEmpty()) {
                 break;
             }
             System.out.println("No games available, waiting...");
             Thread.sleep(500);
         }
-        if (gameModule.getGames().isEmpty()) {
+        if (gameModule.getJoinedGames().isEmpty()) {
             throw new RuntimeException("No game found, is the server running?");
         }
-        UUID gameId = gameModule.getGames().iterator().next().getId();
+        UUID gameId = gameModule.getJoinedGames().iterator().next().getId();
         JwtAuthentication authentication = new NoValidateJwtService().decode(jwt);
         return new ClientGameProxy(gameId, new PlayerInfo((int) authentication.user.id, authentication.user.login), gameModule);
     }

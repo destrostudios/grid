@@ -9,12 +9,11 @@ import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
-import lombok.AllArgsConstructor;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ClientGameProxy implements GameProxy {
@@ -55,7 +54,7 @@ public class ClientGameProxy implements GameProxy {
 
     @Override
     public GridGame getGame() {
-        return client.getGame(gameId).getState();
+        return client.getJoinedGame(gameId).getState();
     }
 
     @Override
