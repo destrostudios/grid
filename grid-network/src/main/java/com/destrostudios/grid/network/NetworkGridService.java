@@ -5,6 +5,7 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
+import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.shared.modules.game.GameService;
 import com.destrostudios.turnbasedgametools.network.shared.modules.game.NetworkRandom;
@@ -12,6 +13,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import java.util.LinkedList;
 
 public class NetworkGridService implements GameService<GridGame, Action, StartGameInfo> {
 
@@ -39,7 +41,10 @@ public class NetworkGridService implements GameService<GridGame, Action, StartGa
         kryo.register(PositionUpdateAction.class);
         kryo.register(SkipRoundAction.class);
         kryo.register(CastSpellAction.class);
+
         kryo.register(StartGameInfo.class);
+        kryo.register(PlayerInfo.class);
+        kryo.register(LinkedList.class);// used by StartGameInfo
     }
 
     @Override
