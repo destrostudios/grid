@@ -3,6 +3,7 @@ package com.destrostudios.grid.eventbus;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.eventbus.handler.TriggeredEventHandler;
 import com.destrostudios.grid.eventbus.validator.EventValidator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -71,6 +72,12 @@ public class Eventbus {
      */
     public void registerSubEvents(Event... subevents) {
         for (Event event : Lists.reverse(List.of(subevents))) {
+            calculateHandlerForEvent(event, true);
+        }
+    }
+
+    public void registerSubEvents(List<Event> subevents) {
+        for (Event event : Lists.reverse(subevents)) {
             calculateHandlerForEvent(event, true);
         }
     }

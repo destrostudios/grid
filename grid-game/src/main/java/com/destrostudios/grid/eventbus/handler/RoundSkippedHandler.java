@@ -1,12 +1,15 @@
 package com.destrostudios.grid.eventbus.handler;
 
 import com.destrostudios.grid.GridGame;
-import com.destrostudios.grid.components.AttackPointsComponent;
-import com.destrostudios.grid.components.MovementPointsComponent;
-import com.destrostudios.grid.components.PlayerComponent;
-import com.destrostudios.grid.components.RoundComponent;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.character.RoundComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
+import com.destrostudios.grid.eventbus.events.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 import lombok.AllArgsConstructor;
@@ -24,11 +27,13 @@ public class RoundSkippedHandler implements EventHandler<RoundSkippedEvent> {
     private final Eventbus instance;
 
     private void resetBattleComponents(int playerEntity, EntityWorld entityWorld) {
+        Optional<MaxAttackPointsComponent> maxAp = entityWorld.getComponent(playerEntity, MaxAttackPointsComponent.class);
+        Optional<MaxMovementPointsComponent> maxMp = entityWorld.getComponent(playerEntity, MaxMovementPointsComponent.class);
         entityWorld.remove(playerEntity, AttackPointsComponent.class);
         entityWorld.remove(playerEntity, MovementPointsComponent.class);
         entityWorld.remove(playerEntity, RoundComponent.class);
-        entityWorld.addComponent(playerEntity, new MovementPointsComponent(GridGame.MAX_MP));
-        entityWorld.addComponent(playerEntity, new AttackPointsComponent(GridGame.MAX_MP));
+        entityWorld.addComponent(playerEntity, new MovementPointsComponent(maxMp.get().getMaxMovenemtPoints()));
+        entityWorld.addComponent(playerEntity, new AttackPointsComponent(maxAp.get().getMaxAttackPoints()));
     }
 
 
@@ -52,9 +57,16 @@ public class RoundSkippedHandler implements EventHandler<RoundSkippedEvent> {
                     .findFirst();
             int nextActivePlayerEntity = newActivePlayer.orElse(activePlayerEntity);
             resetBattleComponents(activePlayerEntity, entityWorld);
+
+            Optional<MaxAttackPointsComponent> maxAp = entityWorld.getComponent(activePlayerEntity, MaxAttackPointsComponent.class);
+            Optional<MaxMovementPointsComponent> maxMp = entityWorld.getComponent(activePlayerEntity, MaxMovementPointsComponent.class);
+
+            entityWorld.remove(activePlayerEntity, RoundComponent.class);
+
             entityWorld.addComponent(nextActivePlayerEntity, new RoundComponent());
             logger.info(String.format("Switched activen round from player %s to player %s", activePlayerEntity, nextActivePlayerEntity));
-            instance.registerSubEvents(new MovementPointsChangedEvent(event.getEntity(), GridGame.MAX_MP));
+            instance.registerSubEvents(new MovementPointsChangedEvent(event.getEntity(), maxMp.get().getMaxMovenemtPoints()),
+                    new AttackPointsChangedEvent(event.getEntity(),maxAp.get().getMaxAttackPoints()));
         }
     }
 

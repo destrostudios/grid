@@ -1,6 +1,11 @@
 package com.destrostudios.grid.eventbus.validator;
 
-import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.TreeComponent;
+import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
 

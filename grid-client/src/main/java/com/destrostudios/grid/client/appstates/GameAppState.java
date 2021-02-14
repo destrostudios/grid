@@ -15,7 +15,12 @@ import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.models.ModelObject;
-import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.TreeComponent;
+import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.*;
@@ -39,6 +44,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class GameAppState extends BaseAppState implements ActionListener {
 
@@ -218,20 +224,24 @@ public class GameAppState extends BaseAppState implements ActionListener {
     public void onButtonClicked(int buttonIndex) {
         if (buttonIndex == 0) {
             trySkipRound();
-        } else if (buttonIndex == 1) {
-            tryCastSpell();
+        } else if (buttonIndex >= 1 && buttonIndex <= 6) {
+            tryCastSpell(buttonIndex);
         }
     }
 
-    private void tryCastSpell() {
+    private void tryCastSpell(int spellIndex) {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (playerEntity != null) {
             EntityWorld world = gameProxy.getGame().getWorld();
-            Optional<SpellComponent> component = world.getComponent(playerEntity, SpellComponent.class);
+            List<SpellComponent> spells = world.getComponents(playerEntity).stream()
+                    .filter(c -> c instanceof SpellComponent)
+                    .map(c -> (SpellComponent) c)
+                    .collect(Collectors.toList());
+
             Optional<Integer> targetEntity = world.list(PlayerComponent.class).stream()
                     .filter(e -> !world.hasComponents(e, RoundComponent.class))
                     .findFirst();
-            int spell = component.get().getSpell();
+            int spell = spells.get(spellIndex).getSpell();
             gameProxy.requestAction(new CastSpellAction(targetEntity.get(), Integer.toString(playerEntity), spell));
         }
     }

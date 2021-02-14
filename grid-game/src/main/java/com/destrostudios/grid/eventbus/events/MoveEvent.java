@@ -1,6 +1,6 @@
 package com.destrostudios.grid.eventbus.events;
 
-import com.destrostudios.grid.components.PositionComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -1,8 +1,8 @@
 package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.serialization.GameState;
-import com.destrostudios.grid.serialization.GameStateSerializer;
+import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
+import com.destrostudios.grid.serialization.container.GameStateContainer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -28,10 +28,8 @@ public class EntityWorld implements EntityData {
         this.world.clear();
         System.out.println(worldState);
         try {
-            GameState state = GameStateSerializer.readGamestate(worldState);
-            Map<Integer, List<Component>> entities = state.getWorld().entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getComponents()));
-            this.world.putAll(entities);
+            GameStateContainer state = ComponentsContainerSerializer.readContainerAsJson(worldState, GameStateContainer.class);
+            this.world.putAll(state.getComponents());
         } catch (Exception e) {
             logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
         }
@@ -120,7 +118,6 @@ public class EntityWorld implements EntityData {
     @Override
     public void addComponent(int entity, Component component) {
         if (component != null) {
-            remove(entity, component.getClass());
             List<Component> components = world.computeIfAbsent(entity, (e) -> new ArrayList<>());
             components.add(component);
         }

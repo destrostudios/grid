@@ -1,7 +1,13 @@
 package com.destrostudios.grid.components;
 
+import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.character.TeamComponent;
+import com.destrostudios.grid.components.map.*;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
 import com.destrostudios.grid.components.spells.DamageComponent;
+import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
 import com.destrostudios.grid.components.spells.SpellComponent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,6 +31,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = TreeComponent.class, name = "tree"),
         @JsonSubTypes.Type(value = WalkableComponent.class, name = "wkbl"),
         @JsonSubTypes.Type(value = ObstacleComponent.class, name = "osbl"),
+        @JsonSubTypes.Type(value = MovementPointsCostComponent.class, name = "mpc"),
+        @JsonSubTypes.Type(value = MaxAttackPointsComponent.class, name = "maxap"),
+        @JsonSubTypes.Type(value = MaxMovementPointsComponent.class, name = "maxmp"),
         @JsonSubTypes.Type(value = StartingFieldComponent.class, name = "start")
 })
 public interface Component {

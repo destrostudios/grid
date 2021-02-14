@@ -1,4 +1,4 @@
-package com.destrostudios.grid.eventbus;
+package com.destrostudios.grid.eventbus.handler;
 
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;

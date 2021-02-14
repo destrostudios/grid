@@ -2,8 +2,8 @@ package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.components.NameComponent;
-import com.destrostudios.grid.components.PlayerComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;

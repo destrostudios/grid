@@ -23,7 +23,7 @@ public class StartGameInfo {
         team2.add(new PlayerInfo(2, "Etherblood"));
         startGameInfo.team2 = team2;
 
-        startGameInfo.mapName = "bestMapEver";
+        startGameInfo.mapName = "DestroMap";
 
         return startGameInfo;
     }

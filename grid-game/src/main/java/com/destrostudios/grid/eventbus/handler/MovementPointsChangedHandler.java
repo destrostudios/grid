@@ -1,6 +1,6 @@
 package com.destrostudios.grid.eventbus.handler;
 
-import com.destrostudios.grid.components.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;

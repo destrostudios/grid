@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components;
+package com.destrostudios.grid.eventbus.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MaxHealthComponent implements Component {
-    private int maxHealth;
-
+public class MaxHealPointsChangedEvent implements Event {
+    private int entity;
+    private int maxHealtPoints;
 }

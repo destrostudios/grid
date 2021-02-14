@@ -3,9 +3,16 @@ package com.destrostudios.grid;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.ActionDispatcher;
 import com.destrostudios.grid.actions.ActionNotAllowedException;
-import com.destrostudios.grid.components.*;
+import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.character.TeamComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.StartingFieldComponent;
+import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
-import com.destrostudios.grid.components.spells.DamageComponent;
+import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
 import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
@@ -13,32 +20,34 @@ import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.handler.*;
 import com.destrostudios.grid.eventbus.validator.EventValidator;
 import com.destrostudios.grid.eventbus.validator.MoveValidator;
+import com.destrostudios.grid.eventbus.validator.SpellCastedValidator;
 import com.destrostudios.grid.preferences.GamePreferences;
-import com.destrostudios.grid.serialization.GameStateSerializer;
-import com.destrostudios.grid.serialization.MapLoader;
+import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
+import com.destrostudios.grid.serialization.container.CharacterContainer;
+import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Getter
 public class GridGame {
-    private final static Logger logger = Logger.getGlobal();
-
     // TODO: 09.02.2021 should not be hardcoded
-    private final static int MAX_HEALTH = 100;
-    private final static int STARTING_TEAM = 1;
+    public final static int MAX_HEALTH = 1000;
+    public final static int STARTING_TEAM = 1;
     public final static int MAP_X = 16;
     public final static int MAP_Y = 16;
-    public final static int MAX_MP = 10;
-    public final static int MAX_AP = 10;
-
+    public final static int MAX_MP = 15;
+    public final static int MAX_AP = 15;
+    private final static Logger logger = Logger.getGlobal();
     private final GamePreferences gamePreferences;
     private final EntityWorld world;
     private final Eventbus eventBus;
@@ -52,21 +61,80 @@ public class GridGame {
     }
 
     public void initGame(StartGameInfo startGameInfo) {
-        world.getWorld().putAll(MapLoader.readMap());
+        world.getWorld().putAll(initMap(startGameInfo.getMapName()).getComponents());
+
         List<Integer> startingEntities = world.list(WalkableComponent.class, StartingFieldComponent.class);
         Random rand = new Random();
         for (PlayerInfo playerInfo : startGameInfo.getTeam1()) {
-            int random = rand.nextInt(startingEntities.size());
-            Integer startEntity = startingEntities.get(random);
-            startingEntities.remove(random);
-            addPlayer(playerInfo.getLogin(), 1, world.getComponent(startEntity, PositionComponent.class).get());
+            initTeam(startingEntities, rand, playerInfo, 1);
         }
         for (PlayerInfo playerInfo : startGameInfo.getTeam2()) {
-            int random = rand.nextInt(startingEntities.size());
-            Integer startEntity = startingEntities.get(random);
-            addPlayer(playerInfo.getLogin(), 2, world.getComponent(startEntity, PositionComponent.class).get());
+            initTeam(startingEntities, rand, playerInfo, 2);
         }
         addInstantHandler();
+    }
+
+    private void initTeam(List<Integer> startingEntities, Random rand, PlayerInfo playerInfo, int team) {
+        int playerEntity = world.createEntity();
+
+        CharacterContainer characterContainer = initCharacter(playerInfo.getLogin());
+        addComponentsForCharacter(playerEntity, characterContainer);
+
+        Integer startEntity = startingEntities.remove(rand.nextInt(startingEntities.size()));
+        PositionComponent startingPosition = world.getComponent(startEntity, PositionComponent.class).get();
+        if (team == 1) {
+            world.addComponent(playerEntity, new RoundComponent());
+        }
+        world.addComponent(playerEntity, new TeamComponent(team));
+        world.addComponent(playerEntity, new PositionComponent(startingPosition.getX(), startingPosition.getY()));
+    }
+
+    private void addComponentsForCharacter(int playerEntity, CharacterContainer characterContainer) {
+        for (Map.Entry<Integer, List<Component>> spellComponentEntry : getSpellComponents(characterContainer).entrySet()) {
+            int spell = world.createEntity();
+            spellComponentEntry.getValue().forEach(c -> world.addComponent(spell, c));
+            world.addComponent(playerEntity, new SpellComponent(spell));
+        }
+        for (Component playerComponent : getPlayerComponentsWithoutSpells(characterContainer)) {
+            world.addComponent(playerEntity, playerComponent);
+        }
+    }
+
+    public List<Component> getPlayerComponentsWithoutSpells(CharacterContainer characterContainer) {
+        return characterContainer.getComponents().entrySet().stream()
+                .filter(e -> e.getValue().stream().anyMatch(c -> c instanceof PlayerComponent))
+                .flatMap(e -> e.getValue().stream())
+                .filter(c -> !(c instanceof SpellComponent))
+                .collect(Collectors.toList());
+    }
+
+    public Map<Integer, List<Component>> getSpellComponents(CharacterContainer characterContainer) {
+        return characterContainer.getComponents().entrySet().stream() // TODO: 14.02.2021 refactoring
+                .filter(e -> e.getValue().stream().anyMatch(c -> c instanceof AttackPointCostComponent
+                        || c instanceof MovementPointsCostComponent))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private MapContainer initMap(String mapName) {
+        MapContainer destroMap;
+        try {
+            destroMap = ComponentsContainerSerializer.readSeriazableFromRessources(mapName, MapContainer.class);
+        } catch (IOException e) {
+            destroMap = new MapContainer();
+            logger.warning("Error reading file " + mapName + " from ressources");
+        }
+        return destroMap;
+    }
+
+    private CharacterContainer initCharacter(String characterName) {
+        CharacterContainer characterContainer;
+        try {
+            characterContainer = ComponentsContainerSerializer.readSeriazableFromRessources(characterName, CharacterContainer.class);
+        } catch (IOException e) {
+            characterContainer = new CharacterContainer();
+            logger.warning("Error reading file " + characterName + " from ressources");
+        }
+        return characterContainer;
     }
 
 
@@ -90,36 +158,9 @@ public class GridGame {
         addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler(eventBus));
         addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
         addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler());
+        addInstantHandler(MaxHealPointsChangedEvent.class, new MaxHealtPointsChangedHandler());
         addValidator(MoveEvent.class, new MoveValidator());
-    }
-
-
-    private void addPlayer(String name, int team, PositionComponent positionComponent) {
-        int spell = world.createEntity();
-        addSpellComponents(team, spell);
-
-        int playerEntity = world.createEntity();
-        world.addComponent(playerEntity, positionComponent);
-        world.addComponent(playerEntity, new MovementPointsComponent(MAX_MP));
-        world.addComponent(playerEntity, new AttackPointsComponent(MAX_AP));
-        world.addComponent(playerEntity, new PlayerComponent());
-        world.addComponent(playerEntity, new ObstacleComponent());
-        world.addComponent(playerEntity, new NameComponent(name));
-        world.addComponent(playerEntity, new TeamComponent(team));
-        world.addComponent(playerEntity, new HealthPointsComponent(MAX_HEALTH));
-        world.addComponent(playerEntity, new MaxHealthComponent(MAX_HEALTH));
-        world.addComponent(playerEntity, new SpellComponent(spell));
-
-        if (team == STARTING_TEAM) {
-            world.addComponent(playerEntity, new RoundComponent());
-        }
-    }
-
-    private void addSpellComponents(int team, int spell) {
-        Random rand = new Random();
-        world.addComponent(spell, new AttackPointCostComponent(rand.nextInt(10)));
-        world.addComponent(spell, new DamageComponent(rand.nextInt(50)));
-        world.addComponent(spell, new NameComponent(team == 1 ? "Destrobomb" : "Etherbeam"));
+        addValidator(SpellCastedEvent.class, new SpellCastedValidator());
     }
 
     public void intializeGame(String gameState) {
@@ -169,7 +210,7 @@ public class GridGame {
 
     public String getState() {
         try {
-            return GameStateSerializer.getGamestateString(world);
+            return ComponentsContainerSerializer.getContainerAsJson(world);
         } catch (JsonProcessingException e) {
             logger.log(Level.WARNING, e, () -> "Couldn´t marshal game state!");
         }

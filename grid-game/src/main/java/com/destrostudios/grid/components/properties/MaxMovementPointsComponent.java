@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components.spells;
+package com.destrostudios.grid.components.properties;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AllArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpellComponent implements Component {
-    private int spell;
+public class MaxMovementPointsComponent implements Component {
+    private int maxMovenemtPoints;
 }

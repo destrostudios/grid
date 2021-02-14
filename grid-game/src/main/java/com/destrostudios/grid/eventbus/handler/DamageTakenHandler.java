@@ -1,6 +1,6 @@
 package com.destrostudios.grid.eventbus.handler;
 
-import com.destrostudios.grid.components.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.DamageTakenEvent;
@@ -18,6 +18,6 @@ public class DamageTakenHandler implements EventHandler<DamageTakenEvent> {
     @Override
     public void onEvent(DamageTakenEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         Optional<HealthPointsComponent> component = entityWorldSupplier.get().getComponent(event.getTargetEntity(), HealthPointsComponent.class);
-        eventbus.registerSubEvents(new HealthPointsChangedEvent(event.getTargetEntity(), component.get().getHealth() - event.getDamage()));
+        eventbus.registerSubEvents(new HealthPointsChangedEvent(event.getTargetEntity(), Math.max(0, component.get().getHealth() - event.getDamage())));
     }
 }

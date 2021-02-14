@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpellComponent implements Component {
-    private int spell;
+public class MovementPointsCostComponent implements Component {
+    private int movementPointsCost;
 }
