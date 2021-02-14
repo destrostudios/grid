@@ -2,6 +2,9 @@ package com.destrostudios.grid.client.appstates;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
+import com.destrostudios.grid.shared.PlayerInfo;
+import com.destrostudios.grid.shared.StartGameInfo;
+import com.destrostudios.turnbasedgametools.network.client.modules.game.ClientGameData;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
 import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
 import com.jme3.app.Application;
@@ -19,6 +22,7 @@ import com.simsilica.lemur.HAlignment;
 import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Label;
 import com.simsilica.lemur.VAlignment;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -109,6 +113,7 @@ public class MenuAppState extends BaseAppState {
         super.update(tpf);
         updatePlayersContainer();
         updateGamesContainer();
+        checkIfJoinedGame();
     }
 
     private void updatePlayersContainer() {
@@ -116,7 +121,21 @@ public class MenuAppState extends BaseAppState {
         List<JwtAuthenticationUser> players = jwtClientModule.getOnlineUsers();
 
         updateButtons(buttonContainerPlayers, buttonsPlayers, players, player -> player.id, player -> player.login, player -> {
-            System.out.println("Start game with player '" + player.login + " (#" + player.id + ")");
+            StartGameInfo startGameInfo = new StartGameInfo();
+            PlayerInfo player1 = mainApplication.getPlayerInfo();
+            PlayerInfo player2 = new PlayerInfo(player.id, player.login);
+            LinkedList<PlayerInfo> team1 = new LinkedList<>();
+            LinkedList<PlayerInfo> team2 = new LinkedList<>();
+            team1.add(player1);
+            team2.add(player2);
+            startGameInfo.setTeam1(team1);
+            startGameInfo.setTeam2(team2);
+            String[] mapNames = new String[] { "DestroMap", "EtherMap", "IceMap" };
+            String mapName = mapNames[(int) (Math.random() * mapNames.length)];
+            startGameInfo.setMapName(mapName);
+
+            GameClientModule gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
+            gameClientModule.startNewGame(startGameInfo);
         });
     }
 
@@ -124,10 +143,7 @@ public class MenuAppState extends BaseAppState {
         GameClientModule<?, ?, ?> gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
         Set<UUID> games = gameClientModule.getGamesList();
 
-        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), UUID::toString, gameUUID -> {
-            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), mainApplication.getToolsClient().getModule(GameClientModule.class));
-            mainApplication.startGame(clientGameProxy);
-        });
+        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), UUID::toString, gameClientModule::join);
     }
 
     private <K, O> void updateButtons(Container buttonContainer, HashMap<K, Button> buttons, Collection<O> objects, Function<O, K> getKey, Function<O, String> getText, Consumer<O> action) {
@@ -162,6 +178,16 @@ public class MenuAppState extends BaseAppState {
         button.setTextVAlignment(VAlignment.Center);
         button.setFontSize(20);
         return button;
+    }
+
+    private void checkIfJoinedGame() {
+        GameClientModule gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
+        List<ClientGameData<?, ?, ?>> joinedGames = gameClientModule.getJoinedGames();
+        if (joinedGames.size() > 0) {
+            UUID gameUUID = joinedGames.get(0).getId();
+            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), mainApplication.getToolsClient().getModule(GameClientModule.class));
+            mainApplication.startGame(clientGameProxy);
+        }
     }
 
     @Override

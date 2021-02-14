@@ -8,14 +8,11 @@ import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.server.ToolsServer;
 import com.destrostudios.turnbasedgametools.network.server.modules.game.GameServerModule;
-import com.destrostudios.turnbasedgametools.network.server.modules.game.ServerGameData;
 import com.destrostudios.turnbasedgametools.network.server.modules.jwt.JwtServerModule;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
-import com.destrostudios.turnbasedgametools.network.shared.modules.NetworkModule;
-import com.destrostudios.turnbasedgametools.network.shared.modules.jwt.messages.Login;
-import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
+
 import java.io.IOException;
 
 public class Main {
@@ -30,21 +27,9 @@ public class Main {
         Server kryoServer = new Server(10_000_000, 10_000_000);
         GameServerModule<GridGame, Action, StartGameInfo> gameModule = new GameServerModule<>(gameService, kryoServer::getConnections);
         JwtServerModule jwtModule = new JwtServerModule(jwtService, kryoServer::getConnections);
-        NetworkModule loginAutoJoinModule = new NetworkModule() {
-
-            @Override
-            public void received(Connection connection, Object object) {
-                if (object instanceof Login) {
-                    for (ServerGameData<GridGame> game : gameModule.getGames()) {
-                        gameModule.join(connection, game.id);
-                    }
-                }
-            }
-        };
-        ToolsServer server = new ToolsServer(kryoServer, gameModule, jwtModule, loginAutoJoinModule);
+        ToolsServer server = new ToolsServer(kryoServer, gameModule, jwtModule);
         server.start(NetworkUtil.PORT);
 
-        gameModule.startNewGame(StartGameInfo.getTestGameInfo());
         System.out.println("Server started.");
     }
 }

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerInfo {
-    private int id;
+    private long id;
     private String login;
 }

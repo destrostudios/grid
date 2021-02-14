@@ -224,7 +224,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
     public void onButtonClicked(int buttonIndex) {
         if (buttonIndex == 0) {
             trySkipRound();
-        } else if (buttonIndex >= 1 && buttonIndex <= 6) {
+        } else if (buttonIndex >= 1 && buttonIndex <= 5) {
             tryCastSpell(buttonIndex);
         }
     }

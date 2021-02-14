@@ -1,11 +1,13 @@
 package com.destrostudios.grid.shared;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Getter
+@Setter
 public class StartGameInfo {
 
     private List<PlayerInfo> team1;
