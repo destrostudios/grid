@@ -39,11 +39,11 @@ public class ComponentsContainerSerializer {
 //        generateAndSaveMap("IceMap");
 //    }
 
-    public static void main(String[] args) throws JsonProcessingException {
-        generateAndSaveCharacter("destroflyer");
-        generateAndSaveCharacter("Etherblood");
-        generateAndSaveCharacter("Icecold");
-    }
+//    public static void main(String[] args) throws JsonProcessingException {
+//        generateAndSaveCharacter("destroflyer");
+//        generateAndSaveCharacter("Etherblood");
+//        generateAndSaveCharacter("Icecold");
+//    }
 
     public static <E extends ComponentsContainer> E readContainerAsJson(String gameState, Class<E> classz) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
