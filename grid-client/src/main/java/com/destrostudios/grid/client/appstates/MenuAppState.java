@@ -113,7 +113,7 @@ public class MenuAppState extends BaseAppState {
 
     private void updatePlayersContainer() {
         JwtClientModule jwtClientModule = mainApplication.getToolsClient().getModule(JwtClientModule.class);
-        List<JwtAuthenticationUser> players = jwtClientModule.onlineUsers();
+        List<JwtAuthenticationUser> players = jwtClientModule.getOnlineUsers();
 
         updateButtons(buttonContainerPlayers, buttonsPlayers, players, player -> player.id, player -> player.login, player -> {
             System.out.println("Start game with player '" + player.login + " (#" + player.id + ")");
