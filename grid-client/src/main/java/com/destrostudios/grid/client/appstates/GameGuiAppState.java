@@ -1,80 +1,156 @@
 package com.destrostudios.grid.client.appstates;
 
+import com.destrostudios.grid.client.gui.GuiSpell;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.*;
 import com.simsilica.lemur.component.SpringGridLayout;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
+import java.util.List;
+
 public class GameGuiAppState extends BaseAppState {
 
-    private Label lblCurrentPlayer;
-    private Label lblMP;
-    private Label lblAP;
+    private int barMarginX = 100;
+    private int barMarginBottom = 50;
+    private int barHeight = 80;
+    private int barY = (barMarginBottom + barHeight);
+    private int leftAndRightPartWidth = 250;
+
+    private int totalWidth;
+    private int totalHeight;
+
+    private Label lblActivePlayerName;
+    private Label lblActivePlayerMP;
+    private Label lblActivePlayerAP;
+    private Node currentPlayerNode;
+
+    private Label lblOwnPlayerHealth;
+    private Label lblOwnPlayerMP;
+    private Label lblOwnPlayerAP;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
 
         AppSettings appSettings = mainApplication.getContext().getSettings();
-        int totalWidth = appSettings.getWidth();
-        int totalHeight = appSettings.getHeight();
-
-        // Labels
+        totalWidth = appSettings.getWidth();
+        totalHeight = appSettings.getHeight();
 
         int labelsMargin = 30;
-
         Container containerLabels = new Container();
         containerLabels.setLocalTranslation(labelsMargin, totalHeight - labelsMargin, 0);
         TbtQuadBackgroundComponent containerLabelsBackground = (TbtQuadBackgroundComponent) containerLabels.getBackground();
         containerLabelsBackground.setMargin(20, 10);
-        lblCurrentPlayer = new Label("");
-        lblCurrentPlayer.setFontSize(20);
-        containerLabels.addChild(lblCurrentPlayer);
-        lblMP = new Label("");
-        lblMP.setFontSize(20);
-        containerLabels.addChild(lblMP);
-        lblAP = new Label("");
-        lblAP.setFontSize(20);
-        containerLabels.addChild(lblAP);
+        lblActivePlayerName = new Label("");
+        lblActivePlayerName.setFontSize(20);
+        containerLabels.addChild(lblActivePlayerName);
+        lblActivePlayerMP = new Label("");
+        lblActivePlayerMP.setFontSize(20);
+        containerLabels.addChild(lblActivePlayerMP);
+        lblActivePlayerAP = new Label("");
+        lblActivePlayerAP.setFontSize(20);
+        containerLabels.addChild(lblActivePlayerAP);
         mainApplication.getGuiNode().attachChild(containerLabels);
 
-        // Buttons
+        currentPlayerNode = new Node();
+        mainApplication.getGuiNode().attachChild(currentPlayerNode);
+    }
 
-        int buttonsMarginLeft = 100;
-        int buttonsMarginBottom = 50;
-        int buttonContainerHeight = 80;
-        int buttonCount = 10;
+    public void removeAllCurrentPlayerElements() {
+        currentPlayerNode.detachAllChildren();
+    }
 
-        Container containerButtons = new Container();
-        containerButtons.setLayout(new SpringGridLayout(Axis.X, Axis.Y));
-        containerButtons.setLocalTranslation(buttonsMarginLeft, buttonsMarginBottom + buttonContainerHeight, 0);
-        containerButtons.setPreferredSize(new Vector3f(totalWidth - (2 * buttonsMarginLeft), buttonContainerHeight, 0));
-        for (int i = 0; i < buttonCount; i++) {
-            Button button = new Button("" + (i + 1));
+    public void createAttributes() {
+        Container containerAttributes = new Container();
+        containerAttributes.setLocalTranslation(barMarginX, barY, 0);
+        containerAttributes.setPreferredSize(new Vector3f(leftAndRightPartWidth, barHeight, 0));
+
+        lblOwnPlayerHealth = new Label("");
+        lblOwnPlayerHealth.setTextHAlignment(HAlignment.Center);
+        lblOwnPlayerHealth.setTextVAlignment(VAlignment.Center);
+        lblOwnPlayerHealth.setFontSize(20);
+        containerAttributes.addChild(lblOwnPlayerHealth);
+
+        Container containerBottom = new Container();
+        containerBottom.setLayout(new SpringGridLayout(Axis.X, Axis.Y));
+        containerBottom.setBackground(null);
+
+        lblOwnPlayerMP = new Label("");
+        lblOwnPlayerMP.setTextHAlignment(HAlignment.Center);
+        lblOwnPlayerMP.setTextVAlignment(VAlignment.Center);
+        lblOwnPlayerMP.setFontSize(20);
+        containerBottom.addChild(lblOwnPlayerMP);
+
+        lblOwnPlayerAP = new Label("");
+        lblOwnPlayerAP.setTextHAlignment(HAlignment.Center);
+        lblOwnPlayerAP.setTextVAlignment(VAlignment.Center);
+        lblOwnPlayerAP.setFontSize(20);
+        containerBottom.addChild(lblOwnPlayerAP);
+
+        containerAttributes.addChild(containerBottom);
+
+        currentPlayerNode.attachChild(containerAttributes);
+    }
+
+    public void createSpellButtons(List<GuiSpell> spells) {
+        int spellsContainerWidth = (totalWidth - (2 * leftAndRightPartWidth) - (2 * barMarginX));
+        int spellsContainerX = (barMarginX + leftAndRightPartWidth);
+
+        Container spellsContainer = new Container();
+        spellsContainer.setLayout(new SpringGridLayout(Axis.X, Axis.Y));
+        spellsContainer.setLocalTranslation(spellsContainerX, barY, 0);
+        spellsContainer.setPreferredSize(new Vector3f(spellsContainerWidth, barHeight, 0));
+        for (GuiSpell spell : spells) {
+            Button button = new Button(spell.getName());
             button.setTextHAlignment(HAlignment.Center);
             button.setTextVAlignment(VAlignment.Center);
             button.setFontSize(20);
-            int buttonIndex = i;
-            button.addCommands(Button.ButtonAction.Up, source -> {
-                getAppState(GameAppState.class).onButtonClicked(buttonIndex);
-            });
-            containerButtons.addChild(button);
+            button.addCommands(Button.ButtonAction.Up, source -> spell.getCast().run());
+            spellsContainer.addChild(button);
         }
-        mainApplication.getGuiNode().attachChild(containerButtons);
+        currentPlayerNode.attachChild(spellsContainer);
     }
 
-    public void setCurrentPlayer(String name) {
-        lblCurrentPlayer.setText("Current player: " + name);
+    public void createEndTurnButton(Runnable endTurn) {
+        Container rightContainer = new Container();
+        rightContainer.setLocalTranslation(totalWidth - barMarginX - leftAndRightPartWidth, barY, 0);
+        rightContainer.setPreferredSize(new Vector3f(leftAndRightPartWidth, barHeight, 0));
+
+        Button endTurnButton = new Button("End turn");
+        endTurnButton.setTextHAlignment(HAlignment.Center);
+        endTurnButton.setTextVAlignment(VAlignment.Center);
+        endTurnButton.setFontSize(20);
+        endTurnButton.addCommands(Button.ButtonAction.Up, source -> endTurn.run());
+        rightContainer.addChild(endTurnButton);
+
+        currentPlayerNode.attachChild(rightContainer);
     }
 
-    public void setMP(int mp) {
-        lblMP.setText("Movement Points: " + mp);
+    public void setActivePlayerName(String name) {
+        lblActivePlayerName.setText("Current player: " + name);
     }
 
-    public void setAP(int ap) {
-        lblAP.setText("Action Points: " + ap);
+    public void setActivePlayerMP(int mp) {
+        lblActivePlayerMP.setText("Movement Points: " + mp);
+    }
+
+    public void setActivePlayerAP(int ap) {
+        lblActivePlayerAP.setText("Action Points: " + ap);
+    }
+
+    public void setOwnPlayerHealth(int currentHealth, int maximumHealth) {
+        lblOwnPlayerHealth.setText("Health: " + currentHealth + " / " + maximumHealth);
+    }
+
+    public void setOwnPlayerMP(int mp) {
+        lblOwnPlayerMP.setText("MP: " + mp);
+    }
+
+    public void setOwnPlayerAP(int ap) {
+        lblOwnPlayerAP.setText("AP: " + ap);
     }
 }

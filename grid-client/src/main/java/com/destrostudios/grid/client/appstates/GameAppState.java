@@ -14,6 +14,7 @@ import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
+import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.RoundComponent;
@@ -78,7 +79,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addMapping("mouse_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         mainApplication.getInputManager().addListener(this, "key_delete", "mouse_left", "mouse_right");
 
+        recreateGui();
         updateVisuals();
+
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
 
         gameProxy.addPreHandler(MoveEvent.class, (EventHandler<MoveEvent>) (event, entityWorldSupplier) -> {
@@ -86,17 +89,46 @@ public class GameAppState extends BaseAppState implements ActionListener {
             PositionComponent positionComponent = event.getPositionComponent();
             playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
         });
-        gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
+        gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
+            int targetEntity = event.getEntity();
+            playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), event.getNewHealthPoints()));
+        });
         gameProxy.addResolvedHandler(RoundSkippedEvent.class, (event, entityWorldSupplier) -> {
             EntityWorld entityWorld = gameProxy.getGame().getWorld();
             int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
+            recreateGui();
         });
-        gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
-            int targetEntity = event.getEntity();
-            playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), event.getNewHealthPoints()));
-        });
+    }
+
+    private void recreateGui() {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity == null) {
+            // spectating only
+            return;
+        }
+
+        EntityWorld entityWorld = gameProxy.getGame().getWorld();
+        List<SpellComponent> spells = entityWorld.getComponents(playerEntity).stream()
+                .filter(c -> c instanceof SpellComponent)
+                .map(c -> (SpellComponent) c)
+                .collect(Collectors.toList());
+
+        List<GuiSpell> guiSpells = spells.stream()
+                .map(spellComponent -> {
+                    String name = entityWorld.getComponent(spellComponent.getSpell(), NameComponent.class).get().getName();
+                    return new GuiSpell(name, () -> castSpell(spellComponent.getSpell()));
+                })
+                .collect(Collectors.toList());
+
+        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
+        gameGuiAppState.removeAllCurrentPlayerElements();
+        gameGuiAppState.createAttributes();
+        gameGuiAppState.createSpellButtons(guiSpells);
+        gameGuiAppState.createEndTurnButton(this::skipRound);
+
+        updateGui();
     }
 
     @Override
@@ -158,15 +190,33 @@ public class GameAppState extends BaseAppState implements ActionListener {
             playerVisual.setMaximumHealth(maxHealthComponent.getMaxHealth());
             playerVisual.setCurrentHealth(healthPointsComponent.getHealth());
         }
+
+        updateGui();
+    }
+
+    private void updateGui() {
+        EntityWorld entityWorld = gameProxy.getGame().getWorld();
+        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
+
         int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
-        AttackPointsComponent attackPointsComponent = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).get();
-        MovementPointsComponent movementPointsComponent = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).get();
+        int activePlayerMP = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).get().getMovementPoints();
+        int activePlayerAP = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).get().getAttackPoints();
+        gameGuiAppState.setActivePlayerName(activePlayerName);
+        gameGuiAppState.setActivePlayerMP(activePlayerMP);
+        gameGuiAppState.setActivePlayerAP(activePlayerAP);
 
-        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
-        gameGuiAppState.setCurrentPlayer(activePlayerName);
-        gameGuiAppState.setMP(movementPointsComponent.getMovementPoints());
-        gameGuiAppState.setAP(attackPointsComponent.getAttackPoints());
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        // non-spectators
+        if (playerEntity != null) {
+            int ownPlayerCurrentHealth = entityWorld.getComponent(playerEntity, HealthPointsComponent.class).get().getHealth();
+            int ownPlayerMaximumHealth = entityWorld.getComponent(playerEntity, MaxHealthComponent.class).get().getMaxHealth();
+            int ownPlayerMP = entityWorld.getComponent(playerEntity, MovementPointsComponent.class).get().getMovementPoints();
+            int ownPlayerAP = entityWorld.getComponent(playerEntity, AttackPointsComponent.class).get().getAttackPoints();
+            gameGuiAppState.setOwnPlayerHealth(ownPlayerCurrentHealth, ownPlayerMaximumHealth);
+            gameGuiAppState.setOwnPlayerMP(ownPlayerMP);
+            gameGuiAppState.setOwnPlayerAP(ownPlayerAP);
+        }
     }
 
     @Override
@@ -186,9 +236,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
         Optional<PositionComponent> componentOpt = gameProxy.getGame().getWorld().getComponent(playerEntity, PositionComponent.class);
         if (componentOpt.isPresent() && isPressed) {
             switch (actionName) {
-                case "key_delete":
-                    trySkipRound();
-                    break;
                 case "mouse_left":
                 case "mouse_right":
                     Vector3Int clickedPosition = getHoveredPosition();
@@ -221,35 +268,15 @@ public class GameAppState extends BaseAppState implements ActionListener {
         playingAnimations.add(animation);
     }
 
-    public void onButtonClicked(int buttonIndex) {
-        if (buttonIndex == 0) {
-            trySkipRound();
-        } else if (buttonIndex >= 1 && buttonIndex <= 5) {
-            tryCastSpell(buttonIndex);
-        }
+    private void castSpell(int spellEntity) {
+        EntityWorld world = gameProxy.getGame().getWorld();
+        Optional<Integer> targetEntity = world.list(PlayerComponent.class).stream()
+                .filter(e -> !world.hasComponents(e, RoundComponent.class))
+                .findFirst();
+        gameProxy.requestAction(new CastSpellAction(targetEntity.get(), gameProxy.getPlayerEntity().toString(), spellEntity));
     }
 
-    private void tryCastSpell(int spellIndex) {
-        Integer playerEntity = gameProxy.getPlayerEntity();
-        if (playerEntity != null) {
-            EntityWorld world = gameProxy.getGame().getWorld();
-            List<SpellComponent> spells = world.getComponents(playerEntity).stream()
-                    .filter(c -> c instanceof SpellComponent)
-                    .map(c -> (SpellComponent) c)
-                    .collect(Collectors.toList());
-
-            Optional<Integer> targetEntity = world.list(PlayerComponent.class).stream()
-                    .filter(e -> !world.hasComponents(e, RoundComponent.class))
-                    .findFirst();
-            int spell = spells.get(spellIndex).getSpell();
-            gameProxy.requestAction(new CastSpellAction(targetEntity.get(), Integer.toString(playerEntity), spell));
-        }
-    }
-
-    private void trySkipRound() {
-        Integer playerEntity = gameProxy.getPlayerEntity();
-        if (playerEntity != null) {
-            gameProxy.requestAction(new SkipRoundAction(Integer.toString(playerEntity)));
-        }
+    private void skipRound() {
+        gameProxy.requestAction(new SkipRoundAction(gameProxy.getPlayerEntity().toString()));
     }
 }
