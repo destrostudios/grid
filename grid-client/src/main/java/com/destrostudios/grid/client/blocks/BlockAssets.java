@@ -27,7 +27,28 @@ public class BlockAssets {
 
         @Override
         protected int getSkinIndex(BlockChunkControl chunk, Vector3Int location, Face face) {
-            if( chunk.isBlockOnSurface(location)) {
+            if (chunk.isBlockOnSurface(location)) {
+                switch(face){
+                    case Top:
+                        return 0;
+
+                    case Bottom:
+                        return 1;
+                }
+                return 2;
+            }
+            return 1;
+        }
+    };
+    public static final Block BLOCK_GRASS_GOLD_TOP = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(9, 6), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false)
+    ) {
+
+        @Override
+        protected int getSkinIndex(BlockChunkControl chunk, Vector3Int location, Face face) {
+            if (chunk.isBlockOnSurface(location)) {
                 switch(face){
                     case Top:
                         return 0;
@@ -93,6 +114,7 @@ public class BlockAssets {
 
     public static void registerBlocks() {
         BlockManager.register(BLOCK_GRASS);
+        BlockManager.register(BLOCK_GRASS_GOLD_TOP);
         BlockManager.register(BLOCK_STONE_TILE);
         BlockManager.register(BLOCK_WOOD);
         BlockManager.register(BLOCK_BOX);
