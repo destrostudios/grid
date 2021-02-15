@@ -105,7 +105,7 @@ public class GameGuiAppState extends BaseAppState {
         spellsContainer.setLocalTranslation(spellsContainerX, barY, 0);
         spellsContainer.setPreferredSize(new Vector3f(spellsContainerWidth, barHeight, 0));
         for (GuiSpell spell : spells) {
-            Button button = new Button(spell.getName());
+            Button button = new Button(spell.getName() + "\n(" + spell.getApCost() + " AP)");
             button.setTextHAlignment(HAlignment.Center);
             button.setTextVAlignment(VAlignment.Center);
             button.setFontSize(20);

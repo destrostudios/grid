@@ -23,6 +23,7 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.TreeComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.spells.AttackPointCostComponent;
 import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.*;
@@ -121,7 +122,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
                 .map(spellComponent -> {
                     int spellEntity = spellComponent.getSpell();
                     String name = entityWorld.getComponent(spellEntity, NameComponent.class).get().getName();
-                    return new GuiSpell(name, () -> {
+                    int apCost = entityWorld.getComponent(spellEntity, AttackPointCostComponent.class).map(AttackPointCostComponent::getAttackPointCosts).orElse(0);
+                    return new GuiSpell(name, apCost, () -> {
                         if ((targetingSpellEntity == null) || (targetingSpellEntity != spellEntity)) {
                             targetingSpellEntity = spellEntity;
                         } else {
