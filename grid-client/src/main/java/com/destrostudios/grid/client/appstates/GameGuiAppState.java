@@ -32,6 +32,9 @@ public class GameGuiAppState extends BaseAppState {
     private Label lblOwnPlayerMP;
     private Label lblOwnPlayerAP;
 
+    private Container containerTooltip;
+    private Label lblTooltip;
+
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
@@ -55,6 +58,19 @@ public class GameGuiAppState extends BaseAppState {
         lblActivePlayerAP.setFontSize(20);
         containerLabels.addChild(lblActivePlayerAP);
         mainApplication.getGuiNode().attachChild(containerLabels);
+
+        int containerTooltipWidth = (totalWidth - (2 * leftAndRightPartWidth) - (2 * barMarginX));
+        int containerTooltipHeight = barHeight;
+        int containerTooltipX = (barMarginX + leftAndRightPartWidth);
+        int containerTooltipY = (barY + containerTooltipHeight);
+        containerTooltip = new Container();
+        containerTooltip.setLocalTranslation(containerTooltipX, containerTooltipY, 0);
+        containerTooltip.setPreferredSize(new Vector3f(containerTooltipWidth, containerTooltipHeight, 0));
+        lblTooltip = new Label("");
+        lblTooltip.setTextHAlignment(HAlignment.Center);
+        lblTooltip.setTextVAlignment(VAlignment.Center);
+        lblTooltip.setFontSize(20);
+        containerTooltip.addChild(lblTooltip);
 
         currentPlayerNode = new Node();
         mainApplication.getGuiNode().attachChild(currentPlayerNode);
@@ -105,14 +121,30 @@ public class GameGuiAppState extends BaseAppState {
         spellsContainer.setLocalTranslation(spellsContainerX, barY, 0);
         spellsContainer.setPreferredSize(new Vector3f(spellsContainerWidth, barHeight, 0));
         for (GuiSpell spell : spells) {
-            Button button = new Button(spell.getName() + "\n(" + spell.getApCost() + " AP)");
+            String tooltip = getSpellTooltip(spell);
+            Button button = new Button(spell.getName());
             button.setTextHAlignment(HAlignment.Center);
             button.setTextVAlignment(VAlignment.Center);
             button.setFontSize(20);
             button.addCommands(Button.ButtonAction.Up, source -> spell.getCast().run());
+            button.addCommands(Button.ButtonAction.HighlightOn, source -> showTooltip(tooltip));
+            button.addCommands(Button.ButtonAction.HighlightOff, source -> hideTooltip());
             spellsContainer.addChild(button);
         }
         currentPlayerNode.attachChild(spellsContainer);
+    }
+
+    private String getSpellTooltip(GuiSpell spell) {
+        return "AP Cost: " + spell.getApCost();
+    }
+
+    public void showTooltip(String text) {
+        lblTooltip.setText(text);
+        mainApplication.getGuiNode().attachChild(containerTooltip);
+    }
+
+    public void hideTooltip() {
+        mainApplication.getGuiNode().detachChild(containerTooltip);
     }
 
     public void createEndTurnButton(Runnable endTurn) {
