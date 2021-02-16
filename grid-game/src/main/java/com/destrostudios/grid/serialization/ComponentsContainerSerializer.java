@@ -91,19 +91,19 @@ public class ComponentsContainerSerializer {
         for (int i = 0; i < 2; i++) {
             int spell = world.createEntity();
             String spellName = getSpellName(name);
-            int apCost = rand.nextInt(attackPoints);
+            int apCost = Math.max(2, rand.nextInt(attackPoints));
             world.addComponent(spell, new AttackPointCostComponent(apCost));
             int dmg = Math.max(25, rand.nextInt(50));
             int range = Math.max(3, rand.nextInt(6));
             world.addComponent(spell, new DamageComponent(dmg));
             world.addComponent(spell, new NameComponent(spellName));
-            world.addComponent(spell, new TooltipComponent(String.format("OP spell doing %s damage for %s AP", apCost, dmg)));
+            world.addComponent(spell, new TooltipComponent(String.format("OP spell doing %s damage for %s AP", dmg, apCost)));
             world.addComponent(spell, new RangeComponent(range));
             spells.add(spell);
         }
         // dmg spell + bp buff
         int dmgMpSpell = world.createEntity();
-        int apCost = rand.nextInt(attackPoints);
+        int apCost = Math.max(2, rand.nextInt(attackPoints));
         int dmg = Math.max(25, rand.nextInt(50));
         int mpBuff = Math.max(1, rand.nextInt(2));
         int range = Math.max(3, rand.nextInt(6));
@@ -113,7 +113,7 @@ public class ComponentsContainerSerializer {
         world.addComponent(dmgMpSpell, new NameComponent(spellName));
         world.addComponent(dmgMpSpell, new MovementPointBuffComponent(mpBuff, 1));
         world.addComponent(dmgMpSpell, new RangeComponent(range));
-        world.addComponent(dmgMpSpell, new TooltipComponent(String.format("Dmg spell doing %s dmg for %s AP and buffing %s MP", apCost, dmg, mpBuff)));
+        world.addComponent(dmgMpSpell, new TooltipComponent(String.format("Dmg spell doing %s dmg for %s AP and buffing %s MP\nRange: %s", dmg, apCost, mpBuff, range)));
         spells.add(dmgMpSpell);
 
         // ap buff
@@ -125,8 +125,7 @@ public class ComponentsContainerSerializer {
         world.addComponent(spellApBuff, new AttackPointsBuffComponent(apBuff, 2));
         world.addComponent(spellApBuff, new NameComponent(name + "Buff"));
         world.addComponent(spellApBuff, new RangeComponent(range));
-        world.addComponent(spellApBuff, new TooltipComponent(String.format("Spell buffing %s AP for %s MP", apBuff, mpCost)));
-        world.addComponent(spellApBuff, new DurationComponent(1));
+        world.addComponent(spellApBuff, new TooltipComponent(String.format("Spell buffing %s AP for %s MP \nRange: %s", apBuff, mpCost, range)));
         spells.add(spellApBuff);
 
         // health buff
@@ -139,10 +138,9 @@ public class ComponentsContainerSerializer {
         world.addComponent(spellMpHealthBuff, new AttackPointCostComponent(apCost));
         world.addComponent(spellMpHealthBuff, new HealthPointBuffComponent(hpBuff, hpBuffDuration));
         world.addComponent(spellMpHealthBuff, new NameComponent(name + "Pump"));
-        world.addComponent(spellMpHealthBuff, new RangeComponent(range));
-        world.addComponent(spellMpHealthBuff, new TooltipComponent(String.format("Spell buffing %s HP for %s AP. CD: %s ", hpBuff, apCost, cooldown)));
+        world.addComponent(spellMpHealthBuff, new RangeComponent(0));
+        world.addComponent(spellMpHealthBuff, new TooltipComponent(String.format("Spell buffing %s HP for %s AP. \nCD: %s, Range: 0 ", hpBuff, apCost, cooldown)));
         world.addComponent(spellMpHealthBuff, new CooldownComponent(cooldown));
-        world.addComponent(spellMpHealthBuff, new DurationComponent(11));
         spells.add(spellMpHealthBuff);
 
         int playerEntity = world.createEntity();

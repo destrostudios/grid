@@ -41,7 +41,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = HealthPointBuffComponent.class, name = "hpb"),
         @JsonSubTypes.Type(value = OnCooldownComponent.class, name = "oncd"),
         @JsonSubTypes.Type(value = CooldownComponent.class, name = "cd"),
-        @JsonSubTypes.Type(value = DurationComponent.class, name = "dur"),
         @JsonSubTypes.Type(value = BuffsComponent.class, name = "buffs"),
         @JsonSubTypes.Type(value = StartingFieldComponent.class, name = "start")
 })

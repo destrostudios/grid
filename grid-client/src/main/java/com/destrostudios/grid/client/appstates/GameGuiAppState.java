@@ -121,21 +121,16 @@ public class GameGuiAppState extends BaseAppState {
         spellsContainer.setLocalTranslation(spellsContainerX, barY, 0);
         spellsContainer.setPreferredSize(new Vector3f(spellsContainerWidth, barHeight, 0));
         for (GuiSpell spell : spells) {
-            String tooltip = getSpellTooltip(spell);
             Button button = new Button(spell.getName());
             button.setTextHAlignment(HAlignment.Center);
             button.setTextVAlignment(VAlignment.Center);
             button.setFontSize(20);
             button.addCommands(Button.ButtonAction.Up, source -> spell.getCast().run());
-            button.addCommands(Button.ButtonAction.HighlightOn, source -> showTooltip(tooltip));
+            button.addCommands(Button.ButtonAction.HighlightOn, source -> showTooltip(spell.getTooltip()));
             button.addCommands(Button.ButtonAction.HighlightOff, source -> hideTooltip());
             spellsContainer.addChild(button);
         }
         currentPlayerNode.attachChild(spellsContainer);
-    }
-
-    private String getSpellTooltip(GuiSpell spell) {
-        return "AP Cost: " + spell.getApCost();
     }
 
     public void showTooltip(String text) {

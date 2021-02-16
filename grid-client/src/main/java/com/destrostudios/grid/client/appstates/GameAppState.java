@@ -24,12 +24,14 @@ import com.destrostudios.grid.components.map.TreeComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
+import com.destrostudios.grid.components.spells.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 import com.destrostudios.grid.eventbus.events.properties.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.util.CalculationUtils;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResults;
@@ -45,10 +47,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Label;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameAppState extends BaseAppState implements ActionListener {
@@ -121,7 +120,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
                 .map(spellEntity -> {
                     String name = entityWorld.getComponent(spellEntity, NameComponent.class).get().getName();
                     int apCost = entityWorld.getComponent(spellEntity, AttackPointCostComponent.class).map(AttackPointCostComponent::getAttackPointCosts).orElse(0);
-                    return new GuiSpell(name, apCost, () -> {
+                    TooltipComponent tooltipComponent = entityWorld.getComponent(spellEntity, TooltipComponent.class).get();
+                    return new GuiSpell(name, tooltipComponent.getTooltip(), () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
                             targetingSpellEntity = spellEntity;
                         } else {
@@ -203,19 +203,17 @@ public class GameAppState extends BaseAppState implements ActionListener {
     private void updateTerrain() {
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
         blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(16, 1, 16));
-        for (int playerEntity : entityWorld.list(WalkableComponent.class)) {
-            PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class).get();
+        List<Integer> rangeGroundEntities = targetingSpellEntity != null
+                ? CalculationUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), entityWorld)
+                : new ArrayList<>();
+        for (int groundEntity : entityWorld.list(WalkableComponent.class)) {
+            PositionComponent positionComponent = entityWorld.getComponent(groundEntity, PositionComponent.class).get();
             Block block = BlockAssets.BLOCK_GRASS;
-            if ((targetingSpellEntity != null) && isTargetable(targetingSpellEntity, positionComponent.getX(), positionComponent.getY())) {
+            if (rangeGroundEntities.contains(groundEntity)) {
                 block = BlockAssets.BLOCK_GRASS_GOLD_TOP;
             }
             blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), block);
         }
-    }
-
-    private boolean isTargetable(int spellEntity, int x, int y) {
-        // TODO: Replace with game logic utility
-        return (Math.random() < 0.2);
     }
 
     private void updateGui() {
@@ -266,8 +264,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
                     if (clickedPosition != null) {
                         if (targetingSpellEntity != null) {
                             EntityWorld world = gameProxy.getGame().getWorld();
-                            Optional<Integer> targetEntity = world.list(PlayerComponent.class).stream()
-                                    .filter(e -> !world.hasComponents(e, RoundComponent.class))
+                            Optional<Integer> targetEntity = world.list(PositionComponent.class).stream()
+                                    .filter(e -> world.getComponent(e, PositionComponent.class).get().getX() == clickedPosition.getX()
+                                            && world.getComponent(e, PositionComponent.class).get().getY() == clickedPosition.getZ())
                                     .findFirst();
                             gameProxy.requestAction(new CastSpellAction(targetEntity.get(), gameProxy.getPlayerEntity().toString(), targetingSpellEntity));
                         } else {

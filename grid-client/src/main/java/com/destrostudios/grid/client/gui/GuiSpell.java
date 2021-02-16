@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 public class GuiSpell {
     private String name;
-    private int apCost;
+    private String tooltip;
     private Runnable cast;
 }

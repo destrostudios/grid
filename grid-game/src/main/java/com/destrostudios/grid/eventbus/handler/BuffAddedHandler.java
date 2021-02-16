@@ -30,7 +30,7 @@ public class BuffAddedHandler implements EventHandler<BuffAddedEvent> {
         Optional<AttackPointsBuffComponent> apBuff = entityWorld.getComponent(event.getSpellEntity(), AttackPointsBuffComponent.class);
         Optional<MovementPointBuffComponent> mpBuff = entityWorld.getComponent(event.getSpellEntity(), MovementPointBuffComponent.class);
         Optional<HealthPointBuffComponent> hpBuff = entityWorld.getComponent(event.getSpellEntity(), HealthPointBuffComponent.class);
-        List<Integer> buffs = entityWorld.getComponent(event.getTargetEntity(), BuffsComponent.class).get().getBuffEntities();
+        List<Integer> buffs = entityWorld.getComponent(event.getTargetEntity(), BuffsComponent.class).orElse(new BuffsComponent()).getBuffEntities();
 
         if (apBuff.isPresent() || mpBuff.isPresent() || hpBuff.isPresent()) {
             int buffEntity = entityWorld.createEntity();

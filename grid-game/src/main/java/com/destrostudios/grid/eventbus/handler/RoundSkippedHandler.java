@@ -40,7 +40,7 @@ public class RoundSkippedHandler implements EventHandler<RoundSkippedEvent> {
     public void onEvent(RoundSkippedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         int currentEntity = event.getEntity();
-
+        resetBattleComponents(currentEntity, entityWorld);
         entityWorld.remove(event.getEntity(), RoundComponent.class);
         Optional<Integer> newActivePlayer = entityWorld.list(PlayerComponent.class).stream()
                 .filter(i -> i != currentEntity)
