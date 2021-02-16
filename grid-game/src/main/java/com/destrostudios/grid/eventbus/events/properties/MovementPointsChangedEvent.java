@@ -1,5 +1,6 @@
-package com.destrostudios.grid.eventbus.events;
+package com.destrostudios.grid.eventbus.events.properties;
 
+import com.destrostudios.grid.eventbus.events.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

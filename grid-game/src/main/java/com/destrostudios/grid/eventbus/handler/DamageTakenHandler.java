@@ -4,7 +4,7 @@ import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.DamageTakenEvent;
-import com.destrostudios.grid.eventbus.events.HealthPointsChangedEvent;
+import com.destrostudios.grid.eventbus.events.properties.HealthPointsChangedEvent;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;

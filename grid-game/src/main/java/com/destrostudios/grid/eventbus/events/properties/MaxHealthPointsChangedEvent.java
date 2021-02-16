@@ -1,5 +1,6 @@
-package com.destrostudios.grid.eventbus.events;
+package com.destrostudios.grid.eventbus.events.properties;
 
+import com.destrostudios.grid.eventbus.events.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MaxHealPointsChangedEvent implements Event {
+public class MaxHealthPointsChangedEvent implements Event {
     private int entity;
     private int maxHealtPoints;
 }

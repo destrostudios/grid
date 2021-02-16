@@ -5,10 +5,10 @@ import com.destrostudios.grid.components.character.RoundComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.*;
 import com.destrostudios.grid.components.properties.*;
-import com.destrostudios.grid.components.spells.AttackPointCostComponent;
-import com.destrostudios.grid.components.spells.DamageComponent;
-import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
-import com.destrostudios.grid.components.spells.SpellComponent;
+import com.destrostudios.grid.components.spells.*;
+import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AttackPointCostComponent.class, name = "apc"),
         @JsonSubTypes.Type(value = DamageComponent.class, name = "dmg"),
-        @JsonSubTypes.Type(value = SpellComponent.class, name = "spell"),
+        @JsonSubTypes.Type(value = SpellsComponent.class, name = "spell"),
         @JsonSubTypes.Type(value = AttackPointsComponent.class, name = "ap"),
         @JsonSubTypes.Type(value = HealthPointsComponent.class, name = "hp"),
         @JsonSubTypes.Type(value = MaxHealthComponent.class, name = "mhp"),
@@ -34,8 +34,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = MovementPointsCostComponent.class, name = "mpc"),
         @JsonSubTypes.Type(value = MaxAttackPointsComponent.class, name = "maxap"),
         @JsonSubTypes.Type(value = MaxMovementPointsComponent.class, name = "maxmp"),
+        @JsonSubTypes.Type(value = TooltipComponent.class, name = "ttp"),
+        @JsonSubTypes.Type(value = RangeComponent.class, name = "rng"),
+        @JsonSubTypes.Type(value = AttackPointsBuffComponent.class, name = "apb"),
+        @JsonSubTypes.Type(value = MovementPointBuffComponent.class, name = "mpb"),
+        @JsonSubTypes.Type(value = HealthPointBuffComponent.class, name = "hpb"),
+        @JsonSubTypes.Type(value = OnCooldownComponent.class, name = "oncd"),
+        @JsonSubTypes.Type(value = CooldownComponent.class, name = "cd"),
+        @JsonSubTypes.Type(value = DurationComponent.class, name = "dur"),
+        @JsonSubTypes.Type(value = BuffsComponent.class, name = "buffs"),
         @JsonSubTypes.Type(value = StartingFieldComponent.class, name = "start")
 })
 public interface Component {
-
 }

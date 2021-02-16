@@ -24,9 +24,11 @@ import com.destrostudios.grid.components.map.TreeComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
-import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.*;
+import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.events.MoveEvent;
+import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
+import com.destrostudios.grid.eventbus.events.properties.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -113,18 +115,14 @@ public class GameAppState extends BaseAppState implements ActionListener {
         }
 
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        List<SpellComponent> spells = entityWorld.getComponents(playerEntity).stream()
-                .filter(c -> c instanceof SpellComponent)
-                .map(c -> (SpellComponent) c)
-                .collect(Collectors.toList());
+        Optional<SpellsComponent> spells = entityWorld.getComponent(playerEntity, SpellsComponent.class);
 
-        List<GuiSpell> guiSpells = spells.stream()
-                .map(spellComponent -> {
-                    int spellEntity = spellComponent.getSpell();
+        List<GuiSpell> guiSpells = spells.get().getSpells().stream()
+                .map(spellEntity -> {
                     String name = entityWorld.getComponent(spellEntity, NameComponent.class).get().getName();
                     int apCost = entityWorld.getComponent(spellEntity, AttackPointCostComponent.class).map(AttackPointCostComponent::getAttackPointCosts).orElse(0);
                     return new GuiSpell(name, apCost, () -> {
-                        if ((targetingSpellEntity == null) || (targetingSpellEntity != spellEntity)) {
+                        if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
                             targetingSpellEntity = spellEntity;
                         } else {
                             targetingSpellEntity = null;

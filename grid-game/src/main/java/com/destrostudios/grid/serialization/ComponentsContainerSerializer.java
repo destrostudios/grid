@@ -5,10 +5,10 @@ import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.*;
 import com.destrostudios.grid.components.properties.*;
-import com.destrostudios.grid.components.spells.AttackPointCostComponent;
-import com.destrostudios.grid.components.spells.DamageComponent;
-import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
-import com.destrostudios.grid.components.spells.SpellComponent;
+import com.destrostudios.grid.components.spells.*;
+import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.serialization.container.CharacterContainer;
 import com.destrostudios.grid.serialization.container.ComponentsContainer;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.destrostudios.grid.GridGame.*;
 
@@ -39,11 +38,11 @@ public class ComponentsContainerSerializer {
 //        generateAndSaveMap("IceMap");
 //    }
 
-//    public static void main(String[] args) throws JsonProcessingException {
-//        generateAndSaveCharacter("destroflyer");
-//        generateAndSaveCharacter("Etherblood");
-//        generateAndSaveCharacter("Icecold");
-//    }
+    public static void main(String[] args) throws JsonProcessingException {
+        generateAndSaveCharacter("destroflyer");
+        generateAndSaveCharacter("Etherblood");
+        generateAndSaveCharacter("Icecold");
+    }
 
     public static <E extends ComponentsContainer> E readContainerAsJson(String gameState, Class<E> classz) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -92,32 +91,58 @@ public class ComponentsContainerSerializer {
         for (int i = 0; i < 2; i++) {
             int spell = world.createEntity();
             String spellName = getSpellName(name);
-            world.addComponent(spell, new AttackPointCostComponent(rand.nextInt(attackPoints)));
-            world.addComponent(spell, new DamageComponent(Math.max(25, rand.nextInt(50))));
+            int apCost = rand.nextInt(attackPoints);
+            world.addComponent(spell, new AttackPointCostComponent(apCost));
+            int dmg = Math.max(25, rand.nextInt(50));
+            int range = Math.max(3, rand.nextInt(6));
+            world.addComponent(spell, new DamageComponent(dmg));
             world.addComponent(spell, new NameComponent(spellName));
+            world.addComponent(spell, new TooltipComponent(String.format("OP spell doing %s damage for %s AP", apCost, dmg)));
+            world.addComponent(spell, new RangeComponent(range));
             spells.add(spell);
         }
         // dmg spell + bp buff
         int dmgMpSpell = world.createEntity();
+        int apCost = rand.nextInt(attackPoints);
+        int dmg = Math.max(25, rand.nextInt(50));
+        int mpBuff = Math.max(1, rand.nextInt(2));
+        int range = Math.max(3, rand.nextInt(6));
         String spellName = getSpellName(name);
-        world.addComponent(dmgMpSpell, new AttackPointCostComponent(rand.nextInt(attackPoints)));
-        world.addComponent(dmgMpSpell, new DamageComponent(Math.max(25, rand.nextInt(50))));
+        world.addComponent(dmgMpSpell, new AttackPointCostComponent(apCost));
+        world.addComponent(dmgMpSpell, new DamageComponent(dmg));
         world.addComponent(dmgMpSpell, new NameComponent(spellName));
-        world.addComponent(dmgMpSpell, new MovementPointsComponent(Math.max(1, rand.nextInt(2))));
+        world.addComponent(dmgMpSpell, new MovementPointBuffComponent(mpBuff, 1));
+        world.addComponent(dmgMpSpell, new RangeComponent(range));
+        world.addComponent(dmgMpSpell, new TooltipComponent(String.format("Dmg spell doing %s dmg for %s AP and buffing %s MP", apCost, dmg, mpBuff)));
         spells.add(dmgMpSpell);
 
         // ap buff
         int spellApBuff = world.createEntity();
-        world.addComponent(spellApBuff, new MovementPointsCostComponent(Math.max(4, rand.nextInt(movementPoints))));
-        world.addComponent(spellApBuff, new AttackPointsComponent(Math.max(1, rand.nextInt(3))));
+        int mpCost = Math.max(4, rand.nextInt(movementPoints));
+        int apBuff = Math.max(1, rand.nextInt(3));
+        range = Math.max(3, rand.nextInt(6));
+        world.addComponent(spellApBuff, new MovementPointsCostComponent(mpCost));
+        world.addComponent(spellApBuff, new AttackPointsBuffComponent(apBuff, 2));
         world.addComponent(spellApBuff, new NameComponent(name + "Buff"));
+        world.addComponent(spellApBuff, new RangeComponent(range));
+        world.addComponent(spellApBuff, new TooltipComponent(String.format("Spell buffing %s AP for %s MP", apBuff, mpCost)));
+        world.addComponent(spellApBuff, new DurationComponent(1));
         spells.add(spellApBuff);
 
         // health buff
         int spellMpHealthBuff = world.createEntity();
-        world.addComponent(spellMpHealthBuff, new AttackPointCostComponent(Math.max(5, rand.nextInt(attackPoints))));
-        world.addComponent(spellMpHealthBuff, new HealthPointsComponent(Math.max(50, rand.nextInt(150))));
+        int hpBuff = Math.max(50, rand.nextInt(150));
+        int hpBuffDuration = Math.max(3, rand.nextInt(6));
+        int cooldown = 3;
+        apCost = Math.max(5, rand.nextInt(attackPoints));
+        range = Math.max(3, rand.nextInt(6));
+        world.addComponent(spellMpHealthBuff, new AttackPointCostComponent(apCost));
+        world.addComponent(spellMpHealthBuff, new HealthPointBuffComponent(hpBuff, hpBuffDuration));
         world.addComponent(spellMpHealthBuff, new NameComponent(name + "Pump"));
+        world.addComponent(spellMpHealthBuff, new RangeComponent(range));
+        world.addComponent(spellMpHealthBuff, new TooltipComponent(String.format("Spell buffing %s HP for %s AP. CD: %s ", hpBuff, apCost, cooldown)));
+        world.addComponent(spellMpHealthBuff, new CooldownComponent(cooldown));
+        world.addComponent(spellMpHealthBuff, new DurationComponent(11));
         spells.add(spellMpHealthBuff);
 
         int playerEntity = world.createEntity();
@@ -131,14 +156,12 @@ public class ComponentsContainerSerializer {
         int health = Math.max(MAX_HEALTH / 2, rand.nextInt(MAX_HEALTH));
         world.addComponent(playerEntity, new HealthPointsComponent(health));
         world.addComponent(playerEntity, new MaxHealthComponent(health));
-
-        for (Integer spellEntity : spells) {
-            world.addComponent(playerEntity, new SpellComponent(spellEntity));
-        }
+        world.addComponent(playerEntity, new SpellsComponent(spells));
     }
 
     private static String getSpellName(String name) {
-        List<String> spellName = Lists.newArrayList("Bomb", "Arrow", "Punch", "Hit", "Jump", "Twist", "Confusion", "Nothing", "Blblbl");
+        List<String> spellName = Lists.newArrayList("Bomb", "Arrow", "Punch", "Hit", "Jump", "Twist", "Confusion",
+                "Nothing", "Blblbl", "Wound", "");
         Random random = new Random();
         return name + spellName.get(random.nextInt(spellName.size()));
     }
@@ -212,11 +235,11 @@ public class ComponentsContainerSerializer {
             List<Component> champComponents = world.getComponents(champOpt.get());
             result.put(champOpt.get(), champComponents);
             // 2. add all spells of that character
-            List<SpellComponent> allSpellsFromChamp = champComponents.stream()
-                    .filter(c -> c instanceof SpellComponent)
-                    .map(c -> (SpellComponent) c)
-                    .collect(Collectors.toList());
-            allSpellsFromChamp.forEach(c -> result.put(c.getSpell(), world.getComponents(c.getSpell())));
+            Optional<SpellsComponent> allSpellsFromChamp = champComponents.stream()
+                    .filter(c -> c instanceof SpellsComponent)
+                    .map(c -> (SpellsComponent) c)
+                    .findFirst();
+            allSpellsFromChamp.get().getSpells().forEach(spell -> result.put(spell, world.getComponents(spell)));
 
         } else if (seriazableComponentsClass.equals(MapContainer.class)) {
             List<Integer> entities = new ArrayList<>();

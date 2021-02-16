@@ -1,8 +1,9 @@
-package com.destrostudios.grid.eventbus.handler;
+package com.destrostudios.grid.eventbus.handler.properties;
 
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.HealthPointsChangedEvent;
+import com.destrostudios.grid.eventbus.events.properties.HealthPointsChangedEvent;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 
 import java.util.function.Supplier;
 

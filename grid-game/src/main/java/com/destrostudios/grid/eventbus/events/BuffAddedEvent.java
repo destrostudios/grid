@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class HealthPointsChangedEvent implements Event {
-    private final int entity;
-    private final int newHealthPoints;
+public class BuffAddedEvent implements Event{
+    private final int targetEntity;
+    private final int spellEntity;
 }

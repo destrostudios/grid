@@ -10,16 +10,18 @@ import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
 import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
-import com.destrostudios.grid.components.spells.SpellComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.*;
+import com.destrostudios.grid.eventbus.events.properties.*;
 import com.destrostudios.grid.eventbus.handler.*;
+import com.destrostudios.grid.eventbus.handler.properties.*;
 import com.destrostudios.grid.eventbus.validator.EventValidator;
 import com.destrostudios.grid.eventbus.validator.MoveValidator;
+import com.destrostudios.grid.eventbus.validator.SkipRoundValidator;
 import com.destrostudios.grid.eventbus.validator.SpellCastedValidator;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -90,11 +93,13 @@ public class GridGame {
     }
 
     private void addComponentsForCharacter(int playerEntity, CharacterContainer characterContainer) {
+        List<Integer> spells = new ArrayList<>();
         for (Map.Entry<Integer, List<Component>> spellComponentEntry : getSpellComponents(characterContainer).entrySet()) {
             int spell = world.createEntity();
             spellComponentEntry.getValue().forEach(c -> world.addComponent(spell, c));
-            world.addComponent(playerEntity, new SpellComponent(spell));
+            spells.add(spell);
         }
+        world.addComponent(playerEntity, new SpellsComponent(spells));
         for (Component playerComponent : getPlayerComponentsWithoutSpells(characterContainer)) {
             world.addComponent(playerEntity, playerComponent);
         }
@@ -104,7 +109,7 @@ public class GridGame {
         return characterContainer.getComponents().entrySet().stream()
                 .filter(e -> e.getValue().stream().anyMatch(c -> c instanceof PlayerComponent))
                 .flatMap(e -> e.getValue().stream())
-                .filter(c -> !(c instanceof SpellComponent))
+                .filter(c -> !(c instanceof SpellsComponent))
                 .collect(Collectors.toList());
     }
 
@@ -152,15 +157,21 @@ public class GridGame {
 
     private void addInstantHandler() {
         addInstantHandler(MoveEvent.class, new PositionChangedHandler(eventBus));
-        addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler(eventBus));
+        addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler());
         addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
         addInstantHandler(AttackPointsChangedEvent.class, new AttackPointsChangedHandler());
         addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler(eventBus));
         addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
         addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler());
-        addInstantHandler(MaxHealPointsChangedEvent.class, new MaxHealtPointsChangedHandler());
+        addInstantHandler(MaxHealthPointsChangedEvent.class, new MaxHealtPointsChangedHandler());
+        addInstantHandler(MaxAttackPointsChangedEvent.class, new MaxAttackPointsChangedHandler());
+        addInstantHandler(MaxMovementPointsChangedEvent.class, new MaxMovementPointsChangedHandler());
+        addInstantHandler(BuffAddedEvent.class, new BuffAddedHandler(eventBus));
+        addInstantHandler(UpdateBuffsEvent.class, new UpdateBuffsHandler(eventBus));
+        addInstantHandler(UpdateCooldownsEvent.class, new UpdateCooldownsHandler());
         addValidator(MoveEvent.class, new MoveValidator());
         addValidator(SpellCastedEvent.class, new SpellCastedValidator());
+        addValidator(RoundSkippedEvent.class, new SkipRoundValidator());
     }
 
     public void intializeGame(String gameState) {

@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpellComponent implements Component {
-    private int spell;
+public class OnCooldownComponent implements Component {
+    private int remainingRounds;
 }

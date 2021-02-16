@@ -8,7 +8,7 @@ import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
-import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
+import com.destrostudios.grid.eventbus.events.properties.MovementPointsChangedEvent;
 import lombok.AllArgsConstructor;
 
 import java.util.List;

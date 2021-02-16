@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AttackPointsChangedEvent implements Event{
+public abstract class SimpleEvent implements Event {
     private final int entity;
-    private final int newAttackPoints;
 }

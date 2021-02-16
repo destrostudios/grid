@@ -1,6 +1,5 @@
 package com.destrostudios.grid.eventbus.events;
 
-import com.destrostudios.grid.components.spells.SpellComponent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

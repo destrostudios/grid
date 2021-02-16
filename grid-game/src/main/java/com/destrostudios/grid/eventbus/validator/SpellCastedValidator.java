@@ -1,13 +1,16 @@
 package com.destrostudios.grid.eventbus.validator;
 
 import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.AttackPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
 import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.SpellCastedEvent;
+import com.destrostudios.grid.util.CalculationUtils;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -17,6 +20,15 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
         EntityWorld entityWorld = entityWorldSupplier.get();
 
         if (!entityWorld.hasComponents(event.getPlayerEntity(), RoundComponent.class)) {
+            return false;
+        }
+        // check Range
+        Optional<PositionComponent> position = entityWorld.getComponent(event.getTargetEntity(), PositionComponent.class);
+        List<PositionComponent> rangeEntites = CalculationUtils.getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityWorld);
+        boolean isSelfCast = rangeEntites.isEmpty();
+        boolean fieldIsReachable = rangeEntites.contains(position.get());
+
+        if (!isSelfCast && !fieldIsReachable) {
             return false;
         }
         // check AP costs

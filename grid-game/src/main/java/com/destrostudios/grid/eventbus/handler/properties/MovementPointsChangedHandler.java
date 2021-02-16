@@ -1,19 +1,15 @@
-package com.destrostudios.grid.eventbus.handler;
+package com.destrostudios.grid.eventbus.handler.properties;
 
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.events.MovementPointsChangedEvent;
-import lombok.AllArgsConstructor;
+import com.destrostudios.grid.eventbus.events.properties.MovementPointsChangedEvent;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-@AllArgsConstructor
 public class MovementPointsChangedHandler implements EventHandler<MovementPointsChangedEvent> {
     private final static Logger logger = Logger.getLogger(MovementPointsChangedHandler.class.getSimpleName());
-
-    private final Eventbus eventbusInstance;
 
     @Override
     public void onEvent(MovementPointsChangedEvent event, Supplier<EntityWorld> entityWorldSupplier) {

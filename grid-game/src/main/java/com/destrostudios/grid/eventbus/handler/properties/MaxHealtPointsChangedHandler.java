@@ -1,15 +1,16 @@
-package com.destrostudios.grid.eventbus.handler;
+package com.destrostudios.grid.eventbus.handler.properties;
 
 import com.destrostudios.grid.components.properties.MaxHealthComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.MaxHealPointsChangedEvent;
+import com.destrostudios.grid.eventbus.events.properties.MaxHealthPointsChangedEvent;
+import com.destrostudios.grid.eventbus.handler.EventHandler;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class MaxHealtPointsChangedHandler implements EventHandler<MaxHealPointsChangedEvent> {
+public class MaxHealtPointsChangedHandler implements EventHandler<MaxHealthPointsChangedEvent> {
     @Override
-    public void onEvent(MaxHealPointsChangedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(MaxHealthPointsChangedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         Optional<MaxHealthComponent> component = entityWorld.getComponent(event.getEntity(), MaxHealthComponent.class);
         entityWorld.remove(event.getEntity(), MaxHealthComponent.class);

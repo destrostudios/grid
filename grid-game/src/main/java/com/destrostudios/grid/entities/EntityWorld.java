@@ -91,6 +91,11 @@ public class EntityWorld implements EntityData {
         componentOpt.ifPresent(components::remove);
     }
 
+
+    public void removeEntity(int entity) {
+        world.remove(entity);
+    }
+
     @Override
     public List<Integer> list(Class<?> component) {
         return world.entrySet().stream()
@@ -118,6 +123,7 @@ public class EntityWorld implements EntityData {
     @Override
     public void addComponent(int entity, Component component) {
         if (component != null) {
+            remove(entity, component.getClass());
             List<Component> components = world.computeIfAbsent(entity, (e) -> new ArrayList<>());
             components.add(component);
         }
