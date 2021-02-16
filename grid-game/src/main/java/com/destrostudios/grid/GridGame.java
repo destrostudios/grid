@@ -19,10 +19,7 @@ import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.events.properties.*;
 import com.destrostudios.grid.eventbus.handler.*;
 import com.destrostudios.grid.eventbus.handler.properties.*;
-import com.destrostudios.grid.eventbus.validator.EventValidator;
-import com.destrostudios.grid.eventbus.validator.MoveValidator;
-import com.destrostudios.grid.eventbus.validator.SkipRoundValidator;
-import com.destrostudios.grid.eventbus.validator.SpellCastedValidator;
+import com.destrostudios.grid.eventbus.validator.*;
 import com.destrostudios.grid.preferences.GamePreferences;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.CharacterContainer;
@@ -172,6 +169,7 @@ public class GridGame {
         addValidator(MoveEvent.class, new MoveValidator());
         addValidator(SpellCastedEvent.class, new SpellCastedValidator());
         addValidator(RoundSkippedEvent.class, new SkipRoundValidator());
+        addValidator(DamageTakenEvent.class, new DamageTakenValidator());
     }
 
     public void intializeGame(String gameState) {
