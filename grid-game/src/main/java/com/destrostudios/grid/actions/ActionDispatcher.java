@@ -1,7 +1,8 @@
 package com.destrostudios.grid.actions;
 
-import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
@@ -31,9 +32,19 @@ public class ActionDispatcher {
             return new RoundSkippedEvent(entity);
         } else if (action instanceof CastSpellAction) {
             CastSpellAction castSpellAction = (CastSpellAction) action;
-            return new SpellCastedEvent(castSpellAction.getSpell(), entity, castSpellAction.getTargetEntity());
+            return new SpellCastedEvent(castSpellAction.getSpell(), entity, calculateTargetEntity(((CastSpellAction) action).getTargetX(), castSpellAction.getTargetY()));
         } else {
             throw new ActionNotAllowedException("Unsupported Action");
         }
+    }
+
+    private int calculateTargetEntity(int x, int y) {
+        EntityWorld world = getEntityWorld.get();
+        Optional<Integer> targetEntity = world.list(PositionComponent.class).stream()
+                .filter(e -> world.getComponent(e, PositionComponent.class).get().getX() == x
+                        && world.getComponent(e, PositionComponent.class).get().getY() == y)
+                .min((e1, e2) -> Boolean.compare(world.hasComponents(e2, PlayerComponent.class), world.hasComponents(e1, PlayerComponent.class)));
+
+        return targetEntity.orElse(-1);
     }
 }
