@@ -2,13 +2,12 @@ package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.destrostudios.grid.shared.PlayerInfo;
-import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,7 +20,7 @@ public class ClientGameProxy implements GameProxy {
 
     private final UUID gameId;
     private final PlayerInfo player;
-    private final GameClientModule<GridGame, Action, StartGameInfo> client;
+    private final GameClientModule<GridGame, Action> client;
     // proxy the listeners since the game reference may change
     private final Map<Class<? extends Event>, EventHandler<?>> preListeners = new LinkedHashMap<>();
     private final Map<Class<? extends Event>, EventHandler<?>> resolvedListeners = new LinkedHashMap<>();

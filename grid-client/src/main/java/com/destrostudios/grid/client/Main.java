@@ -5,12 +5,15 @@ import com.destrostudios.authtoken.NoValidateJwtService;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.client.blocks.BlockAssets;
+import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.turnbasedgametools.network.client.modules.game.GameStartClientModule;
+import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
 import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
 import com.esotericsoftware.kryonet.Client;
@@ -52,12 +55,16 @@ public class Main {
     private static ToolsClient getToolsClient(String hostUrl, String jwt) throws IOException {
         NetworkGridService gameService = new NetworkGridService(false);
         Client kryoClient = new Client(10_000_000, 10_000_000);
-        GameClientModule<GridGame, Action, StartGameInfo> gameModule = new GameClientModule<>(gameService, kryoClient);
+
         JwtClientModule jwtModule = new JwtClientModule(kryoClient);
-        ToolsClient client = new ToolsClient(kryoClient, gameModule, jwtModule);
+        GameClientModule<GridGame, Action> gameModule = new GameClientModule<>(gameService, kryoClient);
+        LobbyClientModule<StartGameInfo> lobbyModule = new LobbyClientModule<>(KryoStartGameInfo::initialize, kryoClient);
+        GameStartClientModule<StartGameInfo> gameStartModule = new GameStartClientModule<>(KryoStartGameInfo::initialize, kryoClient);
+
+        ToolsClient client = new ToolsClient(kryoClient, jwtModule, gameModule, lobbyModule, gameStartModule);
         client.start(10_000, hostUrl, NetworkUtil.PORT);
         jwtModule.login(jwt);
-        gameModule.subscribeToGamesList();
+        lobbyModule.subscribeToGamesList();
         return client;
     }
 

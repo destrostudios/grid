@@ -6,6 +6,8 @@ import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.ClientGameData;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.turnbasedgametools.network.client.modules.game.GameStartClientModule;
+import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
 import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -22,7 +24,6 @@ import com.simsilica.lemur.HAlignment;
 import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Label;
 import com.simsilica.lemur.VAlignment;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -130,20 +131,21 @@ public class MenuAppState extends BaseAppState {
             team2.add(player2);
             startGameInfo.setTeam1(team1);
             startGameInfo.setTeam2(team2);
-            String[] mapNames = new String[] { "DestroMap", "EtherMap", "IceMap" };
+            String[] mapNames = new String[]{"DestroMap", "EtherMap", "IceMap"};
             String mapName = mapNames[(int) (Math.random() * mapNames.length)];
             startGameInfo.setMapName(mapName);
 
-            GameClientModule gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
-            gameClientModule.startNewGame(startGameInfo);
+            GameStartClientModule gameStartModule = mainApplication.getToolsClient().getModule(GameStartClientModule.class);
+            gameStartModule.startNewGame(startGameInfo);
         });
     }
 
     private void updateGamesContainer() {
-        GameClientModule<?, ?, ?> gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
-        Set<UUID> games = gameClientModule.getGamesList();
+        LobbyClientModule<?> lobbyModule = mainApplication.getToolsClient().getModule(LobbyClientModule.class);
+        Set<UUID> games = lobbyModule.getListedGames().keySet();
 
-        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), UUID::toString, gameClientModule::join);
+        GameClientModule<?, ?> gameModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
+        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), UUID::toString, gameModule::join);
     }
 
     private <K, O> void updateButtons(Container buttonContainer, HashMap<K, Button> buttons, Collection<O> objects, Function<O, K> getKey, Function<O, String> getText, Consumer<O> action) {
@@ -182,7 +184,7 @@ public class MenuAppState extends BaseAppState {
 
     private void checkIfJoinedGame() {
         GameClientModule gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
-        List<ClientGameData<?, ?, ?>> joinedGames = gameClientModule.getJoinedGames();
+        List<ClientGameData<?, ?>> joinedGames = gameClientModule.getJoinedGames();
         if (joinedGames.size() > 0) {
             UUID gameUUID = joinedGames.get(0).getId();
             ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), mainApplication.getToolsClient().getModule(GameClientModule.class));

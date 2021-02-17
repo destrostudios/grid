@@ -8,7 +8,7 @@ import com.destrostudios.grid.eventbus.handler.EventHandler;
 public interface GameProxy {
 
     // intention of this interface is to hide the client from our gui code.
-    // It will simplify supporting non-networked games later
+    // It simplifies supporting non-networked games
 
     boolean applyNextAction();
 
@@ -30,9 +30,9 @@ public interface GameProxy {
 
     void addPreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler);
 
-    void removePreHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler);
+    void removePreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler);
 
-    void addResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler);
+    void addResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler);
 
-    void removeResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler);
+    void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler);
 }
