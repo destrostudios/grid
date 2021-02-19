@@ -5,17 +5,24 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.RoundComponent;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.shared.StartGameInfo;
+import lombok.Getter;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 public class SimpleGameProxy implements GameProxy {
 
+    @Getter
+    private final StartGameInfo startGameInfo;
     private final GridGame gridGame;
     private final Queue<Action> actions;
 
-    public SimpleGameProxy(GridGame gridGame) {
-        this.gridGame = gridGame;
+    public SimpleGameProxy(StartGameInfo startGameInfo) {
+        this.startGameInfo = startGameInfo;
+        gridGame = new GridGame();
+        gridGame.initGame(startGameInfo);
         actions = new LinkedList<>();
     }
 

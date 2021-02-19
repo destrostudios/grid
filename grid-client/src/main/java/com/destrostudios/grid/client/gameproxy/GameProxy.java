@@ -4,11 +4,14 @@ import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.shared.StartGameInfo;
 
 public interface GameProxy {
 
     // intention of this interface is to hide the client from our gui code.
     // It simplifies supporting non-networked games
+
+    StartGameInfo getStartGameInfo();
 
     boolean applyNextAction();
 

@@ -2,7 +2,6 @@ package com.destrostudios.grid.client;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.client.gameproxy.SimpleGameProxy;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
@@ -15,9 +14,7 @@ public class SimpleMain {
 
     public static void main(String... args) {
         ClientApplication clientApplication = Main.startApplication((ToolsClient) null, getTestJwt(0));
-        GridGame gridGame = new GridGame();
-        gridGame.initGame(StartGameInfo.getTestGameInfo());
-        clientApplication.enqueue(() -> clientApplication.startGame(new SimpleGameProxy(gridGame)));
+        clientApplication.enqueue(() -> clientApplication.startGame(new SimpleGameProxy(StartGameInfo.getTestGameInfo())));
     }
 
     static String getTestJwt(int teamIndex) {

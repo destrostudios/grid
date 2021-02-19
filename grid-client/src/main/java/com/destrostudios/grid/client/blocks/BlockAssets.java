@@ -21,108 +21,79 @@ public class BlockAssets {
 
     public static final Block BLOCK_GRASS = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(0, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
-        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false)
-    ) {
-
-        @Override
-        protected int getSkinIndex(BlockChunkControl chunk, Vector3Int location, Face face) {
-            if (chunk.isBlockOnSurface(location)) {
-                switch(face){
-                    case Top:
-                        return 0;
-
-                    case Bottom:
-                        return 1;
-                }
-                return 2;
-            }
-            return 1;
-        }
-    };
-    public static final Block BLOCK_GRASS_GOLD_TOP = new Block(
-        new BlockSkin(new BlockSkin_TextureLocation(9, 6), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
-        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false)
-    ) {
-
-        @Override
-        protected int getSkinIndex(BlockChunkControl chunk, Vector3Int location, Face face) {
-            if (chunk.isBlockOnSurface(location)) {
-                switch(face){
-                    case Top:
-                        return 0;
-
-                    case Bottom:
-                        return 1;
-                }
-                return 2;
-            }
-            return 1;
-        }
-    };
-    public static final Block BLOCK_STONE_TILE = new Block(new BlockSkin(new BlockSkin_TextureLocation(10, 1), false));
-    public static final Block BLOCK_WOOD = new Block(
-        new BlockSkin(new BlockSkin_TextureLocation(5, 1), false),
-        new BlockSkin(new BlockSkin_TextureLocation(5, 1), false),
-        new BlockSkin(new BlockSkin_TextureLocation(4, 1), false),
-        new BlockSkin(new BlockSkin_TextureLocation(4, 1), false),
-        new BlockSkin(new BlockSkin_TextureLocation(4, 1), false),
-        new BlockSkin(new BlockSkin_TextureLocation(4, 1), false)
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
     );
-    public static final Block BLOCK_BOX = new Block(new BlockSkin(new BlockSkin_TextureLocation(4, 0), false));
-    public static final Block BLOCK_PINE_BARK = new Block(
-        new BlockSkin(new BlockSkin_TextureLocation(11, 1), false),
-        new BlockSkin(new BlockSkin_TextureLocation(11, 1), false),
-        new BlockSkin(new BlockSkin_TextureLocation(5, 7), false),
-        new BlockSkin(new BlockSkin_TextureLocation(5, 7), false),
-        new BlockSkin(new BlockSkin_TextureLocation(5, 7), false),
-        new BlockSkin(new BlockSkin_TextureLocation(5, 7), false)
-    );
-    public static final Block BLOCK_LEAVES = new Block(new BlockSkin(new BlockSkin_TextureLocation(10, 2), false));
-    public static final Block BLOCK_GOLD = new Block(new BlockSkin(new BlockSkin_TextureLocation(9, 6), false));
-    public static final Block BLOCK_SNOW_EARTH = new Block(
-        new BlockSkin(new BlockSkin_TextureLocation(2, 4), false),
+    public static final Block BLOCK_GRASS_TOP_GRID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(1, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
-        new BlockSkin(new BlockSkin_TextureLocation(4, 4), false)
-    ) {
-
-        @Override
-        protected int getSkinIndex(BlockChunkControl chunk, Vector3Int location, Face face) {
-            if (chunk.isBlockOnSurface(location)) {
-                switch(face){
-                    case Top:
-                        return 0;
-
-                    case Bottom:
-                        return 1;
-                }
-                return 2;
-            }
-            return 1;
-        }
-    };
-    public static final Block BLOCK_SAND = new Block(new BlockSkin(new BlockSkin_TextureLocation(2, 1), false));
-    public static final Block BLOCK_CACTUS = new Block(
-        new BlockSkin(new BlockSkin_TextureLocation(5, 4), false),
-        new BlockSkin(new BlockSkin_TextureLocation(5, 4), false),
-        new BlockSkin(new BlockSkin_TextureLocation(6, 4), false),
-        new BlockSkin(new BlockSkin_TextureLocation(6, 4), false),
-        new BlockSkin(new BlockSkin_TextureLocation(6, 4), false),
-        new BlockSkin(new BlockSkin_TextureLocation(6, 4), false)
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
+    );
+    public static final Block BLOCK_GRASS_TOP_TARGET = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(15, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
+    );
+    public static final Block BLOCK_SAND = new Block(new BlockSkin(new BlockSkin_TextureLocation(0, 2), false));
+    public static final Block BLOCK_SAND_TOP_GRID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(1, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false)
+    );
+    public static final Block BLOCK_SAND_TOP_TARGET = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(15, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false)
+    );
+    public static final Block BLOCK_SNOW = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(0, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
+    );
+    public static final Block BLOCK_SNOW_TOP_GRID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(1, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
+    );
+    public static final Block BLOCK_SNOW_TOP_TARGET = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(15, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
     );
 
     public static void registerBlocks() {
         BlockManager.register(BLOCK_GRASS);
-        BlockManager.register(BLOCK_GRASS_GOLD_TOP);
-        BlockManager.register(BLOCK_STONE_TILE);
-        BlockManager.register(BLOCK_WOOD);
-        BlockManager.register(BLOCK_BOX);
-        BlockManager.register(BLOCK_PINE_BARK);
-        BlockManager.register(BLOCK_LEAVES);
-        BlockManager.register(BLOCK_GOLD);
-        BlockManager.register(BLOCK_SNOW_EARTH);
+        BlockManager.register(BLOCK_GRASS_TOP_GRID);
+        BlockManager.register(BLOCK_GRASS_TOP_TARGET);
         BlockManager.register(BLOCK_SAND);
-        BlockManager.register(BLOCK_CACTUS);
+        BlockManager.register(BLOCK_SAND_TOP_GRID);
+        BlockManager.register(BLOCK_SAND_TOP_TARGET);
+        BlockManager.register(BLOCK_SNOW);
+        BlockManager.register(BLOCK_SNOW_TOP_GRID);
+        BlockManager.register(BLOCK_SNOW_TOP_TARGET);
     }
 }

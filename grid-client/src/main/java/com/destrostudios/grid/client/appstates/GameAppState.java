@@ -13,9 +13,13 @@ import com.destrostudios.grid.client.animations.AnnouncementAnimation;
 import com.destrostudios.grid.client.animations.HealthAnimation;
 import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.blocks.BlockAssets;
+import com.destrostudios.grid.client.characters.CharacterModel;
+import com.destrostudios.grid.client.characters.CharacterModels;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
+import com.destrostudios.grid.client.maps.Map;
+import com.destrostudios.grid.client.maps.Maps;
 import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.RoundComponent;
@@ -44,7 +48,6 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Label;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,18 +55,20 @@ import java.util.stream.Collectors;
 
 public class GameAppState extends BaseAppState implements ActionListener {
 
-    private final GameProxy gameProxy;
+    private GameProxy gameProxy;
+    private Map map;
     private Node rootNode;
     private Node guiNode;
     private Node blockTerrainNode;
     private BlockTerrainControl blockTerrainControl;
     private HashMap<Integer, PlayerVisual> playerVisuals = new HashMap<>();
-    private HashMap<Integer, ModelObject> treeModels = new HashMap<>();
-    private List<Animation> playingAnimations = new LinkedList<>();
+    private HashMap<Integer, ModelObject> obstacleModels = new HashMap<>();
+    private LinkedList<Animation> playingAnimations = new LinkedList<>();
     private Integer targetingSpellEntity;
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
+        map = Maps.get(gameProxy.getStartGameInfo().getMapName());
     }
 
     @Override
@@ -75,10 +80,21 @@ public class GameAppState extends BaseAppState implements ActionListener {
         guiNode = new Node();
         mainApplication.getGuiNode().attachChild(guiNode);
 
+        if (map.getEnvironmentBlock() != null) {
+            Node environmentNode = new Node();
+            environmentNode.setShadowMode(RenderQueue.ShadowMode.Receive);
+            BlockTerrainControl environmentBlockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(3, 1, 3));
+            environmentBlockTerrainControl.setBlockArea(new Vector3Int(0, 1, 0), new Vector3Int(48, 1, 48), map.getEnvironmentBlock());
+            environmentBlockTerrainControl.removeBlockArea(new Vector3Int(16, 1, 16), new Vector3Int(16, 1, 16));
+            environmentBlockTerrainControl.setBlockArea(new Vector3Int(16, 0, 16), new Vector3Int(16, 1, 16), map.getEnvironmentBlock());
+            environmentNode.addControl(environmentBlockTerrainControl);
+            environmentNode.setLocalTranslation(-48, -3, -48);
+            rootNode.attachChild(environmentNode);
+        }
+
         blockTerrainNode = new Node();
         blockTerrainNode.setShadowMode(RenderQueue.ShadowMode.Receive);
         blockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(1, 1, 1));
-        blockTerrainControl.setBlockArea(new Vector3Int(), new Vector3Int(16, 1, 16), BlockAssets.BLOCK_GRASS);
         blockTerrainNode.addControl(blockTerrainControl);
         rootNode.attachChild(blockTerrainNode);
 
@@ -137,20 +153,24 @@ public class GameAppState extends BaseAppState implements ActionListener {
         updateTerrain();
 
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        for (int playerEntity : entityWorld.list(TreeComponent.class)) {
-            ModelObject treeModel = treeModels.computeIfAbsent(playerEntity, pe -> {
-                ModelObject newTreeModel = new ModelObject(mainApplication.getAssetManager(), "models/tree/skin.xml");
-                rootNode.attachChild(newTreeModel);
-                return newTreeModel;
+        for (int obstacleEntity : entityWorld.list(TreeComponent.class)) {
+            ModelObject obstacleModel = obstacleModels.computeIfAbsent(obstacleEntity, pe -> {
+                String modelName = (gameProxy.getStartGameInfo().getMapName().equals("desert") ? "rock" : "tree"); // entityWorld.getComponent(obstacleEntity, VisualComponent.class).getName();
+                ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
+                rootNode.attachChild(newObstacleModel);
+                return newObstacleModel;
             });
 
-            PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class);
-            treeModel.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), PositionUtil.CHARACTER_Y, PositionUtil.get3dCoordinate(positionComponent.getY()));
+            PositionComponent positionComponent = entityWorld.getComponent(obstacleEntity, PositionComponent.class);
+            obstacleModel.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), PositionUtil.CHARACTER_Y, PositionUtil.get3dCoordinate(positionComponent.getY()));
         }
 
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
             PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
-                PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager());
+                String[] characterNames = new String[] { "aland", "alice", "dosaz", "dwarf_warrior", "elven_archer", "garmon", "scarlet", "tristan" };
+                String characterName = characterNames[(int) (Math.random() * characterNames.length)]; // entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
+                CharacterModel characterModel = CharacterModels.get(characterName);
+                PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), characterModel);
                 rootNode.attachChild(newPlayerVisual.getModelObject());
                 guiNode.attachChild(newPlayerVisual.getLblName());
                 guiNode.attachChild(newPlayerVisual.getHealthBar());
@@ -171,7 +191,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             playerVisual.setCurrentHealth(healthPointsComponent.getHealth());
         }
 
-        recreateGui();
+        updateGui();
     }
 
     private void updateTerrain() {
@@ -179,27 +199,47 @@ public class GameAppState extends BaseAppState implements ActionListener {
         blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(16, 1, 16));
         List<Integer> rangeGroundEntities = targetingSpellEntity != null
                 ? CalculationUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), entityWorld)
-                : new ArrayList<>();
+                : new LinkedList<>();
         for (int groundEntity : entityWorld.list(WalkableComponent.class)) {
             PositionComponent positionComponent = entityWorld.getComponent(groundEntity, PositionComponent.class);
-            Block block = BlockAssets.BLOCK_GRASS;
+            Block block = map.getTerrainBlock().getBlockTopGrid();
             if (rangeGroundEntities.contains(groundEntity)) {
-                block = BlockAssets.BLOCK_GRASS_GOLD_TOP;
+                block = map.getTerrainBlock().getBlockTopTarget();
             }
             blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), block);
         }
     }
 
-    private void recreateGui() {
+    private void updateGui() {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (playerEntity == null) {
             // spectating only
             return;
         }
 
+        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        SpellsComponent spells = entityWorld.getComponent(playerEntity, SpellsComponent.class);
 
+        int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
+        String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
+        int activePlayerMP = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).getMovementPoints();
+        int activePlayerAP = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).getAttackPoints();
+        gameGuiAppState.setActivePlayerName(activePlayerName);
+        gameGuiAppState.setActivePlayerMP(activePlayerMP);
+        gameGuiAppState.setActivePlayerAP(activePlayerAP);
+
+        gameGuiAppState.removeAllCurrentPlayerElements();
+
+        gameGuiAppState.createAttributes();
+        int ownPlayerCurrentHealth = entityWorld.getComponent(playerEntity, HealthPointsComponent.class).getHealth();
+        int ownPlayerMaximumHealth = entityWorld.getComponent(playerEntity, MaxHealthComponent.class).getMaxHealth();
+        int ownPlayerMP = entityWorld.getComponent(playerEntity, MovementPointsComponent.class).getMovementPoints();
+        int ownPlayerAP = entityWorld.getComponent(playerEntity, AttackPointsComponent.class).getAttackPoints();
+        gameGuiAppState.setOwnPlayerHealth(ownPlayerCurrentHealth, ownPlayerMaximumHealth);
+        gameGuiAppState.setOwnPlayerMP(ownPlayerMP);
+        gameGuiAppState.setOwnPlayerAP(ownPlayerAP);
+
+        SpellsComponent spells = entityWorld.getComponent(playerEntity, SpellsComponent.class);
         List<GuiSpell> guiSpells = spells.getSpells().stream()
                 .map(spellEntity -> {
                     String name = entityWorld.getComponent(spellEntity, NameComponent.class).getName();
@@ -217,39 +257,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
                     });
                 })
                 .collect(Collectors.toList());
-
-        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
-        gameGuiAppState.removeAllCurrentPlayerElements();
-        gameGuiAppState.createAttributes();
         gameGuiAppState.createSpellButtons(guiSpells);
+
         gameGuiAppState.createEndTurnButton(this::skipRound);
-
-        updateGui();
-    }
-
-    private void updateGui() {
-        EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
-
-        int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
-        String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
-        int activePlayerMP = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).getMovementPoints();
-        int activePlayerAP = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).getAttackPoints();
-        gameGuiAppState.setActivePlayerName(activePlayerName);
-        gameGuiAppState.setActivePlayerMP(activePlayerMP);
-        gameGuiAppState.setActivePlayerAP(activePlayerAP);
-
-        Integer playerEntity = gameProxy.getPlayerEntity();
-        // non-spectators
-        if (playerEntity != null) {
-            int ownPlayerCurrentHealth = entityWorld.getComponent(playerEntity, HealthPointsComponent.class).getHealth();
-            int ownPlayerMaximumHealth = entityWorld.getComponent(playerEntity, MaxHealthComponent.class).getMaxHealth();
-            int ownPlayerMP = entityWorld.getComponent(playerEntity, MovementPointsComponent.class).getMovementPoints();
-            int ownPlayerAP = entityWorld.getComponent(playerEntity, AttackPointsComponent.class).getAttackPoints();
-            gameGuiAppState.setOwnPlayerHealth(ownPlayerCurrentHealth, ownPlayerMaximumHealth);
-            gameGuiAppState.setOwnPlayerMP(ownPlayerMP);
-            gameGuiAppState.setOwnPlayerAP(ownPlayerAP);
-        }
     }
 
     @Override

@@ -25,7 +25,8 @@ public class StartGameInfo {
         team2.add(new PlayerInfo(2, "Etherblood"));
         startGameInfo.team2 = team2;
 
-        startGameInfo.mapName = "DestroMap";
+        String[] mapNames = new String[]{ "island", "desert", "arctic" };
+        startGameInfo.mapName = mapNames[(int) (Math.random() * mapNames.length)];
 
         return startGameInfo;
     }

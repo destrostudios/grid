@@ -132,7 +132,7 @@ public class MenuAppState extends BaseAppState {
             team2.add(player2);
             startGameInfo.setTeam1(team1);
             startGameInfo.setTeam2(team2);
-            String[] mapNames = new String[]{"DestroMap", "EtherMap", "IceMap"};
+            String[] mapNames = new String[]{ "island", "desert", "arctic" };
             String mapName = mapNames[(int) (Math.random() * mapNames.length)];
             startGameInfo.setMapName(mapName);
 
@@ -189,7 +189,8 @@ public class MenuAppState extends BaseAppState {
         List<ClientGameData<?, ?>> joinedGames = gameClientModule.getJoinedGames();
         if (joinedGames.size() > 0) {
             UUID gameUUID = joinedGames.get(0).getId();
-            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), mainApplication.getToolsClient().getModule(GameClientModule.class));
+            LobbyClientModule<StartGameInfo> lobbyClientModule = mainApplication.getToolsClient().getModule(LobbyClientModule.class);
+            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), gameClientModule, lobbyClientModule);
             mainApplication.startGame(clientGameProxy);
         }
     }

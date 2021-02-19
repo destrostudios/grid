@@ -8,11 +8,14 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
 import com.destrostudios.grid.shared.PlayerInfo;
+import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -20,10 +23,16 @@ public class ClientGameProxy implements GameProxy {
 
     private final UUID gameId;
     private final PlayerInfo player;
-    private final GameClientModule<GridGame, Action> client;
+    private final GameClientModule<GridGame, Action> gameClientModule;
+    private final LobbyClientModule<StartGameInfo> lobbyClientModule;
     // proxy the listeners since the game reference may change
     private final Map<Class<? extends Event>, EventHandler<?>> preListeners = new LinkedHashMap<>();
     private final Map<Class<? extends Event>, EventHandler<?>> resolvedListeners = new LinkedHashMap<>();
+
+    @Override
+    public StartGameInfo getStartGameInfo() {
+        return lobbyClientModule.getListedGames().get(gameId);
+    }
 
     @Override
     public boolean applyNextAction() {
@@ -37,7 +46,7 @@ public class ClientGameProxy implements GameProxy {
             gridGame.removeResolvedHandler(entry.getKey(), entry.getValue());
             gridGame.addResolvedHandler(entry.getKey(), entry.getValue());
         }
-        return client.applyNextAction(gameId);
+        return gameClientModule.applyNextAction(gameId);
     }
 
     @Override
@@ -54,12 +63,12 @@ public class ClientGameProxy implements GameProxy {
 
     @Override
     public GridGame getGame() {
-        return client.getJoinedGame(gameId).getState();
+        return gameClientModule.getJoinedGame(gameId).getState();
     }
 
     @Override
     public void requestAction(Action action) {
-        client.sendAction(gameId, action);
+        gameClientModule.sendAction(gameId, action);
     }
 
     @Override
@@ -95,7 +104,6 @@ public class ClientGameProxy implements GameProxy {
 
     @Override
     public void cleanupGame() {
-        client.removeJoinedGame(gameId);
-
+        gameClientModule.removeJoinedGame(gameId);
     }
 }

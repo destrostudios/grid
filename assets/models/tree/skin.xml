@@ -1,5 +1,5 @@
 <skin name="tree">
-    <model scale="3">
+    <model scale="2.5">
         <material>
             <texture alpha="1">diffuse_1.png</texture>
         </material>
