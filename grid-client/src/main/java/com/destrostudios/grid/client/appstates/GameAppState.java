@@ -23,7 +23,7 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.TreeComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.*;
-import com.destrostudios.grid.components.spells.AttackPointCostComponent;
+import com.destrostudios.grid.components.spells.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
@@ -119,9 +119,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
         List<GuiSpell> guiSpells = spells.get().getSpells().stream()
                 .map(spellEntity -> {
                     String name = entityWorld.getComponent(spellEntity, NameComponent.class).get().getName();
-                    int apCost = entityWorld.getComponent(spellEntity, AttackPointCostComponent.class).map(AttackPointCostComponent::getAttackPointCosts).orElse(0);
-                    TooltipComponent tooltipComponent = entityWorld.getComponent(spellEntity, TooltipComponent.class).get();
-                    return new GuiSpell(name, tooltipComponent.getTooltip(), () -> {
+                    String tooltip = entityWorld.getComponent(spellEntity, TooltipComponent.class).get().getTooltip();
+                    Integer remainingCooldown = entityWorld.getComponent(spellEntity, OnCooldownComponent.class).map(OnCooldownComponent::getRemainingRounds).orElse(null);
+                    return new GuiSpell(name, tooltip, remainingCooldown, () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
                             targetingSpellEntity = spellEntity;
                         } else {

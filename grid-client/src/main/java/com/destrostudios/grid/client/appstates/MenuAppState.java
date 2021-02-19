@@ -97,6 +97,7 @@ public class MenuAppState extends BaseAppState {
         label.setInsets(new Insets3f(0, 10, 0, 0));
         label.setTextVAlignment(VAlignment.Center);
         label.setFontSize(20);
+        label.setColor(ColorRGBA.White);
         guiNode.attachChild(label);
 
         guiNode.attachChild(container);
@@ -179,6 +180,7 @@ public class MenuAppState extends BaseAppState {
         button.setTextHAlignment(HAlignment.Center);
         button.setTextVAlignment(VAlignment.Center);
         button.setFontSize(20);
+        button.setColor(ColorRGBA.White);
         return button;
     }
 

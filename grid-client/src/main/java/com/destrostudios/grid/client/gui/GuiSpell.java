@@ -8,5 +8,6 @@ import lombok.Getter;
 public class GuiSpell {
     private String name;
     private String tooltip;
+    private Integer remainingCooldown;
     private Runnable cast;
 }

@@ -3,10 +3,13 @@ package com.destrostudios.grid.client.appstates;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.*;
+import com.simsilica.lemur.component.IconComponent;
 import com.simsilica.lemur.component.SpringGridLayout;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
@@ -50,12 +53,15 @@ public class GameGuiAppState extends BaseAppState {
         containerLabelsBackground.setMargin(20, 10);
         lblActivePlayerName = new Label("");
         lblActivePlayerName.setFontSize(20);
+        lblActivePlayerName.setColor(ColorRGBA.White);
         containerLabels.addChild(lblActivePlayerName);
         lblActivePlayerMP = new Label("");
         lblActivePlayerMP.setFontSize(20);
+        lblActivePlayerMP.setColor(ColorRGBA.White);
         containerLabels.addChild(lblActivePlayerMP);
         lblActivePlayerAP = new Label("");
         lblActivePlayerAP.setFontSize(20);
+        lblActivePlayerAP.setColor(ColorRGBA.White);
         containerLabels.addChild(lblActivePlayerAP);
         mainApplication.getGuiNode().attachChild(containerLabels);
 
@@ -70,6 +76,7 @@ public class GameGuiAppState extends BaseAppState {
         lblTooltip.setTextHAlignment(HAlignment.Center);
         lblTooltip.setTextVAlignment(VAlignment.Center);
         lblTooltip.setFontSize(20);
+        lblTooltip.setColor(ColorRGBA.White);
         containerTooltip.addChild(lblTooltip);
 
         currentPlayerNode = new Node();
@@ -89,6 +96,7 @@ public class GameGuiAppState extends BaseAppState {
         lblOwnPlayerHealth.setTextHAlignment(HAlignment.Center);
         lblOwnPlayerHealth.setTextVAlignment(VAlignment.Center);
         lblOwnPlayerHealth.setFontSize(20);
+        lblOwnPlayerHealth.setColor(ColorRGBA.White);
         containerAttributes.addChild(lblOwnPlayerHealth);
 
         Container containerBottom = new Container();
@@ -99,12 +107,14 @@ public class GameGuiAppState extends BaseAppState {
         lblOwnPlayerMP.setTextHAlignment(HAlignment.Center);
         lblOwnPlayerMP.setTextVAlignment(VAlignment.Center);
         lblOwnPlayerMP.setFontSize(20);
+        lblOwnPlayerMP.setColor(ColorRGBA.White);
         containerBottom.addChild(lblOwnPlayerMP);
 
         lblOwnPlayerAP = new Label("");
         lblOwnPlayerAP.setTextHAlignment(HAlignment.Center);
         lblOwnPlayerAP.setTextVAlignment(VAlignment.Center);
         lblOwnPlayerAP.setFontSize(20);
+        lblOwnPlayerAP.setColor(ColorRGBA.White);
         containerBottom.addChild(lblOwnPlayerAP);
 
         containerAttributes.addChild(containerBottom);
@@ -114,23 +124,38 @@ public class GameGuiAppState extends BaseAppState {
 
     public void createSpellButtons(List<GuiSpell> spells) {
         int spellsContainerWidth = (totalWidth - (2 * leftAndRightPartWidth) - (2 * barMarginX));
-        int spellsContainerX = (barMarginX + leftAndRightPartWidth);
+        int spellsBackgroundX = (barMarginX + leftAndRightPartWidth);
+        int iconSize = (barHeight - 4);
 
-        Container spellsContainer = new Container();
-        spellsContainer.setLayout(new SpringGridLayout(Axis.X, Axis.Y));
-        spellsContainer.setLocalTranslation(spellsContainerX, barY, 0);
-        spellsContainer.setPreferredSize(new Vector3f(spellsContainerWidth, barHeight, 0));
+        Container spellsBackground = new Container();
+        spellsBackground.setLocalTranslation(spellsBackgroundX, barY, 0);
+        spellsBackground.setPreferredSize(new Vector3f(spellsContainerWidth, barHeight, 0));
+        currentPlayerNode.attachChild(spellsBackground);
+
+        int buttonX = spellsBackgroundX;
         for (GuiSpell spell : spells) {
-            Button button = new Button(spell.getName());
+            Button button = new Button("");
+            button.setLocalTranslation(buttonX, barY, 0);
+            button.setPreferredSize(new Vector3f(barHeight, barHeight, 0));
             button.setTextHAlignment(HAlignment.Center);
             button.setTextVAlignment(VAlignment.Center);
             button.setFontSize(20);
+            button.setColor(ColorRGBA.White);
+            IconComponent icon = new IconComponent("textures/spells/" + spell.getName() + ".png");
+            icon.setIconSize(new Vector2f(iconSize, iconSize));
+            icon.setHAlignment(HAlignment.Center);
+            icon.setVAlignment(VAlignment.Center);
+            button.setBackground(icon);
             button.addCommands(Button.ButtonAction.Up, source -> spell.getCast().run());
-            button.addCommands(Button.ButtonAction.HighlightOn, source -> showTooltip(spell.getTooltip()));
+            button.addCommands(Button.ButtonAction.HighlightOn, source -> showTooltip(spell.getName() + ": " + spell.getTooltip()));
             button.addCommands(Button.ButtonAction.HighlightOff, source -> hideTooltip());
-            spellsContainer.addChild(button);
+            if (spell.getRemainingCooldown() != null) {
+                button.setText("" + spell.getRemainingCooldown());
+                icon.setColor(ColorRGBA.Gray);
+            }
+            currentPlayerNode.attachChild(button);
+            buttonX += (barHeight - 2);
         }
-        currentPlayerNode.attachChild(spellsContainer);
     }
 
     public void showTooltip(String text) {
@@ -151,6 +176,7 @@ public class GameGuiAppState extends BaseAppState {
         endTurnButton.setTextHAlignment(HAlignment.Center);
         endTurnButton.setTextVAlignment(VAlignment.Center);
         endTurnButton.setFontSize(20);
+        endTurnButton.setColor(ColorRGBA.White);
         endTurnButton.addCommands(Button.ButtonAction.Up, source -> endTurn.run());
         rightContainer.addChild(endTurnButton);
 
