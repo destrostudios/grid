@@ -31,12 +31,12 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
 
         boolean isOnCooldown = entityWorld.hasComponents(event.getSpell(), OnCooldownComponent.class);
 
-        if ((isSelfCast || fieldIsReachable) && !isOnCooldown && entityWorld.hasComponents(event.getSpell(), AttackPointCostComponent.class)) {
+        if ((isSelfCast || fieldIsReachable) && !isOnCooldown) {
             // check AP costs
-            AttackPointCostComponent apCostsSpell = entityWorld.getComponent(event.getSpell(), AttackPointCostComponent.class);
             AttackPointsComponent attackPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
 
-            if (apCostsSpell.getAttackPointCosts() > attackPointsPlayer.getAttackPoints()) {
+            if (entityWorld.hasComponents(event.getSpell(), AttackPointCostComponent.class)
+                    && entityWorld.getComponent(event.getSpell(), AttackPointCostComponent.class).getAttackPointCosts() > attackPointsPlayer.getAttackPoints()) {
                 return false;
             }
 

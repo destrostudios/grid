@@ -10,7 +10,7 @@ import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.AttackPointCostComponent;
 import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
 import com.destrostudios.grid.entities.EntityWorld;
@@ -99,6 +99,12 @@ public class GridGame {
         for (Component playerComponent : getPlayerComponentsWithoutSpells(characterContainer)) {
             world.addComponent(playerEntity, playerComponent);
         }
+        MaxHealthComponent hpC = world.getComponent(playerEntity, MaxHealthComponent.class);
+        world.addComponent(playerEntity, new HealthPointsComponent(hpC.getMaxHealth()));
+        MaxAttackPointsComponent apC = world.getComponent(playerEntity, MaxAttackPointsComponent.class);
+        world.addComponent(playerEntity, new AttackPointsComponent(apC.getMaxAttackPoints()));
+        MaxMovementPointsComponent mpC = world.getComponent(playerEntity, MaxMovementPointsComponent.class);
+        world.addComponent(playerEntity, new MovementPointsComponent(mpC.getMaxMovenemtPoints()));
     }
 
     public List<Component> getPlayerComponentsWithoutSpells(CharacterContainer characterContainer) {
@@ -111,8 +117,7 @@ public class GridGame {
 
     public Map<Integer, List<Component>> getSpellComponents(CharacterContainer characterContainer) {
         return characterContainer.getComponents().entrySet().stream() // TODO: 14.02.2021 refactoring
-                .filter(e -> e.getValue().stream().anyMatch(c -> c instanceof AttackPointCostComponent
-                        || c instanceof MovementPointsCostComponent))
+                .filter(e -> e.getValue().stream().noneMatch(c -> c instanceof PlayerComponent))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 

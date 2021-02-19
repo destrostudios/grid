@@ -144,15 +144,12 @@ public class ComponentsContainerSerializer {
         spells.add(spellMpHealthBuff);
 
         int playerEntity = world.createEntity();
-        world.addComponent(playerEntity, new MovementPointsComponent(movementPoints));
         world.addComponent(playerEntity, new MaxMovementPointsComponent(movementPoints));
-        world.addComponent(playerEntity, new AttackPointsComponent(attackPoints));
         world.addComponent(playerEntity, new MaxAttackPointsComponent(attackPoints));
         world.addComponent(playerEntity, new ObstacleComponent());
         world.addComponent(playerEntity, new PlayerComponent());
         world.addComponent(playerEntity, new NameComponent(name));
         int health = Math.max(MAX_HEALTH / 2, rand.nextInt(MAX_HEALTH));
-        world.addComponent(playerEntity, new HealthPointsComponent(health));
         world.addComponent(playerEntity, new MaxHealthComponent(health));
         world.addComponent(playerEntity, new SpellsComponent(spells));
     }

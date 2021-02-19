@@ -3,20 +3,12 @@
   "components": {
     "6": [
       {
-        "c": "mp",
-        "movementPoints": 7
-      },
-      {
         "c": "maxmp",
-        "maxMovenemtPoints": 7
-      },
-      {
-        "c": "ap",
-        "attackPoints": 7
+        "maxMovenemtPoints": 5
       },
       {
         "c": "maxap",
-        "maxAttackPoints": 7
+        "maxAttackPoints": 9
       },
       {
         "c": "osbl"
@@ -27,10 +19,6 @@
       {
         "c": "name",
         "name": "Etherblood"
-      },
-      {
-        "c": "hp",
-        "health": 807
       },
       {
         "c": "mhp",
@@ -50,7 +38,7 @@
     "1": [
       {
         "c": "apc",
-        "attackPointCosts": 4
+        "attackPointCosts": 2
       },
       {
         "c": "dmg",
@@ -62,21 +50,21 @@
       },
       {
         "c": "ttp",
-        "tooltip": "OP spell doing 25 damage for 4 AP"
+        "tooltip": "High range spell doing 25 damage for 2 AP. (Range: 8)"
       },
       {
         "c": "rng",
-        "range": 3
+        "range": 8
       }
     ],
     "2": [
       {
         "c": "apc",
-        "attackPointCosts": 2
+        "attackPointCosts": 4
       },
       {
         "c": "dmg",
-        "damage": 37
+        "damage": 234
       },
       {
         "c": "name",
@@ -84,11 +72,11 @@
       },
       {
         "c": "ttp",
-        "tooltip": "OP spell doing 37 damage for 2 AP"
+        "tooltip": "Low range spell doing 234 damage for 4 AP. (Range: 1)"
       },
       {
         "c": "rng",
-        "range": 3
+        "range": 1
       }
     ],
     "3": [
@@ -98,7 +86,7 @@
       },
       {
         "c": "dmg",
-        "damage": 26
+        "damage": 15
       },
       {
         "c": "name",
@@ -111,22 +99,23 @@
       },
       {
         "c": "rng",
-        "range": 3
+        "range": 5
       },
       {
         "c": "ttp",
-        "tooltip": "Dmg spell doing 26 dmg for 2 AP and buffing 1 MP\nRange: 3"
+        "tooltip": "Middle range spell doing 15 dmg, buffing 1 MP for 2 AP. (Range: 5)"
       }
     ],
     "4": [
       {
-        "c": "mpc",
-        "movementPointsCost": 4
+        "c": "apb",
+        "buffAmount": -3,
+        "buffDuration": 3
       },
       {
-        "c": "apb",
-        "buffAmount": 1,
-        "buffDuration": 2
+        "c": "mpb",
+        "buffAmount": 3,
+        "buffDuration": 3
       },
       {
         "c": "name",
@@ -134,21 +123,25 @@
       },
       {
         "c": "rng",
-        "range": 3
+        "range": 0
       },
       {
         "c": "ttp",
-        "tooltip": "Spell buffing 1 AP for 4 MP \nRange: 3"
+        "tooltip": "Spell buffing 3 BP and debuffing 3 AP for 3 rounds. (CD: 5)"
+      },
+      {
+        "c": "cd",
+        "cooldown": 5
       }
     ],
     "5": [
       {
         "c": "apc",
-        "attackPointCosts": 5
+        "attackPointCosts": 6
       },
       {
         "c": "hpb",
-        "buffAmount": 76,
+        "buffAmount": 176,
         "buffDuration": 4
       },
       {
@@ -161,7 +154,7 @@
       },
       {
         "c": "ttp",
-        "tooltip": "Spell buffing 76 HP for 5 AP. \nCD: 3, Range: 0 "
+        "tooltip": "Spell buffing 176 HP for 6 AP. (CD: 3, Range: 0) "
       },
       {
         "c": "cd",

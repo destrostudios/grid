@@ -38,7 +38,7 @@ public class BuffAddedHandler implements EventHandler<BuffAddedEvent> {
             subevents.add(new PropertiePointsChangedEvent.AttackPointsChangedEvent(event.getTargetEntity(), attackPointsComponent.getAttackPoints() + apBuff.getBuffAmount()));
             subevents.add(new PropertiePointsChangedEvent.MaxAttackPointsChangedEvent(event.getTargetEntity(), maxAp.getMaxAttackPoints() + apBuff.getBuffAmount()));
         }
-        if (entityWorld.hasComponents(event.getSpellEntity(), MovementPointsComponent.class)) {
+        if (entityWorld.hasComponents(event.getSpellEntity(), MovementPointBuffComponent.class)) {
             MovementPointBuffComponent mpBuff = entityWorld.getComponent(event.getSpellEntity(), MovementPointBuffComponent.class);
             MovementPointsComponent movementPointsComponent = entityWorld.getComponent(event.getTargetEntity(), MovementPointsComponent.class);
             MaxMovementPointsComponent maxMpComponent = entityWorld.getComponent(event.getTargetEntity(), MaxMovementPointsComponent.class);
