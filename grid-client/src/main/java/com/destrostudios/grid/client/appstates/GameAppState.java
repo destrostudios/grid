@@ -83,7 +83,6 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getInputManager().addMapping("mouse_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         mainApplication.getInputManager().addListener(this, "key_delete", "mouse_left", "mouse_right");
 
-        recreateGui();
         updateVisuals();
 
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
@@ -102,43 +101,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
-            recreateGui();
         });
-    }
-
-    private void recreateGui() {
-        Integer playerEntity = gameProxy.getPlayerEntity();
-        if (playerEntity == null) {
-            // spectating only
-            return;
-        }
-
-        EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        Optional<SpellsComponent> spells = entityWorld.getComponent(playerEntity, SpellsComponent.class);
-
-        List<GuiSpell> guiSpells = spells.get().getSpells().stream()
-                .map(spellEntity -> {
-                    String name = entityWorld.getComponent(spellEntity, NameComponent.class).get().getName();
-                    String tooltip = entityWorld.getComponent(spellEntity, TooltipComponent.class).get().getTooltip();
-                    Integer remainingCooldown = entityWorld.getComponent(spellEntity, OnCooldownComponent.class).map(OnCooldownComponent::getRemainingRounds).orElse(null);
-                    return new GuiSpell(name, tooltip, remainingCooldown, () -> {
-                        if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
-                            targetingSpellEntity = spellEntity;
-                        } else {
-                            targetingSpellEntity = null;
-                        }
-                        updateTerrain();
-                    });
-                })
-                .collect(Collectors.toList());
-
-        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
-        gameGuiAppState.removeAllCurrentPlayerElements();
-        gameGuiAppState.createAttributes();
-        gameGuiAppState.createSpellButtons(guiSpells);
-        gameGuiAppState.createEndTurnButton(this::skipRound);
-
-        updateGui();
     }
 
     @Override
@@ -197,7 +160,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             playerVisual.setCurrentHealth(healthPointsComponent.getHealth());
         }
 
-        updateGui();
+        recreateGui();
     }
 
     private void updateTerrain() {
@@ -214,6 +177,41 @@ public class GameAppState extends BaseAppState implements ActionListener {
             }
             blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), block);
         }
+    }
+
+    private void recreateGui() {
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity == null) {
+            // spectating only
+            return;
+        }
+
+        EntityWorld entityWorld = gameProxy.getGame().getWorld();
+        Optional<SpellsComponent> spells = entityWorld.getComponent(playerEntity, SpellsComponent.class);
+
+        List<GuiSpell> guiSpells = spells.get().getSpells().stream()
+                .map(spellEntity -> {
+                    String name = entityWorld.getComponent(spellEntity, NameComponent.class).get().getName();
+                    String tooltip = entityWorld.getComponent(spellEntity, TooltipComponent.class).get().getTooltip();
+                    Integer remainingCooldown = entityWorld.getComponent(spellEntity, OnCooldownComponent.class).map(OnCooldownComponent::getRemainingRounds).orElse(null);
+                    return new GuiSpell(name, tooltip, remainingCooldown, () -> {
+                        if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
+                            targetingSpellEntity = spellEntity;
+                        } else {
+                            targetingSpellEntity = null;
+                        }
+                        updateTerrain();
+                    });
+                })
+                .collect(Collectors.toList());
+
+        GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
+        gameGuiAppState.removeAllCurrentPlayerElements();
+        gameGuiAppState.createAttributes();
+        gameGuiAppState.createSpellButtons(guiSpells);
+        gameGuiAppState.createEndTurnButton(this::skipRound);
+
+        updateGui();
     }
 
     private void updateGui() {
