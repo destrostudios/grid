@@ -35,4 +35,6 @@ public interface GameProxy {
     void addResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler);
 
     void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler);
+
+    void cleanupGame();
 }

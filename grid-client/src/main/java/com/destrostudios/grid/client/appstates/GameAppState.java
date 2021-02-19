@@ -258,6 +258,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         mainApplication.getRootNode().detachChild(rootNode);
         mainApplication.getGuiNode().detachChild(guiNode);
         mainApplication.getInputManager().removeListener(this);
+        gameProxy.cleanupGame();
     }
 
     @Override

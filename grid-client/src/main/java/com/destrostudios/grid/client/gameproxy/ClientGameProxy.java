@@ -92,4 +92,10 @@ public class ClientGameProxy implements GameProxy {
     public void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
         resolvedListeners.remove(eventClass, handler);
     }
+
+    @Override
+    public void cleanupGame() {
+        client.removeJoinedGame(gameId);
+
+    }
 }

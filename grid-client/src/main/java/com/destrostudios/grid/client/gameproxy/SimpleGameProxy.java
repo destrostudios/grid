@@ -5,7 +5,6 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.RoundComponent;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -62,17 +61,22 @@ public class SimpleGameProxy implements GameProxy {
     }
 
     @Override
-    public void removePreHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler) {
+    public void removePreHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
         gridGame.removePreHandler(eventClass, handler);
     }
 
     @Override
-    public void addResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler) {
+    public void addResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
         gridGame.addResolvedHandler(eventClass, handler);
     }
 
     @Override
-    public void removeResolvedHandler(Class<? extends Event> eventClass,EventHandler<? extends Event> handler) {
+    public void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
         gridGame.removeResolvedHandler(eventClass, handler);
+    }
+
+    @Override
+    public void cleanupGame() {
+
     }
 }
