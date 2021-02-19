@@ -1,9 +1,6 @@
 package com.destrostudios.grid.eventbus.handler;
 
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
-import com.destrostudios.grid.components.properties.BuffsComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
 import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
@@ -30,7 +27,7 @@ public class UpdateBuffsHandler implements EventHandler<UpdateBuffsEvent> {
 
         BuffsComponent buffs = world.getComponent(entity, BuffsComponent.class).orElse(new BuffsComponent());
 
-        List<Integer> newBuffs = new ArrayList<>(buffs.getBuffEntities());
+        List<Integer> newBuffs = new ArrayList<>();
 
         Optional<Integer> deltaAP = Optional.empty();
         Optional<Integer> deltaMP = Optional.empty();
@@ -43,9 +40,10 @@ public class UpdateBuffsHandler implements EventHandler<UpdateBuffsEvent> {
 
             if (!world.hasComponents(buff, AttackPointsBuffComponent.class) && !world.hasComponents(buff, MovementPointBuffComponent.class)
                     && !world.hasComponents(buff, HealthPointBuffComponent.class)) {
-
-                newBuffs.remove(buff);
+                // no buffs anymore
                 world.removeEntity(buff);
+            } else {
+                newBuffs.add(buff);
             }
         }
         world.addComponent(entity, new BuffsComponent(newBuffs));
@@ -56,18 +54,21 @@ public class UpdateBuffsHandler implements EventHandler<UpdateBuffsEvent> {
         List<Event> subEvents = new ArrayList<>();
         if (deltaAP.isPresent()) {
             AttackPointsComponent attackPointsComponent = world.getComponent(entity, AttackPointsComponent.class).get();
+            MaxAttackPointsComponent apCompe = world.getComponent(entity, MaxAttackPointsComponent.class).get();
             subEvents.add(new AttackPointsChangedEvent(entity, attackPointsComponent.getAttackPoints() + deltaAP.get()));
-            subEvents.add(new MaxAttackPointsChangedEvent(entity, attackPointsComponent.getAttackPoints() + deltaAP.get()));
+            subEvents.add(new MaxAttackPointsChangedEvent(entity, apCompe.getMaxAttackPoints() + deltaAP.get()));
         }
         if (deltaMP.isPresent()) {
             MovementPointsComponent movementPointsComponent = world.getComponent(entity, MovementPointsComponent.class).get();
+            MaxMovementPointsComponent maxMp = world.getComponent(entity, MaxMovementPointsComponent.class).get();
             subEvents.add(new MovementPointsChangedEvent(entity, movementPointsComponent.getMovementPoints() + deltaMP.get()));
-            subEvents.add(new MaxMovementPointsChangedEvent(entity, movementPointsComponent.getMovementPoints() + deltaMP.get()));
+            subEvents.add(new MaxMovementPointsChangedEvent(entity, maxMp.getMaxMovenemtPoints() + deltaMP.get()));
         }
         if (deltaHP.isPresent()) {
             HealthPointsComponent healthPointsComponent = world.getComponent(entity, HealthPointsComponent.class).get();
+            MaxHealthPointsChangedEvent maxHp = world.getComponent(entity, MaxHealthPointsChangedEvent.class).get();
             subEvents.add(new HealthPointsChangedEvent(entity, healthPointsComponent.getHealth() + deltaHP.get()));
-            subEvents.add(new MaxHealthPointsChangedEvent(entity, healthPointsComponent.getHealth() + deltaHP.get()));
+            subEvents.add(new MaxHealthPointsChangedEvent(entity, maxHp.getMaxHealtPoints() + deltaHP.get()));
         }
         return subEvents;
     }

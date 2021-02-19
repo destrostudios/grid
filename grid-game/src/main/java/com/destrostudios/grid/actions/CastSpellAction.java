@@ -10,7 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CastSpellAction implements Action {
-    private int targetEntity;
+    private int targetX;
+    private int targetY;
     private String playerIdentifier;
     private int spell;
 }

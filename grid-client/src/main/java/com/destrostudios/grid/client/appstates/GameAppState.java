@@ -264,11 +264,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
                     if (clickedPosition != null) {
                         if (targetingSpellEntity != null) {
                             EntityWorld world = gameProxy.getGame().getWorld();
-                            Optional<Integer> targetEntity = world.list(PositionComponent.class).stream()
-                                    .filter(e -> world.getComponent(e, PositionComponent.class).get().getX() == clickedPosition.getX()
-                                            && world.getComponent(e, PositionComponent.class).get().getY() == clickedPosition.getZ())
-                                    .findFirst();
-                            gameProxy.requestAction(new CastSpellAction(targetEntity.get(), gameProxy.getPlayerEntity().toString(), targetingSpellEntity));
+                            gameProxy.requestAction(new CastSpellAction(clickedPosition.getX(), clickedPosition.getZ(),
+                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity));
                         } else {
                             gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), playerEntity.toString()));
                         }
