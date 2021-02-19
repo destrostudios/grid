@@ -102,6 +102,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
+        /*gameProxy.addResolvedHandler(GameOverEvent.class, (event, entityWorldSupplier) -> {
+            getAppState(GameGuiAppState.class).onGameOver();
+        });*/
     }
 
     @Override

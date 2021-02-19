@@ -38,6 +38,9 @@ public class GameGuiAppState extends BaseAppState {
     private Container containerTooltip;
     private Label lblTooltip;
 
+    private Container containerGameOver;
+    private Label lblGameOver;
+
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
@@ -81,6 +84,16 @@ public class GameGuiAppState extends BaseAppState {
 
         currentPlayerNode = new Node();
         mainApplication.getGuiNode().attachChild(currentPlayerNode);
+
+        containerGameOver = new Container();
+        containerGameOver.setLocalTranslation(0, totalHeight, 999);
+        containerGameOver.setPreferredSize(new Vector3f(totalWidth, totalHeight, 0));
+        lblGameOver = new Label("Game over");
+        lblGameOver.setTextHAlignment(HAlignment.Center);
+        lblGameOver.setTextVAlignment(VAlignment.Center);
+        lblGameOver.setFontSize(40);
+        lblGameOver.setColor(ColorRGBA.White);
+        containerGameOver.addChild(lblGameOver);
     }
 
     public void removeAllCurrentPlayerElements() {
@@ -205,5 +218,9 @@ public class GameGuiAppState extends BaseAppState {
 
     public void setOwnPlayerAP(int ap) {
         lblOwnPlayerAP.setText("AP: " + ap);
+    }
+
+    public void onGameOver() {
+        mainApplication.getGuiNode().attachChild(containerGameOver);
     }
 }
