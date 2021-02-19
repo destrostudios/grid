@@ -18,11 +18,13 @@ import com.destrostudios.turnbasedgametools.network.server.modules.jwt.JwtServer
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
 import com.destrostudios.turnbasedgametools.network.shared.modules.NetworkModule;
 import com.destrostudios.turnbasedgametools.network.shared.modules.game.messages.GameActionRequest;
+import com.destrostudios.turnbasedgametools.network.shared.modules.jwt.messages.Login;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -52,8 +54,7 @@ public class Main {
 
                 for (Connection other : kryoServer.getConnections()) {
                     JwtAuthenticationUser user = jwtModule.getUser(other.getID());
-                    if (user != null && Stream.concat(startGameInfo.getTeam1().stream(), startGameInfo.getTeam2().stream())
-                            .anyMatch(p -> p.getId() == user.id)) {
+                    if (user != null && isUserInGame(startGameInfo, user)) {
                         gameModule.join(other, gameId);
                     }
                 }
@@ -73,10 +74,33 @@ public class Main {
                 }
             }
         };
+        NetworkModule autoRejoinModule = new NetworkModule() {
+            @Override
+            public void received(Connection connection, Object object) {
+                if (object instanceof Login) {
+                    JwtAuthenticationUser user = jwtModule.getUser(connection.getID());
+                    if (user == null) {
+                        // unsuccessful login
+                        return;
+                    }
+                    for (Map.Entry<UUID, StartGameInfo> entry : lobbyModule.getGames().entrySet()) {
+                        StartGameInfo startGameInfo = entry.getValue();
+                        if (isUserInGame(startGameInfo, user)) {
+                            gameModule.join(connection, entry.getKey());
+                        }
+                    }
+                }
+            }
+        };
 
-        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, lobbyModule, gameStartModule, gameOverModule);
+        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, lobbyModule, gameStartModule, gameOverModule, autoRejoinModule);
         server.start(NetworkUtil.PORT);
 
         System.out.println("Server started.");
+    }
+
+    private static boolean isUserInGame(StartGameInfo startGameInfo, JwtAuthenticationUser user) {
+        return Stream.concat(startGameInfo.getTeam1().stream(), startGameInfo.getTeam2().stream())
+                .anyMatch(p -> p.getId() == user.id);
     }
 }
