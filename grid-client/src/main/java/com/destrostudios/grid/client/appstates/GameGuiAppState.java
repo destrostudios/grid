@@ -26,6 +26,8 @@ public class GameGuiAppState extends BaseAppState {
     private int totalWidth;
     private int totalHeight;
 
+    private Node guiNode;
+
     private Label lblActivePlayerName;
     private Label lblActivePlayerMP;
     private Label lblActivePlayerAP;
@@ -49,6 +51,8 @@ public class GameGuiAppState extends BaseAppState {
         totalWidth = appSettings.getWidth();
         totalHeight = appSettings.getHeight();
 
+        guiNode = new Node();
+
         int labelsMargin = 30;
         Container containerLabels = new Container();
         containerLabels.setLocalTranslation(labelsMargin, totalHeight - labelsMargin, 0);
@@ -66,7 +70,7 @@ public class GameGuiAppState extends BaseAppState {
         lblActivePlayerAP.setFontSize(20);
         lblActivePlayerAP.setColor(ColorRGBA.White);
         containerLabels.addChild(lblActivePlayerAP);
-        mainApplication.getGuiNode().attachChild(containerLabels);
+        guiNode.attachChild(containerLabels);
 
         int containerTooltipWidth = (totalWidth - (2 * leftAndRightPartWidth) - (2 * barMarginX));
         int containerTooltipHeight = barHeight;
@@ -83,17 +87,33 @@ public class GameGuiAppState extends BaseAppState {
         containerTooltip.addChild(lblTooltip);
 
         currentPlayerNode = new Node();
-        mainApplication.getGuiNode().attachChild(currentPlayerNode);
+        guiNode.attachChild(currentPlayerNode);
 
+        int gameOverInsetsX = 400;
+        int gameOverInsetsBorder = 200;
+        int gameOverInsetsMiddle = 0;
         containerGameOver = new Container();
         containerGameOver.setLocalTranslation(0, totalHeight, 999);
         containerGameOver.setPreferredSize(new Vector3f(totalWidth, totalHeight, 0));
-        lblGameOver = new Label("Game over");
+        TbtQuadBackgroundComponent containerGameOverBackground = (TbtQuadBackgroundComponent) containerGameOver.getBackground();
+        containerGameOverBackground.setColor(new ColorRGBA(0, 0, 0, 0.8f));
+        lblGameOver = new Label("");
+        lblGameOver.setInsets(new Insets3f(gameOverInsetsBorder, gameOverInsetsX, gameOverInsetsMiddle, gameOverInsetsX));
         lblGameOver.setTextHAlignment(HAlignment.Center);
         lblGameOver.setTextVAlignment(VAlignment.Center);
         lblGameOver.setFontSize(40);
         lblGameOver.setColor(ColorRGBA.White);
         containerGameOver.addChild(lblGameOver);
+        Button btnBackToMenu = new Button("Continue");
+        btnBackToMenu.setInsets(new Insets3f(gameOverInsetsMiddle, gameOverInsetsX, gameOverInsetsBorder, gameOverInsetsX));
+        btnBackToMenu.setTextHAlignment(HAlignment.Center);
+        btnBackToMenu.setTextVAlignment(VAlignment.Center);
+        btnBackToMenu.setFontSize(40);
+        btnBackToMenu.setColor(ColorRGBA.White);
+        btnBackToMenu.addCommands(Button.ButtonAction.Up, source -> mainApplication.closeGame());
+        containerGameOver.addChild(btnBackToMenu);
+
+        mainApplication.getGuiNode().attachChild(guiNode);
     }
 
     public void removeAllCurrentPlayerElements() {
@@ -173,11 +193,11 @@ public class GameGuiAppState extends BaseAppState {
 
     public void showTooltip(String text) {
         lblTooltip.setText(text);
-        mainApplication.getGuiNode().attachChild(containerTooltip);
+        guiNode.attachChild(containerTooltip);
     }
 
     public void hideTooltip() {
-        mainApplication.getGuiNode().detachChild(containerTooltip);
+        guiNode.detachChild(containerTooltip);
     }
 
     public void createEndTurnButton(Runnable endTurn) {
@@ -220,7 +240,14 @@ public class GameGuiAppState extends BaseAppState {
         lblOwnPlayerAP.setText("AP: " + ap);
     }
 
-    public void onGameOver() {
-        mainApplication.getGuiNode().attachChild(containerGameOver);
+    public void onGameOver(String winner) {
+        lblGameOver.setText("Game over - Winner: " + winner);
+        guiNode.attachChild(containerGameOver);
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        mainApplication.getGuiNode().detachChild(guiNode);
     }
 }

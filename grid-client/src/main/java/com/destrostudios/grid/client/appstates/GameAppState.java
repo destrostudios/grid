@@ -54,6 +54,8 @@ import java.util.stream.Collectors;
 public class GameAppState extends BaseAppState implements ActionListener {
 
     private final GameProxy gameProxy;
+    private Node rootNode;
+    private Node guiNode;
     private Node blockTerrainNode;
     private BlockTerrainControl blockTerrainControl;
     private HashMap<Integer, PlayerVisual> playerVisuals = new HashMap<>();
@@ -68,12 +70,18 @@ public class GameAppState extends BaseAppState implements ActionListener {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
+        rootNode = new Node();
+        mainApplication.getRootNode().attachChild(rootNode);
+
+        guiNode = new Node();
+        mainApplication.getGuiNode().attachChild(guiNode);
+
         blockTerrainNode = new Node();
         blockTerrainNode.setShadowMode(RenderQueue.ShadowMode.Receive);
         blockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(1, 1, 1));
         blockTerrainControl.setBlockArea(new Vector3Int(), new Vector3Int(16, 1, 16), BlockAssets.BLOCK_GRASS);
         blockTerrainNode.addControl(blockTerrainControl);
-        mainApplication.getRootNode().attachChild(blockTerrainNode);
+        rootNode.attachChild(blockTerrainNode);
 
         Camera camera = mainApplication.getCamera();
         camera.setLocation(new Vector3f(23.15413f, 40.838593f, 66.12133f));
@@ -103,8 +111,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
-        gameProxy.addResolvedHandler(GameOverEvent.class, (event, entityWorldSupplier) -> {
-            getAppState(GameGuiAppState.class).onGameOver();
+        gameProxy.addResolvedHandler(GameOverEvent.class, (EventHandler<GameOverEvent>) (event, entityWorldSupplier) -> {
+            getAppState(GameGuiAppState.class).onGameOver("Team #" + event.getWinnerTeam());
         });
     }
 
@@ -133,7 +141,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         for (int playerEntity : entityWorld.list(TreeComponent.class)) {
             ModelObject treeModel = treeModels.computeIfAbsent(playerEntity, pe -> {
                 ModelObject newTreeModel = new ModelObject(mainApplication.getAssetManager(), "models/tree/skin.xml");
-                mainApplication.getRootNode().attachChild(newTreeModel);
+                rootNode.attachChild(newTreeModel);
                 return newTreeModel;
             });
 
@@ -144,9 +152,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
             PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
                 PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager());
-                mainApplication.getRootNode().attachChild(newPlayerVisual.getModelObject());
-                mainApplication.getGuiNode().attachChild(newPlayerVisual.getLblName());
-                mainApplication.getGuiNode().attachChild(newPlayerVisual.getHealthBar());
+                rootNode.attachChild(newPlayerVisual.getModelObject());
+                guiNode.attachChild(newPlayerVisual.getLblName());
+                guiNode.attachChild(newPlayerVisual.getHealthBar());
                 return newPlayerVisual;
             });
 
@@ -246,7 +254,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
     @Override
     public void cleanup() {
         super.cleanup();
-        mainApplication.getRootNode().detachChild(blockTerrainNode);
+        mainApplication.getRootNode().detachChild(rootNode);
+        mainApplication.getGuiNode().detachChild(guiNode);
         mainApplication.getInputManager().removeListener(this);
     }
 

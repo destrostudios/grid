@@ -113,6 +113,12 @@ public class ClientApplication extends SimpleApplication {
         stateManager.attach(new GameAppState(gameProxy));
     }
 
+    public void closeGame() {
+        stateManager.detach(stateManager.getState(GameAppState.class));
+        stateManager.detach(stateManager.getState(GameGuiAppState.class));
+        stateManager.attach(new MenuAppState());
+    }
+
     public CollisionResults getRayCastingResults_Cursor(Spatial spatial) {
         return getRayCastingResults_Screen(spatial, inputManager.getCursorPosition());
     }
