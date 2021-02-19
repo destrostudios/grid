@@ -27,6 +27,7 @@ import com.destrostudios.grid.components.spells.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.events.GameOverEvent;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 import com.destrostudios.grid.eventbus.events.properties.HealthPointsChangedEvent;
@@ -102,9 +103,9 @@ public class GameAppState extends BaseAppState implements ActionListener {
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).get().getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
-        /*gameProxy.addResolvedHandler(GameOverEvent.class, (event, entityWorldSupplier) -> {
+        gameProxy.addResolvedHandler(GameOverEvent.class, (event, entityWorldSupplier) -> {
             getAppState(GameGuiAppState.class).onGameOver();
-        });*/
+        });
     }
 
     @Override

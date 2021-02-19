@@ -8,11 +8,10 @@ import com.destrostudios.grid.eventbus.handler.EventHandler;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class MaxHealtPointsChangedHandler implements EventHandler<MaxHealthPointsChangedEvent> {
+public class MaxHealthPointsChangedHandler implements EventHandler<MaxHealthPointsChangedEvent> {
     @Override
     public void onEvent(MaxHealthPointsChangedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
-        Optional<MaxHealthComponent> component = entityWorld.getComponent(event.getEntity(), MaxHealthComponent.class);
         entityWorld.remove(event.getEntity(), MaxHealthComponent.class);
         entityWorld.addComponent(event.getEntity(), new MaxHealthComponent(event.getMaxHealtPoints()));
     }

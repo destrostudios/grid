@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public abstract class SimpleEvent implements Event {
-    private final int entity;
+public class GameOverEvent implements Event {
+    private final int winnerTeam;
 }

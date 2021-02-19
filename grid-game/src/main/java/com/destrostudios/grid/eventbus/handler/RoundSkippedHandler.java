@@ -9,8 +9,7 @@ import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
-import com.destrostudios.grid.eventbus.events.UpdateBuffsEvent;
-import com.destrostudios.grid.eventbus.events.UpdateCooldownsEvent;
+import com.destrostudios.grid.eventbus.events.SimpleUpdateEvent;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -47,6 +46,6 @@ public class RoundSkippedHandler implements EventHandler<RoundSkippedEvent> {
                 .findFirst();
         entityWorld.addComponent(newActivePlayer.get(), new RoundComponent());
 
-        instance.registerSubEvents(List.of(new UpdateBuffsEvent(newActivePlayer.get()), new UpdateCooldownsEvent(newActivePlayer.get()))) ;
+        instance.registerSubEvents(List.of(new SimpleUpdateEvent.BuffsUpdateEvent(newActivePlayer.get()), new SimpleUpdateEvent.UpdateCooldownsUpdateEvent(newActivePlayer.get()))) ;
     }
 }

@@ -3,13 +3,13 @@ package com.destrostudios.grid.eventbus.handler;
 import com.destrostudios.grid.components.spells.OnCooldownComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.UpdateCooldownsEvent;
+import com.destrostudios.grid.eventbus.events.SimpleUpdateEvent;
 
 import java.util.function.Supplier;
 
-public class UpdateCooldownsHandler implements EventHandler<UpdateCooldownsEvent> {
+public class UpdateCooldownsHandler implements EventHandler<SimpleUpdateEvent.UpdateCooldownsUpdateEvent> {
     @Override
-    public void onEvent(UpdateCooldownsEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(SimpleUpdateEvent.UpdateCooldownsUpdateEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         SpellsComponent spellsComponent = entityWorld.getComponent(event.getEntity(), SpellsComponent.class).get();
         for (Integer spellEntity : spellsComponent.getSpells()) {

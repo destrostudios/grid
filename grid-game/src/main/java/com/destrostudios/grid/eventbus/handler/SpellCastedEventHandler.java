@@ -8,10 +8,7 @@ import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.events.BuffAddedEvent;
-import com.destrostudios.grid.eventbus.events.DamageTakenEvent;
-import com.destrostudios.grid.eventbus.events.Event;
-import com.destrostudios.grid.eventbus.events.SpellCastedEvent;
+import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.events.properties.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.events.properties.MovementPointsChangedEvent;
 import lombok.AllArgsConstructor;
@@ -31,20 +28,20 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
 
         int spell = event.getSpell();
         Optional<CooldownComponent> cooldownComponent = entityWorld.getComponent(spell, CooldownComponent.class);
+        cooldownComponent.ifPresent(component -> entityWorld.addComponent(spell, new OnCooldownComponent(component.getCooldown())));
 
-        if (cooldownComponent.isPresent()) {
-            entityWorld.addComponent(spell, new OnCooldownComponent(cooldownComponent.get().getCooldown()));
-        }
         int playerEntity = event.getPlayerEntity();
         Optional<DamageComponent> damageSpell = entityWorld.getComponent(spell, DamageComponent.class);
 
         List<Event> followUpEvents = new ArrayList<>();
         Optional<AttackPointCostComponent> apCost = entityWorld.getComponent(event.getSpell(), AttackPointCostComponent.class);
+
         if (apCost.isPresent()) {
             AttackPointCostComponent attackPointCostComponent = apCost.get();
             AttackPointsComponent ap = entityWorld.getComponent(event.getPlayerEntity(), AttackPointsComponent.class).get();
             followUpEvents.add(new AttackPointsChangedEvent(event.getPlayerEntity(), ap.getAttackPoints() - attackPointCostComponent.getAttackPointCosts()));
         }
+
         Optional<MovementPointsCostComponent> mpCost = entityWorld.getComponent(event.getSpell(), MovementPointsCostComponent.class);
         if (mpCost.isPresent()) {
             MovementPointsCostComponent movementPointsCostComponent = mpCost.get();

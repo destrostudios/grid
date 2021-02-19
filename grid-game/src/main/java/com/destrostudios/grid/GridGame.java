@@ -159,13 +159,13 @@ public class GridGame {
         addInstantHandler(AttackPointsChangedEvent.class, new AttackPointsChangedHandler());
         addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler(eventBus));
         addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
-        addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler());
-        addInstantHandler(MaxHealthPointsChangedEvent.class, new MaxHealtPointsChangedHandler());
+        addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler(eventBus));
+        addInstantHandler(MaxHealthPointsChangedEvent.class, new MaxHealthPointsChangedHandler());
         addInstantHandler(MaxAttackPointsChangedEvent.class, new MaxAttackPointsChangedHandler());
         addInstantHandler(MaxMovementPointsChangedEvent.class, new MaxMovementPointsChangedHandler());
         addInstantHandler(BuffAddedEvent.class, new BuffAddedHandler(eventBus));
-        addInstantHandler(UpdateBuffsEvent.class, new UpdateBuffsHandler(eventBus));
-        addInstantHandler(UpdateCooldownsEvent.class, new UpdateCooldownsHandler());
+        addInstantHandler(SimpleUpdateEvent.BuffsUpdateEvent.class, new UpdateBuffsHandler(eventBus));
+        addInstantHandler(SimpleUpdateEvent.UpdateCooldownsUpdateEvent.class, new UpdateCooldownsHandler());
         addValidator(MoveEvent.class, new MoveValidator());
         addValidator(SpellCastedEvent.class, new SpellCastedValidator());
         addValidator(RoundSkippedEvent.class, new SkipRoundValidator());

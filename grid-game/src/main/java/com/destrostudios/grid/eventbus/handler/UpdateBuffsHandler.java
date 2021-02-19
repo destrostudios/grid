@@ -7,7 +7,8 @@ import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.events.*;
+import com.destrostudios.grid.eventbus.events.Event;
+import com.destrostudios.grid.eventbus.events.SimpleUpdateEvent;
 import com.destrostudios.grid.eventbus.events.properties.*;
 import lombok.AllArgsConstructor;
 
@@ -17,18 +18,18 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @AllArgsConstructor
-public class UpdateBuffsHandler implements EventHandler<UpdateBuffsEvent> {
+public class UpdateBuffsHandler implements EventHandler<SimpleUpdateEvent.BuffsUpdateEvent> {
     private final Eventbus eventbus;
 
     @Override
-    public void onEvent(UpdateBuffsEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(SimpleUpdateEvent.BuffsUpdateEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld world = entityWorldSupplier.get();
         int entity = event.getEntity();
 
         BuffsComponent buffs = world.getComponent(entity, BuffsComponent.class).orElse(new BuffsComponent());
 
-        List<Integer> newBuffs = new ArrayList<>();
 
+        List<Integer> newBuffs = new ArrayList<>();
         Optional<Integer> deltaAP = Optional.empty();
         Optional<Integer> deltaMP = Optional.empty();
         Optional<Integer> deltaHP = Optional.empty();
@@ -38,8 +39,7 @@ public class UpdateBuffsHandler implements EventHandler<UpdateBuffsEvent> {
             deltaAP = handleBuff(world, buff, AttackPointsBuffComponent.class);
             deltaHP = handleBuff(world, buff, HealthPointBuffComponent.class);
 
-            if (!world.hasComponents(buff, AttackPointsBuffComponent.class) && !world.hasComponents(buff, MovementPointBuffComponent.class)
-                    && !world.hasComponents(buff, HealthPointBuffComponent.class)) {
+            if (hasNoBuff(world, buff)) {
                 // no buffs anymore
                 world.removeEntity(buff);
             } else {
@@ -48,6 +48,12 @@ public class UpdateBuffsHandler implements EventHandler<UpdateBuffsEvent> {
         }
         world.addComponent(entity, new BuffsComponent(newBuffs));
         eventbus.registerSubEvents(getSubEvents(world, entity, deltaAP, deltaMP, deltaHP));
+    }
+
+    private boolean hasNoBuff(EntityWorld world, int buff) {
+        return !world.hasComponents(buff, AttackPointsBuffComponent.class)
+                && !world.hasComponents(buff, MovementPointBuffComponent.class)
+                && !world.hasComponents(buff, HealthPointBuffComponent.class);
     }
 
     private List<Event> getSubEvents(EntityWorld world, int entity, Optional<Integer> deltaAP, Optional<Integer> deltaMP, Optional<Integer> deltaHP) {

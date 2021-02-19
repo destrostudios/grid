@@ -9,5 +9,4 @@ import lombok.Getter;
 public class MovementPointsChangedEvent implements Event {
     private final int entity;
     private final int movementPoints;
-
 }
