@@ -4,14 +4,13 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public class GameOverUtils {
 
@@ -23,16 +22,16 @@ public class GameOverUtils {
             TeamComponent teamComp = entityWorld.getComponent(player, TeamComponent.class);
             playersByTeam.computeIfAbsent(teamComp.getTeam(), s -> new ArrayList<>()).add(player);
         }
-        final AtomicInteger loosingTeam = new AtomicInteger(-1);
+        AtomicInteger losingTeam = new AtomicInteger(-1);
         for (Map.Entry<Integer, List<Integer>> playersByTeamEntry : playersByTeam.entrySet()) {
             List<Integer> players = playersByTeamEntry.getValue();
             boolean teamNoHealth = players.stream().allMatch(e -> entityWorld.getComponent(e, HealthPointsComponent.class).getHealth() <= 0);
             if (teamNoHealth) {
-                loosingTeam.set(playersByTeamEntry.getKey());
+                losingTeam.set(playersByTeamEntry.getKey());
             }
         }
         int winningTeam = playersByTeam.keySet().stream()
-                .filter(e -> loosingTeam.get() != -1 && e != loosingTeam.get())
+                .filter(e -> losingTeam.get() != -1 && e != losingTeam.get())
                 .findFirst()
                 .orElse(-1);
 
