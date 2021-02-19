@@ -22,16 +22,16 @@ public class CalculationUtils {
      * @return empty List, if it is a self target spell and List of entities of targetable spells otherwise
      */
     public static List<Integer> getRange(int spellEntity, int casterEntity, EntityWorld entityWorld) {
-        Optional<RangeComponent> rangeComponentOpt = entityWorld.getComponent(spellEntity, RangeComponent.class);
-        Optional<PositionComponent> casterPositionOpt = entityWorld.getComponent(casterEntity, PositionComponent.class);
-        int range = rangeComponentOpt.get().getRange();
-        PositionComponent positionComponent = casterPositionOpt.get();
+        RangeComponent rangeComponentOpt = entityWorld.getComponent(spellEntity, RangeComponent.class);
+        PositionComponent casterPositionOpt = entityWorld.getComponent(casterEntity, PositionComponent.class);
+        int range = rangeComponentOpt.getRange();
+        PositionComponent positionComponent = casterPositionOpt;
         int x = positionComponent.getX();
         int y = positionComponent.getY();
         List<Integer> walkableAndTargetablePos = entityWorld.list(PositionComponent.class, WalkableComponent.class);
         List<Integer> result = new ArrayList<>();
         for (int walkableAndTargetablePo : walkableAndTargetablePos) {
-            PositionComponent posC = entityWorld.getComponent(walkableAndTargetablePo, PositionComponent.class).get();
+            PositionComponent posC = entityWorld.getComponent(walkableAndTargetablePo, PositionComponent.class);
             if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= range) {
                 result.add(walkableAndTargetablePo);
             }
@@ -41,7 +41,7 @@ public class CalculationUtils {
 
     public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityWorld entityWorld) {
         return getRange(spellEntity,casterEntity,entityWorld).stream()
-                .map(e -> entityWorld.getComponent(e, PositionComponent.class).get())
+                .map(e -> entityWorld.getComponent(e, PositionComponent.class))
                 .collect(Collectors.toList());
     }
 }

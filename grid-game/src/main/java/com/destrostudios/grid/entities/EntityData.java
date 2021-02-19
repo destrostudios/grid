@@ -4,13 +4,12 @@ import com.destrostudios.grid.components.Component;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface EntityData {
     int createEntity();
 
-    <T> Optional<T> getComponent(int entity, Class<T> component);
+    <T> T getComponent(int entity, Class<T> component);
 
     void addComponent(int entity, Component value); // component type is value.getClass()
 
@@ -28,7 +27,7 @@ public interface EntityData {
 
     default boolean hasComponents(int entity, Class<?>... classz) {
         for (Class<?> aClass : classz) {
-            if (getComponent(entity, aClass).isEmpty()) {
+            if (getComponent(entity, aClass) == null) {
                 return false;
             }
         }

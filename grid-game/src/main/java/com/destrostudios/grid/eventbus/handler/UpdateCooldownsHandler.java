@@ -11,10 +11,11 @@ public class UpdateCooldownsHandler implements EventHandler<SimpleUpdateEvent.Up
     @Override
     public void onEvent(SimpleUpdateEvent.UpdateCooldownsUpdateEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
-        SpellsComponent spellsComponent = entityWorld.getComponent(event.getEntity(), SpellsComponent.class).get();
+        SpellsComponent spellsComponent = entityWorld.getComponent(event.getEntity(), SpellsComponent.class);
+
         for (Integer spellEntity : spellsComponent.getSpells()) {
             if (entityWorld.hasComponents(spellEntity, OnCooldownComponent.class)) {
-                OnCooldownComponent onCooldownComponent = entityWorld.getComponent(spellEntity, OnCooldownComponent.class).get();
+                OnCooldownComponent onCooldownComponent = entityWorld.getComponent(spellEntity, OnCooldownComponent.class);
                 if (onCooldownComponent.getRemainingRounds() == 1) {
                     entityWorld.remove(spellEntity, OnCooldownComponent.class);
                 } else {

@@ -16,7 +16,6 @@ import com.destrostudios.grid.components.spells.MovementPointsCostComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.*;
-import com.destrostudios.grid.eventbus.events.properties.*;
 import com.destrostudios.grid.eventbus.handler.*;
 import com.destrostudios.grid.eventbus.handler.properties.*;
 import com.destrostudios.grid.eventbus.validator.*;
@@ -81,7 +80,7 @@ public class GridGame {
         addComponentsForCharacter(playerEntity, characterContainer);
 
         Integer startEntity = startingEntities.remove(rand.nextInt(startingEntities.size()));
-        PositionComponent startingPosition = world.getComponent(startEntity, PositionComponent.class).get();
+        PositionComponent startingPosition = world.getComponent(startEntity, PositionComponent.class);
         if (team == 1) {
             world.addComponent(playerEntity, new RoundComponent());
         }
@@ -154,21 +153,21 @@ public class GridGame {
 
     private void addInstantHandler() {
         addInstantHandler(MoveEvent.class, new PositionChangedHandler(eventBus));
-        addInstantHandler(MovementPointsChangedEvent.class, new MovementPointsChangedHandler());
-        addInstantHandler(RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
-        addInstantHandler(AttackPointsChangedEvent.class, new AttackPointsChangedHandler());
+        addInstantHandler(PropertiePointsChangedEvent.MovementPointsChangedEvent.class, new MovementPointsChangedHandler());
+        addInstantHandler(SimpleUpdateEvent.RoundSkippedEvent.class, new RoundSkippedHandler(eventBus));
+        addInstantHandler(PropertiePointsChangedEvent.AttackPointsChangedEvent.class, new AttackPointsChangedHandler());
         addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler(eventBus));
         addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
-        addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler(eventBus));
-        addInstantHandler(MaxHealthPointsChangedEvent.class, new MaxHealthPointsChangedHandler());
-        addInstantHandler(MaxAttackPointsChangedEvent.class, new MaxAttackPointsChangedHandler());
-        addInstantHandler(MaxMovementPointsChangedEvent.class, new MaxMovementPointsChangedHandler());
+        addInstantHandler(PropertiePointsChangedEvent.HealthPointsChangedEvent.class, new HealthPointsChangedHandler(eventBus));
+        addInstantHandler(PropertiePointsChangedEvent.MaxHealthPointsChangedEvent.class, new MaxHealthPointsChangedHandler());
+        addInstantHandler(PropertiePointsChangedEvent.MaxAttackPointsChangedEvent.class, new MaxAttackPointsChangedHandler());
+        addInstantHandler(PropertiePointsChangedEvent.MaxMovementPointsChangedEvent.class, new MaxMovementPointsChangedHandler());
         addInstantHandler(BuffAddedEvent.class, new BuffAddedHandler(eventBus));
         addInstantHandler(SimpleUpdateEvent.BuffsUpdateEvent.class, new UpdateBuffsHandler(eventBus));
         addInstantHandler(SimpleUpdateEvent.UpdateCooldownsUpdateEvent.class, new UpdateCooldownsHandler());
         addValidator(MoveEvent.class, new MoveValidator());
         addValidator(SpellCastedEvent.class, new SpellCastedValidator());
-        addValidator(RoundSkippedEvent.class, new SkipRoundValidator());
+        addValidator(SimpleUpdateEvent.RoundSkippedEvent.class, new SkipRoundValidator());
         addValidator(DamageTakenEvent.class, new DamageTakenValidator());
     }
 

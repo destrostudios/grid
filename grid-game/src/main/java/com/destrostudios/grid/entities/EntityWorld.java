@@ -62,15 +62,16 @@ public class EntityWorld implements EntityData {
      * @return
      */
     @Override
-    public <T> Optional<T> getComponent(int entity, Class<T> component) {
+    public <T> T getComponent(int entity, Class<T> component) {
         List<Component> components = world.get(entity);
         if (components == null) {
-            return Optional.empty();
+            return null;
         }
         return components.stream()
                 .filter(component::isInstance)
-                .map(component::cast)
-                .findFirst();
+                .map(c -> (T) c)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -109,8 +110,7 @@ public class EntityWorld implements EntityData {
         List<Integer> entities = list(component);
         return entities.stream()
                 .map(entity -> getComponent(entity, component))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

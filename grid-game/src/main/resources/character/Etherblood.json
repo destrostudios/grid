@@ -1,1 +1,172 @@
-{"SeriazableComponent":"character","components":{"6":[{"c":"mp","movementPoints":7},{"c":"maxmp","maxMovenemtPoints":7},{"c":"ap","attackPoints":7},{"c":"maxap","maxAttackPoints":7},{"c":"osbl"},{"c":"player"},{"c":"name","name":"Etherblood"},{"c":"hp","health":807},{"c":"mhp","maxHealth":807},{"c":"spell","spells":[1,2,3,4,5]}],"1":[{"c":"apc","attackPointCosts":4},{"c":"dmg","damage":25},{"c":"name","name":"EtherbloodArrow"},{"c":"ttp","tooltip":"OP spell doing 25 damage for 4 AP"},{"c":"rng","range":3}],"2":[{"c":"apc","attackPointCosts":2},{"c":"dmg","damage":37},{"c":"name","name":"EtherbloodBlblbl"},{"c":"ttp","tooltip":"OP spell doing 37 damage for 2 AP"},{"c":"rng","range":3}],"3":[{"c":"apc","attackPointCosts":2},{"c":"dmg","damage":26},{"c":"name","name":"EtherbloodWound"},{"c":"mpb","buffAmount":1,"buffDuration":1},{"c":"rng","range":3},{"c":"ttp","tooltip":"Dmg spell doing 26 dmg for 2 AP and buffing 1 MP\nRange: 3"}],"4":[{"c":"mpc","movementPointsCost":4},{"c":"apb","buffAmount":1,"buffDuration":2},{"c":"name","name":"EtherbloodBuff"},{"c":"rng","range":3},{"c":"ttp","tooltip":"Spell buffing 1 AP for 4 MP \nRange: 3"}],"5":[{"c":"apc","attackPointCosts":5},{"c":"hpb","buffAmount":76,"buffDuration":4},{"c":"name","name":"EtherbloodPump"},{"c":"rng","range":0},{"c":"ttp","tooltip":"Spell buffing 76 HP for 5 AP. \nCD: 3, Range: 0 "},{"c":"cd","cooldown":3}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "6": [
+      {
+        "c": "mp",
+        "movementPoints": 7
+      },
+      {
+        "c": "maxmp",
+        "maxMovenemtPoints": 7
+      },
+      {
+        "c": "ap",
+        "attackPoints": 7
+      },
+      {
+        "c": "maxap",
+        "maxAttackPoints": 7
+      },
+      {
+        "c": "osbl"
+      },
+      {
+        "c": "player"
+      },
+      {
+        "c": "name",
+        "name": "Etherblood"
+      },
+      {
+        "c": "hp",
+        "health": 807
+      },
+      {
+        "c": "mhp",
+        "maxHealth": 807
+      },
+      {
+        "c": "spell",
+        "spells": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "1": [
+      {
+        "c": "apc",
+        "attackPointCosts": 4
+      },
+      {
+        "c": "dmg",
+        "damage": 25
+      },
+      {
+        "c": "name",
+        "name": "EtherbloodArrow"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 25 damage for 4 AP"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      }
+    ],
+    "2": [
+      {
+        "c": "apc",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "dmg",
+        "damage": 37
+      },
+      {
+        "c": "name",
+        "name": "EtherbloodBlblbl"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 37 damage for 2 AP"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      }
+    ],
+    "3": [
+      {
+        "c": "apc",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "dmg",
+        "damage": 26
+      },
+      {
+        "c": "name",
+        "name": "EtherbloodWound"
+      },
+      {
+        "c": "mpb",
+        "buffAmount": 1,
+        "buffDuration": 1
+      },
+      {
+        "c": "rng",
+        "range": 3
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Dmg spell doing 26 dmg for 2 AP and buffing 1 MP\nRange: 3"
+      }
+    ],
+    "4": [
+      {
+        "c": "mpc",
+        "movementPointsCost": 4
+      },
+      {
+        "c": "apb",
+        "buffAmount": 1,
+        "buffDuration": 2
+      },
+      {
+        "c": "name",
+        "name": "EtherbloodBuff"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Spell buffing 1 AP for 4 MP \nRange: 3"
+      }
+    ],
+    "5": [
+      {
+        "c": "apc",
+        "attackPointCosts": 5
+      },
+      {
+        "c": "hpb",
+        "buffAmount": 76,
+        "buffDuration": 4
+      },
+      {
+        "c": "name",
+        "name": "EtherbloodPump"
+      },
+      {
+        "c": "rng",
+        "range": 0
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Spell buffing 76 HP for 5 AP. \nCD: 3, Range: 0 "
+      },
+      {
+        "c": "cd",
+        "cooldown": 3
+      }
+    ]
+  }
+}

@@ -187,8 +187,8 @@ public class ComponentsContainerSerializer {
                 List<Integer> walkableEntities = world.list(WalkableComponent.class);
                 PositionComponent pos = new PositionComponent(x, y);
                 boolean isWalkableAndNoStartingField = walkableEntities.stream()
-                        .filter(e -> world.getComponent(e, StartingFieldComponent.class).isEmpty())
-                        .anyMatch(e -> world.getComponent(e, PositionComponent.class).get().equals(pos));
+                        .filter(e -> !world.hasComponents(e, StartingFieldComponent.class))
+                        .anyMatch(e -> world.getComponent(e, PositionComponent.class).equals(pos));
 
                 if (isWalkableAndNoStartingField && Math.random() < 0.2) {
                     int treeComponent = world.createEntity();

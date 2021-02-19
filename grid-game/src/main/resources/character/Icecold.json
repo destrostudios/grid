@@ -1,1 +1,172 @@
-{"SeriazableComponent":"character","components":{"6":[{"c":"mp","movementPoints":7},{"c":"maxmp","maxMovenemtPoints":7},{"c":"ap","attackPoints":14},{"c":"maxap","maxAttackPoints":14},{"c":"osbl"},{"c":"player"},{"c":"name","name":"Icecold"},{"c":"hp","health":912},{"c":"mhp","maxHealth":912},{"c":"spell","spells":[1,2,3,4,5]}],"1":[{"c":"apc","attackPointCosts":2},{"c":"dmg","damage":25},{"c":"name","name":"IcecoldHit1"},{"c":"ttp","tooltip":"OP spell doing 25 damage for 2 AP"},{"c":"rng","range":5}],"2":[{"c":"apc","attackPointCosts":7},{"c":"dmg","damage":37},{"c":"name","name":"IcecoldHit2"},{"c":"ttp","tooltip":"OP spell doing 37 damage for 7 AP"},{"c":"rng","range":3}],"3":[{"c":"apc","attackPointCosts":6},{"c":"dmg","damage":26},{"c":"name","name":"IcecoldTwist"},{"c":"mpb","buffAmount":1,"buffDuration":1},{"c":"rng","range":3},{"c":"ttp","tooltip":"Dmg spell doing 26 dmg for 6 AP and buffing 1 MP\nRange: 3"}],"4":[{"c":"mpc","movementPointsCost":4},{"c":"apb","buffAmount":1,"buffDuration":2},{"c":"name","name":"IcecoldBuff"},{"c":"rng","range":4},{"c":"ttp","tooltip":"Spell buffing 1 AP for 4 MP \nRange: 4"}],"5":[{"c":"apc","attackPointCosts":11},{"c":"hpb","buffAmount":133,"buffDuration":5},{"c":"name","name":"IcecoldPump"},{"c":"rng","range":0},{"c":"ttp","tooltip":"Spell buffing 133 HP for 11 AP. \nCD: 3, Range: 0 "},{"c":"cd","cooldown":3}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "6": [
+      {
+        "c": "mp",
+        "movementPoints": 7
+      },
+      {
+        "c": "maxmp",
+        "maxMovenemtPoints": 7
+      },
+      {
+        "c": "ap",
+        "attackPoints": 14
+      },
+      {
+        "c": "maxap",
+        "maxAttackPoints": 14
+      },
+      {
+        "c": "osbl"
+      },
+      {
+        "c": "player"
+      },
+      {
+        "c": "name",
+        "name": "Icecold"
+      },
+      {
+        "c": "hp",
+        "health": 912
+      },
+      {
+        "c": "mhp",
+        "maxHealth": 912
+      },
+      {
+        "c": "spell",
+        "spells": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "1": [
+      {
+        "c": "apc",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "dmg",
+        "damage": 25
+      },
+      {
+        "c": "name",
+        "name": "IcecoldHit1"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 25 damage for 2 AP"
+      },
+      {
+        "c": "rng",
+        "range": 5
+      }
+    ],
+    "2": [
+      {
+        "c": "apc",
+        "attackPointCosts": 7
+      },
+      {
+        "c": "dmg",
+        "damage": 37
+      },
+      {
+        "c": "name",
+        "name": "IcecoldHit2"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 37 damage for 7 AP"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      }
+    ],
+    "3": [
+      {
+        "c": "apc",
+        "attackPointCosts": 6
+      },
+      {
+        "c": "dmg",
+        "damage": 26
+      },
+      {
+        "c": "name",
+        "name": "IcecoldTwist"
+      },
+      {
+        "c": "mpb",
+        "buffAmount": 1,
+        "buffDuration": 1
+      },
+      {
+        "c": "rng",
+        "range": 3
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Dmg spell doing 26 dmg for 6 AP and buffing 1 MP\nRange: 3"
+      }
+    ],
+    "4": [
+      {
+        "c": "mpc",
+        "movementPointsCost": 4
+      },
+      {
+        "c": "apb",
+        "buffAmount": 1,
+        "buffDuration": 2
+      },
+      {
+        "c": "name",
+        "name": "IcecoldBuff"
+      },
+      {
+        "c": "rng",
+        "range": 4
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Spell buffing 1 AP for 4 MP \nRange: 4"
+      }
+    ],
+    "5": [
+      {
+        "c": "apc",
+        "attackPointCosts": 11
+      },
+      {
+        "c": "hpb",
+        "buffAmount": 133,
+        "buffDuration": 5
+      },
+      {
+        "c": "name",
+        "name": "IcecoldPump"
+      },
+      {
+        "c": "rng",
+        "range": 0
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Spell buffing 133 HP for 11 AP. \nCD: 3, Range: 0 "
+      },
+      {
+        "c": "cd",
+        "cooldown": 3
+      }
+    ]
+  }
+}

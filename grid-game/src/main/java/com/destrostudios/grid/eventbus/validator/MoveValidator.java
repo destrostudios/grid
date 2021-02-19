@@ -10,7 +10,6 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,7 @@ public class MoveValidator implements EventValidator<MoveEvent> {
         boolean entityCanMove = entityWorld.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, RoundComponent.class);
         boolean positionIsFree = isPositionIsFree(entityWorld, newPosition, entity);
         int neededMovementPoints = getWalkedDistance(entityWorld, componentUpdateEvent);
-        int movementPoints = entityWorld.getComponent(entity, MovementPointsComponent.class).get().getMovementPoints();
+        int movementPoints = entityWorld.getComponent(entity, MovementPointsComponent.class).getMovementPoints();
 
         return positionIsFree && entityCanMove && neededMovementPoints == 1 && movementPoints > 0;
     }
@@ -41,20 +40,19 @@ public class MoveValidator implements EventValidator<MoveEvent> {
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
 
-        boolean collidesWithOtherPlayer = allPlayersEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class).get()));
-        boolean collidesWithTree = allTreeEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class).get()));
-        boolean isWalkableField = allWalkableEntities.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class).get()));
+        boolean collidesWithOtherPlayer = allPlayersEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithTree = allTreeEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
+        boolean isWalkableField = allWalkableEntities.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
 
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithTree;
     }
 
     private int getWalkedDistance(EntityWorld entityWorld, MoveEvent componentUpdateEvent) {
-        Optional<PositionComponent> componentOpt = entityWorld.getComponent(componentUpdateEvent.getEntity(), PositionComponent.class);
-        if (componentOpt.isEmpty()) {
+        PositionComponent posComp = entityWorld.getComponent(componentUpdateEvent.getEntity(), PositionComponent.class);
+        if (posComp == null) {
             return -1;
         }
-        PositionComponent positionComponent = componentOpt.get();
         PositionComponent updatePositionComponent = componentUpdateEvent.getPositionComponent();
-        return Math.abs(updatePositionComponent.getX() - positionComponent.getX()) + Math.abs(updatePositionComponent.getY() - positionComponent.getY());
+        return Math.abs(updatePositionComponent.getX() - posComp.getX()) + Math.abs(updatePositionComponent.getY() - posComp.getY());
     }
 }

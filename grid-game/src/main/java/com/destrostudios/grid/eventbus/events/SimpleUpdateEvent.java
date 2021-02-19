@@ -19,4 +19,10 @@ public abstract class SimpleUpdateEvent implements Event {
             super(entity);
         }
     }
+
+    public static class RoundSkippedEvent extends SimpleUpdateEvent {
+        public RoundSkippedEvent(int entity) {
+            super(entity);
+        }
+    }
 }

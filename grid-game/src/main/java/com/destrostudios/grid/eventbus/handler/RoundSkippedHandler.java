@@ -8,7 +8,6 @@ import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
 import com.destrostudios.grid.eventbus.events.SimpleUpdateEvent;
 import lombok.AllArgsConstructor;
 
@@ -18,25 +17,25 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 @AllArgsConstructor
-public class RoundSkippedHandler implements EventHandler<RoundSkippedEvent> {
+public class RoundSkippedHandler implements EventHandler<SimpleUpdateEvent.RoundSkippedEvent> {
 
     private final static Logger logger = Logger.getLogger(RoundSkippedHandler.class.getSimpleName());
 
     private final Eventbus instance;
 
     private void resetBattleComponents(int playerEntity, EntityWorld entityWorld) {
-        Optional<MaxAttackPointsComponent> maxAp = entityWorld.getComponent(playerEntity, MaxAttackPointsComponent.class);
-        Optional<MaxMovementPointsComponent> maxMp = entityWorld.getComponent(playerEntity, MaxMovementPointsComponent.class);
+        MaxAttackPointsComponent maxAp = entityWorld.getComponent(playerEntity, MaxAttackPointsComponent.class);
+        MaxMovementPointsComponent maxMp = entityWorld.getComponent(playerEntity, MaxMovementPointsComponent.class);
         entityWorld.remove(playerEntity, AttackPointsComponent.class);
         entityWorld.remove(playerEntity, MovementPointsComponent.class);
         entityWorld.remove(playerEntity, RoundComponent.class);
-        entityWorld.addComponent(playerEntity, new MovementPointsComponent(maxMp.get().getMaxMovenemtPoints()));
-        entityWorld.addComponent(playerEntity, new AttackPointsComponent(maxAp.get().getMaxAttackPoints()));
+        entityWorld.addComponent(playerEntity, new MovementPointsComponent(maxMp.getMaxMovenemtPoints()));
+        entityWorld.addComponent(playerEntity, new AttackPointsComponent(maxAp.getMaxAttackPoints()));
     }
 
 
     @Override
-    public void onEvent(RoundSkippedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(SimpleUpdateEvent.RoundSkippedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         int currentEntity = event.getEntity();
         resetBattleComponents(currentEntity, entityWorld);

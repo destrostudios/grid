@@ -6,7 +6,7 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.events.MoveEvent;
-import com.destrostudios.grid.eventbus.events.RoundSkippedEvent;
+import com.destrostudios.grid.eventbus.events.SimpleUpdateEvent;
 import com.destrostudios.grid.eventbus.events.SpellCastedEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,15 +21,15 @@ public class ActionDispatcher {
 
     public Event dispatchAction(Action action) throws ActionNotAllowedException {
         int entity = Integer.parseInt(action.getPlayerIdentifier());
-        Optional<RoundComponent> component = getEntityWorld.get().getComponent(entity, RoundComponent.class);
+        RoundComponent component = getEntityWorld.get().getComponent(entity, RoundComponent.class);
 
-        if (component.isEmpty()) {
+        if (component == null) {
             throw new ActionNotAllowedException("not player turn");
         } else if (action instanceof PositionUpdateAction) {
             PositionUpdateAction posAction = (PositionUpdateAction) action;
             return new MoveEvent(entity, new PositionComponent(posAction.getNewX(), posAction.getNewY()));
         } else if (action instanceof SkipRoundAction) {
-            return new RoundSkippedEvent(entity);
+            return new SimpleUpdateEvent.RoundSkippedEvent(entity);
         } else if (action instanceof CastSpellAction) {
             CastSpellAction castSpellAction = (CastSpellAction) action;
             return new SpellCastedEvent(castSpellAction.getSpell(), entity, calculateTargetEntity(((CastSpellAction) action).getTargetX(), castSpellAction.getTargetY()));
@@ -41,8 +41,8 @@ public class ActionDispatcher {
     private int calculateTargetEntity(int x, int y) {
         EntityWorld world = getEntityWorld.get();
         Optional<Integer> targetEntity = world.list(PositionComponent.class).stream()
-                .filter(e -> world.getComponent(e, PositionComponent.class).get().getX() == x
-                        && world.getComponent(e, PositionComponent.class).get().getY() == y)
+                .filter(e -> world.getComponent(e, PositionComponent.class).getX() == x
+                        && world.getComponent(e, PositionComponent.class).getY() == y)
                 .min((e1, e2) -> Boolean.compare(world.hasComponents(e2, PlayerComponent.class), world.hasComponents(e1, PlayerComponent.class)));
 
         return targetEntity.orElse(-1);

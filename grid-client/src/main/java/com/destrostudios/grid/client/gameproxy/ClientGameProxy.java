@@ -68,7 +68,7 @@ public class ClientGameProxy implements GameProxy {
         List<Integer> list = world.list(PlayerComponent.class);
         Integer playerEntity = list.stream()
                 .filter(entity -> world.hasComponents(entity, PlayerComponent.class))
-                .filter(entity -> world.getComponent(entity, NameComponent.class).get().getName().equals(player.getLogin())) // TODO: use Id instead
+                .filter(entity -> world.getComponent(entity, NameComponent.class).getName().equals(player.getLogin())) // TODO: use Id instead
                 .findFirst().orElse(null);
         return playerEntity;
     }

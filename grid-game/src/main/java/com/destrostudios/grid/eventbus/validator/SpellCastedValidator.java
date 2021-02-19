@@ -12,7 +12,6 @@ import com.destrostudios.grid.eventbus.events.SpellCastedEvent;
 import com.destrostudios.grid.util.CalculationUtils;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
@@ -23,27 +22,29 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
         if (!entityWorld.hasComponents(event.getPlayerEntity(), RoundComponent.class)) {
             return false;
         }
+
         // check Range
-        Optional<PositionComponent> position = entityWorld.getComponent(event.getTargetEntity(), PositionComponent.class);
+        PositionComponent position = entityWorld.getComponent(event.getTargetEntity(), PositionComponent.class);
         List<PositionComponent> rangeEntites = CalculationUtils.getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityWorld);
         boolean isSelfCast = rangeEntites.size() == 1;
-        boolean fieldIsReachable = rangeEntites.contains(position.get());
+        boolean fieldIsReachable = rangeEntites.contains(position);
 
         boolean isOnCooldown = entityWorld.hasComponents(event.getSpell(), OnCooldownComponent.class);
-        if ((isSelfCast || fieldIsReachable) && !isOnCooldown) {
-            // check AP costs
-            Optional<AttackPointCostComponent> apCostsSpell = entityWorld.getComponent(event.getSpell(), AttackPointCostComponent.class);
-            Optional<AttackPointsComponent> attackPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
 
-            if (apCostsSpell.isPresent() && apCostsSpell.get().getAttackPointCosts() > attackPointsPlayer.get().getAttackPoints()) {
+        if ((isSelfCast || fieldIsReachable) && !isOnCooldown && entityWorld.hasComponents(event.getSpell(), AttackPointCostComponent.class)) {
+            // check AP costs
+            AttackPointCostComponent apCostsSpell = entityWorld.getComponent(event.getSpell(), AttackPointCostComponent.class);
+            AttackPointsComponent attackPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
+
+            if (apCostsSpell.getAttackPointCosts() > attackPointsPlayer.getAttackPoints()) {
                 return false;
             }
 
             // check MP costs
-            Optional<MovementPointsCostComponent> mpCostsSpell = entityWorld.getComponent(event.getSpell(), MovementPointsCostComponent.class);
-            Optional<MovementPointsComponent> movementPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), MovementPointsComponent.class);
+            MovementPointsCostComponent mpCostsSpell = entityWorld.getComponent(event.getSpell(), MovementPointsCostComponent.class);
+            MovementPointsComponent movementPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), MovementPointsComponent.class);
 
-            return mpCostsSpell.isEmpty() || mpCostsSpell.get().getMovementPointsCost() <= movementPointsPlayer.get().getMovementPoints();
+            return mpCostsSpell == null || mpCostsSpell.getMovementPointsCost() <= movementPointsPlayer.getMovementPoints();
         }
         return false;
     }

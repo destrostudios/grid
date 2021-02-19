@@ -20,13 +20,13 @@ public class GameOverUtils {
         Map<Integer, List<Integer>> playersByTeam = new LinkedHashMap<>();
 
         for (Integer player : playerEntities) {
-            TeamComponent teamComp = entityWorld.getComponent(player, TeamComponent.class).get();
+            TeamComponent teamComp = entityWorld.getComponent(player, TeamComponent.class);
             playersByTeam.computeIfAbsent(teamComp.getTeam(), s -> new ArrayList<>()).add(player);
         }
         final AtomicInteger loosingTeam = new AtomicInteger(-1);
         for (Map.Entry<Integer, List<Integer>> playersByTeamEntry : playersByTeam.entrySet()) {
             List<Integer> players = playersByTeamEntry.getValue();
-            boolean teamNoHealth = players.stream().allMatch(e -> entityWorld.getComponent(e, HealthPointsComponent.class).get().getHealth() <= 0);
+            boolean teamNoHealth = players.stream().allMatch(e -> entityWorld.getComponent(e, HealthPointsComponent.class).getHealth() <= 0);
             if (teamNoHealth) {
                 loosingTeam.set(playersByTeamEntry.getKey());
             }

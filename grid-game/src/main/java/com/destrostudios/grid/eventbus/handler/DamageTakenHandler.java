@@ -4,7 +4,7 @@ import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.events.DamageTakenEvent;
-import com.destrostudios.grid.eventbus.events.properties.HealthPointsChangedEvent;
+import com.destrostudios.grid.eventbus.events.PropertiePointsChangedEvent;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
@@ -17,7 +17,7 @@ public class DamageTakenHandler implements EventHandler<DamageTakenEvent> {
 
     @Override
     public void onEvent(DamageTakenEvent event, Supplier<EntityWorld> entityWorldSupplier) {
-        Optional<HealthPointsComponent> component = entityWorldSupplier.get().getComponent(event.getTargetEntity(), HealthPointsComponent.class);
-        eventbus.registerSubEvents(new HealthPointsChangedEvent(event.getTargetEntity(), Math.max(0, component.get().getHealth() - event.getDamage())));
+        HealthPointsComponent component = entityWorldSupplier.get().getComponent(event.getTargetEntity(), HealthPointsComponent.class);
+        eventbus.registerSubEvents(new PropertiePointsChangedEvent.HealthPointsChangedEvent(event.getTargetEntity(), Math.max(0, component.getHealth() - event.getDamage())));
     }
 }
