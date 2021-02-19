@@ -142,11 +142,13 @@ public class MenuAppState extends BaseAppState {
     }
 
     private void updateGamesContainer() {
-        LobbyClientModule<?> lobbyModule = mainApplication.getToolsClient().getModule(LobbyClientModule.class);
-        Set<UUID> games = lobbyModule.getListedGames().keySet();
+        LobbyClientModule<StartGameInfo> lobbyClientModule = getLobbyClientModule();
+        Set<UUID> games = lobbyClientModule.getListedGames().keySet();
 
-        GameClientModule<?, ?> gameModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
-        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), UUID::toString, gameModule::join);
+        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), gameUUID -> {
+            StartGameInfo startGameInfo = lobbyClientModule.getListedGames().get(gameUUID);
+            return startGameInfo.getTeam1().get(0).getLogin() + " vs " + startGameInfo.getTeam2().get(0).getLogin();
+        }, gameUUID -> getGameClientModule().join(gameUUID));
     }
 
     private <K, O> void updateButtons(Container buttonContainer, HashMap<K, Button> buttons, Collection<O> objects, Function<O, K> getKey, Function<O, String> getText, Consumer<O> action) {
@@ -185,14 +187,21 @@ public class MenuAppState extends BaseAppState {
     }
 
     private void checkIfJoinedGame() {
-        GameClientModule gameClientModule = mainApplication.getToolsClient().getModule(GameClientModule.class);
+        GameClientModule gameClientModule = getGameClientModule();
         List<ClientGameData<?, ?>> joinedGames = gameClientModule.getJoinedGames();
         if (joinedGames.size() > 0) {
             UUID gameUUID = joinedGames.get(0).getId();
-            LobbyClientModule<StartGameInfo> lobbyClientModule = mainApplication.getToolsClient().getModule(LobbyClientModule.class);
-            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), gameClientModule, lobbyClientModule);
+            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), gameClientModule, getLobbyClientModule());
             mainApplication.startGame(clientGameProxy);
         }
+    }
+
+    private GameClientModule<?, ?> getGameClientModule() {
+        return mainApplication.getToolsClient().getModule(GameClientModule.class);
+    }
+
+    private LobbyClientModule<StartGameInfo> getLobbyClientModule() {
+        return mainApplication.getToolsClient().getModule(LobbyClientModule.class);
     }
 
     @Override
