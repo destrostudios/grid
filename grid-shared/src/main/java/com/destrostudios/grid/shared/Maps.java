@@ -3,7 +3,7 @@ package com.destrostudios.grid.shared;
 public class Maps {
 
     public static String[] MAP_NAMES = new String[] {
-        "island", "desert", "arctic"
+        "DestroMap", "EtherMap", "IceMap"
     };
 
     public static String getRandomMapName() {

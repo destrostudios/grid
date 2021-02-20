@@ -4,11 +4,11 @@
     "6": [
       {
         "c": "maxmp",
-        "maxMovenemtPoints": 8
+        "maxMovenemtPoints": 7
       },
       {
         "c": "maxap",
-        "maxAttackPoints": 7
+        "maxAttackPoints": 10
       },
       {
         "c": "osbl"
@@ -17,8 +17,8 @@
         "c": "player"
       },
       {
-        "c": "name",
-        "name": "destroflyer"
+        "c": "vscp",
+        "name": "tristan"
       },
       {
         "c": "mhp",
@@ -38,23 +38,23 @@
     "1": [
       {
         "c": "apc",
-        "attackPointCosts": 2
+        "attackPointCosts": 7
       },
       {
         "c": "dmg",
-        "damage": 25
+        "damage": 34
       },
       {
         "c": "name",
-        "name": "destroflyerConfusion"
+        "name": "Jump"
       },
       {
         "c": "ttp",
-        "tooltip": "OP spell doing 25 damage for 2 AP"
+        "tooltip": "OP spell doing 34 damage for 7 AP"
       },
       {
         "c": "rng",
-        "range": 3
+        "range": 5
       }
     ],
     "2": [
@@ -68,7 +68,7 @@
       },
       {
         "c": "name",
-        "name": "destroflyerHit"
+        "name": "Blblbl"
       },
       {
         "c": "ttp",
@@ -82,15 +82,15 @@
     "3": [
       {
         "c": "apc",
-        "attackPointCosts": 5
+        "attackPointCosts": 3
       },
       {
         "c": "dmg",
-        "damage": 49
+        "damage": 32
       },
       {
         "c": "name",
-        "name": "destrogeier"
+        "name": "Hit"
       },
       {
         "c": "mpb",
@@ -99,11 +99,11 @@
       },
       {
         "c": "rng",
-        "range": 5
+        "range": 3
       },
       {
         "c": "ttp",
-        "tooltip": "Dmg spell doing 49 dmg for 5 AP and buffing 1 MP\nRange: 5"
+        "tooltip": "Dmg spell doing 32 dmg for 3 AP and buffing 1 MP\nRange: 3"
       }
     ],
     "4": [
@@ -118,7 +118,7 @@
       },
       {
         "c": "name",
-        "name": "destroflyerBuff"
+        "name": "Buff"
       },
       {
         "c": "rng",
@@ -136,12 +136,12 @@
       },
       {
         "c": "hpb",
-        "buffAmount": 88,
-        "buffDuration": 4
+        "buffAmount": 121,
+        "buffDuration": 3
       },
       {
         "c": "name",
-        "name": "destroflyerPump"
+        "name": "Pump"
       },
       {
         "c": "rng",
@@ -149,7 +149,7 @@
       },
       {
         "c": "ttp",
-        "tooltip": "Spell buffing 88 HP for 5 AP. \nCD: 3, Range: 0 "
+        "tooltip": "Spell buffing 121 HP for 5 AP. \nCD: 3, Range: 0 "
       },
       {
         "c": "cd",

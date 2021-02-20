@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = PositionComponent.class, name = "pos"),
         @JsonSubTypes.Type(value = RoundComponent.class, name = "round"),
         @JsonSubTypes.Type(value = TeamComponent.class, name = "team"),
-        @JsonSubTypes.Type(value = TreeComponent.class, name = "tree"),
+        @JsonSubTypes.Type(value = VisualComponent.class, name = "vscp"),
         @JsonSubTypes.Type(value = WalkableComponent.class, name = "wkbl"),
         @JsonSubTypes.Type(value = ObstacleComponent.class, name = "osbl"),
         @JsonSubTypes.Type(value = MovementPointsCostComponent.class, name = "mpc"),

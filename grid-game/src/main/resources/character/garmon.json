@@ -8,7 +8,7 @@
       },
       {
         "c": "maxap",
-        "maxAttackPoints": 14
+        "maxAttackPoints": 8
       },
       {
         "c": "osbl"
@@ -17,12 +17,12 @@
         "c": "player"
       },
       {
-        "c": "name",
-        "name": "Icecold"
+        "c": "vscp",
+        "name": "garmon"
       },
       {
         "c": "mhp",
-        "maxHealth": 912
+        "maxHealth": 661
       },
       {
         "c": "spell",
@@ -38,51 +38,7 @@
     "1": [
       {
         "c": "apc",
-        "attackPointCosts": 2
-      },
-      {
-        "c": "dmg",
-        "damage": 25
-      },
-      {
-        "c": "name",
-        "name": "IcecoldHit1"
-      },
-      {
-        "c": "ttp",
-        "tooltip": "OP spell doing 25 damage for 2 AP"
-      },
-      {
-        "c": "rng",
-        "range": 5
-      }
-    ],
-    "2": [
-      {
-        "c": "apc",
         "attackPointCosts": 7
-      },
-      {
-        "c": "dmg",
-        "damage": 37
-      },
-      {
-        "c": "name",
-        "name": "IcecoldHit2"
-      },
-      {
-        "c": "ttp",
-        "tooltip": "OP spell doing 37 damage for 7 AP"
-      },
-      {
-        "c": "rng",
-        "range": 3
-      }
-    ],
-    "3": [
-      {
-        "c": "apc",
-        "attackPointCosts": 6
       },
       {
         "c": "dmg",
@@ -90,7 +46,51 @@
       },
       {
         "c": "name",
-        "name": "IcecoldTwist"
+        "name": "Blblbl"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 26 damage for 7 AP"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      }
+    ],
+    "2": [
+      {
+        "c": "apc",
+        "attackPointCosts": 3
+      },
+      {
+        "c": "dmg",
+        "damage": 45
+      },
+      {
+        "c": "name",
+        "name": "Twist"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 45 damage for 3 AP"
+      },
+      {
+        "c": "rng",
+        "range": 4
+      }
+    ],
+    "3": [
+      {
+        "c": "apc",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "dmg",
+        "damage": 32
+      },
+      {
+        "c": "name",
+        "name": "Hit"
       },
       {
         "c": "mpb",
@@ -103,7 +103,7 @@
       },
       {
         "c": "ttp",
-        "tooltip": "Dmg spell doing 26 dmg for 6 AP and buffing 1 MP\nRange: 3"
+        "tooltip": "Dmg spell doing 32 dmg for 2 AP and buffing 1 MP\nRange: 3"
       }
     ],
     "4": [
@@ -118,30 +118,30 @@
       },
       {
         "c": "name",
-        "name": "IcecoldBuff"
+        "name": "Buff"
       },
       {
         "c": "rng",
-        "range": 4
+        "range": 3
       },
       {
         "c": "ttp",
-        "tooltip": "Spell buffing 1 AP for 4 MP \nRange: 4"
+        "tooltip": "Spell buffing 1 AP for 4 MP \nRange: 3"
       }
     ],
     "5": [
       {
         "c": "apc",
-        "attackPointCosts": 11
+        "attackPointCosts": 5
       },
       {
         "c": "hpb",
-        "buffAmount": 133,
+        "buffAmount": 50,
         "buffDuration": 5
       },
       {
         "c": "name",
-        "name": "IcecoldPump"
+        "name": "Pump"
       },
       {
         "c": "rng",
@@ -149,7 +149,7 @@
       },
       {
         "c": "ttp",
-        "tooltip": "Spell buffing 133 HP for 11 AP. \nCD: 3, Range: 0 "
+        "tooltip": "Spell buffing 50 HP for 5 AP. \nCD: 3, Range: 0 "
       },
       {
         "c": "cd",

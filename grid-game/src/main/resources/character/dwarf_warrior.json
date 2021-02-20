@@ -1,0 +1,160 @@
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "6": [
+      {
+        "c": "maxmp",
+        "maxMovenemtPoints": 11
+      },
+      {
+        "c": "maxap",
+        "maxAttackPoints": 7
+      },
+      {
+        "c": "osbl"
+      },
+      {
+        "c": "player"
+      },
+      {
+        "c": "vscp",
+        "name": "dwarf_warrior"
+      },
+      {
+        "c": "mhp",
+        "maxHealth": 500
+      },
+      {
+        "c": "spell",
+        "spells": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "1": [
+      {
+        "c": "apc",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "dmg",
+        "damage": 25
+      },
+      {
+        "c": "name",
+        "name": "Hit"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 25 damage for 2 AP"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      }
+    ],
+    "2": [
+      {
+        "c": "apc",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "dmg",
+        "damage": 26
+      },
+      {
+        "c": "name",
+        "name": "Wound"
+      },
+      {
+        "c": "ttp",
+        "tooltip": "OP spell doing 26 damage for 2 AP"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      }
+    ],
+    "3": [
+      {
+        "c": "apc",
+        "attackPointCosts": 5
+      },
+      {
+        "c": "dmg",
+        "damage": 48
+      },
+      {
+        "c": "name",
+        "name": "Jump"
+      },
+      {
+        "c": "mpb",
+        "buffAmount": 1,
+        "buffDuration": 1
+      },
+      {
+        "c": "rng",
+        "range": 3
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Dmg spell doing 48 dmg for 5 AP and buffing 1 MP\nRange: 3"
+      }
+    ],
+    "4": [
+      {
+        "c": "mpc",
+        "movementPointsCost": 7
+      },
+      {
+        "c": "apb",
+        "buffAmount": 1,
+        "buffDuration": 2
+      },
+      {
+        "c": "name",
+        "name": "Buff"
+      },
+      {
+        "c": "rng",
+        "range": 3
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Spell buffing 1 AP for 7 MP \nRange: 3"
+      }
+    ],
+    "5": [
+      {
+        "c": "apc",
+        "attackPointCosts": 6
+      },
+      {
+        "c": "hpb",
+        "buffAmount": 50,
+        "buffDuration": 3
+      },
+      {
+        "c": "name",
+        "name": "Pump"
+      },
+      {
+        "c": "rng",
+        "range": 0
+      },
+      {
+        "c": "ttp",
+        "tooltip": "Spell buffing 50 HP for 6 AP. \nCD: 3, Range: 0 "
+      },
+      {
+        "c": "cd",
+        "cooldown": 3
+      }
+    ]
+  }
+}

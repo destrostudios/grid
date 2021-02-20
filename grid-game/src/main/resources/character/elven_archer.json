@@ -4,11 +4,11 @@
     "6": [
       {
         "c": "maxmp",
-        "maxMovenemtPoints": 5
+        "maxMovenemtPoints": 10
       },
       {
         "c": "maxap",
-        "maxAttackPoints": 9
+        "maxAttackPoints": 7
       },
       {
         "c": "osbl"
@@ -17,12 +17,12 @@
         "c": "player"
       },
       {
-        "c": "name",
-        "name": "Etherblood"
+        "c": "vscp",
+        "name": "elven_archer"
       },
       {
         "c": "mhp",
-        "maxHealth": 807
+        "maxHealth": 500
       },
       {
         "c": "spell",
@@ -42,55 +42,55 @@
       },
       {
         "c": "dmg",
-        "damage": 25
+        "damage": 28
       },
       {
         "c": "name",
-        "name": "EtherbloodArrow"
+        "name": "Nothing"
       },
       {
         "c": "ttp",
-        "tooltip": "High range spell doing 25 damage for 2 AP. (Range: 8)"
+        "tooltip": "OP spell doing 28 damage for 2 AP"
       },
       {
         "c": "rng",
-        "range": 8
+        "range": 5
       }
     ],
     "2": [
       {
         "c": "apc",
-        "attackPointCosts": 4
+        "attackPointCosts": 5
       },
       {
         "c": "dmg",
-        "damage": 234
+        "damage": 32
       },
       {
         "c": "name",
-        "name": "EtherbloodBlblbl"
+        "name": "Confusion"
       },
       {
         "c": "ttp",
-        "tooltip": "Low range spell doing 234 damage for 4 AP. (Range: 1)"
+        "tooltip": "OP spell doing 32 damage for 5 AP"
       },
       {
         "c": "rng",
-        "range": 1
+        "range": 3
       }
     ],
     "3": [
       {
         "c": "apc",
-        "attackPointCosts": 2
+        "attackPointCosts": 3
       },
       {
         "c": "dmg",
-        "damage": 15
+        "damage": 29
       },
       {
         "c": "name",
-        "name": "EtherbloodWound"
+        "name": "Twist"
       },
       {
         "c": "mpb",
@@ -99,54 +99,49 @@
       },
       {
         "c": "rng",
-        "range": 5
+        "range": 3
       },
       {
         "c": "ttp",
-        "tooltip": "Middle range spell doing 15 dmg, buffing 1 MP for 2 AP. (Range: 5)"
+        "tooltip": "Dmg spell doing 29 dmg for 3 AP and buffing 1 MP\nRange: 3"
       }
     ],
     "4": [
       {
-        "c": "apb",
-        "buffAmount": -3,
-        "buffDuration": 3
+        "c": "mpc",
+        "movementPointsCost": 4
       },
       {
-        "c": "mpb",
-        "buffAmount": 3,
-        "buffDuration": 3
+        "c": "apb",
+        "buffAmount": 2,
+        "buffDuration": 2
       },
       {
         "c": "name",
-        "name": "EtherbloodBuff"
+        "name": "Buff"
       },
       {
         "c": "rng",
-        "range": 0
+        "range": 4
       },
       {
         "c": "ttp",
-        "tooltip": "Spell buffing 3 BP and debuffing 3 AP for 3 rounds. (CD: 5)"
-      },
-      {
-        "c": "cd",
-        "cooldown": 5
+        "tooltip": "Spell buffing 2 AP for 4 MP \nRange: 4"
       }
     ],
     "5": [
       {
         "c": "apc",
-        "attackPointCosts": 6
+        "attackPointCosts": 5
       },
       {
         "c": "hpb",
-        "buffAmount": 176,
-        "buffDuration": 4
+        "buffAmount": 50,
+        "buffDuration": 3
       },
       {
         "c": "name",
-        "name": "EtherbloodPump"
+        "name": "Pump"
       },
       {
         "c": "rng",
@@ -154,7 +149,7 @@
       },
       {
         "c": "ttp",
-        "tooltip": "Spell buffing 176 HP for 6 AP. (CD: 3, Range: 0) "
+        "tooltip": "Spell buffing 50 HP for 5 AP. \nCD: 3, Range: 0 "
       },
       {
         "c": "cd",

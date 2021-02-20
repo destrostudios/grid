@@ -4,9 +4,9 @@ import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
-public class Map_Arctic extends Map {
+public class Map_Ether extends Map {
 
-    public Map_Arctic() {
+    public Map_Ether() {
         super(
             BlockAssets.BLOCK_SNOW,
             new MapBlock(BlockAssets.BLOCK_SNOW_TOP_GRID, BlockAssets.BLOCK_SNOW_TOP_TARGET),

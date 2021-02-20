@@ -4,9 +4,9 @@ public class Maps {
 
     public static Map get(String name) {
         switch (name) {
-            case "island": return new Map_Island();
-            case "desert": return new Map_Desert();
-            case "arctic": return new Map_Arctic();
+            case "IceMap": return new Map_Icecold();
+            case "DestroMap": return new Map_Destro();
+            case "EtherMap": return new Map_Ether();
         }
         throw new IllegalArgumentException(name);
     }

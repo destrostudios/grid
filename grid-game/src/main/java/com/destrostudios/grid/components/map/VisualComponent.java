@@ -7,5 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class TreeComponent implements Component {
+@AllArgsConstructor
+@Getter
+@Setter
+public class VisualComponent implements Component {
+    private String name;
 }

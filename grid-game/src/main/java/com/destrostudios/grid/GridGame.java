@@ -76,8 +76,8 @@ public class GridGame {
     private void initTeam(List<Integer> startingEntities, Random rand, PlayerInfo playerInfo, int team) {
         int playerEntity = world.createEntity();
 
-        CharacterContainer characterContainer = initCharacter(playerInfo.getLogin());
-        addComponentsForCharacter(playerEntity, characterContainer);
+        CharacterContainer characterContainer = initCharacter(playerInfo);
+        addComponentsForCharacter(playerEntity, characterContainer, playerInfo.getLogin());
 
         Integer startEntity = startingEntities.remove(rand.nextInt(startingEntities.size()));
         PositionComponent startingPosition = world.getComponent(startEntity, PositionComponent.class);
@@ -88,7 +88,7 @@ public class GridGame {
         world.addComponent(playerEntity, new PositionComponent(startingPosition.getX(), startingPosition.getY()));
     }
 
-    private void addComponentsForCharacter(int playerEntity, CharacterContainer characterContainer) {
+    private void addComponentsForCharacter(int playerEntity, CharacterContainer characterContainer, String login) {
         List<Integer> spells = new ArrayList<>();
         for (Map.Entry<Integer, List<Component>> spellComponentEntry : getSpellComponents(characterContainer).entrySet()) {
             int spell = world.createEntity();
@@ -99,6 +99,7 @@ public class GridGame {
         for (Component playerComponent : getPlayerComponentsWithoutSpells(characterContainer)) {
             world.addComponent(playerEntity, playerComponent);
         }
+        world.addComponent(playerEntity, new NameComponent(login));
         MaxHealthComponent hpC = world.getComponent(playerEntity, MaxHealthComponent.class);
         world.addComponent(playerEntity, new HealthPointsComponent(hpC.getMaxHealth()));
         MaxAttackPointsComponent apC = world.getComponent(playerEntity, MaxAttackPointsComponent.class);
@@ -132,13 +133,13 @@ public class GridGame {
         return destroMap;
     }
 
-    private CharacterContainer initCharacter(String characterName) {
+    private CharacterContainer initCharacter(PlayerInfo playerInfo) {
         CharacterContainer characterContainer;
         try {
-            characterContainer = ComponentsContainerSerializer.readSeriazableFromRessources(characterName, CharacterContainer.class);
+            characterContainer = ComponentsContainerSerializer.readSeriazableFromRessources(playerInfo.getCharacterName(), CharacterContainer.class);
         } catch (IOException e) {
             characterContainer = new CharacterContainer();
-            logger.warning("Error reading file " + characterName + " from ressources");
+            logger.warning("Error reading file " + playerInfo + " from ressources");
         }
         return characterContainer;
     }

@@ -1,9 +1,5 @@
 package com.destrostudios.grid.eventbus.handler;
 
-import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.map.TreeComponent;
-import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Eventbus;
@@ -11,11 +7,8 @@ import com.destrostudios.grid.eventbus.events.MoveEvent;
 import com.destrostudios.grid.eventbus.events.PropertiePointsChangedEvent;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class PositionChangedHandler implements EventHandler<MoveEvent> {

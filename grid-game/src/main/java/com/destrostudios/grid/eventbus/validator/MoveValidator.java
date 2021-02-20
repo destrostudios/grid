@@ -2,8 +2,8 @@ package com.destrostudios.grid.eventbus.validator;
 
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.map.TreeComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
@@ -32,7 +32,7 @@ public class MoveValidator implements EventValidator<MoveEvent> {
         List<Integer> allPlayersEntites = entityWorld.list(PositionComponent.class, PlayerComponent.class).stream()
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
-        List<Integer> allTreeEntites = entityWorld.list(PositionComponent.class, TreeComponent.class).stream()
+        List<Integer> allObstacleEntites = entityWorld.list(PositionComponent.class, ObstacleComponent.class).stream()
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
         List<Integer> allWalkableEntities = entityWorld.list(PositionComponent.class, WalkableComponent.class).stream()
@@ -40,10 +40,10 @@ public class MoveValidator implements EventValidator<MoveEvent> {
                 .collect(Collectors.toList());
 
         boolean collidesWithOtherPlayer = allPlayersEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
-        boolean collidesWithTree = allTreeEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithObstacle = allObstacleEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
         boolean isWalkableField = allWalkableEntities.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
 
-        return isWalkableField && !collidesWithOtherPlayer && !collidesWithTree;
+        return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }
 
     private int getWalkedDistance(EntityWorld entityWorld, MoveEvent componentUpdateEvent) {

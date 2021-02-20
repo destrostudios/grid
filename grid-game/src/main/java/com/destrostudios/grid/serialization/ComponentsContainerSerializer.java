@@ -39,9 +39,14 @@ public class ComponentsContainerSerializer {
 //    }
 
     public static void main(String[] args) throws JsonProcessingException {
-        generateAndSaveCharacter("destroflyer");
-        generateAndSaveCharacter("Etherblood");
-        generateAndSaveCharacter("Icecold");
+        generateAndSaveCharacter("", "aland");
+        generateAndSaveCharacter("", "alice");
+        generateAndSaveCharacter("", "dosaz");
+        generateAndSaveCharacter("", "dwarf_worrior");
+        generateAndSaveCharacter("", "elven_archer");
+        generateAndSaveCharacter("", "garmon");
+        generateAndSaveCharacter("", "scarlet");
+        generateAndSaveCharacter("", "tristan");
     }
 
     public static <E extends ComponentsContainer> E readContainerAsJson(String gameState, Class<E> classz) throws JsonProcessingException {
@@ -69,18 +74,18 @@ public class ComponentsContainerSerializer {
     }
 
 
-    public static void generateAndSaveCharacter(String name) {
+    public static void generateAndSaveCharacter(String spellBaseName, String characterName) {
         GridGame gridGame = new GridGame();
-        ComponentsContainerSerializer.initTestCharacter(gridGame.getWorld(), name);
+        ComponentsContainerSerializer.initTestCharacter(gridGame.getWorld(), spellBaseName, characterName);
         Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getWorld(), CharacterContainer.class);
         try {
-            ComponentsContainerSerializer.writeSeriazableToResources(new CharacterContainer(components), name);
+            ComponentsContainerSerializer.writeSeriazableToResources(new CharacterContainer(components), characterName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void initTestCharacter(EntityWorld world, String name) {
+    private static void initTestCharacter(EntityWorld world, String name, String charackterName) {
         List<Integer> spells = new ArrayList<>();
         Random rand = new Random();
         int attackPoints = Math.max(MAX_AP / 2, rand.nextInt(MAX_AP));
@@ -90,7 +95,7 @@ public class ComponentsContainerSerializer {
         // dmg spells
         for (int i = 0; i < 2; i++) {
             int spell = world.createEntity();
-            String spellName = getSpellName(name);
+            String spellName = getSpellName();
             int apCost = Math.max(2, rand.nextInt(attackPoints));
             world.addComponent(spell, new AttackPointCostComponent(apCost));
             int dmg = Math.max(25, rand.nextInt(50));
@@ -107,7 +112,7 @@ public class ComponentsContainerSerializer {
         int dmg = Math.max(25, rand.nextInt(50));
         int mpBuff = Math.max(1, rand.nextInt(2));
         int range = Math.max(3, rand.nextInt(6));
-        String spellName = getSpellName(name);
+        String spellName = getSpellName();
         world.addComponent(dmgMpSpell, new AttackPointCostComponent(apCost));
         world.addComponent(dmgMpSpell, new DamageComponent(dmg));
         world.addComponent(dmgMpSpell, new NameComponent(spellName));
@@ -123,7 +128,7 @@ public class ComponentsContainerSerializer {
         range = Math.max(3, rand.nextInt(6));
         world.addComponent(spellApBuff, new MovementPointsCostComponent(mpCost));
         world.addComponent(spellApBuff, new AttackPointsBuffComponent(apBuff, 2));
-        world.addComponent(spellApBuff, new NameComponent(name + "Buff"));
+        world.addComponent(spellApBuff, new NameComponent("Buff"));
         world.addComponent(spellApBuff, new RangeComponent(range));
         world.addComponent(spellApBuff, new TooltipComponent(String.format("Spell buffing %s AP for %s MP \nRange: %s", apBuff, mpCost, range)));
         spells.add(spellApBuff);
@@ -137,7 +142,7 @@ public class ComponentsContainerSerializer {
         range = Math.max(3, rand.nextInt(6));
         world.addComponent(spellMpHealthBuff, new AttackPointCostComponent(apCost));
         world.addComponent(spellMpHealthBuff, new HealthPointBuffComponent(hpBuff, hpBuffDuration));
-        world.addComponent(spellMpHealthBuff, new NameComponent(name + "Pump"));
+        world.addComponent(spellMpHealthBuff, new NameComponent("Pump"));
         world.addComponent(spellMpHealthBuff, new RangeComponent(0));
         world.addComponent(spellMpHealthBuff, new TooltipComponent(String.format("Spell buffing %s HP for %s AP. \nCD: %s, Range: 0 ", hpBuff, apCost, cooldown)));
         world.addComponent(spellMpHealthBuff, new CooldownComponent(cooldown));
@@ -148,28 +153,31 @@ public class ComponentsContainerSerializer {
         world.addComponent(playerEntity, new MaxAttackPointsComponent(attackPoints));
         world.addComponent(playerEntity, new ObstacleComponent());
         world.addComponent(playerEntity, new PlayerComponent());
-        world.addComponent(playerEntity, new NameComponent(name));
+        world.addComponent(playerEntity, new VisualComponent(charackterName));
         int health = Math.max(MAX_HEALTH / 2, rand.nextInt(MAX_HEALTH));
         world.addComponent(playerEntity, new MaxHealthComponent(health));
         world.addComponent(playerEntity, new SpellsComponent(spells));
     }
 
-    private static String getSpellName(String name) {
-        List<String> spellName = Lists.newArrayList("Bomb", "Arrow", "Punch", "Hit", "Jump", "Twist", "Confusion",
-                "Nothing", "Blblbl", "Wound", "");
+
+    private static String getSpellName() {
+        List<String> spellName = Lists.newArrayList("Arrow", "Hit", "Jump", "Twist", "Confusion",
+                "Nothing", "Blblbl", "Wound");
         Random random = new Random();
-        return name + spellName.get(random.nextInt(spellName.size()));
+        return spellName.get(random.nextInt(spellName.size()));
     }
 
     private static void initTestMap(EntityWorld world) {
         // add walkables & startingFields
         int startingFields = 15;
+        String terrain = getTerrain();
         for (int x = 0; x < MAP_X; x++) {
             for (int y = 0; y < MAP_Y; y++) {
                 // add walkable component
                 if (Math.random() > 0.2) {
                     int fieldComponent = world.createEntity();
                     world.addComponent(fieldComponent, new WalkableComponent());
+                    world.addComponent(fieldComponent, new VisualComponent(terrain));
                     world.addComponent(fieldComponent, new PositionComponent(x, y));
                     if (Math.random() > 0.5 && startingFields > 0) {
                         world.addComponent(fieldComponent, new StartingFieldComponent());
@@ -190,11 +198,37 @@ public class ComponentsContainerSerializer {
                 if (isWalkableAndNoStartingField && Math.random() < 0.2) {
                     int treeComponent = world.createEntity();
                     world.addComponent(treeComponent, new PositionComponent(x, y));
-                    world.addComponent(treeComponent, new TreeComponent());
+                    world.addComponent(treeComponent, new VisualComponent(Math.random() > 0.5 ? "tree" : "rock"));
                     world.addComponent(treeComponent, new ObstacleComponent());
                 }
             }
         }
+    }
+
+
+    private static String getTerrain() {
+        double random = Math.random();
+        if (random < 0.33) {
+            return "grass";
+        } else if (random < 0.66) {
+            return "sand";
+        }
+        return "snow";
+    }
+
+    // Players: aland, alice, dosaz, dwarf_warrior, elven_archer, garmon, scarlet, tristan
+    private static String getCharacterName() {
+        double random = Math.random();
+        if (random < 0.2) {
+            return "aland";
+        } else if (random < 0.4) {
+            return "alice";
+        } else if (random < 0.6) {
+            return "dosaz";
+        } else if (random < 0.8) {
+            return "elven_archer";
+        }
+        return "dwarf_warrior";
     }
 
     public static <E extends ComponentsContainer> E readSeriazableFromRessources(String seriazableName, Class<E> classz) throws IOException {

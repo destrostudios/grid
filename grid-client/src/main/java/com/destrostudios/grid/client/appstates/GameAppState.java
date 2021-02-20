@@ -23,8 +23,9 @@ import com.destrostudios.grid.client.maps.Maps;
 import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.map.TreeComponent;
+import com.destrostudios.grid.components.map.VisualComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.OnCooldownComponent;
@@ -177,9 +178,12 @@ public class GameAppState extends BaseAppState implements ActionListener {
         updateTerrain();
 
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        for (int obstacleEntity : entityWorld.list(TreeComponent.class)) {
+        List<Integer> list = entityWorld.list(ObstacleComponent.class).stream()
+                .filter(entity -> !entityWorld.hasComponents(entity, PlayerComponent.class))
+                .collect(Collectors.toList());
+        for (int obstacleEntity : list) {
             ModelObject obstacleModel = obstacleModels.computeIfAbsent(obstacleEntity, pe -> {
-                String modelName = (gameProxy.getStartGameInfo().getMapName().equals("desert") ? "rock" : "tree"); // entityWorld.getComponent(obstacleEntity, VisualComponent.class).getName();
+                String modelName = entityWorld.getComponent(obstacleEntity, VisualComponent.class).getName();
                 ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
                 rootNode.attachChild(newObstacleModel);
                 return newObstacleModel;
