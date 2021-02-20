@@ -3,15 +3,16 @@ package com.destrostudios.grid.eventbus;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.eventbus.validator.EventValidator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 class EventbusTest {
@@ -24,19 +25,20 @@ class EventbusTest {
     }
 
     @Test
+    @DisplayName("Testing the order of how the handlers get executed")
     void testEventQueue() {
         AtomicReference<String> eventTracker = new AtomicReference<>("");
 
         eventbus.addInstantHandler(SimpleEvent.class, (EventHandler<SimpleEvent>) (event, entityWorldSupplier) -> {
-            eventTracker.set(event.getValue());
-            System.out.println(event.getValue());
-            if (event.value.equals("A")) {
+            eventTracker.set(event.getName());
+            System.out.println(event.getName());
+            if (event.name.equals("A")) {
                 eventbus.registerSubEvents(new SimpleEvent("A1"), new SimpleEvent("A2"), new SimpleEvent("A3"));
-            } else if (event.value.equals("B")) {
+            } else if (event.name.equals("B")) {
                 eventbus.registerSubEvents(new SimpleEvent("B1"), new SimpleEvent("B2"));
-            } else if (event.value.equals("C")) {
+            } else if (event.name.equals("C")) {
                 eventbus.registerSubEvents(new SimpleEvent("C1"));
-            } else if (event.value.equals("A2")) {
+            } else if (event.name.equals("A2")) {
                 eventbus.registerSubEvents(new SimpleEvent("A21"), new SimpleEvent("A22"));
             }
         });
@@ -70,6 +72,7 @@ class EventbusTest {
 
 
     @Test
+    @DisplayName("Testing triggering the handlers in the queue")
     void triggeredHandlersInQueue() {
         AtomicReference<String> eventTracker = new AtomicReference<>("");
 
@@ -98,9 +101,39 @@ class EventbusTest {
 
     }
 
+    @Test
+    @DisplayName("Testing execution of 2 event, where one gets invalid after the other event")
+    public void testEventRemovedWhenTriggering() {
+        AtomicInteger valueTracker = new AtomicInteger(0);
+
+        eventbus.addInstantHandler(SimpleValueEvent.class, (EventHandler<SimpleValueEvent>) (event, entityWorldSupplier) -> {
+            valueTracker.addAndGet(event.getValue());
+        });
+
+        eventbus.addEventValidator(SimpleValueEvent.class, (EventValidator<SimpleValueEvent>) (event, supplier) -> valueTracker.get() < 5);
+
+        SimpleValueEvent eventA = new SimpleValueEvent("A", 5);
+        SimpleValueEvent eventB = new SimpleValueEvent("B", 6);
+
+        eventbus.registerMainEvents(eventA, eventB);
+        while (eventbus.triggeredHandlersInQueue()) {
+            eventbus.triggerNextHandler();
+        }
+
+        Assertions.assertEquals(eventA.getValue(), valueTracker.get(), "Event B should not get execuuted, as its invalid" +
+                " after executing event A");
+    }
+
+    @AllArgsConstructor
+    @Getter
+    private static class SimpleValueEvent implements Event {
+        private final String name;
+        private final int value;
+    }
+
     @AllArgsConstructor
     @Getter
     private static class SimpleEvent implements Event {
-        private final String value;
+        private final String name;
     }
 }
