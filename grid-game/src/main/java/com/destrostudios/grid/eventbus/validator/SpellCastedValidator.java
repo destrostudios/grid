@@ -26,12 +26,11 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
         // check Range
         PositionComponent position = entityWorld.getComponent(event.getTargetEntity(), PositionComponent.class);
         List<PositionComponent> rangeEntites = CalculationUtils.getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityWorld);
-        boolean isSelfCast = rangeEntites.size() == 1;
-        boolean fieldIsReachable = rangeEntites.contains(position);
 
+        boolean fieldIsReachable = rangeEntites.contains(position);
         boolean isOnCooldown = entityWorld.hasComponents(event.getSpell(), OnCooldownComponent.class);
 
-        if ((isSelfCast || fieldIsReachable) && !isOnCooldown) {
+        if (fieldIsReachable && !isOnCooldown) {
             // check AP costs
             AttackPointsComponent attackPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
 
