@@ -25,7 +25,6 @@ public class MoveValidator implements EventValidator<MoveEvent> {
         boolean positionIsFree = isPositionIsFree(entityWorld, newPosition, entity);
         int neededMovementPoints = getWalkedDistance(entityWorld, componentUpdateEvent);
         int movementPoints = entityWorld.getComponent(entity, MovementPointsComponent.class).getMovementPoints();
-
         return positionIsFree && entityCanMove && neededMovementPoints == 1 && movementPoints > 0;
     }
 
