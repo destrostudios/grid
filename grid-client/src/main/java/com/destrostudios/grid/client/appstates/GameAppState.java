@@ -199,7 +199,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
                 String characterName = entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
                 CharacterModel characterModel = CharacterModels.get(characterName);
-                PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), characterModel);
+                PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), characterModel, map.getPlayerNameColor());
                 rootNode.attachChild(newPlayerVisual.getModelObject());
                 guiNode.attachChild(newPlayerVisual.getLblName());
                 guiNode.attachChild(newPlayerVisual.getHealthBar());

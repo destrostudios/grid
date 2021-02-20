@@ -14,7 +14,7 @@ import lombok.Getter;
 
 public class PlayerVisual {
 
-    public PlayerVisual(Camera camera, AssetManager assetManager, CharacterModel characterModel) {
+    public PlayerVisual(Camera camera, AssetManager assetManager, CharacterModel characterModel, ColorRGBA nameColor) {
         this.characterModel = characterModel;
         modelObject = new ModelObject(assetManager, "models/" + characterModel.getModelName() + "/skin_default.xml");
         modelObject.addControl(new PlayerVisualControl(this, camera));
@@ -25,7 +25,7 @@ public class PlayerVisual {
 
         lblName = new Label("");
         lblName.setFontSize(14);
-        lblName.setColor(ColorRGBA.White);
+        lblName.setColor(nameColor);
 
         healthBar = new ProgressBar();
         healthBar.setPreferredSize(new Vector3f(100, 20, 1));
