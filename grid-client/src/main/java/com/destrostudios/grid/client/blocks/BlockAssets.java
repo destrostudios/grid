@@ -5,16 +5,18 @@ import com.jme3.app.Application;
 
 public class BlockAssets {
 
-    public static BlockTerrainControl createNewBlockTerrain(Application application, Vector3Int chunksCount) {
-        return new BlockTerrainControl(getSettings(application), chunksCount);
+    public static int BLOCK_SIZE = 3;
+
+    public static BlockTerrainControl createNewBlockTerrain(Application application, int chunkSizeX, int chunkSizeZ, Vector3Int chunksCount) {
+        return new BlockTerrainControl(getSettings(application, chunkSizeX, chunkSizeZ), chunksCount);
     }
 
-    public static CubesSettings getSettings(Application application) {
+    public static CubesSettings getSettings(Application application, int chunkSizeX, int chunkSizeZ) {
         CubesSettings cubesSettings = new CubesSettings(application);
-        cubesSettings.setBlockSize(3);
-        cubesSettings.setChunkSizeX(16);
+        cubesSettings.setBlockSize(BLOCK_SIZE);
+        cubesSettings.setChunkSizeX(chunkSizeX);
         cubesSettings.setChunkSizeY(16);
-        cubesSettings.setChunkSizeZ(16);
+        cubesSettings.setChunkSizeZ(chunkSizeZ);
         cubesSettings.setDefaultBlockMaterial("textures/blocks.png");
         return cubesSettings;
     }

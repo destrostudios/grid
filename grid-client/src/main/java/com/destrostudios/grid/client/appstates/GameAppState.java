@@ -42,7 +42,6 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
@@ -58,6 +57,8 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     private GameProxy gameProxy;
     private Map map;
+    private int mapSizeX;
+    private int mapSizeY;
     private Node rootNode;
     private Node guiNode;
     private Node blockTerrainNode;
@@ -81,27 +82,32 @@ public class GameAppState extends BaseAppState implements ActionListener {
         guiNode = new Node();
         mainApplication.getGuiNode().attachChild(guiNode);
 
+        calculateMapSize();
+
         if (map.getEnvironmentBlock() != null) {
             Node environmentNode = new Node();
             environmentNode.setShadowMode(RenderQueue.ShadowMode.Receive);
-            BlockTerrainControl environmentBlockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(3, 1, 3));
-            environmentBlockTerrainControl.setBlockArea(new Vector3Int(0, 1, 0), new Vector3Int(48, 1, 48), map.getEnvironmentBlock());
-            environmentBlockTerrainControl.removeBlockArea(new Vector3Int(16, 1, 16), new Vector3Int(16, 1, 16));
-            environmentBlockTerrainControl.setBlockArea(new Vector3Int(16, 0, 16), new Vector3Int(16, 1, 16), map.getEnvironmentBlock());
+            BlockTerrainControl environmentBlockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, mapSizeX, mapSizeY, new Vector3Int(3, 1, 3));
+            // Fill a total of 3x3 of the terrain size
+            environmentBlockTerrainControl.setBlockArea(new Vector3Int(0, 1, 0), new Vector3Int(3 * mapSizeX, 1, 3 * mapSizeY), map.getEnvironmentBlock());
+            // Remove the "inner" part, where the actual map terran will be
+            environmentBlockTerrainControl.removeBlockArea(new Vector3Int(mapSizeX, 1, mapSizeY), new Vector3Int(mapSizeX, 1, mapSizeY));
+            // Add a layer below the "inner" part, where the actual map terran will be
+            environmentBlockTerrainControl.setBlockArea(new Vector3Int(mapSizeX, 0, mapSizeY), new Vector3Int(mapSizeX, 1, mapSizeY), map.getEnvironmentBlock());
             environmentNode.addControl(environmentBlockTerrainControl);
-            environmentNode.setLocalTranslation(-48, -3, -48);
+            environmentNode.setLocalTranslation(-1 * mapSizeX * BlockAssets.BLOCK_SIZE, -1 * BlockAssets.BLOCK_SIZE, -1 * mapSizeY * BlockAssets.BLOCK_SIZE);
             rootNode.attachChild(environmentNode);
         }
 
         blockTerrainNode = new Node();
         blockTerrainNode.setShadowMode(RenderQueue.ShadowMode.Receive);
-        blockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, new Vector3Int(1, 1, 1));
+        blockTerrainControl = BlockAssets.createNewBlockTerrain(mainApplication, mapSizeX, mapSizeY, new Vector3Int(1, 1, 1));
         blockTerrainNode.addControl(blockTerrainControl);
         rootNode.attachChild(blockTerrainNode);
 
         Camera camera = mainApplication.getCamera();
-        camera.setLocation(new Vector3f(23.15413f, 40.838593f, 66.12133f));
-        camera.setRotation(new Quaternion(-8.0925995E-4f, 0.9084759f, -0.4179328f, -0.0017719142f));
+        camera.setLocation(map.getCameraPosition());
+        camera.setRotation(map.getCameraRotation());
 
         mainApplication.getInputManager().addMapping("key_delete", new KeyTrigger(KeyInput.KEY_DELETE));
         mainApplication.getInputManager().addMapping("mouse_left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
@@ -130,6 +136,23 @@ public class GameAppState extends BaseAppState implements ActionListener {
         gameProxy.addResolvedHandler(GameOverEvent.class, (EventHandler<GameOverEvent>) (event, entityWorldSupplier) -> {
             getAppState(GameGuiAppState.class).onGameOver("Team #" + event.getWinnerTeam());
         });
+    }
+
+    private void calculateMapSize() {
+        int maxX = -1;
+        int maxY = -1;
+        EntityWorld entityWorld = gameProxy.getGame().getWorld();
+        for (int groundEntity : entityWorld.list(WalkableComponent.class)) {
+            PositionComponent positionComponent = entityWorld.getComponent(groundEntity, PositionComponent.class);
+            if (positionComponent.getX() > maxX) {
+                maxX = positionComponent.getX();
+            }
+            if (positionComponent.getY() > maxY) {
+                maxY = positionComponent.getY();
+            }
+        }
+        mapSizeX = (maxX + 1);
+        mapSizeY = (maxY + 1);
     }
 
     @Override
@@ -196,7 +219,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
     private void updateTerrain() {
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(16, 1, 16));
+        blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(mapSizeX, 1, mapSizeY));
         List<Integer> rangeGroundEntities = targetingSpellEntity != null
                 ? CalculationUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), entityWorld)
                 : new LinkedList<>();
