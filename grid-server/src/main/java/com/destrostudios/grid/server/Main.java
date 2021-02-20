@@ -24,6 +24,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -32,6 +33,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Log.DEBUG();
+        Log.info(new Date().toString());// time reference for kryo logs
         System.err.println("WARNING: Using jwt service without validation.");
         JwtService jwtService = new NoValidateJwtService();
 
