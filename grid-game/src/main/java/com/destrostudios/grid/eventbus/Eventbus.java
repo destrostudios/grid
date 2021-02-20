@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.function.Supplier;
 
 public class Eventbus {
@@ -118,13 +116,15 @@ public class Eventbus {
     }
 
     public void triggerNextHandler() {
-        TriggeredEventHandler triggeredEventHandler = triggeredHandlers.pollFirst();
+        if (triggeredHandlersInQueue()) {
+            TriggeredEventHandler triggeredEventHandler = triggeredHandlers.pollFirst();
 
-        if (eventIsValid(triggeredEventHandler.getEvent())) {
-            triggeredEventHandler.onEvent(entityWorldSupplier);
-        } else {
-            // if event is not valid anymore, remove all trigered handlers from the dequeue
-            triggeredHandlers.removeIf(triggeredHandler -> triggeredHandler.getEvent().equals(triggeredEventHandler.getEvent()));
+            if (eventIsValid(triggeredEventHandler.getEvent())) {
+                triggeredEventHandler.onEvent(entityWorldSupplier);
+            } else {
+                // if event is not valid anymore, remove all trigered handlers from the dequeue
+                triggeredHandlers.removeIf(triggeredHandler -> triggeredHandler.getEvent().equals(triggeredEventHandler.getEvent()));
+            }
         }
     }
 
