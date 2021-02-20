@@ -32,6 +32,7 @@ import com.destrostudios.grid.components.spells.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.shared.Characters;
 import com.destrostudios.grid.util.CalculationUtils;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -167,8 +168,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
             PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
-                String[] characterNames = new String[] { "aland", "alice", "dosaz", "dwarf_warrior", "elven_archer", "garmon", "scarlet", "tristan" };
-                String characterName = characterNames[(int) (Math.random() * characterNames.length)]; // entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
+                String characterName = Characters.getRandomCharacterName(); // entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
                 CharacterModel characterModel = CharacterModels.get(characterName);
                 PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), characterModel);
                 rootNode.attachChild(newPlayerVisual.getModelObject());

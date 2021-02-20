@@ -18,15 +18,14 @@ public class StartGameInfo {
         StartGameInfo startGameInfo = new StartGameInfo();
 
         LinkedList<PlayerInfo> team1 = new LinkedList<>();
-        team1.add(new PlayerInfo(1, "destroflyer"));
+        team1.add(new PlayerInfo(1, "destroflyer", Characters.getRandomCharacterName()));
         startGameInfo.team1 = team1;
 
         LinkedList<PlayerInfo> team2 = new LinkedList<>();
-        team2.add(new PlayerInfo(2, "Etherblood"));
+        team2.add(new PlayerInfo(2, "Etherblood", Characters.getRandomCharacterName()));
         startGameInfo.team2 = team2;
 
-        String[] mapNames = new String[]{ "island", "desert", "arctic" };
-        startGameInfo.mapName = mapNames[(int) (Math.random() * mapNames.length)];
+        startGameInfo.mapName = Maps.getRandomMapName();
 
         return startGameInfo;
     }

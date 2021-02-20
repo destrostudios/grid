@@ -1,10 +1,10 @@
 package com.destrostudios.grid.client;
 
+import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.client.appstates.GameAppState;
 import com.destrostudios.grid.client.appstates.GameGuiAppState;
 import com.destrostudios.grid.client.appstates.MenuAppState;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
-import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
@@ -34,11 +34,11 @@ public class ClientApplication extends SimpleApplication {
     @Getter
     private final ToolsClient toolsClient;
     @Getter
-    private final PlayerInfo playerInfo;
+    private final JwtAuthenticationUser jwtAuthenticationUser;
 
-    public ClientApplication(ToolsClient toolsClient, PlayerInfo playerInfo) {
+    public ClientApplication(ToolsClient toolsClient, JwtAuthenticationUser jwtAuthenticationUser) {
         this.toolsClient = toolsClient;
-        this.playerInfo = playerInfo;
+        this.jwtAuthenticationUser = jwtAuthenticationUser;
         settings = new AppSettings(true);
         settings.setWidth(1600);
         settings.setHeight(900);

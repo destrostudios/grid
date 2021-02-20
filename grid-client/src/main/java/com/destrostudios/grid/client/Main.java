@@ -1,6 +1,5 @@
 package com.destrostudios.grid.client;
 
-import com.destrostudios.authtoken.JwtAuthentication;
 import com.destrostudios.authtoken.NoValidateJwtService;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
@@ -8,7 +7,6 @@ import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
-import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
@@ -47,7 +45,7 @@ public class Main {
         FileAssets.readRootFile();
         BlockAssets.registerBlocks();
         JMonkeyUtil.disableLogger();
-        ClientApplication clientApplication = new ClientApplication(toolsClient, getPlayerInfo(jwt));
+        ClientApplication clientApplication = new ClientApplication(toolsClient, new NoValidateJwtService().decode(jwt).user);
         clientApplication.start();
         return clientApplication;
     }
@@ -66,10 +64,5 @@ public class Main {
         jwtModule.login(jwt);
         lobbyModule.subscribeToGamesList();
         return client;
-    }
-
-    private static PlayerInfo getPlayerInfo(String jwt) {
-        JwtAuthentication authentication = new NoValidateJwtService().decode(jwt);
-        return new PlayerInfo((int) authentication.user.id, authentication.user.login);
     }
 }

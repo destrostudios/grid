@@ -2,6 +2,8 @@ package com.destrostudios.grid.client.appstates;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
+import com.destrostudios.grid.shared.Characters;
+import com.destrostudios.grid.shared.Maps;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.ClientGameData;
@@ -11,19 +13,14 @@ import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyCli
 import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
-import com.jme3.math.Vector3f;
+import com.jme3.math.*;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
-import com.simsilica.lemur.Button;
-import com.simsilica.lemur.Container;
-import com.simsilica.lemur.HAlignment;
-import com.simsilica.lemur.Insets3f;
-import com.simsilica.lemur.Label;
-import com.simsilica.lemur.VAlignment;
+import com.jme3.texture.Texture;
+import com.simsilica.lemur.*;
+import com.simsilica.lemur.component.*;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,9 +30,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class MenuAppState extends BaseAppState {
 
+    private StartGameInfo startGameInfo;
+    private PlayerInfo ownPlayerInfo;
     private Node guiNode = new Node();
     private int containerWidth;
     private Container buttonContainerPlayers;
@@ -47,6 +47,7 @@ public class MenuAppState extends BaseAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
+        initializeStartGameInfo();
 
         AppSettings appSettings = mainApplication.getContext().getSettings();
         int totalWidth = appSettings.getWidth();
@@ -74,14 +75,29 @@ public class MenuAppState extends BaseAppState {
         addSectionContainer("Games", containerX2, containerY, containerWidth, containerHeight);
 
         int containerButtonY = (containerY - 40);
-        buttonContainerPlayers = addButtonContainer(containerX1, containerButtonY);
-        buttonContainerGames = addButtonContainer(containerX2, containerButtonY);
+        buttonContainerPlayers = addSectionButtonContainer(containerX1, containerButtonY);
+        buttonContainerGames = addSectionButtonContainer(containerX2, containerButtonY);
+
+        int characterAndMapContainerY = (containerMarginOutside - 25);
+        addCharacterContainer(containerMarginOutside, characterAndMapContainerY);
+        addMapContainer(characterAndMapContainerY, (totalWidth - containerMarginOutside));
 
         mainApplication.getGuiNode().attachChild(guiNode);
 
         Camera camera = mainApplication.getCamera();
         camera.setLocation(new Vector3f(0, 10, 0));
         camera.setRotation(new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y));
+    }
+
+    private void initializeStartGameInfo() {
+        startGameInfo = new StartGameInfo();
+        LinkedList<PlayerInfo> team1 = new LinkedList<>();
+        JwtAuthenticationUser jwtAuthenticationUser = mainApplication.getJwtAuthenticationUser();
+        ownPlayerInfo = new PlayerInfo(jwtAuthenticationUser.id, jwtAuthenticationUser.login, Characters.getRandomCharacterName());
+        team1.add(ownPlayerInfo);
+        startGameInfo.setTeam1(team1);
+        startGameInfo.setTeam2(new LinkedList<>());
+        startGameInfo.setMapName(Maps.getRandomMapName());
     }
 
     private void addSectionContainer(String title, int containerX, int containerY, int containerWidth, int containerHeight) {
@@ -103,11 +119,93 @@ public class MenuAppState extends BaseAppState {
         guiNode.attachChild(container);
     }
 
-    private Container addButtonContainer(int containerX, int y) {
+    private Container addSectionButtonContainer(int containerX, int y) {
         Container buttonContainer = new Container();
         buttonContainer.setLocalTranslation(containerX + 1, y, 0);
         guiNode.attachChild(buttonContainer);
         return buttonContainer;
+    }
+
+    public void addCharacterContainer(int containerX, int containerY) {
+        Container characterContainer = addSelectionContainer(
+            "Character", HAlignment.Left, Characters.CHARACTER_NAMES,
+            characterName -> "textures/characters/" + characterName + ".png", false,
+            () -> ownPlayerInfo.getCharacterName(), characterName -> ownPlayerInfo.setCharacterName(characterName)
+        );
+        characterContainer.setLocalTranslation(containerX, containerY, 0);
+        guiNode.attachChild(characterContainer);
+    }
+
+    public void addMapContainer(int containerY, int containerWidth) {
+        Container mapContainerWrapper = new Container();
+        mapContainerWrapper.setLayout(new SpringGridLayout(Axis.X, Axis.Y, FillMode.First, FillMode.None));
+        mapContainerWrapper.setLocalTranslation(0, containerY, 0);
+        mapContainerWrapper.setPreferredSize(new Vector3f(containerWidth, 0, 0));
+        mapContainerWrapper.setBackground(null);
+
+        Panel placeholder = new Panel();
+        placeholder.setBackground(null);
+        mapContainerWrapper.addChild(placeholder);
+
+        Container mapContainer = addSelectionContainer(
+            "Map", HAlignment.Right, Maps.MAP_NAMES,
+            mapName -> "textures/maps/" + mapName + ".png", true,
+            () -> startGameInfo.getMapName(), mapName -> startGameInfo.setMapName(mapName)
+        );
+        mapContainerWrapper.addChild(mapContainer);
+
+        guiNode.attachChild(mapContainerWrapper);
+    }
+
+    private Container addSelectionContainer(String title, HAlignment titleHAlignment, String[] names, Function<String, String> getIconPath, boolean nearestMagFilter, Supplier<String> getSelectedName, Consumer<String> setSelectedName) {
+        Container container = new Container();
+        container.setBackground(null);
+
+        Label lblTitle = new Label("");
+        lblTitle.setPreferredSize(new Vector3f(200, 40, 0));
+        float insetLeft = 0;
+        float insetRight = 0;
+        if (titleHAlignment == HAlignment.Left) {
+            insetLeft = 10;
+        } else {
+            insetRight = 10;
+        }
+        lblTitle.setInsets(new Insets3f(0, insetLeft, 0, insetRight));
+        lblTitle.setTextHAlignment(titleHAlignment);
+        lblTitle.setTextVAlignment(VAlignment.Center);
+        lblTitle.setFontSize(20);
+        lblTitle.setColor(ColorRGBA.White);
+        container.addChild(lblTitle);
+
+        Runnable updateVisualSelection = () -> {
+            String name = getSelectedName.get();
+            lblTitle.setText(title + ": " + name);
+        };
+
+        int iconSize = 80;
+        Container iconsRow = new Container();
+        iconsRow.setLayout(new SpringGridLayout(Axis.X, Axis.Y));
+        for (String name : names) {
+            Button button = new Button("");
+            IconComponent icon = new IconComponent(getIconPath.apply(name));
+            icon.setIconSize(new Vector2f(iconSize, iconSize));
+            icon.setHAlignment(HAlignment.Center);
+            icon.setVAlignment(VAlignment.Center);
+            if (nearestMagFilter) {
+                icon.getImageTexture().setMagFilter(Texture.MagFilter.Nearest);
+            }
+            button.setBackground(icon);
+            button.addCommands(Button.ButtonAction.Up, source -> {
+                setSelectedName.accept(name);
+                updateVisualSelection.run();
+            });
+            iconsRow.addChild(button);
+        }
+        container.addChild(iconsRow);
+
+        updateVisualSelection.run();
+
+        return container;
     }
 
     @Override
@@ -123,18 +221,8 @@ public class MenuAppState extends BaseAppState {
         List<JwtAuthenticationUser> players = jwtClientModule.getOnlineUsers();
 
         updateButtons(buttonContainerPlayers, buttonsPlayers, players, player -> player.id, player -> player.login, player -> {
-            StartGameInfo startGameInfo = new StartGameInfo();
-            PlayerInfo player1 = mainApplication.getPlayerInfo();
-            PlayerInfo player2 = new PlayerInfo(player.id, player.login);
-            LinkedList<PlayerInfo> team1 = new LinkedList<>();
-            LinkedList<PlayerInfo> team2 = new LinkedList<>();
-            team1.add(player1);
-            team2.add(player2);
-            startGameInfo.setTeam1(team1);
-            startGameInfo.setTeam2(team2);
-            String[] mapNames = new String[]{ "island", "desert", "arctic" };
-            String mapName = mapNames[(int) (Math.random() * mapNames.length)];
-            startGameInfo.setMapName(mapName);
+            PlayerInfo opponentPlayerInfo = new PlayerInfo(player.id, player.login, Characters.getRandomCharacterName());
+            startGameInfo.getTeam2().add(opponentPlayerInfo);
 
             GameStartClientModule gameStartModule = mainApplication.getToolsClient().getModule(GameStartClientModule.class);
             gameStartModule.startNewGame(startGameInfo);
@@ -191,7 +279,7 @@ public class MenuAppState extends BaseAppState {
         List<ClientGameData<?, ?>> joinedGames = gameClientModule.getJoinedGames();
         if (joinedGames.size() > 0) {
             UUID gameUUID = joinedGames.get(0).getId();
-            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getPlayerInfo(), gameClientModule, getLobbyClientModule());
+            ClientGameProxy clientGameProxy = new ClientGameProxy(gameUUID, mainApplication.getJwtAuthenticationUser(), gameClientModule, getLobbyClientModule());
             mainApplication.startGame(clientGameProxy);
         }
     }

@@ -1,5 +1,6 @@
 package com.destrostudios.grid.client.gameproxy;
 
+import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.PlayerComponent;
@@ -7,7 +8,6 @@ import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.Event;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
-import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 public class ClientGameProxy implements GameProxy {
 
     private final UUID gameId;
-    private final PlayerInfo player;
+    private final JwtAuthenticationUser jwtAuthenticationUser;
     private final GameClientModule<GridGame, Action> gameClientModule;
     private final LobbyClientModule<StartGameInfo> lobbyClientModule;
     // proxy the listeners since the game reference may change
@@ -77,7 +77,7 @@ public class ClientGameProxy implements GameProxy {
         List<Integer> list = world.list(PlayerComponent.class);
         Integer playerEntity = list.stream()
                 .filter(entity -> world.hasComponents(entity, PlayerComponent.class))
-                .filter(entity -> world.getComponent(entity, NameComponent.class).getName().equals(player.getLogin())) // TODO: use Id instead
+                .filter(entity -> world.getComponent(entity, NameComponent.class).getName().equals(jwtAuthenticationUser.login)) // TODO: use Id instead
                 .findFirst().orElse(null);
         return playerEntity;
     }
