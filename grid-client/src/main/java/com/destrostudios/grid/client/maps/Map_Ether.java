@@ -9,7 +9,6 @@ public class Map_Ether extends Map {
     public Map_Ether() {
         super(
             BlockAssets.BLOCK_SNOW,
-            new MapBlock(BlockAssets.BLOCK_SNOW_TOP_GRID, BlockAssets.BLOCK_SNOW_TOP_TARGET),
             new Vector3f(23.15413f, 40.838593f, 66.12133f),
             new Quaternion(-8.0925995E-4f, 0.9084759f, -0.4179328f, -0.0017719142f)
         );

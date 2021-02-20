@@ -10,7 +10,6 @@ import lombok.Getter;
 @Getter
 public abstract class Map {
     private Block environmentBlock;
-    private MapBlock terrainBlock;
     private Vector3f cameraPosition;
     private Quaternion cameraRotation;
 }

@@ -13,6 +13,8 @@ import com.destrostudios.grid.client.animations.AnnouncementAnimation;
 import com.destrostudios.grid.client.animations.HealthAnimation;
 import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.blocks.BlockAssets;
+import com.destrostudios.grid.client.blocks.GridBlock;
+import com.destrostudios.grid.client.blocks.GridBlocks;
 import com.destrostudios.grid.client.characters.CharacterModel;
 import com.destrostudios.grid.client.characters.CharacterModels;
 import com.destrostudios.grid.client.characters.PlayerVisual;
@@ -33,7 +35,6 @@ import com.destrostudios.grid.components.spells.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.events.*;
 import com.destrostudios.grid.eventbus.handler.EventHandler;
-import com.destrostudios.grid.shared.Characters;
 import com.destrostudios.grid.util.CalculationUtils;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -178,10 +179,11 @@ public class GameAppState extends BaseAppState implements ActionListener {
         updateTerrain();
 
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
-        List<Integer> list = entityWorld.list(ObstacleComponent.class).stream()
+
+        List<Integer> obstacleEntities = entityWorld.list(ObstacleComponent.class).stream()
                 .filter(entity -> !entityWorld.hasComponents(entity, PlayerComponent.class))
                 .collect(Collectors.toList());
-        for (int obstacleEntity : list) {
+        for (int obstacleEntity : obstacleEntities) {
             ModelObject obstacleModel = obstacleModels.computeIfAbsent(obstacleEntity, pe -> {
                 String modelName = entityWorld.getComponent(obstacleEntity, VisualComponent.class).getName();
                 ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
@@ -195,7 +197,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
             PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
-                String characterName = Characters.getRandomCharacterName(); // entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
+                String characterName = entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
                 CharacterModel characterModel = CharacterModels.get(characterName);
                 PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), characterModel);
                 rootNode.attachChild(newPlayerVisual.getModelObject());
@@ -224,15 +226,14 @@ public class GameAppState extends BaseAppState implements ActionListener {
     private void updateTerrain() {
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
         blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(mapSizeX, 1, mapSizeY));
-        List<Integer> rangeGroundEntities = targetingSpellEntity != null
+        List<Integer> validTargetEntities = targetingSpellEntity != null
                 ? CalculationUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), entityWorld)
                 : new LinkedList<>();
         for (int groundEntity : entityWorld.list(WalkableComponent.class)) {
             PositionComponent positionComponent = entityWorld.getComponent(groundEntity, PositionComponent.class);
-            Block block = map.getTerrainBlock().getBlockTopGrid();
-            if (rangeGroundEntities.contains(groundEntity)) {
-                block = map.getTerrainBlock().getBlockTopTarget();
-            }
+            String gridBlockName = entityWorld.getComponent(groundEntity, VisualComponent.class).getName();
+            GridBlock gridBlock = GridBlocks.get(gridBlockName);
+            Block block = (validTargetEntities.contains(groundEntity) ? gridBlock.getBlockTopTarget() : gridBlock.getBlockTopGrid());
             blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), block);
         }
     }
