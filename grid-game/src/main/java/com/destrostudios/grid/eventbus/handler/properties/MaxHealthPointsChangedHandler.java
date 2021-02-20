@@ -12,6 +12,6 @@ public class MaxHealthPointsChangedHandler implements EventHandler<PropertiePoin
     public void onEvent(PropertiePointsChangedEvent.MaxHealthPointsChangedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         entityWorld.remove(event.getEntity(), MaxHealthComponent.class);
-        entityWorld.addComponent(event.getEntity(), new MaxHealthComponent(event.getEntity()));
+        entityWorld.addComponent(event.getEntity(), new MaxHealthComponent(event.getNewPoints()));
     }
 }

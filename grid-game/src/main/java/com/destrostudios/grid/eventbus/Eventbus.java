@@ -36,20 +36,18 @@ public class Eventbus {
     }
 
     private void calculateHandlerForEvent(Event event, boolean isSubevent) {
-        if (eventIsValid(event)) {
-            List<TriggeredEventHandler> handler = new ArrayList<>();
-            handler.addAll(calculateHandlerForEvent(event, preHandlers));
-            handler.addAll(calculateHandlerForEvent(event, instantHandlers));
-            handler.addAll(calculateHandlerForEvent(event, resolvedHandlers));
+        List<TriggeredEventHandler> handler = new ArrayList<>();
+        handler.addAll(calculateHandlerForEvent(event, preHandlers));
+        handler.addAll(calculateHandlerForEvent(event, instantHandlers));
+        handler.addAll(calculateHandlerForEvent(event, resolvedHandlers));
 
-            if (!isSubevent) {
-                // add on tail of Dequeue, if main event
-                triggeredHandlers.addAll(handler);
-            } else {
-                // add on head in reversed order, if sub event
-                for (TriggeredEventHandler triggeredEventHandler : Lists.reverse(handler)) {
-                    triggeredHandlers.addFirst(triggeredEventHandler);
-                }
+        if (!isSubevent) {
+            // add on tail of Dequeue, if main event
+            triggeredHandlers.addAll(handler);
+        } else {
+            // add on head in reversed order, if sub event
+            for (TriggeredEventHandler triggeredEventHandler : Lists.reverse(handler)) {
+                triggeredHandlers.addFirst(triggeredEventHandler);
             }
         }
     }
@@ -118,8 +116,29 @@ public class Eventbus {
     public void triggerNextHandler() {
         if (triggeredHandlersInQueue()) {
             TriggeredEventHandler triggeredEventHandler = triggeredHandlers.pollFirst();
-            triggeredEventHandler.onEvent(entityWorldSupplier);
+
+            if (validateTriggeredHandler(triggeredEventHandler)) {
+                triggeredEventHandler.onEvent(entityWorldSupplier);
+            }
         }
+    }
+
+    private boolean validateTriggeredHandler(TriggeredEventHandler triggeredEventHandler) {
+        if (!isFirstHandler(triggeredEventHandler)) {
+            return true;
+        }
+        boolean isValid = eventIsValid(triggeredEventHandler.getEvent()) && isFirstHandler(triggeredEventHandler);
+        triggeredHandlers.removeIf(handler -> !isValid && handler.getEvent().equals(triggeredEventHandler.getEvent()));
+        return isValid;
+    }
+
+    private boolean isFirstHandler(TriggeredEventHandler triggeredEventHandler) {
+        if (preHandlers.containsKey(triggeredEventHandler.getEvent())) {
+            return !preHandlers.containsValue(triggeredEventHandler.getEventHandler());
+        } else if (instantHandlers.containsKey(triggeredEventHandler.getEvent())) {
+            return !instantHandlers.containsValue(triggeredEventHandler.getEventHandler());
+        }
+        return !resolvedHandlers.containsValue(triggeredEventHandler.getEventHandler());
     }
 
     public void addEventValidator(Class<? extends Event> eventClass, EventValidator validator) {
@@ -150,7 +169,8 @@ public class Eventbus {
         this.resolvedHandlers.put(eventClass, handler);
     }
 
-    public void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends Event> handler) {
+    public void removeResolvedHandler(Class<? extends Event> eventClass, EventHandler<? extends
+            Event> handler) {
         this.resolvedHandlers.remove(eventClass, handler);
     }
 }
