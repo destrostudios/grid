@@ -5,10 +5,7 @@ import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.shared.StartGameInfo;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -35,8 +32,7 @@ public class SerializationTest {
             assertNotNull(deserializedEntityComponents);
             String message = "expected: " + entityComponents + "\nactual: " + deserializedEntityComponents;
             assertFalse(message, deserializedEntityComponents.contains(null));
-            assertEquals(message, entityComponents.size(), deserializedEntityComponents.size());
-            // TODO: assert that components are equal (components currently don't implement equals)
+            assertEquals(message, entityComponents, deserializedEntityComponents);
         }
     }
 }
