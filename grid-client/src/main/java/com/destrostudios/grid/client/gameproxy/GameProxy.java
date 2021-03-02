@@ -2,8 +2,8 @@ package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.eventbus.events.Event;
-import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.eventbus.Event;
+import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.shared.StartGameInfo;
 
 public interface GameProxy {

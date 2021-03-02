@@ -4,7 +4,7 @@ import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
-import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
@@ -44,7 +44,7 @@ public class GridBotState implements BotGameState<Action, Team> {
 
     @Override
     public Team activeTeam() {
-        List<Integer> characters = game.getWorld().list(RoundComponent.class);
+        List<Integer> characters = game.getWorld().list(TurnComponent.class);
         Set<Team> activeTeams = new HashSet<>();
         for (int character : characters) {
             activeTeams.add(new Team(game.getWorld().getComponent(character, TeamComponent.class).getTeam()));
@@ -58,7 +58,7 @@ public class GridBotState implements BotGameState<Action, Team> {
     @Override
     public List<Action> generateActions(Team team) {
         List<Action> actions = new ArrayList<>();
-        for (int entity : game.getWorld().list(RoundComponent.class)) {
+        for (int entity : game.getWorld().list(TurnComponent.class)) {
             String playerIdentifier = Integer.toString(entity);
             PositionComponent position = game.getWorld().getComponent(entity, PositionComponent.class);
             MovementPointsComponent mp = game.getWorld().getComponent(entity, MovementPointsComponent.class);

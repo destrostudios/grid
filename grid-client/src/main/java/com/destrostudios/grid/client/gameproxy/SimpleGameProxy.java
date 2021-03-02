@@ -2,9 +2,9 @@ package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.components.character.RoundComponent;
-import com.destrostudios.grid.eventbus.events.Event;
-import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.eventbus.Event;
+import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.shared.StartGameInfo;
 import lombok.Getter;
 
@@ -58,7 +58,7 @@ public class SimpleGameProxy implements GameProxy {
 
     @Override
     public Integer getPlayerEntity() {
-        List<Integer> list = gridGame.getWorld().list(RoundComponent.class);
+        List<Integer> list = gridGame.getWorld().list(TurnComponent.class);
         return list.isEmpty() ? null : list.get(0);
     }
 

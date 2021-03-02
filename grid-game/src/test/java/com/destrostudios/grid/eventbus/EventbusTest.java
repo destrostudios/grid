@@ -1,9 +1,6 @@
 package com.destrostudios.grid.eventbus;
 
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.Event;
-import com.destrostudios.grid.eventbus.handler.EventHandler;
-import com.destrostudios.grid.eventbus.validator.EventValidator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Assertions;

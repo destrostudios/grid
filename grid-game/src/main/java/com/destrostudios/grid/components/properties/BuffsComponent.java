@@ -2,18 +2,14 @@ package com.destrostudios.grid.components.properties;
 
 import com.destrostudios.grid.components.Component;
 import com.google.common.collect.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BuffsComponent implements Component {

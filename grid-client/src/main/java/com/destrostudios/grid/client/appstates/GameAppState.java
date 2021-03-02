@@ -24,7 +24,7 @@ import com.destrostudios.grid.client.maps.Map;
 import com.destrostudios.grid.client.maps.Maps;
 import com.destrostudios.grid.client.models.ModelObject;
 import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.character.RoundComponent;
+import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.VisualComponent;
@@ -33,8 +33,12 @@ import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.events.*;
-import com.destrostudios.grid.eventbus.handler.EventHandler;
+import com.destrostudios.grid.eventbus.Event;
+import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
+import com.destrostudios.grid.eventbus.action.move.MoveEvent;
+import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
+import com.destrostudios.grid.eventbus.update.round.RoundUpdatedEvent;
+import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.util.CalculationUtils;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -125,13 +129,13 @@ public class GameAppState extends BaseAppState implements ActionListener {
             PositionComponent positionComponent = event.getPositionComponent();
             playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
         });
-        gameProxy.addPreHandler(PropertiePointsChangedEvent.HealthPointsChangedEvent.class, (EventHandler<PropertiePointsChangedEvent.HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
+        gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
             int targetEntity = event.getEntity();
             playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), event.getNewPoints()));
         });
-        gameProxy.addResolvedHandler(SimpleUpdateEvent.RoundSkippedEvent.class, (event, entityWorldSupplier) -> {
+        gameProxy.addResolvedHandler(RoundUpdatedEvent.class, (event, entityWorldSupplier) -> {
             EntityWorld entityWorld = gameProxy.getGame().getWorld();
-            int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
+            int activePlayerEntity = entityWorld.list(TurnComponent.class).get(0);
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
@@ -248,7 +252,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
         GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
 
-        int activePlayerEntity = entityWorld.list(RoundComponent.class).get(0);
+        int activePlayerEntity = entityWorld.list(TurnComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
         int activePlayerMP = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).getMovementPoints();
         int activePlayerAP = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).getAttackPoints();
