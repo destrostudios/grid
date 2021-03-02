@@ -3,13 +3,17 @@ package com.destrostudios.grid.entities;
 import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.GameStateContainer;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 
 @EqualsAndHashCode
@@ -26,7 +30,6 @@ public class EntityWorld implements EntityData {
 
     public void initializeWorld(String worldState) {
         this.world.clear();
-        System.out.println(worldState);
         try {
             GameStateContainer state = ComponentsContainerSerializer.readContainerAsJson(worldState, GameStateContainer.class);
             this.world.putAll(state.getComponents());
