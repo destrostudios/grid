@@ -12,6 +12,7 @@
         <module>grid-server</module>
         <module>grid-shared</module>
         <module>grid-network</module>
+        <module>bot</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,7 +34,7 @@
         <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
         <version.mockito>1.9.5</version.mockito>
         <version.slf4j>2.0.0-alpha1</version.slf4j>
-        <version.turn-based-game-tools>f3b85c1d88c4c9c0777652b2d1127d6158151106</version.turn-based-game-tools>
+        <version.turn-based-game-tools>65aaffaf4009443a9c7e59cfc2b36f07f0348508</version.turn-based-game-tools>
         <version.jackson>2.12.1</version.jackson>
     </properties>
     <repositories>
@@ -88,6 +89,11 @@
             <dependency>
                 <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
                 <artifactId>network-client</artifactId>
+                <version>${version.turn-based-game-tools}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <artifactId>bot</artifactId>
                 <version>${version.turn-based-game-tools}</version>
             </dependency>
             <!--jMonkeyEngine-->
