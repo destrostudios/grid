@@ -10,7 +10,14 @@ import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -64,15 +71,16 @@ import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnHandler;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnValidator;
 import com.destrostudios.grid.preferences.GamePreferences;
+import com.destrostudios.grid.random.ImmutableRandomProxy;
+import com.destrostudios.grid.random.RandomProxy;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.CharacterContainer;
 import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.Getter;
-
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +88,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 @Getter
 public class GridGame {
@@ -95,12 +104,22 @@ public class GridGame {
     private final EntityWorld world;
     private final Eventbus eventBus;
     private final ActionDispatcher actionDispatcher;
+    private final RandomProxy random;
 
     public GridGame() {
+        this(new SecureRandom());
+    }
+
+    public GridGame(Random random) {
+        this(new ImmutableRandomProxy(random::nextInt));
+    }
+
+    public GridGame(RandomProxy random) {
         this.world = new EntityWorld();
         this.gamePreferences = new GamePreferences(MAP_X, MAP_Y);
         this.eventBus = new Eventbus(() -> world);
         this.actionDispatcher = new ActionDispatcher(() -> world);
+        this.random = random;
     }
 
     public void initGame(StartGameInfo startGameInfo) {
@@ -217,7 +236,7 @@ public class GridGame {
         addInstantHandler(BuffsUpdateEvent.class, new UpdateBuffsHandler(eventBus));
         addInstantHandler(PoisonAddedEvent.class, new PoisonAddedHandler());
         addInstantHandler(PositionUpdateEvent.class, new PositionUpdateHandler());
-        addInstantHandler(UpdatePoisonsEvent.class, new UpdatePoisonsHandler(eventBus));
+        addInstantHandler(UpdatePoisonsEvent.class, new UpdatePoisonsHandler(eventBus, random));
         addInstantHandler(UpdateAcitveDurationSpellsEvent.class, new UpdateActiveDurationSpellsHandler());
         addInstantHandler(MoveEvent.class, new MoveHandler(eventBus));
         addInstantHandler(EndTurnEvent.class, new EndTurnHandler(eventBus));

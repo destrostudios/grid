@@ -7,6 +7,7 @@ import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
+import com.destrostudios.grid.random.MutableRandomProxy;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverUtils;
 import com.destrostudios.turnbasedgametools.network.server.ToolsServer;
@@ -48,7 +49,7 @@ public class Main {
             @Override
             public void startGameRequest(Connection connection, StartGameInfo startGameInfo) {
                 UUID gameId = UUID.randomUUID();
-                GridGame gridGame = new GridGame();
+                GridGame gridGame = new GridGame(new MutableRandomProxy());
                 gridGame.initGame(startGameInfo);
 
                 lobbyModule.listGame(gameId, startGameInfo);

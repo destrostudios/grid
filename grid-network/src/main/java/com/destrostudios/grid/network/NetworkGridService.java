@@ -5,6 +5,7 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
+import com.destrostudios.grid.random.MutableRandomProxy;
 import com.destrostudios.turnbasedgametools.network.shared.modules.game.GameService;
 import com.destrostudios.turnbasedgametools.network.shared.modules.game.NetworkRandom;
 import com.esotericsoftware.kryo.Kryo;
@@ -30,7 +31,7 @@ public class NetworkGridService implements GameService<GridGame, Action> {
 
             @Override
             public GridGame read(Kryo kryo, Input input, Class type) {
-                GridGame gridGame = new GridGame();
+                GridGame gridGame = new GridGame(new MutableRandomProxy());
                 gridGame.intializeGame(input.readString());
                 return gridGame;
             }
@@ -42,6 +43,11 @@ public class NetworkGridService implements GameService<GridGame, Action> {
 
     @Override
     public GridGame applyAction(GridGame state, Action action, NetworkRandom random) {
+        if (!(state.getRandom() instanceof MutableRandomProxy)) {
+            throw new UnsupportedOperationException("Networking requires a " + MutableRandomProxy.class.getSimpleName());
+        }
+        MutableRandomProxy stateRandom = (MutableRandomProxy) state.getRandom();
+        stateRandom.setRandom(random::nextInt);
         state.registerAction(action);
         if (resolveActions) {
             while (state.triggeredHandlersInQueue()) {
