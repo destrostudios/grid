@@ -35,9 +35,9 @@ import com.destrostudios.grid.components.spells.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
-import com.destrostudios.grid.eventbus.action.move.MoveEvent;
+import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
-import com.destrostudios.grid.eventbus.update.round.RoundUpdatedEvent;
+import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.util.CalculationUtils;
 import com.jme3.app.Application;
@@ -124,7 +124,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
 
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
 
-        gameProxy.addPreHandler(MoveEvent.class, (EventHandler<MoveEvent>) (event, entityWorldSupplier) -> {
+        gameProxy.addPreHandler(WalkEvent.class, (EventHandler<WalkEvent>) (event, entityWorldSupplier) -> {
             int playerEntity = event.getEntity();
             PositionComponent positionComponent = event.getPositionComponent();
             playAnimation(new WalkAnimation(playerVisuals.get(playerEntity), positionComponent.getX(), positionComponent.getY()));
@@ -133,7 +133,7 @@ public class GameAppState extends BaseAppState implements ActionListener {
             int targetEntity = event.getEntity();
             playAnimation(new HealthAnimation(playerVisuals.get(targetEntity), event.getNewPoints()));
         });
-        gameProxy.addResolvedHandler(RoundUpdatedEvent.class, (event, entityWorldSupplier) -> {
+        gameProxy.addResolvedHandler(UpdatedTurnEvent.class, (event, entityWorldSupplier) -> {
             EntityWorld entityWorld = gameProxy.getGame().getWorld();
             int activePlayerEntity = entityWorld.list(TurnComponent.class).get(0);
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();

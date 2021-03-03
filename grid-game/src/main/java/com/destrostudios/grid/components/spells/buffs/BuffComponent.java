@@ -9,4 +9,5 @@ import lombok.*;
 public abstract class BuffComponent implements Component {
     private int buffAmount;
     private int buffDuration;
+    private boolean isSpellBuff;
 }

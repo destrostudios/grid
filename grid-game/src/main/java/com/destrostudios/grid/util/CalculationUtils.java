@@ -5,11 +5,14 @@ import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.spells.RangeComponent;
+import com.destrostudios.grid.components.spells.buffs.BuffComponent;
+import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CalculationUtils {
@@ -48,6 +51,16 @@ public class CalculationUtils {
         return targetEntity.orElse(-1);
     }
 
+    public static <E extends BuffComponent> int getBuff(int spellEntity, int playerEntity, EntityWorld world, Class<E> classz) {
+        int buffPlayer = world.hasComponents(playerEntity, classz)
+                ? world.getComponent(playerEntity, classz).getBuffAmount()
+                : 0;
+        int buffSpell = world.hasComponents(spellEntity, BuffComponent.class)
+                ? world.getComponent(spellEntity, BuffComponent.class).getBuffAmount()
+                : 0;
+        return buffPlayer + buffSpell;
+    }
+
     public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityWorld entityWorld) {
         return getRange(spellEntity, casterEntity, entityWorld).stream()
                 .map(e -> entityWorld.getComponent(e, PositionComponent.class))
@@ -71,4 +84,44 @@ public class CalculationUtils {
 
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }
+
+    public static PositionComponent getDisplacementGoal(EntityWorld entityWorld, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
+        if (posSource.getX() == posEntityToDisplace.getX()) {
+            // displacement from left or right
+            int displacementSignum = (int) Math.signum(posEntityToDisplace.getY() - posSource.getY());
+
+            Function<Integer, Boolean> predicate = number -> posSource.getY() < posEntityToDisplace.getY()
+                    ? number < displacement
+                    : number > -displacement;
+
+            PositionComponent posNew = posEntityToDisplace;
+            for (int y = 0; predicate.apply(y); y += displacementSignum) {
+                boolean positionIsFree = isPositionIsFree(entityWorld, new PositionComponent(posEntityToDisplace.getX(), posEntityToDisplace.getY() + y), entity);
+                if (positionIsFree) {
+                    posNew = new PositionComponent(posEntityToDisplace.getX(), posEntityToDisplace.getY() + y);
+                } else {
+                    return posNew;
+                }
+            }
+
+        } else if (posSource.getY() == posEntityToDisplace.getY()) {
+            // displacement from top or bot
+            int displacementSignum = (int) Math.signum(posEntityToDisplace.getX() - posSource.getX());
+            Function<Integer, Boolean> predicate = number -> posSource.getY() < posEntityToDisplace.getY()
+                    ? number < displacement
+                    : number > -displacement;
+
+            PositionComponent posNew = posEntityToDisplace;
+            for (int x = 0; predicate.apply(x); x += displacementSignum) {
+                boolean positionIsFree = isPositionIsFree(entityWorld, new PositionComponent(posEntityToDisplace.getX() + x, posEntityToDisplace.getY()), entity);
+                if (positionIsFree) {
+                    posNew = new PositionComponent(posEntityToDisplace.getX() + x, posEntityToDisplace.getY());
+                } else {
+                    return posNew;
+                }
+            }
+        }
+        return null;
+    }
+
 }

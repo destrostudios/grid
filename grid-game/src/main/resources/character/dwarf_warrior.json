@@ -1,1 +1,153 @@
-{"SeriazableComponent":"character","components":{"1":[{"c":"maxmp","maxMovenemtPoints":7},{"c":"maxap","maxAttackPoints":8},{"c":"apres","resitanceValue":43},{"c":"mpres","resitanceValue":37},{"c":"poisons","poisonsEntities":[]},{"c":"buffs","buffEntities":[]},{"c":"osbl"},{"c":"player"},{"c":"vscp","name":"dwarf_warrior"},{"c":"mhp","maxHealth":500},{"c":"spell","spells":[2,3,4,5,6]}],"2":[{"c":"apc","attackPointCosts":2},{"c":"dmg","damage":38},{"c":"name","name":"Jump"},{"c":"ttp","tooltip":"OP spell doing 38 damage for 2 AP"},{"c":"rng","range":4}],"3":[{"c":"apc","attackPointCosts":7},{"c":"dmg","damage":25},{"c":"name","name":"Twist"},{"c":"ttp","tooltip":"OP spell doing 25 damage for 7 AP"},{"c":"rng","range":3}],"4":[{"c":"teleport"},{"c":"apc","attackPointCosts":3},{"c":"name","name":"Jump"},{"c":"rng","range":5},{"c":"ttp","tooltip":"Teleporting in a range of 5"}],"5":[{"c":"mpc","movementPointsCost":4},{"c":"apb","buffAmount":2,"buffDuration":2},{"c":"name","name":"Buff"},{"c":"rng","range":4},{"c":"ttp","tooltip":"Spell buffing 2 AP for 4 MP \nRange: 4"}],"6":[{"c":"apc","attackPointCosts":5},{"c":"hpb","buffAmount":78,"buffDuration":4},{"c":"name","name":"Twist"},{"c":"rng","range":0},{"c":"ttp","tooltip":"Spell buffing 78 HP for 5 AP. \nCD: 3, Range: 0 "},{"c":"cd","cooldown":3}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "c": "MaxMovementPointsComponent",
+        "maxMovenemtPoints": 12
+      },
+      {
+        "c": "MaxAttackPointsComponent",
+        "maxAttackPoints": 7
+      },
+      {
+        "c": "AttackPointResistenceComponent",
+        "resitanceValue": 22
+      },
+      {
+        "c": "MovementPointResistenceComponent",
+        "resitanceValue": 20
+      },
+      {
+        "c": "PoisonsComponent",
+        "poisonsEntities": []
+      },
+      {
+        "c": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "c": "ObstacleComponent"
+      },
+      {
+        "c": "PlayerComponent"
+      },
+      {
+        "c": "VisualComponent",
+        "name": "dwarf_warrior"
+      },
+      {
+        "c": "MaxHealthComponent",
+        "maxHealth": 593
+      },
+      {
+        "c": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "2": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 4
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -25
+      },
+      {
+        "c": "NameComponent",
+        "name": "Arrow"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 4 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      }
+    ],
+    "3": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 6
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -25
+      },
+      {
+        "c": "NameComponent",
+        "name": "Blblbl"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 6 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 5
+      }
+    ],
+    "4": [
+      {
+        "c": "TeleportComponent"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 3
+      },
+      {
+        "c": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Teleporting in a range of 3"
+      }
+    ],
+    "5": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "AttackPointsPoisonComponent",
+        "poisonMinValue": -1,
+        "poisonMaxValue": -3,
+        "poisonDuration": 2,
+        "sourceEntity": 1
+      },
+      {
+        "c": "HealthPointsPoisonComponent",
+        "poisonMinValue": -50,
+        "poisonMaxValue": -100,
+        "poisonDuration": 3,
+        "sourceEntity": 1
+      },
+      {
+        "c": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Spell adds 1-3 AP poison for 2 rounds and 50-100 HP poison for 3 rounds"
+      }
+    ],
+    "6": []
+  }
+}

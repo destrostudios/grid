@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MoveEvent implements Event {
-    public final int entity;
-    public final PositionComponent positionComponent;
-
+    private final int entity;
+    private final PositionComponent positionComponent;
+    private final MoveType moveType;
 }

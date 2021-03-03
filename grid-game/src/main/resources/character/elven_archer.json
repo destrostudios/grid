@@ -1,1 +1,176 @@
-{"SeriazableComponent":"character","components":{"1":[{"c":"maxmp","maxMovenemtPoints":13},{"c":"maxap","maxAttackPoints":7},{"c":"apres","resitanceValue":31},{"c":"mpres","resitanceValue":8},{"c":"poisons","poisonsEntities":[]},{"c":"buffs","buffEntities":[]},{"c":"osbl"},{"c":"player"},{"c":"vscp","name":"elven_archer"},{"c":"mhp","maxHealth":852},{"c":"spell","spells":[2,3,4,5,6]}],"2":[{"c":"apc","attackPointCosts":2},{"c":"dmg","damage":38},{"c":"name","name":"Jump"},{"c":"ttp","tooltip":"OP spell doing 38 damage for 2 AP"},{"c":"rng","range":3}],"3":[{"c":"apc","attackPointCosts":4},{"c":"dmg","damage":30},{"c":"name","name":"Arrow"},{"c":"ttp","tooltip":"OP spell doing 30 damage for 4 AP"},{"c":"rng","range":3}],"4":[{"c":"teleport"},{"c":"apc","attackPointCosts":3},{"c":"name","name":"Jump"},{"c":"rng","range":3},{"c":"ttp","tooltip":"Teleporting in a range of 3"}],"5":[{"c":"apc","attackPointCosts":4},{"c":"app","poisonMinValue":-1,"poisonMaxValue":-3,"poisonDuration":2,"sourceEntity":1},{"c":"hpp","poisonMinValue":-50,"poisonMaxValue":-100,"poisonDuration":3,"sourceEntity":1},{"c":"name","name":"Wound"},{"c":"rng","range":3},{"c":"ttp","tooltip":"Spell adds 1-3 AP poison for 2 rounds and 50-100 HP poison for 3 rounds"}],"6":[{"c":"apc","attackPointCosts":3},{"c":"hpp","poisonMinValue":50,"poisonMaxValue":100,"poisonDuration":4,"sourceEntity":1},{"c":"name","name":"Blblbl"},{"c":"rng","range":3},{"c":"ttp","tooltip":"Spell heals 50-100 hp for 3 rounds"}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "c": "MaxMovementPointsComponent",
+        "maxMovenemtPoints": 7
+      },
+      {
+        "c": "MaxAttackPointsComponent",
+        "maxAttackPoints": 11
+      },
+      {
+        "c": "AttackPointResistenceComponent",
+        "resitanceValue": 27
+      },
+      {
+        "c": "MovementPointResistenceComponent",
+        "resitanceValue": 4
+      },
+      {
+        "c": "PoisonsComponent",
+        "poisonsEntities": []
+      },
+      {
+        "c": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "c": "ObstacleComponent"
+      },
+      {
+        "c": "PlayerComponent"
+      },
+      {
+        "c": "VisualComponent",
+        "name": "elven_archer"
+      },
+      {
+        "c": "MaxHealthComponent",
+        "maxHealth": 500
+      },
+      {
+        "c": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "2": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 8
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -25
+      },
+      {
+        "c": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 8 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      }
+    ],
+    "3": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 5
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -28
+      },
+      {
+        "c": "NameComponent",
+        "name": "Confusion"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 28 damage for 5 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 5
+      }
+    ],
+    "4": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": 25
+      },
+      {
+        "c": "NameComponent",
+        "name": "Blblbl"
+      },
+      {
+        "c": "MovementPointBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 1,
+        "spellBuff": false
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Dmg spell doing -25 dmg for 2 AP and buffing 1 MP\nRange: 3"
+      }
+    ],
+    "5": [
+      {
+        "c": "MovementPointsCostComponent",
+        "movementPointsCost": 4
+      },
+      {
+        "c": "AttackPointsBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 2,
+        "spellBuff": false
+      },
+      {
+        "c": "NameComponent",
+        "name": "Buff"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 4
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Spell buffing 1 AP for 4 MP \nRange: 4"
+      }
+    ],
+    "6": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 3
+      },
+      {
+        "c": "HealthPointsPoisonComponent",
+        "poisonMinValue": 50,
+        "poisonMaxValue": 100,
+        "poisonDuration": 4,
+        "sourceEntity": 1
+      },
+      {
+        "c": "NameComponent",
+        "name": "Blblbl"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Spell heals 50-100 hp for 4 rounds"
+      }
+    ]
+  }
+}

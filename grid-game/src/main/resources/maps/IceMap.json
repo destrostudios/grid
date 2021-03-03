@@ -3,3631 +3,3505 @@
   "components": {
     "1": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
         "y": 0
-      },
-      {
-        "c": "start"
       }
     ],
     "2": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
         "y": 1
-      },
-      {
-        "c": "start"
       }
     ],
     "3": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 2
+        "y": 3
       },
       {
-        "c": "start"
+        "c": "StartingFieldComponent"
       }
     ],
     "4": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 3
+        "y": 4
       }
     ],
     "5": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 4
-      },
-      {
-        "c": "start"
+        "y": 5
       }
     ],
     "6": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 5
-      },
-      {
-        "c": "start"
+        "y": 6
       }
     ],
     "7": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 6
-      },
-      {
-        "c": "start"
+        "y": 7
       }
     ],
     "8": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 7
+        "y": 8
       }
     ],
     "9": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 8
-      },
-      {
-        "c": "start"
+        "y": 9
       }
     ],
     "10": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 9
+        "y": 10
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "11": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 10
+        "y": 11
       }
     ],
     "12": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 11
+        "y": 12
       }
     ],
     "13": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 12
+        "y": 13
       },
       {
-        "c": "start"
+        "c": "StartingFieldComponent"
       }
     ],
     "14": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 13
+        "y": 14
       }
     ],
     "15": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 0,
-        "y": 14
+        "y": 15
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "16": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 0,
-        "y": 15
+        "c": "PositionComponent",
+        "x": 1,
+        "y": 0
       }
     ],
     "17": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 0
+        "y": 1
       }
     ],
     "18": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 1
+        "y": 2
       }
     ],
     "19": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
         "y": 3
       },
       {
-        "c": "start"
+        "c": "StartingFieldComponent"
       }
     ],
     "20": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 6
+        "y": 4
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "21": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 7
+        "y": 5
       },
       {
-        "c": "start"
+        "c": "StartingFieldComponent"
       }
     ],
     "22": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 8
+        "y": 6
       }
     ],
     "23": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 9
+        "y": 7
       }
     ],
     "24": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 10
+        "y": 9
       },
       {
-        "c": "start"
+        "c": "StartingFieldComponent"
       }
     ],
     "25": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 11
+        "y": 10
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "26": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 1,
-        "y": 13
+        "y": 11
       }
     ],
     "27": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 2,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 1,
+        "y": 12
       },
       {
-        "c": "start"
+        "c": "StartingFieldComponent"
       }
     ],
     "28": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 2,
-        "y": 1
-      },
-      {
-        "c": "start"
+        "c": "PositionComponent",
+        "x": 1,
+        "y": 13
       }
     ],
     "29": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 2,
-        "y": 3
-      },
-      {
-        "c": "start"
+        "c": "PositionComponent",
+        "x": 1,
+        "y": 14
       }
     ],
     "30": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 6
-      },
-      {
-        "c": "start"
+        "y": 0
       }
     ],
     "31": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 7
+        "y": 1
       }
     ],
     "32": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 8
+        "y": 2
       }
     ],
     "33": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 9
+        "y": 3
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "34": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 10
+        "y": 4
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "35": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 11
+        "y": 5
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "36": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 12
+        "y": 6
       }
     ],
     "37": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 13
+        "y": 9
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "38": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 14
+        "y": 10
       }
     ],
     "39": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 2,
-        "y": 15
+        "y": 11
       }
     ],
     "40": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 3,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 2,
+        "y": 12
+      },
+      {
+        "c": "StartingFieldComponent"
       }
     ],
     "41": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 3,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 2,
+        "y": 13
       }
     ],
     "42": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 3,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 2,
+        "y": 14
       }
     ],
     "43": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 3,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 2,
+        "y": 15
       }
     ],
     "44": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 3,
-        "y": 6
+        "y": 0
       }
     ],
     "45": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 3,
-        "y": 7
+        "y": 1
       }
     ],
     "46": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 3,
-        "y": 9
+        "y": 2
       }
     ],
     "47": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 3,
-        "y": 10
+        "y": 3
       }
     ],
     "48": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 3,
-        "y": 12
+        "y": 4
       }
     ],
     "49": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 3,
-        "y": 14
+        "y": 5
       }
     ],
     "50": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 3,
-        "y": 15
+        "y": 6
       }
     ],
     "51": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 4,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 7
       }
     ],
     "52": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 4,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 9
       }
     ],
     "53": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 4,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 10
       }
     ],
     "54": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 4,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 12
       }
     ],
     "55": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 4,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 13
       }
     ],
     "56": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 4,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 14
       }
     ],
     "57": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 4,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 15
       }
     ],
     "58": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 4,
-        "y": 10
+        "y": 0
       }
     ],
     "59": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 4,
-        "y": 11
+        "y": 2
       }
     ],
     "60": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 4,
-        "y": 12
+        "y": 3
       }
     ],
     "61": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 4,
-        "y": 14
+        "y": 4
       }
     ],
     "62": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 5
       }
     ],
     "63": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 6
       }
     ],
     "64": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 8
       }
     ],
     "65": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 9
       }
     ],
     "66": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 11
       }
     ],
     "67": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 13
       }
     ],
     "68": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 14
       }
     ],
     "69": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 5,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 4,
+        "y": 15
       }
     ],
     "70": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 5,
-        "y": 10
+        "y": 0
       }
     ],
     "71": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 5,
-        "y": 11
+        "y": 2
       }
     ],
     "72": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 5,
-        "y": 12
+        "y": 3
       }
     ],
     "73": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 5,
-        "y": 14
+        "y": 4
       }
     ],
     "74": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 5
       }
     ],
     "75": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 6
       }
     ],
     "76": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 7
       }
     ],
     "77": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 8
       }
     ],
     "78": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 9
       }
     ],
     "79": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 10
       }
     ],
     "80": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 11
       }
     ],
     "81": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 13
       }
     ],
     "82": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 14
       }
     ],
     "83": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 6,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 15
       }
     ],
     "84": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 6,
-        "y": 10
+        "y": 0
       }
     ],
     "85": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 6,
-        "y": 11
+        "y": 1
       }
     ],
     "86": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 6,
-        "y": 12
+        "y": 2
       }
     ],
     "87": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 6,
-        "y": 13
+        "y": 3
       }
     ],
     "88": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 6,
-        "y": 14
+        "y": 4
       }
     ],
     "89": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 6,
-        "y": 15
+        "y": 5
       }
     ],
     "90": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 6
       }
     ],
     "91": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 7
       }
     ],
     "92": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 8
       }
     ],
     "93": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 9
       }
     ],
     "94": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 10
       }
     ],
     "95": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 11
       }
     ],
     "96": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 12
       }
     ],
     "97": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 14
       }
     ],
     "98": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 7,
-        "y": 10
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 15
       }
     ],
     "99": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 7,
-        "y": 11
+        "y": 0
       }
     ],
     "100": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 7,
-        "y": 12
+        "y": 1
       }
     ],
     "101": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 7,
-        "y": 13
+        "y": 4
       }
     ],
     "102": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 7,
-        "y": 14
+        "y": 5
       }
     ],
     "103": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 7,
-        "y": 15
+        "y": 6
       }
     ],
     "104": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 8,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 7,
+        "y": 7
       }
     ],
     "105": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 8,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 7,
+        "y": 8
       }
     ],
     "106": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 8,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 7,
+        "y": 9
       }
     ],
     "107": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 8,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 7,
+        "y": 10
       }
     ],
     "108": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 8,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 7,
+        "y": 13
       }
     ],
     "109": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 8,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 7,
+        "y": 14
       }
     ],
     "110": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 7
+        "y": 0
       }
     ],
     "111": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 8
+        "y": 2
       }
     ],
     "112": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 9
+        "y": 3
       }
     ],
     "113": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 10
+        "y": 4
       }
     ],
     "114": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 11
+        "y": 6
       }
     ],
     "115": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 12
+        "y": 7
       }
     ],
     "116": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 13
+        "y": 8
       }
     ],
     "117": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 15
+        "y": 9
       }
     ],
     "118": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 9,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 8,
+        "y": 10
       }
     ],
     "119": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 9,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 8,
+        "y": 11
       }
     ],
     "120": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 9,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 8,
+        "y": 13
       }
     ],
     "121": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 9,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 8,
+        "y": 14
       }
     ],
     "122": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 9,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 8,
+        "y": 15
       }
     ],
     "123": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 9,
-        "y": 6
+        "y": 0
       }
     ],
     "124": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 9,
-        "y": 8
+        "y": 1
       }
     ],
     "125": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 9,
-        "y": 9
+        "y": 2
       }
     ],
     "126": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 9,
-        "y": 11
+        "y": 4
       }
     ],
     "127": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 9,
-        "y": 12
+        "y": 6
       }
     ],
     "128": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 9,
-        "y": 13
+        "y": 7
       }
     ],
     "129": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 9,
-        "y": 15
+        "y": 8
       }
     ],
     "130": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 10,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 9,
+        "y": 9
       }
     ],
     "131": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 10,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 9,
+        "y": 10
       }
     ],
     "132": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 10,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 9,
+        "y": 11
       }
     ],
     "133": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 10,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 9,
+        "y": 12
       }
     ],
     "134": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 10,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 9,
+        "y": 13
       }
     ],
     "135": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 10,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 9,
+        "y": 15
       }
     ],
     "136": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 10,
-        "y": 9
+        "y": 0
       }
     ],
     "137": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 10,
-        "y": 10
+        "y": 2
       }
     ],
     "138": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 10,
-        "y": 12
+        "y": 3
       }
     ],
     "139": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 10,
-        "y": 13
+        "y": 4
       }
     ],
     "140": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 10,
-        "y": 14
+        "y": 5
       }
     ],
     "141": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 10,
-        "y": 15
+        "y": 6
       }
     ],
     "142": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 7
       }
     ],
     "143": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 8
       }
     ],
     "144": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 9
       }
     ],
     "145": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 10
       }
     ],
     "146": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 12
       }
     ],
     "147": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 13
       }
     ],
     "148": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 14
       }
     ],
     "149": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 11,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 10,
+        "y": 15
       }
     ],
     "150": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 11,
-        "y": 8
+        "y": 0
       }
     ],
     "151": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 11,
-        "y": 10
+        "y": 1
       }
     ],
     "152": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 11,
-        "y": 11
+        "y": 2
       }
     ],
     "153": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 11,
-        "y": 12
+        "y": 3
       }
     ],
     "154": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 11,
-        "y": 13
+        "y": 4
       }
     ],
     "155": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 11,
-        "y": 15
+        "y": 5
       }
     ],
     "156": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 12,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 6
       }
     ],
     "157": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 12,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 8
       }
     ],
     "158": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 12,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 10
       }
     ],
     "159": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 12,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 11
       }
     ],
     "160": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 12,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 12
       }
     ],
     "161": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 12,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 13
       }
     ],
     "162": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 12,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 15
       }
     ],
     "163": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 12,
-        "y": 10
+        "y": 1
       }
     ],
     "164": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 12,
-        "y": 11
+        "y": 2
       }
     ],
     "165": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 12,
-        "y": 12
+        "y": 3
       }
     ],
     "166": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 12,
-        "y": 13
+        "y": 5
       }
     ],
     "167": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 12,
-        "y": 15
+        "y": 6
       }
     ],
     "168": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 7
       }
     ],
     "169": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 8
       }
     ],
     "170": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 9
       }
     ],
     "171": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 11
       }
     ],
     "172": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 12
       }
     ],
     "173": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 13
       }
     ],
     "174": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 14
       }
     ],
     "175": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 13,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 15
       }
     ],
     "176": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 13,
-        "y": 8
+        "y": 1
       }
     ],
     "177": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 13,
-        "y": 10
+        "y": 4
       }
     ],
     "178": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 13,
-        "y": 11
+        "y": 5
       }
     ],
     "179": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 13,
-        "y": 12
+        "y": 6
       }
     ],
     "180": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 13,
-        "y": 14
+        "y": 7
       }
     ],
     "181": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 13,
-        "y": 15
+        "y": 8
       }
     ],
     "182": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 14,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 9
       }
     ],
     "183": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 14,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 10
       }
     ],
     "184": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 14,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 11
       }
     ],
     "185": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 14,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 12
       }
     ],
     "186": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 14,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 13
       }
     ],
     "187": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 14,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 14
       }
     ],
     "188": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 14,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 15
       }
     ],
     "189": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 14,
-        "y": 10
+        "y": 0
       }
     ],
     "190": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 14,
-        "y": 11
+        "y": 1
       }
     ],
     "191": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 14,
-        "y": 12
+        "y": 2
       }
     ],
     "192": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 14,
-        "y": 13
+        "y": 3
       }
     ],
     "193": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 14,
-        "y": 14
+        "y": 4
       }
     ],
     "194": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 14,
-        "y": 15
+        "y": 5
       }
     ],
     "195": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 15,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 6
       }
     ],
     "196": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 15,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 7
       }
     ],
     "197": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 15,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 10
       }
     ],
     "198": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 15,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 11
       }
     ],
     "199": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 15,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 12
       }
     ],
     "200": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 15,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 13
       }
     ],
     "201": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
-        "x": 15,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 14
       }
     ],
     "202": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 15,
-        "y": 11
+        "y": 0
       }
     ],
     "203": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 15,
-        "y": 13
+        "y": 3
       }
     ],
     "204": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 15,
-        "y": 14
+        "y": 4
       }
     ],
     "205": [
       {
-        "c": "wkbl"
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "grass"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 15,
-        "y": 15
+        "y": 5
       }
     ],
     "206": [
       {
-        "c": "pos",
-        "x": 0,
-        "y": 3
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "osbl"
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 6
       }
     ],
     "207": [
       {
-        "c": "pos",
-        "x": 0,
+        "c": "WalkableComponent"
+      },
+      {
+        "c": "VisualComponent",
+        "name": "snow"
+      },
+      {
+        "c": "PositionComponent",
+        "x": 15,
         "y": 7
-      },
-      {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
       }
     ],
     "208": [
       {
-        "c": "pos",
-        "x": 0,
-        "y": 13
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "osbl"
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 8
       }
     ],
     "209": [
       {
-        "c": "pos",
-        "x": 0,
-        "y": 15
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "osbl"
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 10
       }
     ],
     "210": [
       {
-        "c": "pos",
-        "x": 1,
-        "y": 1
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "osbl"
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 11
       }
     ],
     "211": [
       {
-        "c": "pos",
-        "x": 1,
-        "y": 11
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "osbl"
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 12
       }
     ],
     "212": [
       {
-        "c": "pos",
-        "x": 2,
-        "y": 11
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "osbl"
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 14
       }
     ],
     "213": [
       {
-        "c": "pos",
-        "x": 2,
-        "y": 12
+        "c": "WalkableComponent"
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "snow"
       },
       {
-        "c": "osbl"
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 15
       }
     ],
     "214": [
       {
-        "c": "pos",
-        "x": 3,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 0,
+        "y": 5
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "215": [
       {
-        "c": "pos",
-        "x": 3,
-        "y": 7
+        "c": "PositionComponent",
+        "x": 1,
+        "y": 6
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "216": [
       {
-        "c": "pos",
-        "x": 4,
-        "y": 11
+        "c": "PositionComponent",
+        "x": 1,
+        "y": 14
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "217": [
       {
-        "c": "pos",
-        "x": 5,
-        "y": 3
+        "c": "PositionComponent",
+        "x": 2,
+        "y": 10
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "218": [
       {
-        "c": "pos",
-        "x": 5,
-        "y": 11
+        "c": "PositionComponent",
+        "x": 2,
+        "y": 15
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "219": [
       {
-        "c": "pos",
-        "x": 6,
-        "y": 1
+        "c": "PositionComponent",
+        "x": 3,
+        "y": 0
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "220": [
       {
-        "c": "pos",
-        "x": 6,
+        "c": "PositionComponent",
+        "x": 4,
         "y": 2
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "221": [
       {
-        "c": "pos",
-        "x": 6,
+        "c": "PositionComponent",
+        "x": 4,
         "y": 5
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "222": [
       {
-        "c": "pos",
-        "x": 6,
-        "y": 10
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 3
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "223": [
       {
-        "c": "pos",
-        "x": 6,
-        "y": 12
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 4
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "224": [
       {
-        "c": "pos",
-        "x": 7,
-        "y": 0
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 10
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "225": [
       {
-        "c": "pos",
-        "x": 7,
-        "y": 6
+        "c": "PositionComponent",
+        "x": 5,
+        "y": 11
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "226": [
       {
-        "c": "pos",
-        "x": 7,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 9
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "227": [
       {
-        "c": "pos",
-        "x": 7,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 11
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "228": [
       {
-        "c": "pos",
-        "x": 7,
-        "y": 10
+        "c": "PositionComponent",
+        "x": 6,
+        "y": 12
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "229": [
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 7,
-        "y": 13
+        "y": 6
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "230": [
       {
-        "c": "pos",
+        "c": "PositionComponent",
         "x": 8,
-        "y": 0
+        "y": 7
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "231": [
       {
-        "c": "pos",
-        "x": 8,
-        "y": 4
+        "c": "PositionComponent",
+        "x": 9,
+        "y": 8
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "232": [
       {
-        "c": "pos",
-        "x": 8,
+        "c": "PositionComponent",
+        "x": 10,
         "y": 13
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "233": [
       {
-        "c": "pos",
-        "x": 9,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 0
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "234": [
       {
-        "c": "pos",
-        "x": 9,
-        "y": 9
+        "c": "PositionComponent",
+        "x": 11,
+        "y": 11
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "235": [
       {
-        "c": "pos",
-        "x": 9,
+        "c": "PositionComponent",
+        "x": 11,
         "y": 13
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "236": [
       {
-        "c": "pos",
-        "x": 9,
-        "y": 15
+        "c": "PositionComponent",
+        "x": 12,
+        "y": 13
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "237": [
       {
-        "c": "pos",
-        "x": 10,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 4
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "238": [
       {
-        "c": "pos",
-        "x": 10,
-        "y": 10
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 6
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "239": [
       {
-        "c": "pos",
-        "x": 10,
-        "y": 14
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 11
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "240": [
       {
-        "c": "pos",
-        "x": 10,
-        "y": 15
+        "c": "PositionComponent",
+        "x": 13,
+        "y": 12
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "241": [
       {
-        "c": "pos",
-        "x": 11,
+        "c": "PositionComponent",
+        "x": 14,
         "y": 4
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "242": [
       {
-        "c": "pos",
-        "x": 11,
-        "y": 5
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 6
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "243": [
       {
-        "c": "pos",
-        "x": 12,
-        "y": 12
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 7
       },
       {
-        "c": "vscp",
-        "name": "tree"
+        "c": "VisualComponent",
+        "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "244": [
       {
-        "c": "pos",
-        "x": 13,
-        "y": 2
+        "c": "PositionComponent",
+        "x": 14,
+        "y": 14
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "245": [
       {
-        "c": "pos",
-        "x": 13,
-        "y": 8
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 3
       },
       {
-        "c": "vscp",
-        "name": "rock"
+        "c": "VisualComponent",
+        "name": "tree"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "246": [
       {
-        "c": "pos",
-        "x": 13,
-        "y": 12
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 5
       },
       {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "rock"
       },
       {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ],
     "247": [
       {
-        "c": "pos",
-        "x": 13,
-        "y": 14
+        "c": "PositionComponent",
+        "x": 15,
+        "y": 6
       },
       {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "248": [
-      {
-        "c": "pos",
-        "x": 14,
-        "y": 5
-      },
-      {
-        "c": "vscp",
+        "c": "VisualComponent",
         "name": "rock"
       },
       {
-        "c": "osbl"
-      }
-    ],
-    "249": [
-      {
-        "c": "pos",
-        "x": 14,
-        "y": 7
-      },
-      {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "250": [
-      {
-        "c": "pos",
-        "x": 14,
-        "y": 8
-      },
-      {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "251": [
-      {
-        "c": "pos",
-        "x": 14,
-        "y": 9
-      },
-      {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "252": [
-      {
-        "c": "pos",
-        "x": 14,
-        "y": 14
-      },
-      {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "253": [
-      {
-        "c": "pos",
-        "x": 14,
-        "y": 15
-      },
-      {
-        "c": "vscp",
-        "name": "rock"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "254": [
-      {
-        "c": "pos",
-        "x": 15,
-        "y": 2
-      },
-      {
-        "c": "vscp",
-        "name": "rock"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "255": [
-      {
-        "c": "pos",
-        "x": 15,
-        "y": 7
-      },
-      {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
-      }
-    ],
-    "256": [
-      {
-        "c": "pos",
-        "x": 15,
-        "y": 14
-      },
-      {
-        "c": "vscp",
-        "name": "tree"
-      },
-      {
-        "c": "osbl"
+        "c": "ObstacleComponent"
       }
     ]
   }

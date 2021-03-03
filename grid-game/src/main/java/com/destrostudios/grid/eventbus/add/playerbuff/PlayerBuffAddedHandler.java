@@ -1,4 +1,4 @@
-package com.destrostudios.grid.eventbus.add.buff;
+package com.destrostudios.grid.eventbus.add.playerbuff;
 
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @AllArgsConstructor
-public class BuffAddedHandler implements EventHandler<BuffAddedEvent> {
+public class PlayerBuffAddedHandler implements EventHandler<PlayerBuffAddedEvent> {
     private final Eventbus eventbus;
 
     @Override
-    public void onEvent(BuffAddedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(PlayerBuffAddedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         List<Event> subevents = new ArrayList<>();
         HealthPointBuffComponent hpBuff = entityWorld.getComponent(event.getSpellEntity(), HealthPointBuffComponent.class);
@@ -38,7 +38,7 @@ public class BuffAddedHandler implements EventHandler<BuffAddedEvent> {
             AttackPointsComponent attackPointsComponent = entityWorld.getComponent(event.getTargetEntity(), AttackPointsComponent.class);
             AttackPointsBuffComponent apBuff = entityWorld.getComponent(event.getSpellEntity(), AttackPointsBuffComponent.class);
             MaxAttackPointsComponent maxAp = entityWorld.getComponent(event.getTargetEntity(), MaxAttackPointsComponent.class);
-            entityWorld.addComponent(buffEntity, new AttackPointsBuffComponent(apBuff.getBuffAmount(), apBuff.getBuffDuration() + 1));
+            entityWorld.addComponent(buffEntity, new AttackPointsBuffComponent(apBuff.getBuffAmount(), apBuff.getBuffDuration() + 1, false));
             buffs.add(buffEntity);
             subevents.add(new AttackPointsChangedEvent(event.getTargetEntity(), attackPointsComponent.getAttackPoints() + apBuff.getBuffAmount()));
             subevents.add(new MaxAttackPointsChangedEvent(event.getTargetEntity(), maxAp.getMaxAttackPoints() + apBuff.getBuffAmount()));
@@ -48,7 +48,7 @@ public class BuffAddedHandler implements EventHandler<BuffAddedEvent> {
             MovementPointBuffComponent mpBuff = entityWorld.getComponent(event.getSpellEntity(), MovementPointBuffComponent.class);
             MovementPointsComponent movementPointsComponent = entityWorld.getComponent(event.getTargetEntity(), MovementPointsComponent.class);
             MaxMovementPointsComponent maxMpComponent = entityWorld.getComponent(event.getTargetEntity(), MaxMovementPointsComponent.class);
-            entityWorld.addComponent(buffEntity, new MovementPointBuffComponent(mpBuff.getBuffAmount(), mpBuff.getBuffDuration() + 1));
+            entityWorld.addComponent(buffEntity, new MovementPointBuffComponent(mpBuff.getBuffAmount(), mpBuff.getBuffDuration() + 1, false));
             buffs.add(buffEntity);
             subevents.add(new MovementPointsChangedEvent(event.getTargetEntity(), movementPointsComponent.getMovementPoints() + mpBuff.getBuffAmount()));
             subevents.add(new MaxMovementPointsChangedEvent(event.getTargetEntity(), maxMpComponent.getMaxMovenemtPoints() + mpBuff.getBuffAmount()));
@@ -57,7 +57,7 @@ public class BuffAddedHandler implements EventHandler<BuffAddedEvent> {
             int buffEntity = entityWorld.createEntity();
             HealthPointsComponent healthPointsComponent = entityWorld.getComponent(event.getTargetEntity(), HealthPointsComponent.class);
             MaxHealthComponent maxHpComponent = entityWorld.getComponent(event.getTargetEntity(), MaxHealthComponent.class);
-            entityWorld.addComponent(buffEntity, new MovementPointBuffComponent(hpBuff.getBuffAmount(), hpBuff.getBuffDuration() + 1));
+            entityWorld.addComponent(buffEntity, new MovementPointBuffComponent(hpBuff.getBuffAmount(), hpBuff.getBuffDuration() + 1, false));
             buffs.add(buffEntity);
             subevents.add(new HealthPointsChangedEvent(event.getTargetEntity(), healthPointsComponent.getHealth() + hpBuff.getBuffAmount()));
             subevents.add(new MaxHealthPointsChangedEvent(event.getTargetEntity(), maxHpComponent.getMaxHealth() + hpBuff.getBuffAmount()));

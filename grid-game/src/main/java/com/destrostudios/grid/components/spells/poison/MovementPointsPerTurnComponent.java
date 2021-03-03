@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HealthPointsPoisonComponent implements Component {
+public class MovementPointsPerTurnComponent implements Component {
     private int poisonMinValue;
     private int poisonMaxValue;
     private int poisonDuration;

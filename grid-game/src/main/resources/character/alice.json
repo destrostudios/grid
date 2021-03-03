@@ -1,1 +1,179 @@
-{"SeriazableComponent":"character","components":{"1":[{"c":"maxmp","maxMovenemtPoints":7},{"c":"maxap","maxAttackPoints":7},{"c":"apres","resitanceValue":36},{"c":"mpres","resitanceValue":3},{"c":"poisons","poisonsEntities":[]},{"c":"buffs","buffEntities":[]},{"c":"osbl"},{"c":"player"},{"c":"vscp","name":"alice"},{"c":"mhp","maxHealth":500},{"c":"spell","spells":[2,3,4,5,6]}],"2":[{"c":"apc","attackPointCosts":2},{"c":"dmg","damage":31},{"c":"name","name":"Arrow"},{"c":"ttp","tooltip":"OP spell doing 31 damage for 2 AP"},{"c":"rng","range":3}],"3":[{"c":"apc","attackPointCosts":4},{"c":"dmg","damage":25},{"c":"name","name":"Arrow"},{"c":"ttp","tooltip":"OP spell doing 25 damage for 4 AP"},{"c":"rng","range":3}],"4":[{"c":"apc","attackPointCosts":3},{"c":"dmg","damage":25},{"c":"name","name":"Hit"},{"c":"mpb","buffAmount":1,"buffDuration":1},{"c":"rng","range":3},{"c":"ttp","tooltip":"Dmg spell doing 25 dmg for 3 AP and buffing 1 MP\nRange: 3"}],"5":[{"c":"apc","attackPointCosts":4},{"c":"app","poisonMinValue":-1,"poisonMaxValue":-3,"poisonDuration":2,"sourceEntity":1},{"c":"hpp","poisonMinValue":-50,"poisonMaxValue":-100,"poisonDuration":3,"sourceEntity":1},{"c":"name","name":"Wound"},{"c":"rng","range":4},{"c":"ttp","tooltip":"Spell adds 1-3 AP poison for 2 rounds and 50-100 HP poison for 3 rounds"}],"6":[{"c":"apc","attackPointCosts":5},{"c":"hpb","buffAmount":50,"buffDuration":3},{"c":"name","name":"Twist"},{"c":"rng","range":0},{"c":"ttp","tooltip":"Spell buffing 50 HP for 5 AP. \nCD: 3, Range: 0 "},{"c":"cd","cooldown":3}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "c": "MaxMovementPointsComponent",
+        "maxMovenemtPoints": 7
+      },
+      {
+        "c": "MaxAttackPointsComponent",
+        "maxAttackPoints": 7
+      },
+      {
+        "c": "AttackPointResistenceComponent",
+        "resitanceValue": 10
+      },
+      {
+        "c": "MovementPointResistenceComponent",
+        "resitanceValue": 18
+      },
+      {
+        "c": "PoisonsComponent",
+        "poisonsEntities": []
+      },
+      {
+        "c": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "c": "ObstacleComponent"
+      },
+      {
+        "c": "PlayerComponent"
+      },
+      {
+        "c": "VisualComponent",
+        "name": "alice"
+      },
+      {
+        "c": "MaxHealthComponent",
+        "maxHealth": 839
+      },
+      {
+        "c": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "2": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -25
+      },
+      {
+        "c": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 2 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      }
+    ],
+    "3": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -35
+      },
+      {
+        "c": "NameComponent",
+        "name": "Hit"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 35 damage for 2 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 4
+      }
+    ],
+    "4": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 3
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": 25
+      },
+      {
+        "c": "NameComponent",
+        "name": "Arrow"
+      },
+      {
+        "c": "MovementPointBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 1,
+        "spellBuff": false
+      },
+      {
+        "c": "RangeComponent",
+        "range": 4
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Dmg spell doing -25 dmg for 3 AP and buffing 1 MP\nRange: 4"
+      }
+    ],
+    "5": [
+      {
+        "c": "MovementPointsCostComponent",
+        "movementPointsCost": 5
+      },
+      {
+        "c": "AttackPointsBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 2,
+        "spellBuff": false
+      },
+      {
+        "c": "NameComponent",
+        "name": "Buff"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 4
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Spell buffing 1 AP for 5 MP \nRange: 4"
+      }
+    ],
+    "6": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 5
+      },
+      {
+        "c": "HealthPointBuffComponent",
+        "buffAmount": 116,
+        "buffDuration": 3,
+        "spellBuff": false
+      },
+      {
+        "c": "NameComponent",
+        "name": "Twist"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 0
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Spell buffing 116 HP for 5 AP. \nCD: 3, Range: 0 "
+      },
+      {
+        "c": "CooldownComponent",
+        "cooldown": 3
+      }
+    ]
+  }
+}

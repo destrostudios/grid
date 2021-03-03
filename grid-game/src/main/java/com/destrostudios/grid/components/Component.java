@@ -8,12 +8,10 @@ import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
 import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
 import com.destrostudios.grid.components.spells.*;
-import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
-import com.destrostudios.grid.components.spells.poison.AttackPointsPoisonComponent;
-import com.destrostudios.grid.components.spells.poison.HealthPointsPoisonComponent;
-import com.destrostudios.grid.components.spells.poison.MovementPointsPoisonComponent;
+import com.destrostudios.grid.components.spells.buffs.*;
+import com.destrostudios.grid.components.spells.poison.AttackPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.poison.HealthPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.poison.MovementPointsPerTurnComponent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -21,40 +19,43 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         use = JsonTypeInfo.Id.NAME,
         property = "c")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AttackPointCostComponent.class, name = "apc"),
-        @JsonSubTypes.Type(value = DamageComponent.class, name = "dmg"),
-        @JsonSubTypes.Type(value = SpellsComponent.class, name = "spell"),
-        @JsonSubTypes.Type(value = AttackPointsComponent.class, name = "ap"),
-        @JsonSubTypes.Type(value = HealthPointsComponent.class, name = "hp"),
-        @JsonSubTypes.Type(value = MaxHealthComponent.class, name = "mhp"),
-        @JsonSubTypes.Type(value = MovementPointsComponent.class, name = "mp"),
-        @JsonSubTypes.Type(value = NameComponent.class, name = "name"),
-        @JsonSubTypes.Type(value = PlayerComponent.class, name = "player"),
-        @JsonSubTypes.Type(value = PositionComponent.class, name = "pos"),
-        @JsonSubTypes.Type(value = TurnComponent.class, name = "round"),
-        @JsonSubTypes.Type(value = TeamComponent.class, name = "team"),
-        @JsonSubTypes.Type(value = VisualComponent.class, name = "vscp"),
-        @JsonSubTypes.Type(value = WalkableComponent.class, name = "wkbl"),
-        @JsonSubTypes.Type(value = ObstacleComponent.class, name = "osbl"),
-        @JsonSubTypes.Type(value = MovementPointsCostComponent.class, name = "mpc"),
-        @JsonSubTypes.Type(value = MaxAttackPointsComponent.class, name = "maxap"),
-        @JsonSubTypes.Type(value = MaxMovementPointsComponent.class, name = "maxmp"),
-        @JsonSubTypes.Type(value = TooltipComponent.class, name = "ttp"),
-        @JsonSubTypes.Type(value = RangeComponent.class, name = "rng"),
-        @JsonSubTypes.Type(value = AttackPointsBuffComponent.class, name = "apb"),
-        @JsonSubTypes.Type(value = MovementPointBuffComponent.class, name = "mpb"),
-        @JsonSubTypes.Type(value = HealthPointBuffComponent.class, name = "hpb"),
-        @JsonSubTypes.Type(value = AttackPointsPoisonComponent.class, name = "app"),
-        @JsonSubTypes.Type(value = MovementPointsPoisonComponent.class, name = "mpp"),
-        @JsonSubTypes.Type(value = HealthPointsPoisonComponent.class, name = "hpp"),
-        @JsonSubTypes.Type(value = TeleportComponent.class, name = "teleport"),
-        @JsonSubTypes.Type(value = OnCooldownComponent.class, name = "oncd"),
-        @JsonSubTypes.Type(value = CooldownComponent.class, name = "cd"),
-        @JsonSubTypes.Type(value = BuffsComponent.class, name = "buffs"),
-        @JsonSubTypes.Type(value = StartingFieldComponent.class, name = "start"),
-        @JsonSubTypes.Type(value = AttackPointResistenceComponent.class, name = "apres"),
-        @JsonSubTypes.Type(value = MovementPointResistenceComponent.class, name = "mpres"),
-        @JsonSubTypes.Type(value = PoisonsComponent.class, name = "poisons")
+        @JsonSubTypes.Type(value = AttackPointCostComponent.class, name = "AttackPointCostComponent"),
+        @JsonSubTypes.Type(value = HealthChangeComponent.class, name = "HealthChangeComponent"),
+        @JsonSubTypes.Type(value = SpellsComponent.class, name = "SpellsComponent"),
+        @JsonSubTypes.Type(value = AttackPointsComponent.class, name = "AttackPointsComponent"),
+        @JsonSubTypes.Type(value = HealthPointsComponent.class, name = "HealthPointsComponent"),
+        @JsonSubTypes.Type(value = MaxHealthComponent.class, name = "MaxHealthComponent"),
+        @JsonSubTypes.Type(value = MovementPointsComponent.class, name = "MovementPointsComponent"),
+        @JsonSubTypes.Type(value = NameComponent.class, name = "NameComponent"),
+        @JsonSubTypes.Type(value = PlayerComponent.class, name = "PlayerComponent"),
+        @JsonSubTypes.Type(value = PositionComponent.class, name = "PositionComponent"),
+        @JsonSubTypes.Type(value = TurnComponent.class, name = "TurnComponent"),
+        @JsonSubTypes.Type(value = TeamComponent.class, name = "TeamComponent"),
+        @JsonSubTypes.Type(value = VisualComponent.class, name = "VisualComponent"),
+        @JsonSubTypes.Type(value = WalkableComponent.class, name = "WalkableComponent"),
+        @JsonSubTypes.Type(value = ObstacleComponent.class, name = "ObstacleComponent"),
+        @JsonSubTypes.Type(value = MovementPointsCostComponent.class, name = "MovementPointsCostComponent"),
+        @JsonSubTypes.Type(value = MaxAttackPointsComponent.class, name = "MaxAttackPointsComponent"),
+        @JsonSubTypes.Type(value = MaxMovementPointsComponent.class, name = "MaxMovementPointsComponent"),
+        @JsonSubTypes.Type(value = TooltipComponent.class, name = "TooltipComponent"),
+        @JsonSubTypes.Type(value = RangeComponent.class, name = "RangeComponent"),
+        @JsonSubTypes.Type(value = AttackPointsBuffComponent.class, name = "AttackPointsBuffComponent"),
+        @JsonSubTypes.Type(value = MovementPointBuffComponent.class, name = "MovementPointBuffComponent"),
+        @JsonSubTypes.Type(value = HealthPointBuffComponent.class, name = "HealthPointBuffComponent"),
+        @JsonSubTypes.Type(value = AttackPointsPerTurnComponent.class, name = "AttackPointsPoisonComponent"),
+        @JsonSubTypes.Type(value = MovementPointsPerTurnComponent.class, name = "MovementPointsPoisonComponent"),
+        @JsonSubTypes.Type(value = HealthPointsPerTurnComponent.class, name = "HealthPointsPoisonComponent"),
+        @JsonSubTypes.Type(value = TeleportComponent.class, name = "TeleportComponent"),
+        @JsonSubTypes.Type(value = OnCooldownComponent.class, name = "OnCooldownComponent"),
+        @JsonSubTypes.Type(value = CooldownComponent.class, name = "CooldownComponent"),
+        @JsonSubTypes.Type(value = BuffsComponent.class, name = "BuffsComponent"),
+        @JsonSubTypes.Type(value = StartingFieldComponent.class, name = "StartingFieldComponent"),
+        @JsonSubTypes.Type(value = DamageBuffComponent.class, name = "DamageBuffComponent"),
+        @JsonSubTypes.Type(value = AttackPointResistenceComponent.class, name = "AttackPointResistenceComponent"),
+        @JsonSubTypes.Type(value = MovementPointResistenceComponent.class, name = "MovementPointResistenceComponent"),
+        @JsonSubTypes.Type(value = DisplacementComponent.class, name = "DisplacementComponent"),
+        @JsonSubTypes.Type(value = HealBuffComponent.class, name = "HealBuffComponent"),
+        @JsonSubTypes.Type(value = PoisonsComponent.class, name = "PoisonsComponent")
 })
 public interface Component {
 }

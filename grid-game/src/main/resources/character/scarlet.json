@@ -1,1 +1,172 @@
-{"SeriazableComponent":"character","components":{"1":[{"c":"maxmp","maxMovenemtPoints":7},{"c":"maxap","maxAttackPoints":7},{"c":"apres","resitanceValue":29},{"c":"mpres","resitanceValue":9},{"c":"poisons","poisonsEntities":[]},{"c":"buffs","buffEntities":[]},{"c":"osbl"},{"c":"player"},{"c":"vscp","name":"scarlet"},{"c":"mhp","maxHealth":500},{"c":"spell","spells":[2,3,4,5,6]}],"2":[{"c":"apc","attackPointCosts":4},{"c":"dmg","damage":25},{"c":"name","name":"Wound"},{"c":"ttp","tooltip":"OP spell doing 25 damage for 4 AP"},{"c":"rng","range":3}],"3":[{"c":"apc","attackPointCosts":5},{"c":"dmg","damage":25},{"c":"name","name":"Confusion"},{"c":"ttp","tooltip":"OP spell doing 25 damage for 5 AP"},{"c":"rng","range":3}],"4":[{"c":"apc","attackPointCosts":2},{"c":"dmg","damage":45},{"c":"name","name":"Twist"},{"c":"mpb","buffAmount":1,"buffDuration":1},{"c":"rng","range":4},{"c":"ttp","tooltip":"Dmg spell doing 45 dmg for 2 AP and buffing 1 MP\nRange: 4"}],"5":[{"c":"mpc","movementPointsCost":4},{"c":"apb","buffAmount":1,"buffDuration":2},{"c":"name","name":"Buff"},{"c":"rng","range":3},{"c":"ttp","tooltip":"Spell buffing 1 AP for 4 MP \nRange: 3"}],"6":[{"c":"apc","attackPointCosts":6},{"c":"hpb","buffAmount":111,"buffDuration":3},{"c":"name","name":"Twist"},{"c":"rng","range":0},{"c":"ttp","tooltip":"Spell buffing 111 HP for 6 AP. \nCD: 3, Range: 0 "},{"c":"cd","cooldown":3}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "c": "MaxMovementPointsComponent",
+        "maxMovenemtPoints": 11
+      },
+      {
+        "c": "MaxAttackPointsComponent",
+        "maxAttackPoints": 12
+      },
+      {
+        "c": "AttackPointResistenceComponent",
+        "resitanceValue": 0
+      },
+      {
+        "c": "MovementPointResistenceComponent",
+        "resitanceValue": 13
+      },
+      {
+        "c": "PoisonsComponent",
+        "poisonsEntities": []
+      },
+      {
+        "c": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "c": "ObstacleComponent"
+      },
+      {
+        "c": "PlayerComponent"
+      },
+      {
+        "c": "VisualComponent",
+        "name": "scarlet"
+      },
+      {
+        "c": "MaxHealthComponent",
+        "maxHealth": 663
+      },
+      {
+        "c": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "2": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -25
+      },
+      {
+        "c": "NameComponent",
+        "name": "Blblbl"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 2 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      }
+    ],
+    "3": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 4
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -34
+      },
+      {
+        "c": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "OP spell doing 34 damage for 4 AP"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 5
+      }
+    ],
+    "4": [
+      {
+        "c": "TeleportComponent"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 9
+      },
+      {
+        "c": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Teleporting in a range of 3"
+      }
+    ],
+    "5": [
+      {
+        "c": "MovementPointsCostComponent",
+        "movementPointsCost": 9
+      },
+      {
+        "c": "AttackPointsBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 2,
+        "spellBuff": false
+      },
+      {
+        "c": "NameComponent",
+        "name": "Buff"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Spell buffing 1 AP for 9 MP \nRange: 3"
+      }
+    ],
+    "6": [
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 10
+      },
+      {
+        "c": "HealthPointBuffComponent",
+        "buffAmount": 73,
+        "buffDuration": 3,
+        "spellBuff": false
+      },
+      {
+        "c": "NameComponent",
+        "name": "Twist"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 0
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "Spell buffing 73 HP for 10 AP. \nCD: 3, Range: 0 "
+      },
+      {
+        "c": "CooldownComponent",
+        "cooldown": 3
+      }
+    ]
+  }
+}

@@ -3,9 +3,9 @@ package com.destrostudios.grid.eventbus.update.poison;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
 import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
-import com.destrostudios.grid.components.spells.poison.AttackPointsPoisonComponent;
-import com.destrostudios.grid.components.spells.poison.HealthPointsPoisonComponent;
-import com.destrostudios.grid.components.spells.poison.MovementPointsPoisonComponent;
+import com.destrostudios.grid.components.spells.poison.AttackPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.poison.HealthPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.poison.MovementPointsPerTurnComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -43,22 +43,22 @@ public class UpdatePoisonsHandler implements EventHandler<UpdatePoisonsEvent> {
         PoisonsComponent poisons = entityWorld.getComponent(playerEntity, PoisonsComponent.class);
 
         for (int poison : poisons.getPoisonsEntities()) {
-            if (entityWorld.hasComponents(poison, AttackPointsPoisonComponent.class)) {
-                AttackPointsPoisonComponent apPoison = entityWorld.getComponent(poison, AttackPointsPoisonComponent.class);
+            if (entityWorld.hasComponents(poison, AttackPointsPerTurnComponent.class)) {
+                AttackPointsPerTurnComponent apPoison = entityWorld.getComponent(poison, AttackPointsPerTurnComponent.class);
                 AttackPointResistenceComponent apResSource = entityWorld.getComponent(apPoison.getSourceEntity(), AttackPointResistenceComponent.class);
                 AttackPointResistenceComponent apResTarget = entityWorld.getComponent(playerEntity, AttackPointResistenceComponent.class);
                 apPoisonSum += getResultingValue(apPoison.getPoisonMaxValue() - apPoison.getPoisonMinValue(),
                         apResSource.getResitanceValue(), apResTarget.getResitanceValue());
 
-            } else if (entityWorld.hasComponents(poison, MovementPointsPoisonComponent.class)) {
-                MovementPointsPoisonComponent mpPoison = entityWorld.getComponent(poison, MovementPointsPoisonComponent.class);
+            } else if (entityWorld.hasComponents(poison, MovementPointsPerTurnComponent.class)) {
+                MovementPointsPerTurnComponent mpPoison = entityWorld.getComponent(poison, MovementPointsPerTurnComponent.class);
                 MovementPointResistenceComponent mpResSource = entityWorld.getComponent(mpPoison.getSourceEntity(),
                         MovementPointResistenceComponent.class);
                 MovementPointResistenceComponent mpResTarget = entityWorld.getComponent(playerEntity, MovementPointResistenceComponent.class);
                 mpPoisonSum += getResultingValue(mpPoison.getPoisonMaxValue() - mpPoison.getPoisonMinValue(),
                         mpResSource.getResitanceValue(), mpResTarget.getResitanceValue());
             } else {
-                HealthPointsPoisonComponent hpPoison = entityWorld.getComponent(poison, HealthPointsPoisonComponent.class);
+                HealthPointsPerTurnComponent hpPoison = entityWorld.getComponent(poison, HealthPointsPerTurnComponent.class);
                 int bound = Math.abs(hpPoison.getPoisonMaxValue()) - Math.abs(hpPoison.getPoisonMinValue()) + 1;
                 int delta = Math.abs(hpPoison.getPoisonMinValue()) + rand.nextInt(bound);
                 hpPoisonSum = hpPoisonSum + (int) Math.signum(hpPoison.getPoisonMaxValue()) * delta;

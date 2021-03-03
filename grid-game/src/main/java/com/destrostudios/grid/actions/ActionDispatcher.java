@@ -4,9 +4,9 @@ import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
-import com.destrostudios.grid.eventbus.action.move.MoveEvent;
+import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
-import com.destrostudios.grid.eventbus.update.round.RoundUpdatedEvent;
+import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +17,8 @@ import java.util.function.Supplier;
 public class ActionDispatcher {
     private final Supplier<EntityWorld> getEntityWorld;
 
+    // todo generate all possible actions
+
     public Event dispatchAction(Action action) throws ActionNotAllowedException {
         int entity = Integer.parseInt(action.getPlayerIdentifier());
         TurnComponent component = getEntityWorld.get().getComponent(entity, TurnComponent.class);
@@ -25,9 +27,9 @@ public class ActionDispatcher {
             throw new ActionNotAllowedException("not player turn");
         } else if (action instanceof PositionUpdateAction) {
             PositionUpdateAction posAction = (PositionUpdateAction) action;
-            return new MoveEvent(entity, new PositionComponent(posAction.getNewX(), posAction.getNewY()));
+            return new WalkEvent(entity, new PositionComponent(posAction.getNewX(), posAction.getNewY()));
         } else if (action instanceof SkipRoundAction) {
-            return new RoundUpdatedEvent(entity);
+            return new UpdatedTurnEvent(entity);
         } else if (action instanceof CastSpellAction) {
             CastSpellAction castSpellAction = (CastSpellAction) action;
             return new SpellCastedEvent(castSpellAction.getSpell(), entity,

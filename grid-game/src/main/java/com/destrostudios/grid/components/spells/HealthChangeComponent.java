@@ -6,7 +6,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DamageComponent implements Component {
-    private int damage;
+public class HealthChangeComponent implements Component {
+    private int healthChange;
 
 }

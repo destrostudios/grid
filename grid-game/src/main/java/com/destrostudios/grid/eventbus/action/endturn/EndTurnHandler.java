@@ -23,7 +23,6 @@ public class EndTurnHandler implements EventHandler<EndTurnEvent> {
     public void onEvent(EndTurnEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         int currentEntity = event.getEndTurnEntity();
-        entityWorld.remove(currentEntity, TurnComponent.class);
 
         List<Event> followUpEvents = new ArrayList<>();
         MaxAttackPointsComponent maxAp = entityWorld.getComponent(currentEntity, MaxAttackPointsComponent.class);

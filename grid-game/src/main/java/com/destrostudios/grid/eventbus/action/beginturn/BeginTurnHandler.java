@@ -26,7 +26,6 @@ public class BeginTurnHandler implements EventHandler<BeginTurnEvent> {
         int currentEntity = event.getBeginTurnEntity();
 
         List<Event> followUpEvents = new ArrayList<>();
-        entityWorld.addComponent(currentEntity, new TurnComponent());
 
         // update cooldowns, buffs and poisoins at the beginning of
         followUpEvents.add(new BuffsUpdateEvent(currentEntity));

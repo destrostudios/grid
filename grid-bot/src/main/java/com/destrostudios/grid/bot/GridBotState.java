@@ -11,8 +11,8 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.action.move.MoveEvent;
-import com.destrostudios.grid.eventbus.action.move.MoveValidator;
+import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
+import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.util.CalculationUtils;
@@ -98,8 +98,8 @@ public class GridBotState implements BotGameState<Action, Team> {
     }
 
     private static void tryAddMoveAction(int x, int y, String playerIdentifier, EntityWorld world, int entity, List<Action> actions) {
-        MoveValidator validator = new MoveValidator();
-        if (validator.validate(new MoveEvent(entity, new PositionComponent(x, y)), () -> world)) {
+        WalkValidator validator = new WalkValidator();
+        if (validator.validate(new WalkEvent(entity, new PositionComponent(x, y)), () -> world)) {
             actions.add(new PositionUpdateAction(x, y, playerIdentifier));
         }
     }
