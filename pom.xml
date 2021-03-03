@@ -13,6 +13,7 @@
         <module>grid-shared</module>
         <module>grid-network</module>
         <module>grid-bot</module>
+        <module>grid-bot-client</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -73,6 +74,11 @@
             <dependency>
                 <groupId>com.destrostudios.grid</groupId>
                 <artifactId>grid-network</artifactId>
+                <version>${version.grid}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.grid</groupId>
+                <artifactId>grid-bot</artifactId>
                 <version>${version.grid}</version>
             </dependency>
             <!--turn-based-game-tools-->

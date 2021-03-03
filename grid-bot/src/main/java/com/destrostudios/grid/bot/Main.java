@@ -18,6 +18,16 @@ public class Main {
         game.initGame(gameInfo);
 
         GridBotState botState = new GridBotState(game);
+        MctsBot<GridBotState, Action, Team> bot = createBot(botState);
+        while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
+            List<Action> actions = bot.sortedActions(botState.activeTeam());
+            game.registerAction(actions.get(0));
+            System.out.println(actions);
+            System.out.println();
+        }
+    }
+
+    public static MctsBot<GridBotState, Action, Team> createBot(GridBotState botState) {
         MctsBotSettings<GridBotState, Action> botSettings = new MctsBotSettings<>();
         botSettings.strength = 100;
         botSettings.evaluation = s -> {
@@ -46,12 +56,6 @@ public class Main {
             return scores;
         };
 
-        MctsBot<GridBotState, Action, Team> bot = new MctsBot<>(new GridBotService(), botState, botSettings);
-        while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
-            List<Action> actions = bot.sortedActions(botState.activeTeam());
-            game.registerAction(actions.get(0));
-            System.out.println(actions);
-            System.out.println();
-        }
+        return new MctsBot<>(new GridBotService(), botState, botSettings);
     }
 }
