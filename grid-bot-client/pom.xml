@@ -28,6 +28,12 @@
             <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
             <artifactId>network-client</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

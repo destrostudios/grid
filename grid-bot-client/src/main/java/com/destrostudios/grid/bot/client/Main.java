@@ -18,6 +18,7 @@ import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyCli
 import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
 import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.minlog.Log;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,8 @@ import java.util.Map;
 
 public class Main {
     public static void main(String... args) throws IOException, InterruptedException {
+        Log.DEBUG();
+        Log.info(new Date().toString());// time reference for kryo logs
         String hostUrl = "localhost";// "destrostudios.com";
         ToolsClient client = getToolsClient(hostUrl, fakeJwt(-1, "Bot"));
         try {
