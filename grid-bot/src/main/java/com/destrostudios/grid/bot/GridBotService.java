@@ -17,6 +17,7 @@ public class GridBotService implements BotGameService<GridBotState, Action, Team
     @Override
     public GridBotState deserialize(Map<Integer, List<Component>> data) {
         GridGame game = new GridGame();
+        game.intializeGame(game.getState());// workaround to initialize event handling
         game.getWorld().getWorld().putAll(data);
         return new GridBotState(game);
     }

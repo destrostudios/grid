@@ -8,6 +8,7 @@ import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
@@ -15,7 +16,6 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
-import com.destrostudios.grid.util.CalculationUtils;
 import com.destrostudios.grid.util.GameOverUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.BotGameState;
@@ -45,9 +45,11 @@ public class GridBotState implements BotGameState<Action, Team> {
 
     @Override
     public BotActionReplay<Action> applyAction(Action action) {
-        BotActionReplay<Action> actionReplay = new BotActionReplay<>(action, new int[0]);
         game.registerAction(action);
-        return actionReplay;
+        while (game.triggeredHandlersInQueue()) {
+            game.triggerNextHandler();
+        }
+        return new BotActionReplay<>(action, new int[0]);// TODO: randomness
     }
 
     @Override
@@ -81,10 +83,15 @@ public class GridBotState implements BotGameState<Action, Team> {
             if (spells != null) {
                 for (int spell : spells.getSpells()) {
                     SpellCastedValidator validator = new SpellCastedValidator();
-                    List<PositionComponent> targetable = CalculationUtils.getRangePosComponents(spell, entity, world);
-                    for (PositionComponent target : targetable) {
-                        if (validator.validate(new SpellCastedEvent(spell, entity, target.getX(), target.getY()), () -> world)) {
-                            actions.add(new CastSpellAction(target.getX(), target.getY(), playerIdentifier, spell));
+
+                    // simplified targeting, good enough for this early version
+                    List<Integer> healthEntities = world.list(HealthPointsComponent.class);
+                    for (int healthEntity : healthEntities) {
+                        PositionComponent target = world.getComponent(healthEntity, PositionComponent.class);
+                        if (target != null) {
+                            if (validator.validate(new SpellCastedEvent(spell, entity, target.getX(), target.getY()), () -> world)) {
+                                actions.add(new CastSpellAction(target.getX(), target.getY(), playerIdentifier, spell));
+                            }
                         }
                     }
                 }

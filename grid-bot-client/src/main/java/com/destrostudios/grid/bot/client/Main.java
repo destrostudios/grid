@@ -12,6 +12,7 @@ import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.StartGameInfo;
+import com.destrostudios.grid.util.GameOverUtils;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.ClientGameData;
@@ -26,8 +27,13 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
+
     public static void main(String... args) throws IOException, InterruptedException {
         Log.DEBUG();
         Log.info(new Date().toString());// time reference for kryo logs
@@ -40,6 +46,9 @@ public class Main {
                 for (ClientGameData<GridGame, Action> game : gameModule.getJoinedGames()) {
                     while (game.applyNextAction(gameModule.getGameService())) {
                     }
+                    if (GameOverUtils.getGameOverInfo(game.getState().getWorld()).isGameIsOver()) {
+                        break;
+                    }
                     boolean active = false;
                     List<Integer> activeCharacters = game.getState().getWorld().list(TurnComponent.class);
                     for (int activeCharacter : activeCharacters) {
@@ -49,11 +58,10 @@ public class Main {
                         }
                     }
                     if (active) {
-                        System.out.println("calculating...");
+                        LOG.info("calculating...");
                         GridBotState botState = new GridBotState(game.getState());
                         MctsBot<GridBotState, Action, Team, Map<Integer, List<Component>>> bot = com.destrostudios.grid.bot.Main.createBot(botState);
                         List<Action> actions = bot.sortedActions(botState.activeTeam());
-                        System.out.println(actions);
                         gameModule.sendAction(game.getId(), actions.get(0));
                     }
                 }
