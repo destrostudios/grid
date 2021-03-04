@@ -5,8 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.bot.GridBotState;
+import com.destrostudios.grid.bot.SerializedGame;
 import com.destrostudios.grid.bot.Team;
-import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.network.KryoStartGameInfo;
@@ -60,7 +60,7 @@ public class Main {
                     if (active) {
                         LOG.info("calculating...");
                         GridBotState botState = new GridBotState(game.getState());
-                        MctsBot<GridBotState, Action, Team, Map<Integer, List<Component>>> bot = com.destrostudios.grid.bot.Main.createBot(botState);
+                        MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot(botState);
                         List<Action> actions = bot.sortedActions(botState.activeTeam());
                         gameModule.sendAction(game.getId(), actions.get(0));
                     }

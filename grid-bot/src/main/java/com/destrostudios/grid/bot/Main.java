@@ -2,7 +2,6 @@ package com.destrostudios.grid.bot;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.shared.StartGameInfo;
@@ -12,7 +11,6 @@ import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
 
@@ -22,7 +20,7 @@ public class Main {
         game.initGame(gameInfo);
 
         GridBotState botState = new GridBotState(game);
-        MctsBot<GridBotState, Action, Team, Map<Integer, List<Component>>> bot = createBot(botState);
+        MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot(botState);
         while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
             System.out.println("calculating...");
             List<Action> actions = bot.sortedActions(botState.activeTeam());
@@ -36,7 +34,7 @@ public class Main {
         }
     }
 
-    public static MctsBot<GridBotState, Action, Team, Map<Integer, List<Component>>> createBot(GridBotState botState) {
+    public static MctsBot<GridBotState, Action, Team, SerializedGame> createBot(GridBotState botState) {
         MctsBotSettings<GridBotState, Action> botSettings = new MctsBotSettings<>();
         botSettings.verbose = true;
         botSettings.maxThreads = 2;
