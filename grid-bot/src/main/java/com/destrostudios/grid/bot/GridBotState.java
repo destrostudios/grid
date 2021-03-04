@@ -111,11 +111,6 @@ public class GridBotState implements BotGameState<Action, Team> {
     }
 
     @Override
-    public List<BotActionReplay<Action>> getHistory() {
-        return null;// implementation is optional & increases performance
-    }
-
-    @Override
     public boolean isGameOver() {
         return GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver();
     }

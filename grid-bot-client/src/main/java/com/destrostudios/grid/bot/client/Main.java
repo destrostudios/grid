@@ -61,8 +61,9 @@ public class Main {
                     if (active) {
                         log.info("calculating...");
                         GridBotState botState = new GridBotState(game.getState());
-                        MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot(botState);
-                        List<Action> actions = bot.sortedActions(botState.activeTeam());
+                        MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot();
+                        List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
+                        bot.clearRoot();
                         gameModule.sendAction(game.getId(), actions.get(0));
                     }
                 }

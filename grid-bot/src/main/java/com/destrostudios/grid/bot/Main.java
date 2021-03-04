@@ -6,6 +6,7 @@ import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverUtils;
+import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.RolloutToEvaluation;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
@@ -26,27 +27,28 @@ public class Main {
         game.initGame(gameInfo);
 
         GridBotState botState = new GridBotState(game);
-        MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot(botState);
+        MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot();
         while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
             log.info("calculating...");
-            List<Action> actions = bot.sortedActions(botState.activeTeam());
+            List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
+            log.info("{}", actions);
+
             game.registerAction(actions.get(0));
             while (game.triggeredHandlersInQueue()) {
                 game.triggerNextHandler();
             }
-
-            log.info("{}", actions);
+            bot.stepRoot(new BotActionReplay<>(actions.get(0), new int[0]));
         }
     }
 
-    public static MctsBot<GridBotState, Action, Team, SerializedGame> createBot(GridBotState botState) {
+    public static MctsBot<GridBotState, Action, Team, SerializedGame> createBot() {
         MctsBotSettings<GridBotState, Action> botSettings = new MctsBotSettings<>();
         botSettings.verbose = true;
         botSettings.maxThreads = 2;
         botSettings.strength = 100;
         botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 10, Main::eval)::evaluate;
 
-        return new MctsBot<>(new GridBotService(), botState, botSettings);
+        return new MctsBot<>(new GridBotService(), botSettings);
     }
 
     private static float[] eval(GridBotState s) {
