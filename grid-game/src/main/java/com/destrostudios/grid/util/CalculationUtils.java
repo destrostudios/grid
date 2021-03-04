@@ -6,9 +6,7 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.spells.RangeComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
-import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +84,9 @@ public class CalculationUtils {
     }
 
     public static PositionComponent getDisplacementGoal(EntityWorld entityWorld, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
+        if (posEntityToDisplace.equals(posSource)) {
+            return posSource;// TODO: temporary fix, is there a better solution?
+        }
         if (posSource.getX() == posEntityToDisplace.getX()) {
             // displacement from left or right
             int displacementSignum = (int) Math.signum(posEntityToDisplace.getY() - posSource.getY());

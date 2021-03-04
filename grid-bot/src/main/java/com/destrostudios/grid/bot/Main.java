@@ -16,9 +16,11 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
-
     public static void main(String... args) {
+        System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
+        System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd HH:mm:ss.SSSZ");
+        Logger log = LoggerFactory.getLogger(com.destrostudios.grid.bot.Main.class);
+
         GridGame game = new GridGame();
         StartGameInfo gameInfo = StartGameInfo.getTestGameInfo();
         game.initGame(gameInfo);
@@ -26,14 +28,14 @@ public class Main {
         GridBotState botState = new GridBotState(game);
         MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot(botState);
         while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
-            LOG.info("calculating...");
+            log.info("calculating...");
             List<Action> actions = bot.sortedActions(botState.activeTeam());
             game.registerAction(actions.get(0));
             while (game.triggeredHandlersInQueue()) {
                 game.triggerNextHandler();
             }
 
-            LOG.info("{}", actions);
+            log.info("{}", actions);
         }
     }
 

@@ -32,9 +32,10 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
-
     public static void main(String... args) throws IOException, InterruptedException {
+        System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
+        System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd HH:mm:ss.SSSZ");
+        Logger log = LoggerFactory.getLogger(com.destrostudios.grid.bot.Main.class);
         Log.DEBUG();
         Log.info(new Date().toString());// time reference for kryo logs
         String hostUrl = "localhost";// "destrostudios.com";
@@ -58,7 +59,7 @@ public class Main {
                         }
                     }
                     if (active) {
-                        LOG.info("calculating...");
+                        log.info("calculating...");
                         GridBotState botState = new GridBotState(game.getState());
                         MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot(botState);
                         List<Action> actions = bot.sortedActions(botState.activeTeam());
