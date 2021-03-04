@@ -2,25 +2,22 @@ package com.destrostudios.grid.bot;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.components.Component;
 import com.destrostudios.turnbasedgametools.bot.BotGameService;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import lombok.SneakyThrows;
+import java.util.List;
+import java.util.Map;
 
-public class GridBotService implements BotGameService<GridBotState, Action, Team> {
+public class GridBotService implements BotGameService<GridBotState, Action, Team, Map<Integer, List<Component>>> {
 
-    @SneakyThrows
     @Override
-    public void serialize(GridBotState gridBotState, OutputStream outputStream) {
-        outputStream.write(gridBotState.game.getState().getBytes(StandardCharsets.UTF_8));
+    public Map<Integer, List<Component>> serialize(GridBotState gridBotState) {
+        return Map.copyOf(gridBotState.game.getWorld().getWorld());
     }
 
-    @SneakyThrows
     @Override
-    public GridBotState deserialize(InputStream inputStream) {
+    public GridBotState deserialize(Map<Integer, List<Component>> data) {
         GridGame game = new GridGame();
-        game.intializeGame(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
+        game.getWorld().getWorld().putAll(data);
         return new GridBotState(game);
     }
 }

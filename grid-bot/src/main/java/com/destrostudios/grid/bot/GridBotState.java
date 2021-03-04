@@ -11,10 +11,10 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.entities.EntityWorld;
-import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
-import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
+import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
+import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
 import com.destrostudios.grid.util.CalculationUtils;
 import com.destrostudios.grid.util.GameOverUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 public class GridBotState implements BotGameState<Action, Team> {
-    // TODO: Action parameter must implement equals
 
     final GridGame game;
     private final List<Team> teams;

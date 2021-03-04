@@ -6,6 +6,9 @@ import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.bot.GridBotState;
 import com.destrostudios.grid.bot.Team;
+import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.StartGameInfo;
@@ -29,18 +32,26 @@ public class Main {
         Log.DEBUG();
         Log.info(new Date().toString());// time reference for kryo logs
         String hostUrl = "localhost";// "destrostudios.com";
-        ToolsClient client = getToolsClient(hostUrl, fakeJwt(-1, "Bot"));
+        String login = "Bot";
+        ToolsClient client = getToolsClient(hostUrl, fakeJwt(-1, login));
         try {
             while (true) {
                 GameClientModule<GridGame, Action> gameModule = client.getModule(GameClientModule.class);
                 for (ClientGameData<GridGame, Action> game : gameModule.getJoinedGames()) {
-                    boolean updated = false;
                     while (game.applyNextAction(gameModule.getGameService())) {
-                        updated = true;
                     }
-                    if (updated) {
+                    boolean active = false;
+                    List<Integer> activeCharacters = game.getState().getWorld().list(TurnComponent.class);
+                    for (int activeCharacter : activeCharacters) {
+                        NameComponent nameComponent = game.getState().getWorld().getComponent(activeCharacter, NameComponent.class);
+                        if (nameComponent.getName().equals(login)) {
+                            active = true;
+                        }
+                    }
+                    if (active) {
+                        System.out.println("calculating...");
                         GridBotState botState = new GridBotState(game.getState());
-                        MctsBot<GridBotState, Action, Team> bot = com.destrostudios.grid.bot.Main.createBot(botState);
+                        MctsBot<GridBotState, Action, Team, Map<Integer, List<Component>>> bot = com.destrostudios.grid.bot.Main.createBot(botState);
                         List<Action> actions = bot.sortedActions(botState.activeTeam());
                         System.out.println(actions);
                         gameModule.sendAction(game.getId(), actions.get(0));

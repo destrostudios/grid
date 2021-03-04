@@ -2,13 +2,17 @@ package com.destrostudios.grid.bot;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverUtils;
+import com.destrostudios.turnbasedgametools.bot.RolloutToEvaluation;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -18,7 +22,7 @@ public class Main {
         game.initGame(gameInfo);
 
         GridBotState botState = new GridBotState(game);
-        MctsBot<GridBotState, Action, Team> bot = createBot(botState);
+        MctsBot<GridBotState, Action, Team, Map<Integer, List<Component>>> bot = createBot(botState);
         while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
             List<Action> actions = bot.sortedActions(botState.activeTeam());
             game.registerAction(actions.get(0));
@@ -27,8 +31,9 @@ public class Main {
         }
     }
 
-    public static MctsBot<GridBotState, Action, Team> createBot(GridBotState botState) {
+    public static MctsBot<GridBotState, Action, Team, Map<Integer, List<Component>>> createBot(GridBotState botState) {
         MctsBotSettings<GridBotState, Action> botSettings = new MctsBotSettings<>();
+        botSettings.maxThreads = 2;
         botSettings.strength = 100;
         botSettings.evaluation = s -> {
             float[] scores = new float[s.getTeams().size()];
@@ -55,6 +60,7 @@ public class Main {
             }
             return scores;
         };
+        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 0, botSettings.evaluation)::evaluate;
 
         return new MctsBot<>(new GridBotService(), botState, botSettings);
     }
