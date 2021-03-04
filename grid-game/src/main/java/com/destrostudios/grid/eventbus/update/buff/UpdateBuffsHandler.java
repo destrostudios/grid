@@ -45,13 +45,13 @@ public class UpdateBuffsHandler implements EventHandler<BuffsUpdateEvent> {
 
         for (int buff : buffs.getBuffEntities()) {
             if (world.hasComponents(buff, AttackPointsBuffComponent.class)) {
-                deltaAP += world.getComponent(buff, MovementPointBuffComponent.class).getBuffAmount();
+                deltaAP += world.getComponent(buff, AttackPointsBuffComponent.class).getBuffAmount();
             }
             if (world.hasComponents(buff, MovementPointBuffComponent.class)) {
                 deltaMP += world.getComponent(buff, MovementPointBuffComponent.class).getBuffAmount();
             }
             if (world.hasComponents(buff, HealthPointBuffComponent.class)) {
-                deltaHP += world.getComponent(buff, MovementPointBuffComponent.class).getBuffAmount();
+                deltaHP += world.getComponent(buff, HealthPointBuffComponent.class).getBuffAmount();
             }
         }
 
