@@ -1,24 +1,29 @@
 package com.destrostudios.grid.eventbus.update.buff;
 
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.BuffsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
-import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.EventHandler;
+import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.maxap.MaxAttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.maxhp.MaxHealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.maxmp.MaxMovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
-import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class UpdateBuffsHandler implements EventHandler<BuffsUpdateEvent> {
@@ -31,7 +36,7 @@ public class UpdateBuffsHandler implements EventHandler<BuffsUpdateEvent> {
 
         BuffsComponent buffs = world.hasComponents(entity, BuffsComponent.class)
                 ? world.getComponent(entity, BuffsComponent.class)
-                : new BuffsComponent();
+                : new BuffsComponent(Collections.emptyList());
 
         List<Integer> newBuffs = new ArrayList<>();
         int deltaAP = 0;

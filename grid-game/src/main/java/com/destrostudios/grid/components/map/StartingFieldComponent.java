@@ -1,10 +1,10 @@
 package com.destrostudios.grid.components.map;
 
 import com.destrostudios.grid.components.Component;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@Data
+@Value
+@AllArgsConstructor
 public class StartingFieldComponent implements Component {
 }

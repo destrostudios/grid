@@ -1,17 +1,15 @@
 package com.destrostudios.grid.components.properties;
 
 import com.destrostudios.grid.components.Component;
-import com.google.common.collect.Table;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
+@Value
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class BuffsComponent implements Component {
-    private List<Integer> buffEntities = new ArrayList<>(); // points to buff entity
+    private List<Integer> buffEntities; // points to buff entity
 }

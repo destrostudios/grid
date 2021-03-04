@@ -1,10 +1,10 @@
 package com.destrostudios.grid.components.map;
 
 import com.destrostudios.grid.components.Component;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@Data
-@NoArgsConstructor
+@Value
+@AllArgsConstructor
 public class WalkableComponent implements Component {
 }

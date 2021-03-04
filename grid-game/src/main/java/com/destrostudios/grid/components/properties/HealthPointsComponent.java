@@ -1,12 +1,15 @@
 package com.destrostudios.grid.components.properties;
 
 import com.destrostudios.grid.components.Component;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
+@Value
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class HealthPointsComponent implements Component {
-    private  int health;
+    private int health;
 
 }

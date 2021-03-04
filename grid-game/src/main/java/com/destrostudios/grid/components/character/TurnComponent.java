@@ -1,8 +1,10 @@
 package com.destrostudios.grid.components.character;
 
 import com.destrostudios.grid.components.Component;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@Data
+@Value
+@AllArgsConstructor
 public class TurnComponent implements Component {
 }

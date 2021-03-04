@@ -1,12 +1,13 @@
 package com.destrostudios.grid.actions;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
+@Value
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class CastSpellAction implements Action {
     private int targetX;
     private int targetY;
