@@ -11,8 +11,12 @@ import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
 import java.security.SecureRandom;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
     public static void main(String... args) {
         GridGame game = new GridGame();
@@ -22,15 +26,14 @@ public class Main {
         GridBotState botState = new GridBotState(game);
         MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot(botState);
         while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
-            System.out.println("calculating...");
+            LOG.info("calculating...");
             List<Action> actions = bot.sortedActions(botState.activeTeam());
             game.registerAction(actions.get(0));
             while (game.triggeredHandlersInQueue()) {
                 game.triggerNextHandler();
             }
 
-            System.out.println(actions);
-            System.out.println();
+            LOG.info("{}", actions);
         }
     }
 
@@ -38,7 +41,7 @@ public class Main {
         MctsBotSettings<GridBotState, Action> botSettings = new MctsBotSettings<>();
         botSettings.verbose = true;
         botSettings.maxThreads = 2;
-        botSettings.strength = 1000;
+        botSettings.strength = 100;
         botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 10, Main::eval)::evaluate;
 
         return new MctsBot<>(new GridBotService(), botState, botSettings);
