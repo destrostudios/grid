@@ -40,6 +40,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private GameProxy gameProxy;
     private LinkedList<Animation> playingAnimations = new LinkedList<>();
     private Integer targetingSpellEntity;
+    private List<Integer> validSpellTargetEntities = new LinkedList<>();
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
@@ -140,12 +141,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                             : null;
                     return new GuiSpell(name, tooltip, remainingCooldown, () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
-                            targetingSpellEntity = spellEntity;
-                            List<Integer> validTargetEntities = CalculationUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), entityWorld);
-                            mapAppState.setValidTargetEntities(validTargetEntities);
+                            setTargetingSpell(spellEntity);
                         } else {
-                            targetingSpellEntity = null;
-                            mapAppState.clearValidTargetEntities();
+                            setTargetingSpell(null);
                         }
                     });
                 })
@@ -176,8 +174,15 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     Vector3Int clickedPosition = getAppState(MapAppState.class).getHoveredPosition(false);
                     if (clickedPosition != null) {
                         if (targetingSpellEntity != null) {
-                            gameProxy.requestAction(new CastSpellAction(clickedPosition.getX(), clickedPosition.getZ(),
-                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity));
+                            if (containsEntity(gameProxy.getGame().getWorld(), validSpellTargetEntities, clickedPosition.getX(), clickedPosition.getZ())) {
+                                gameProxy.requestAction(new CastSpellAction(
+                                    clickedPosition.getX(),
+                                    clickedPosition.getZ(),
+                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
+                                );
+                            } else {
+                                setTargetingSpell(null);
+                            }
                         } else {
                             gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), playerEntity.toString()));
                         }
@@ -185,6 +190,23 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     break;
             }
         }
+    }
+
+    private boolean containsEntity(EntityWorld entityWorld, List<Integer> entities, int x, int y) {
+        return entities.stream().anyMatch(entity -> {
+            PositionComponent positionComponent = entityWorld.getComponent(entity, PositionComponent.class);
+            return ((positionComponent.getX() == x) && (positionComponent.getY() == y));
+        });
+    }
+
+    private void setTargetingSpell(Integer spellEntity) {
+        targetingSpellEntity = spellEntity;
+        if (spellEntity != null) {
+            validSpellTargetEntities = CalculationUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getWorld());
+        } else {
+            validSpellTargetEntities.clear();
+        }
+        getAppState(MapAppState.class).setValidTargetEntities(validSpellTargetEntities);
     }
 
     public void playAnimation(Animation animation) {
