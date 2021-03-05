@@ -108,7 +108,6 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             return;
         }
 
-        MapAppState mapAppState = getAppState(MapAppState.class);
         GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
         EntityWorld entityWorld = gameProxy.getGame().getWorld();
 
