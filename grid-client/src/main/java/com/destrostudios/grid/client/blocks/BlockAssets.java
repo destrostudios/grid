@@ -11,7 +11,7 @@ public class BlockAssets {
         return new BlockTerrainControl(getSettings(application, chunkSizeX, chunkSizeZ), chunksCount);
     }
 
-    public static CubesSettings getSettings(Application application, int chunkSizeX, int chunkSizeZ) {
+    private static CubesSettings getSettings(Application application, int chunkSizeX, int chunkSizeZ) {
         CubesSettings cubesSettings = new CubesSettings(application);
         cubesSettings.setBlockSize(BLOCK_SIZE);
         cubesSettings.setChunkSizeX(chunkSizeX);

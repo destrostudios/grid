@@ -1,6 +1,7 @@
 package com.destrostudios.grid.client.appstates;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
+import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
 import com.destrostudios.grid.shared.Characters;
 import com.destrostudios.grid.shared.Maps;
@@ -32,7 +33,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class MenuAppState extends BaseAppState {
+public class MenuAppState extends BaseAppState<ClientApplication> {
 
     private StartGameInfo startGameInfo;
     private PlayerInfo ownPlayerInfo;

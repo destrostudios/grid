@@ -27,7 +27,7 @@ public class ComponentsContainerSerializer {
     public static final String CHARACTER = "/character/";
     public static final String MAPS = "/maps/";
     public static final String JSON = ".json";
-    public static String BASE_PATH = "D:/Workspace/Grid/grid-game/src/main/resources";
+    public static String BASE_PATH = "../grid-game/src/main/resources";
 
     public static void main(String[] args) throws JsonProcessingException {
         generateAndSaveMap("DestroMap");

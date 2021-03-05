@@ -7,13 +7,14 @@
     <version>0.0.1</version>
     <packaging>pom</packaging>
     <modules>
-        <module>grid-client</module>
-        <module>grid-game</module>
-        <module>grid-server</module>
-        <module>grid-shared</module>
-        <module>grid-network</module>
         <module>grid-bot</module>
         <module>grid-bot-client</module>
+        <module>grid-client</module>
+        <module>grid-game</module>
+        <module>grid-network</module>
+        <module>grid-server</module>
+        <module>grid-shared</module>
+        <module>grid-tools</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

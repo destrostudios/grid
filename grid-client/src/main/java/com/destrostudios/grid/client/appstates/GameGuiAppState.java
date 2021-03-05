@@ -1,5 +1,6 @@
 package com.destrostudios.grid.client.appstates;
 
+import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -15,7 +16,7 @@ import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
 import java.util.List;
 
-public class GameGuiAppState extends BaseAppState {
+public class GameGuiAppState extends BaseAppState<ClientApplication> {
 
     private int barMarginX = 100;
     private int barMarginBottom = 50;
