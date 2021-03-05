@@ -168,7 +168,7 @@ public class GridGame {
         MaxAttackPointsComponent apC = world.getComponent(playerEntity, MaxAttackPointsComponent.class);
         world.addComponent(playerEntity, new AttackPointsComponent(apC.getMaxAttackPoints()));
         MaxMovementPointsComponent mpC = world.getComponent(playerEntity, MaxMovementPointsComponent.class);
-        world.addComponent(playerEntity, new MovementPointsComponent(mpC.getMaxMovenemtPoints()));
+        world.addComponent(playerEntity, new MovementPointsComponent(mpC.getMaxMovementPoints()));
     }
 
     public List<Component> getPlayerComponentsWithoutSpells(CharacterContainer characterContainer) {
@@ -202,7 +202,7 @@ public class GridGame {
             characterContainer = ComponentsContainerSerializer.readSeriazableFromRessources(playerInfo.getCharacterName(), CharacterContainer.class);
         } catch (IOException e) {
             characterContainer = new CharacterContainer();
-            logger.warning("Error reading file " + playerInfo + " from ressources");
+            logger.warning("Error reading file " + playerInfo + " from resources");
         }
         return characterContainer;
     }

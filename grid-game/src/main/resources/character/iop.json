@@ -1,0 +1,189 @@
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "c": "MaxMovementPointsComponent",
+        "maxMovementPoints": 5
+      },
+      {
+        "c": "MaxAttackPointsComponent",
+        "maxAttackPoints": 11
+      },
+      {
+        "c": "PoisonsComponent",
+        "poisonsEntities": []
+      },
+      {
+        "c": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "c": "ObstacleComponent"
+      },
+      {
+        "c": "PlayerComponent"
+      },
+      {
+        "c": "VisualComponent",
+        "name": "tristan"
+      },
+      {
+        "c": "MaxHealthComponent",
+        "maxHealth": 500
+      },
+      {
+        "c": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    ],
+    "2": [
+      {
+        "c": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "[5 AP] Jump to target location."
+      },
+      {
+        "c": "TeleportComponent"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 5
+      },
+      {
+        "c": "RangeComponent",
+        "range": 6
+      }
+    ],
+    "3": [
+      {
+        "c": "NameComponent",
+        "name": "Intimidation"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "[2 AP] Push target 3 tiles."
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "RangeComponent",
+        "range": 1
+      },
+      {
+        "c": "DisplacementComponent",
+        "displacement": 3
+      }
+    ],
+    "4": [
+      {
+        "c": "NameComponent",
+        "name": "Blow"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "[2 AP] Push neighbors of target cell back by 1 tile. TODO"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "RangeComponent",
+        "range": 8
+      },
+      {
+        "c": "CooldownComponent",
+        "cooldown": 2
+      }
+    ],
+    "5": [
+      {
+        "c": "NameComponent",
+        "name": "Concentration"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 2
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "[2 AP] Deal 20-24 damage. TODO"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 1
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -22
+      }
+    ],
+    "6": [
+      {
+        "c": "NameComponent",
+        "name": "Sword of Iop"
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "[4 AP] Deal 37-41 damage in a cross-shaped AoE. TODO"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 4
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -39
+      },
+      {
+        "c": "RangeComponent",
+        "range": 6
+      }
+    ],
+    "7": [
+      {
+        "c": "NameComponent",
+        "name": "Iop's Wrath"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 7
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns. TODO"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 1
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -90
+      },
+      {
+        "c": "DamageBuffComponent",
+        "buffAmount": 110,
+        "buffDuration": 4,
+        "spellBuff": true
+      },
+      {
+        "c": "CooldownComponent",
+        "cooldown": 4
+      }
+    ]
+  }
+}

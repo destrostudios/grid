@@ -71,7 +71,7 @@ public class UpdateBuffsHandler implements EventHandler<BuffsUpdateEvent> {
             MovementPointsComponent movementPointsComponent = world.getComponent(entity, MovementPointsComponent.class);
             MaxMovementPointsComponent maxMp = world.getComponent(entity, MaxMovementPointsComponent.class);
             subEvents.add(new MovementPointsChangedEvent(entity, movementPointsComponent.getMovementPoints() + deltaMP));
-            subEvents.add(new MaxMovementPointsChangedEvent(entity, maxMp.getMaxMovenemtPoints() + deltaMP));
+            subEvents.add(new MaxMovementPointsChangedEvent(entity, maxMp.getMaxMovementPoints() + deltaMP));
         }
         if (deltaHP != 0) {
             HealthPointsComponent healthPointsComponent = world.getComponent(entity, HealthPointsComponent.class);

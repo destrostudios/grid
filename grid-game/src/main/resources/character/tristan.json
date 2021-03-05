@@ -4,7 +4,7 @@
     "1": [
       {
         "c": "MaxMovementPointsComponent",
-        "maxMovenemtPoints": 13
+        "maxMovementPoints": 13
       },
       {
         "c": "MaxAttackPointsComponent",
