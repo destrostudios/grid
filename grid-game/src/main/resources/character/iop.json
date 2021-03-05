@@ -40,7 +40,8 @@
           4,
           5,
           6,
-          7
+          7,
+          8
         ]
       }
     ],
@@ -183,6 +184,28 @@
       {
         "c": "CooldownComponent",
         "cooldown": 4
+      }
+    ],
+    "8": [
+      {
+        "c": "NameComponent",
+        "name": "Pressure"
+      },
+      {
+        "c": "AttackPointCostComponent",
+        "attackPointCosts": 3
+      },
+      {
+        "c": "TooltipComponent",
+        "tooltip": "[3 AP] Deal 24-28 damage. TODO"
+      },
+      {
+        "c": "RangeComponent",
+        "range": 3
+      },
+      {
+        "c": "HealthChangeComponent",
+        "healthChange": -26
       }
     ]
   }
