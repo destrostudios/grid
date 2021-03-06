@@ -10,8 +10,10 @@ import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.MapContainer;
+import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.ColorRGBA;
@@ -33,7 +35,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
     private int buttonWidth = 150;
     private int containerToolWidth = 200;
     private Label lblTool;
-    private Label lblSelection;
+    private Label lblToolInfo;
     private MapEditorTool tool;
     private int visualIndexGround;
     private int visualIndexObstacle;
@@ -56,11 +58,11 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
         lblTool.setFontSize(16);
         lblTool.setColor(ColorRGBA.White);
         containerTool.addChild(lblTool);
-        lblSelection = new Label("");
-        lblSelection.setTextVAlignment(VAlignment.Center);
-        lblSelection.setFontSize(16);
-        lblSelection.setColor(ColorRGBA.White);
-        containerTool.addChild(lblSelection);
+        lblToolInfo = new Label("");
+        lblToolInfo.setTextVAlignment(VAlignment.Center);
+        lblToolInfo.setFontSize(16);
+        lblToolInfo.setColor(ColorRGBA.White);
+        containerTool.addChild(lblToolInfo);
         guiNode.attachChild(containerTool);
 
         int x = (marginX + containerToolWidth);
@@ -76,7 +78,8 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
         inputManager.addMapping("remove", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         inputManager.addMapping("previous", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
         inputManager.addMapping("next", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
-        inputManager.addListener(this, "add", "remove", "previous", "next");
+        inputManager.addMapping("confirm", new KeyTrigger(KeyInput.KEY_C));
+        inputManager.addListener(this, "add", "remove", "previous", "next", "confirm");
 
         setTool(MapEditorTool.GROUND);
 
@@ -100,28 +103,33 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
     private void setTool(MapEditorTool tool) {
         this.tool = tool;
         lblTool.setText("Tool: " + tool.name());
-        flyCam.setEnabled(tool == MapEditorTool.CAMERA);
-        updateSelectionText();
+        updateToolInfoText();
+
+        boolean isCamera = (tool == MapEditorTool.CAMERA);
+        flyCam.setEnabled(isCamera);
+        inputManager.setCursorVisible(!isCamera);
     }
 
     private void changeVisualIndexGround(int direction) {
         visualIndexGround = Math.max(0, Math.min(visualIndexGround + direction, VISUALS_GROUND.length - 1));
-        updateSelectionText();
+        updateToolInfoText();
     }
 
     private void changeVisualIndexObstacle(int direction) {
         visualIndexObstacle = Math.max(0, Math.min(visualIndexObstacle + direction, VISUALS_OBSTACLES.length - 1));
-        updateSelectionText();
+        updateToolInfoText();
     }
 
-    private void updateSelectionText() {
-        String selectionText = null;
+    private void updateToolInfoText() {
+        String toolInfoText = null;
         if (tool == MapEditorTool.GROUND) {
-            selectionText = VISUALS_GROUND[visualIndexGround];
+            toolInfoText = "Selection: " + VISUALS_GROUND[visualIndexGround];
         } else if (tool == MapEditorTool.OBSTACLE) {
-            selectionText = VISUALS_OBSTACLES[visualIndexObstacle];
+            toolInfoText = "Selection: " + VISUALS_OBSTACLES[visualIndexObstacle];
+        } else if (tool == MapEditorTool.CAMERA) {
+            toolInfoText = "Press C to print and apply.";
         }
-        lblSelection.setText((selectionText != null) ? "Selection: " + selectionText : "");
+        lblToolInfo.setText((toolInfoText != null) ? toolInfoText : "");
     }
 
     private void loadMap(String mapName) {
@@ -202,6 +210,12 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
                         changeVisualIndexGround(1);
                     } else if (tool == MapEditorTool.OBSTACLE) {
                         changeVisualIndexObstacle(1);
+                    }
+                    break;
+                case "confirm":
+                    if (tool == MapEditorTool.CAMERA) {
+                        // jME by default prints out camera transform when pressing C
+                        setTool(MapEditorTool.GROUND);
                     }
                     break;
             }
