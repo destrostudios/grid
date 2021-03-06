@@ -15,6 +15,7 @@ import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
@@ -158,7 +159,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     Integer remainingCooldown = entityWorld.hasComponents(spellEntity, OnCooldownComponent.class)
                             ? entityWorld.getComponent(spellEntity, OnCooldownComponent.class).getRemainingRounds()
                             : null;
-                    return new GuiSpell(name, tooltip, remainingCooldown, () -> {
+                    CostComponent costComponent = entityWorld.getComponent(spellEntity, CostComponent.class);
+                    boolean isCostPayable = ((costComponent == null) || ((ownPlayerAP >= costComponent.getApCost()) && (ownPlayerMP >= costComponent.getMpCost()) && (ownPlayerCurrentHealth >= costComponent.getHpCost())));
+                    return new GuiSpell(name, tooltip, remainingCooldown, isCostPayable, () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
                             setTargetingSpell(spellEntity);
                         } else {
