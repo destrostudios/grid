@@ -1,15 +1,13 @@
 package com.destrostudios.grid.eventbus.action.beginturn;
 
-import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.action.endturn.EndTurnEvent;
 import com.destrostudios.grid.eventbus.update.buff.BuffsUpdateEvent;
-import com.destrostudios.grid.eventbus.update.cooldown.UpdateCooldownsUpdateEvent;
-import com.destrostudios.grid.eventbus.update.poison.UpdatePoisonsEvent;
-import com.destrostudios.grid.eventbus.update.spell.UpdateAcitveDurationSpellsEvent;
+import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsEvent;
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnEvent;
+import com.destrostudios.grid.eventbus.update.playerenchantments.UpdatePlayerEnchantmentsEvent;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -22,16 +20,15 @@ public class BeginTurnHandler implements EventHandler<BeginTurnEvent> {
 
     @Override
     public void onEvent(BeginTurnEvent event, Supplier<EntityWorld> entityWorldSupplier) {
-        EntityWorld entityWorld = entityWorldSupplier.get();
         int currentEntity = event.getBeginTurnEntity();
 
         List<Event> followUpEvents = new ArrayList<>();
 
-        // update cooldowns, buffs and poisoins at the beginning of
+        // update spells, buffs and poisoins at the beginning of
         followUpEvents.add(new BuffsUpdateEvent(currentEntity));
-        followUpEvents.add(new UpdatePoisonsEvent(currentEntity));
-        followUpEvents.add(new UpdateCooldownsUpdateEvent(currentEntity));
-        followUpEvents.add(new UpdateAcitveDurationSpellsEvent(currentEntity));
+        followUpEvents.add(new UpdateStatsPerTurnEvent(currentEntity));
+        followUpEvents.add(new UpdateSpellsEvent(currentEntity));
+        followUpEvents.add(new UpdatePlayerEnchantmentsEvent(currentEntity));
 
         eventbus.registerSubEvents(followUpEvents);
     }

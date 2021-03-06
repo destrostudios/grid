@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components.spells.poison;
+package com.destrostudios.grid.components.spells.perturn;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AccessLevel;
@@ -10,9 +10,9 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class HealthPointsPerTurnComponent implements Component {
-    private int poisonMinValue;
-    private int poisonMaxValue;
-    private int poisonDuration;
+public class DamagePerTurnComponent implements Component {
+    private int damageMinValue;
+    private int damageMaxValue;
+    private int duration;
     private int sourceEntity;
 }

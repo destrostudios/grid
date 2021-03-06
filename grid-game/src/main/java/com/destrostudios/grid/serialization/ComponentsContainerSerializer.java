@@ -28,23 +28,22 @@ public class ComponentsContainerSerializer {
     public static final String MAPS = "/maps/";
     public static final String JSON = ".json";
     public static String BASE_PATH = "../grid-game/src/main/resources";
+//    public static void main(String[] args) throws JsonProcessingException {
+//        generateAndSaveMap("DestroMap");
+//        generateAndSaveMap("EtherMap");
+//        generateAndSaveMap("IceMap");
+//    }
 
     public static void main(String[] args) throws JsonProcessingException {
-        generateAndSaveMap("DestroMap");
-        generateAndSaveMap("EtherMap");
-        generateAndSaveMap("IceMap");
+        generateAndSaveCharacter("aland");
+        generateAndSaveCharacter("alice");
+        generateAndSaveCharacter("dosaz");
+        generateAndSaveCharacter("dwarf_warrior");
+        generateAndSaveCharacter("elven_archer");
+        generateAndSaveCharacter("garmon");
+        generateAndSaveCharacter("scarlet");
+        generateAndSaveCharacter("tristan");
     }
-
-//    public static void main(String[] args) throws JsonProcessingException {
-//        generateAndSaveCharacter("aland");
-//        generateAndSaveCharacter("alice");
-//        generateAndSaveCharacter("dosaz");
-//        generateAndSaveCharacter("dwarf_warrior");
-//        generateAndSaveCharacter("elven_archer");
-//        generateAndSaveCharacter("garmon");
-//        generateAndSaveCharacter("scarlet");
-//        generateAndSaveCharacter("tristan");
-//    }
 
     public static <E extends ComponentsContainer> E readContainerAsJson(String gameState, Class<E> classz) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components.spells;
+package com.destrostudios.grid.components.spells.movements;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AllArgsConstructor;

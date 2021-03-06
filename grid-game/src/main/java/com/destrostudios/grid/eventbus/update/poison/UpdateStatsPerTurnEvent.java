@@ -6,6 +6,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UpdatePoisonsEvent implements Event {
+public class UpdateStatsPerTurnEvent implements Event {
     private final int entity;
 }

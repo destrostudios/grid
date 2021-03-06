@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components.spells;
+package com.destrostudios.grid.components.spells.range;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AccessLevel;
@@ -9,6 +9,7 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class TooltipComponent implements Component {
-    private String tooltip;
+public class RangeComponent implements Component {
+    int minRange;
+    int maxRange;
 }

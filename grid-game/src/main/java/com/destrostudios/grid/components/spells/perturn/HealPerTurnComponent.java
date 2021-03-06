@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components.spells;
+package com.destrostudios.grid.components.spells.perturn;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AccessLevel;
@@ -9,6 +9,9 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class OnCooldownComponent implements Component {
-    private int remainingRounds;
+public class HealPerTurnComponent implements Component {
+    private int healMinValue;
+    private int healMaxValue;
+    private int duration;
+    private int sourceEntity;
 }

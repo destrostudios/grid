@@ -4,16 +4,18 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.spells.RangeComponent;
+import com.destrostudios.grid.components.properties.BuffsComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
+import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.entities.EntityWorld;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CalculationUtils {
+public class RangeUtils {
     /**
      * Calculates the entities of the targetable spells.
      *
@@ -25,15 +27,18 @@ public class CalculationUtils {
     public static List<Integer> getRange(int spellEntity, int casterEntity, EntityWorld entityWorld) {
         RangeComponent rangeComponentOpt = entityWorld.getComponent(spellEntity, RangeComponent.class);
         PositionComponent casterPositionOpt = entityWorld.getComponent(casterEntity, PositionComponent.class);
-        int range = rangeComponentOpt.getRange();
+        int maxRange = rangeComponentOpt.getMaxRange();
+        int minRange = rangeComponentOpt.getMinRange();
         PositionComponent positionComponent = casterPositionOpt;
         int x = positionComponent.getX();
         int y = positionComponent.getY();
         List<Integer> walkableAndTargetablePos = entityWorld.list(PositionComponent.class, WalkableComponent.class);
         List<Integer> result = new ArrayList<>();
+
         for (int walkableAndTargetablePo : walkableAndTargetablePos) {
             PositionComponent posC = entityWorld.getComponent(walkableAndTargetablePo, PositionComponent.class);
-            if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= range) {
+            if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= maxRange
+                    && Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) >= minRange) {
                 result.add(walkableAndTargetablePo);
             }
         }
@@ -53,9 +58,15 @@ public class CalculationUtils {
         int buffPlayer = world.hasComponents(playerEntity, classz)
                 ? world.getComponent(playerEntity, classz).getBuffAmount()
                 : 0;
-        int buffSpell = world.hasComponents(spellEntity, BuffComponent.class)
-                ? world.getComponent(spellEntity, BuffComponent.class).getBuffAmount()
-                : 0;
+        List<Integer> spellBuffEntities = world.hasComponents(spellEntity, BuffsComponent.class)
+                ? world.getComponent(spellEntity, BuffsComponent.class).getBuffEntities()
+                : new ArrayList<>();
+        int buffSpell = spellBuffEntities.stream()
+                .flatMap(spellBuff -> world.getComponents(spellBuff).stream())
+                .filter(classz::isInstance)
+                .map(spellBuff -> (BuffComponent) spellBuff)
+                .mapToInt(BuffComponent::getBuffAmount)
+                .sum();
         return buffPlayer + buffSpell;
     }
 
@@ -85,10 +96,9 @@ public class CalculationUtils {
 
     public static PositionComponent getDisplacementGoal(EntityWorld entityWorld, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
         if (posEntityToDisplace.equals(posSource)) {
-            return posSource;// TODO: temporary fix, is there a better solution?
-        }
-        if (posSource.getX() == posEntityToDisplace.getX()) {
-            // displacement from left or right
+            return posSource;
+        } else if (Math.abs(posEntityToDisplace.getX() - posSource.getX()) < Math.abs(posEntityToDisplace.getY() - posSource.getY())) {
+            // displacement from top or bot
             int displacementSignum = (int) Math.signum(posEntityToDisplace.getY() - posSource.getY());
 
             Function<Integer, Boolean> predicate = number -> posSource.getY() < posEntityToDisplace.getY()
@@ -104,11 +114,11 @@ public class CalculationUtils {
                     return posNew;
                 }
             }
-
-        } else if (posSource.getY() == posEntityToDisplace.getY()) {
-            // displacement from top or bot
+            return posNew;
+        } else {
+            // displacement from right or left
             int displacementSignum = (int) Math.signum(posEntityToDisplace.getX() - posSource.getX());
-            Function<Integer, Boolean> predicate = number -> posSource.getY() < posEntityToDisplace.getY()
+            Function<Integer, Boolean> predicate = number -> posSource.getX() < posEntityToDisplace.getX()
                     ? number < displacement
                     : number > -displacement;
 
@@ -121,8 +131,8 @@ public class CalculationUtils {
                     return posNew;
                 }
             }
+            return posNew;
         }
-        return null;
     }
 
 }
