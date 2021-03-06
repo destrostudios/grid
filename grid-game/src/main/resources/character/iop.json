@@ -51,11 +51,6 @@
         "name": "Jump"
       },
       {
-        "component": "CastsPerTurnComponent",
-        "maxCastsPerTurn": 3,
-        "castsThisTurn": 0
-      },
-      {
         "component": "TooltipComponent",
         "tooltip": "[5 AP] Jump to target location."
       },
@@ -84,11 +79,6 @@
         "tooltip": "[2 AP] Push target 3 tiles."
       },
       {
-        "component": "CastsPerTurnComponent",
-        "maxCastsPerTurn": 3,
-        "castsThisTurn": 0
-      },
-      {
         "component": "CostComponent",
         "apCost": 2,
         "mpCost": 0,
@@ -98,6 +88,11 @@
         "component": "RangeComponent",
         "minRange": 1,
         "maxRange": 1
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
       },
       {
         "component": "DisplacementComponent",
@@ -120,13 +115,8 @@
         "hpCost": 0
       },
       {
-        "component": "CastsPerTurnComponent",
-        "maxCastsPerTurn": 1,
-        "castsThisTurn": 0
-      },
-      {
         "component": "RangeComponent",
-        "minRange": 1,
+        "minRange": 2,
         "maxRange": 8
       },
       {
@@ -144,6 +134,10 @@
         "name": "Concentration"
       },
       {
+        "component": "TooltipComponent",
+        "tooltip": "[2 AP] Deal 20-24 damage"
+      },
+      {
         "component": "CostComponent",
         "apCost": 2,
         "mpCost": 0,
@@ -153,10 +147,6 @@
         "component": "CastsPerTurnComponent",
         "maxCastsPerTurn": 3,
         "castsThisTurn": 0
-      },
-      {
-        "component": "TooltipComponent",
-        "tooltip": "[2 AP] Deal 20-24 damage"
       },
       {
         "component": "RangeComponent",
@@ -176,11 +166,11 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[4 AP] Deal 37-41 damage in a cross-shaped AoE. TODO"
+        "tooltip": "[5 AP] Deal 37-41 damage in a cross-shaped AoE. TODO"
       },
       {
         "component": "CostComponent",
-        "apCost": 4,
+        "apCost": 5,
         "mpCost": 0,
         "hpCost": 0
       },
@@ -206,14 +196,14 @@
         "name": "Iop's Wrath"
       },
       {
+        "component": "TooltipComponent",
+        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns. TODO"
+      },
+      {
         "component": "CostComponent",
         "apCost": 7,
         "mpCost": 0,
         "hpCost": 0
-      },
-      {
-        "component": "TooltipComponent",
-        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns. TODO"
       },
       {
         "component": "RangeComponent",
@@ -242,14 +232,14 @@
         "name": "Pressure"
       },
       {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Deal 26-30 damage."
+      },
+      {
         "component": "CostComponent",
         "apCost": 3,
         "mpCost": 0,
         "hpCost": 0
-      },
-      {
-        "component": "TooltipComponent",
-        "tooltip": "[3 AP] Deal 24-28 damage. TODO"
       },
       {
         "component": "RangeComponent",
@@ -258,8 +248,8 @@
       },
       {
         "component": "DamageComponent",
-        "minDmg": 24,
-        "maxDmg": 28
+        "minDmg": 26,
+        "maxDmg": 30
       }
     ]
   }

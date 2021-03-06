@@ -103,6 +103,11 @@
                 <artifactId>bot</artifactId>
                 <version>${version.turn-based-game-tools}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <artifactId>grid</artifactId>
+                <version>${version.turn-based-game-tools}</version>
+            </dependency>
             <!--jMonkeyEngine-->
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
