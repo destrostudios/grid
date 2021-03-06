@@ -1,4 +1,4 @@
-package com.destrostudios.grid.tools;
+package com.destrostudios.grid.tools.mapeditor;
 
 import com.destrostudios.grid.client.FileAssets;
 import com.destrostudios.grid.client.JMonkeyUtil;

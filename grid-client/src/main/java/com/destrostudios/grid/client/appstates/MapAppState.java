@@ -15,6 +15,7 @@ import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.maps.Map;
 import com.destrostudios.grid.client.maps.Maps;
 import com.destrostudios.grid.client.models.ModelObject;
+import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
@@ -53,6 +54,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private HashMap<Integer, PlayerVisual> playerVisuals = new HashMap<>();
     private HashMap<Integer, ModelObject> obstacleModels = new HashMap<>();
     private List<Integer> validTargetEntities = new LinkedList<>();
+    private List<Integer> tmpRemovedEntities = new LinkedList<>();
 
     public MapAppState(String mapName, EntityWorld entityWorld) {
         this.map = Maps.get(mapName);
@@ -117,6 +119,17 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     public void updateVisuals() {
         updateTerrain();
 
+        // Obstacles
+        obstacleModels.forEach((obstacleEntity, modelObject) -> {
+            if (!hasEntity(entityWorld, obstacleEntity)) {
+                rootNode.detachChild(modelObject);
+                tmpRemovedEntities.add(obstacleEntity);
+            }
+        });
+        for (int entityToRemove : tmpRemovedEntities) {
+            obstacleModels.remove(entityToRemove);
+        }
+        tmpRemovedEntities.clear();
         List<Integer> obstacleEntities = entityWorld.list(ObstacleComponent.class).stream()
                 .filter(entity -> !entityWorld.hasComponents(entity, PlayerComponent.class))
                 .collect(Collectors.toList());
@@ -125,13 +138,26 @@ public class MapAppState extends BaseAppState<BaseApplication> {
                 String modelName = entityWorld.getComponent(obstacleEntity, VisualComponent.class).getName();
                 ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
                 rootNode.attachChild(newObstacleModel);
-                return newObstacleModel;
+                    return newObstacleModel;
             });
 
             PositionComponent positionComponent = entityWorld.getComponent(obstacleEntity, PositionComponent.class);
             obstacleModel.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), PositionUtil.CHARACTER_Y, PositionUtil.get3dCoordinate(positionComponent.getY()));
         }
 
+        // Players
+        playerVisuals.forEach((playerEntity, playerVisual) -> {
+            if (!hasEntity(entityWorld, playerEntity)) {
+                rootNode.detachChild(playerVisual.getModelObject());
+                guiNode.detachChild(playerVisual.getLblName());
+                guiNode.detachChild(playerVisual.getHealthBar());
+                tmpRemovedEntities.add(playerEntity);
+            }
+        });
+        for (int entityToRemove : tmpRemovedEntities) {
+            playerVisuals.remove(entityToRemove);
+        }
+        tmpRemovedEntities.clear();
         for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
             PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
                 String characterName = entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
@@ -156,6 +182,11 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             playerVisual.setMaximumHealth(maxHealthComponent.getMaxHealth());
             playerVisual.setCurrentHealth(healthPointsComponent.getHealth());
         }
+    }
+
+    private boolean hasEntity(EntityWorld entityWorld, int entity) {
+        List<Component> components = entityWorld.getComponents(entity);
+        return ((components != null) && (components.size() > 0));
     }
 
     public void setValidTargetEntities(List<Integer> validTargetEntities) {
