@@ -8,7 +8,7 @@ import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.position.PositionUpdateEvent;
-import com.destrostudios.grid.util.CalculationUtils;
+import com.destrostudios.grid.util.RangeUtils;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class DisplacementHandler implements EventHandler<DisplacementEvent> {
         PositionComponent posEntityToDisplace = entityWorld.getComponent(entityToDisplace, PositionComponent.class);
         PositionComponent posSource = new PositionComponent(event.getXDisplacementSource(), event.getYDisplacementSource());
 
-        PositionComponent resultingPos = CalculationUtils.getDisplacementGoal(entityWorld, posEntityToDisplace, posSource,event.getEntityToDisplace(), event.getDisplacementAmount());
+        PositionComponent resultingPos = RangeUtils.getDisplacementGoal(entityWorld, posEntityToDisplace, posSource,event.getEntityToDisplace(), event.getDisplacementAmount());
         int actualDisplacement = Math.abs(resultingPos.getX() - posEntityToDisplace.getX()) + Math.abs(resultingPos.getY() - posEntityToDisplace.getY());
         int displacementDmg = getDisplacementDmg(actualDisplacement, Math.abs(event.getDisplacementAmount()));
         followUpEvents.add(new PositionUpdateEvent(event.getEntityToDisplace(), resultingPos));

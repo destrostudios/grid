@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components.spells;
+package com.destrostudios.grid.components.spells.limitations;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AccessLevel;
@@ -9,6 +9,6 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class MovementPointsCostComponent implements Component {
-    private int movementPointsCost;
+public class OnCooldownComponent implements Component {
+    private int remainingRounds;
 }

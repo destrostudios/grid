@@ -3,37 +3,37 @@
   "components": {
     "1": [
       {
-        "c": "MaxMovementPointsComponent",
+        "component": "MaxMovementPointsComponent",
         "maxMovementPoints": 5
       },
       {
-        "c": "MaxAttackPointsComponent",
+        "component": "MaxAttackPointsComponent",
         "maxAttackPoints": 11
       },
       {
-        "c": "PoisonsComponent",
-        "poisonsEntities": []
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
       },
       {
-        "c": "BuffsComponent",
+        "component": "BuffsComponent",
         "buffEntities": []
       },
       {
-        "c": "ObstacleComponent"
+        "component": "ObstacleComponent"
       },
       {
-        "c": "PlayerComponent"
+        "component": "PlayerComponent"
       },
       {
-        "c": "VisualComponent",
+        "component": "VisualComponent",
         "name": "tristan"
       },
       {
-        "c": "MaxHealthComponent",
+        "component": "MaxHealthComponent",
         "maxHealth": 500
       },
       {
-        "c": "SpellsComponent",
+        "component": "SpellsComponent",
         "spells": [
           2,
           3,
@@ -47,165 +47,219 @@
     ],
     "2": [
       {
-        "c": "NameComponent",
+        "component": "NameComponent",
         "name": "Jump"
       },
       {
-        "c": "TooltipComponent",
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "TooltipComponent",
         "tooltip": "[5 AP] Jump to target location."
       },
       {
-        "c": "TeleportComponent"
+        "component": "TeleportComponent"
       },
       {
-        "c": "AttackPointCostComponent",
-        "attackPointCosts": 5
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
       },
       {
-        "c": "RangeComponent",
-        "range": 6
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 6
       }
     ],
     "3": [
       {
-        "c": "NameComponent",
+        "component": "NameComponent",
         "name": "Intimidation"
       },
       {
-        "c": "TooltipComponent",
+        "component": "TooltipComponent",
         "tooltip": "[2 AP] Push target 3 tiles."
       },
       {
-        "c": "AttackPointCostComponent",
-        "attackPointCosts": 2
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
       },
       {
-        "c": "RangeComponent",
-        "range": 1
+        "component": "CostComponent",
+        "apCost": 2,
+        "mpCost": 0,
+        "hpCost": 0
       },
       {
-        "c": "DisplacementComponent",
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 1
+      },
+      {
+        "component": "DisplacementComponent",
         "displacement": 3
       }
     ],
     "4": [
       {
-        "c": "NameComponent",
+        "component": "NameComponent",
         "name": "Blow"
       },
       {
-        "c": "TooltipComponent",
+        "component": "TooltipComponent",
         "tooltip": "[2 AP] Push neighbors of target cell back by 1 tile. TODO"
       },
       {
-        "c": "AttackPointCostComponent",
-        "attackPointCosts": 2
+        "component": "CostComponent",
+        "apCost": 2,
+        "mpCost": 0,
+        "hpCost": 0
       },
       {
-        "c": "RangeComponent",
-        "range": 8
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
       },
       {
-        "c": "CooldownComponent",
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 8
+      },
+      {
+        "component": "CooldownComponent",
         "cooldown": 2
+      },
+      {
+        "component": "DisplacementComponent",
+        "displacement": 1
       }
     ],
     "5": [
       {
-        "c": "NameComponent",
+        "component": "NameComponent",
         "name": "Concentration"
       },
       {
-        "c": "AttackPointCostComponent",
-        "attackPointCosts": 2
+        "component": "CostComponent",
+        "apCost": 2,
+        "mpCost": 0,
+        "hpCost": 0
       },
       {
-        "c": "TooltipComponent",
-        "tooltip": "[2 AP] Deal 20-24 damage. TODO"
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
       },
       {
-        "c": "RangeComponent",
-        "range": 1
+        "component": "TooltipComponent",
+        "tooltip": "[2 AP] Deal 20-24 damage"
       },
       {
-        "c": "HealthChangeComponent",
-        "healthChange": -22
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 1
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 20,
+        "maxDmg": 24
       }
     ],
     "6": [
       {
-        "c": "NameComponent",
+        "component": "NameComponent",
         "name": "Sword of Iop"
       },
       {
-        "c": "TooltipComponent",
+        "component": "TooltipComponent",
         "tooltip": "[4 AP] Deal 37-41 damage in a cross-shaped AoE. TODO"
       },
       {
-        "c": "AttackPointCostComponent",
-        "attackPointCosts": 4
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 0,
+        "hpCost": 0
       },
       {
-        "c": "HealthChangeComponent",
-        "healthChange": -39
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
       },
       {
-        "c": "RangeComponent",
-        "range": 6
+        "component": "DamageComponent",
+        "minDmg": 37,
+        "maxDmg": 41
+      },
+      {
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 6
       }
     ],
     "7": [
       {
-        "c": "NameComponent",
+        "component": "NameComponent",
         "name": "Iop's Wrath"
       },
       {
-        "c": "AttackPointCostComponent",
-        "attackPointCosts": 7
+        "component": "CostComponent",
+        "apCost": 7,
+        "mpCost": 0,
+        "hpCost": 0
       },
       {
-        "c": "TooltipComponent",
+        "component": "TooltipComponent",
         "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns. TODO"
       },
       {
-        "c": "RangeComponent",
-        "range": 1
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 1
       },
       {
-        "c": "HealthChangeComponent",
-        "healthChange": -90
+        "component": "DamageComponent",
+        "minDmg": 81,
+        "maxDmg": 100
       },
       {
-        "c": "DamageBuffComponent",
+        "component": "DamageBuffComponent",
         "buffAmount": 110,
         "buffDuration": 4,
         "spellBuff": true
       },
       {
-        "c": "CooldownComponent",
+        "component": "CooldownComponent",
         "cooldown": 4
       }
     ],
     "8": [
       {
-        "c": "NameComponent",
+        "component": "NameComponent",
         "name": "Pressure"
       },
       {
-        "c": "AttackPointCostComponent",
-        "attackPointCosts": 3
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
       },
       {
-        "c": "TooltipComponent",
+        "component": "TooltipComponent",
         "tooltip": "[3 AP] Deal 24-28 damage. TODO"
       },
       {
-        "c": "RangeComponent",
-        "range": 3
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 3
       },
       {
-        "c": "HealthChangeComponent",
-        "healthChange": -26
+        "component": "DamageComponent",
+        "minDmg": 24,
+        "maxDmg": 28
       }
     ]
   }

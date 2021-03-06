@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PoisonAddedEvent implements Event {
+public class StatsPerTurnEvent implements Event {
     private final int sourceEntity;
     private final int targetEntity;
     private final int spellEntity;

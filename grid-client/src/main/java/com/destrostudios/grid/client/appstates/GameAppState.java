@@ -15,8 +15,8 @@ import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.*;
-import com.destrostudios.grid.components.spells.OnCooldownComponent;
-import com.destrostudios.grid.components.spells.TooltipComponent;
+import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
+import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -24,7 +24,7 @@ import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
-import com.destrostudios.grid.util.CalculationUtils;
+import com.destrostudios.grid.util.RangeUtils;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.MouseInput;
@@ -201,7 +201,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void setTargetingSpell(Integer spellEntity) {
         targetingSpellEntity = spellEntity;
         if (spellEntity != null) {
-            validSpellTargetEntities = CalculationUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getWorld());
+            validSpellTargetEntities = RangeUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getWorld());
         } else {
             validSpellTargetEntities.clear();
         }

@@ -5,7 +5,7 @@ import com.destrostudios.grid.eventbus.EventValidator;
 
 import java.util.function.Supplier;
 
-import static com.destrostudios.grid.util.CalculationUtils.isPositionIsFree;
+import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
 
 public class MoveValidator implements EventValidator<MoveEvent> {
 

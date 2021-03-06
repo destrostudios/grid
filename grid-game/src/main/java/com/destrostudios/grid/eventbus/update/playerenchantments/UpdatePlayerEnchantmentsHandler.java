@@ -1,13 +1,13 @@
-package com.destrostudios.grid.eventbus.update.spell;
+package com.destrostudios.grid.eventbus.update.playerenchantments;
 
 import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.properties.BuffsComponent;
-import com.destrostudios.grid.components.properties.PoisonsComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
 import com.destrostudios.grid.components.spells.buffs.*;
-import com.destrostudios.grid.components.spells.poison.AttackPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.poison.HealthPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.poison.MovementPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.EventHandler;
 
@@ -15,45 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class UpdateActiveDurationSpellsHandler implements EventHandler<UpdateAcitveDurationSpellsEvent> {
+public class UpdatePlayerEnchantmentsHandler implements EventHandler<UpdatePlayerEnchantmentsEvent> {
 
     @Override
-    public void onEvent(UpdateAcitveDurationSpellsEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(UpdatePlayerEnchantmentsEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
 
         updatePoisons(event, entityWorld);
         updateBuffs(event, entityWorld);
-        updateSpells(event, entityWorld);
     }
 
-    private void updateSpells(UpdateAcitveDurationSpellsEvent event, EntityWorld entityWorld) {
-        SpellsComponent spells = entityWorld.getComponent(event.getTargetEntity(), SpellsComponent.class);
-
-        List<Integer> newSpells = new ArrayList<>(spells.getSpells());
-        for (Integer poisonsEntity : spells.getSpells()) {
-            boolean removed = updateOrRemove(poisonsEntity, entityWorld);
-            if (removed) {
-                newSpells.remove(poisonsEntity);
-            }
-        }
-        entityWorld.addComponent(event.getTargetEntity(), new SpellsComponent(newSpells));
-    }
-
-
-    private void updatePoisons(UpdateAcitveDurationSpellsEvent event, EntityWorld entityWorld) {
-        PoisonsComponent poisons = entityWorld.getComponent(event.getTargetEntity(), PoisonsComponent.class);
-        List<Integer> newPoisons = new ArrayList<>(poisons.getPoisonsEntities());
-        for (Integer poisonsEntity : poisons.getPoisonsEntities()) {
+    private void updatePoisons(UpdatePlayerEnchantmentsEvent event, EntityWorld entityWorld) {
+        StatsPerRoundComponent poisons = entityWorld.getComponent(event.getTargetEntity(), StatsPerRoundComponent.class);
+        List<Integer> newPoisons = new ArrayList<>(poisons.getStatsPerRoundEntites());
+        for (Integer poisonsEntity : poisons.getStatsPerRoundEntites()) {
             boolean removed = updateOrRemove(poisonsEntity, entityWorld);
             if (removed) {
                 newPoisons.remove(poisonsEntity);
             }
         }
-        entityWorld.addComponent(event.getTargetEntity(), new PoisonsComponent(newPoisons));
+        entityWorld.addComponent(event.getTargetEntity(), new StatsPerRoundComponent(newPoisons));
     }
 
 
-    private void updateBuffs(UpdateAcitveDurationSpellsEvent event, EntityWorld entityWorld) {
+    private void updateBuffs(UpdatePlayerEnchantmentsEvent event, EntityWorld entityWorld) {
         BuffsComponent buffs = entityWorld.getComponent(event.getTargetEntity(), BuffsComponent.class);
         List<Integer> newBuffs = new ArrayList<>(buffs.getBuffEntities());
         for (int buffEntity : buffs.getBuffEntities()) {
@@ -91,7 +76,7 @@ public class UpdateActiveDurationSpellsHandler implements EventHandler<UpdateAci
         } else if (entityWorld.hasComponents(entity, HealBuffComponent.class)) {
             HealBuffComponent healBuff = entityWorld.getComponent(entity, HealBuffComponent.class);
             remove = healBuff.getBuffDuration() == 1;
-            componentToUpdate = new HealBuffComponent(healBuff.getBuffAmount(), healBuff.getBuffDuration() - 1,healBuff.isSpellBuff());
+            componentToUpdate = new HealBuffComponent(healBuff.getBuffAmount(), healBuff.getBuffDuration() - 1, healBuff.isSpellBuff());
 
         } else if (entityWorld.hasComponents(entity, AttackPointsPerTurnComponent.class)) {
             AttackPointsPerTurnComponent apPoison = entityWorld.getComponent(entity, AttackPointsPerTurnComponent.class);
@@ -105,11 +90,17 @@ public class UpdateActiveDurationSpellsHandler implements EventHandler<UpdateAci
             componentToUpdate = new MovementPointsPerTurnComponent(mpPoison.getPoisonMinValue(), mpPoison.getPoisonMaxValue(),
                     mpPoison.getPoisonDuration() - 1, mpPoison.getSourceEntity());
 
-        } else if (entityWorld.hasComponents(entity, HealthPointsPerTurnComponent.class)) {
-            HealthPointsPerTurnComponent hpPoison = entityWorld.getComponent(entity, HealthPointsPerTurnComponent.class);
-            remove = hpPoison.getPoisonDuration() == 1;
-            componentToUpdate = new HealthPointsPerTurnComponent(hpPoison.getPoisonMinValue(), hpPoison.getPoisonMaxValue(),
-                    hpPoison.getPoisonDuration() - 1, hpPoison.getSourceEntity());
+        } else if (entityWorld.hasComponents(entity, DamagePerTurnComponent.class)) {
+            DamagePerTurnComponent hpPoison = entityWorld.getComponent(entity, DamagePerTurnComponent.class);
+            remove = hpPoison.getDuration() == 1;
+            componentToUpdate = new DamagePerTurnComponent(hpPoison.getDamageMinValue(), hpPoison.getDamageMaxValue(),
+                    hpPoison.getDuration() - 1, hpPoison.getSourceEntity());
+
+        } else if (entityWorld.hasComponents(entity, HealPerTurnComponent.class)) {
+            HealPerTurnComponent heal = entityWorld.getComponent(entity, HealPerTurnComponent.class);
+            remove = heal.getDuration() == 1;
+            componentToUpdate = new DamagePerTurnComponent(heal.getHealMinValue(), heal.getHealMaxValue(),
+                    heal.getDuration() - 1, heal.getSourceEntity());
         }
         if (componentToUpdate != null) {
             if (remove) {

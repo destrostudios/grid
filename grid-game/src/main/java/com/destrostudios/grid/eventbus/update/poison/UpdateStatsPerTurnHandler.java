@@ -1,15 +1,12 @@
 package com.destrostudios.grid.eventbus.update.poison;
 
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.components.properties.PoisonsComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
 import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
-import com.destrostudios.grid.components.spells.poison.AttackPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.poison.HealthPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.poison.MovementPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -18,19 +15,20 @@ import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
 import com.destrostudios.grid.random.RandomProxy;
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class UpdatePoisonsHandler implements EventHandler<UpdatePoisonsEvent> {
+public class UpdateStatsPerTurnHandler implements EventHandler<UpdateStatsPerTurnEvent> {
     private final Eventbus eventbus;
     private final RandomProxy random;
 
     @Override
-    public void onEvent(UpdatePoisonsEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(UpdateStatsPerTurnEvent event, Supplier<EntityWorld> entityWorldSupplier) {
         EntityWorld entityWorld = entityWorldSupplier.get();
         List<Event> followUpEvents = handlePoisons(entityWorld, event.getEntity());
         eventbus.registerSubEvents(followUpEvents);
@@ -43,9 +41,9 @@ public class UpdatePoisonsHandler implements EventHandler<UpdatePoisonsEvent> {
         int mpPoisonSum = 0;
         int hpPoisonSum = 0;
 
-        PoisonsComponent poisons = entityWorld.getComponent(playerEntity, PoisonsComponent.class);
+        StatsPerRoundComponent poisons = entityWorld.getComponent(playerEntity, StatsPerRoundComponent.class);
 
-        for (int poison : poisons.getPoisonsEntities()) {
+        for (int poison : poisons.getStatsPerRoundEntites()) {
             if (entityWorld.hasComponents(poison, AttackPointsPerTurnComponent.class)) {
                 AttackPointsPerTurnComponent apPoison = entityWorld.getComponent(poison, AttackPointsPerTurnComponent.class);
                 AttackPointResistenceComponent apResSource = entityWorld.getComponent(apPoison.getSourceEntity(), AttackPointResistenceComponent.class);
@@ -60,11 +58,18 @@ public class UpdatePoisonsHandler implements EventHandler<UpdatePoisonsEvent> {
                 MovementPointResistenceComponent mpResTarget = entityWorld.getComponent(playerEntity, MovementPointResistenceComponent.class);
                 mpPoisonSum += getResultingValue(mpPoison.getPoisonMaxValue() - mpPoison.getPoisonMinValue(),
                         mpResSource.getResitanceValue(), mpResTarget.getResitanceValue());
-            } else {
-                HealthPointsPerTurnComponent hpPoison = entityWorld.getComponent(poison, HealthPointsPerTurnComponent.class);
-                int bound = Math.abs(hpPoison.getPoisonMaxValue()) - Math.abs(hpPoison.getPoisonMinValue()) + 1;
-                int delta = Math.abs(hpPoison.getPoisonMinValue()) + random.nextInt(bound);
-                hpPoisonSum = hpPoisonSum + (int) Math.signum(hpPoison.getPoisonMaxValue()) * delta;
+
+            } else if (entityWorld.hasComponents(poison, HealPerTurnComponent.class)) {
+                HealPerTurnComponent heal = entityWorld.getComponent(poison, HealPerTurnComponent.class);
+                int bound = Math.abs(heal.getHealMaxValue()) - Math.abs(heal.getHealMinValue()) + 1;
+                int delta = Math.abs(heal.getHealMinValue()) + random.nextInt(bound);
+                hpPoisonSum = hpPoisonSum + (int) Math.signum(heal.getHealMaxValue()) * delta;
+
+            } else if (entityWorld.hasComponents(poison, DamagePerTurnComponent.class)) {
+                DamagePerTurnComponent hpPoison = entityWorld.getComponent(poison, DamagePerTurnComponent.class);
+                int bound = Math.abs(hpPoison.getDamageMaxValue()) - Math.abs(hpPoison.getDamageMinValue()) + 1;
+                int delta = Math.abs(hpPoison.getDamageMinValue()) + random.nextInt(bound);
+                hpPoisonSum = hpPoisonSum + (int) Math.signum(hpPoison.getDamageMaxValue()) * delta;
             }
         }
 

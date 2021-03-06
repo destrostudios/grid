@@ -7,20 +7,29 @@ import com.destrostudios.grid.components.map.*;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
 import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
-import com.destrostudios.grid.components.spells.*;
+import com.destrostudios.grid.components.spells.base.DamageComponent;
+import com.destrostudios.grid.components.spells.base.HealComponent;
+import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.buffs.*;
-import com.destrostudios.grid.components.spells.poison.AttackPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.poison.HealthPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.poison.MovementPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
+import com.destrostudios.grid.components.spells.limitations.CostComponent;
+import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
+import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
+import com.destrostudios.grid.components.spells.movements.TeleportComponent;
+import com.destrostudios.grid.components.spells.perturn.*;
+import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "c")
+        property = "component")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AttackPointCostComponent.class, name = "AttackPointCostComponent"),
-        @JsonSubTypes.Type(value = HealthChangeComponent.class, name = "HealthChangeComponent"),
+        @JsonSubTypes.Type(value = CastsPerTurnComponent.class, name = "CastsPerTurnComponent"),
+        @JsonSubTypes.Type(value = CostComponent.class, name = "CostComponent"),
+        @JsonSubTypes.Type(value = HealPerTurnComponent.class, name = "HealPerTurnComponent"),
+        @JsonSubTypes.Type(value = DamageComponent.class, name = "DamageComponent"),
+        @JsonSubTypes.Type(value = HealComponent.class, name = "HealComponent"),
         @JsonSubTypes.Type(value = SpellsComponent.class, name = "SpellsComponent"),
         @JsonSubTypes.Type(value = AttackPointsComponent.class, name = "AttackPointsComponent"),
         @JsonSubTypes.Type(value = HealthPointsComponent.class, name = "HealthPointsComponent"),
@@ -34,7 +43,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = VisualComponent.class, name = "VisualComponent"),
         @JsonSubTypes.Type(value = WalkableComponent.class, name = "WalkableComponent"),
         @JsonSubTypes.Type(value = ObstacleComponent.class, name = "ObstacleComponent"),
-        @JsonSubTypes.Type(value = MovementPointsCostComponent.class, name = "MovementPointsCostComponent"),
         @JsonSubTypes.Type(value = MaxAttackPointsComponent.class, name = "MaxAttackPointsComponent"),
         @JsonSubTypes.Type(value = MaxMovementPointsComponent.class, name = "MaxMovementPointsComponent"),
         @JsonSubTypes.Type(value = TooltipComponent.class, name = "TooltipComponent"),
@@ -44,7 +52,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = HealthPointBuffComponent.class, name = "HealthPointBuffComponent"),
         @JsonSubTypes.Type(value = AttackPointsPerTurnComponent.class, name = "AttackPointsPoisonComponent"),
         @JsonSubTypes.Type(value = MovementPointsPerTurnComponent.class, name = "MovementPointsPoisonComponent"),
-        @JsonSubTypes.Type(value = HealthPointsPerTurnComponent.class, name = "HealthPointsPoisonComponent"),
+        @JsonSubTypes.Type(value = DamagePerTurnComponent.class, name = "DamagePerTurnComponent"),
         @JsonSubTypes.Type(value = TeleportComponent.class, name = "TeleportComponent"),
         @JsonSubTypes.Type(value = OnCooldownComponent.class, name = "OnCooldownComponent"),
         @JsonSubTypes.Type(value = CooldownComponent.class, name = "CooldownComponent"),
@@ -55,7 +63,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = MovementPointResistenceComponent.class, name = "MovementPointResistenceComponent"),
         @JsonSubTypes.Type(value = DisplacementComponent.class, name = "DisplacementComponent"),
         @JsonSubTypes.Type(value = HealBuffComponent.class, name = "HealBuffComponent"),
-        @JsonSubTypes.Type(value = PoisonsComponent.class, name = "PoisonsComponent")
+        @JsonSubTypes.Type(value = StatsPerRoundComponent.class, name = "StatsPerRoundComponent")
 })
 public interface Component {
 }

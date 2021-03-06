@@ -10,14 +10,7 @@ import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
-import com.destrostudios.grid.components.properties.MaxHealthComponent;
-import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
-import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -44,12 +37,16 @@ import com.destrostudios.grid.eventbus.action.walk.WalkHandler;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
 import com.destrostudios.grid.eventbus.add.playerbuff.PlayerBuffAddedEvent;
 import com.destrostudios.grid.eventbus.add.playerbuff.PlayerBuffAddedHandler;
-import com.destrostudios.grid.eventbus.add.poison.PoisonAddedEvent;
-import com.destrostudios.grid.eventbus.add.poison.PoisonAddedHandler;
+import com.destrostudios.grid.eventbus.add.poison.StatsPerTurnEvent;
+import com.destrostudios.grid.eventbus.add.poison.StatsPerTurnHandler;
+import com.destrostudios.grid.eventbus.add.spellbuff.SpellBuffAddedEvent;
+import com.destrostudios.grid.eventbus.add.spellbuff.SpellBuffAddedHandler;
 import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedHandler;
 import com.destrostudios.grid.eventbus.update.buff.BuffsUpdateEvent;
 import com.destrostudios.grid.eventbus.update.buff.UpdateBuffsHandler;
+import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsHandler;
+import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedHandler;
 import com.destrostudios.grid.eventbus.update.maxap.MaxAttackPointsChangedEvent;
@@ -60,13 +57,13 @@ import com.destrostudios.grid.eventbus.update.maxmp.MaxMovementPointsChangedEven
 import com.destrostudios.grid.eventbus.update.maxmp.MaxMovementPointsChangedHandler;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedHandler;
-import com.destrostudios.grid.eventbus.update.poison.UpdatePoisonValidator;
-import com.destrostudios.grid.eventbus.update.poison.UpdatePoisonsEvent;
-import com.destrostudios.grid.eventbus.update.poison.UpdatePoisonsHandler;
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnValidator;
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnEvent;
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnHandler;
 import com.destrostudios.grid.eventbus.update.position.PositionUpdateEvent;
 import com.destrostudios.grid.eventbus.update.position.PositionUpdateHandler;
-import com.destrostudios.grid.eventbus.update.spell.UpdateAcitveDurationSpellsEvent;
-import com.destrostudios.grid.eventbus.update.spell.UpdateActiveDurationSpellsHandler;
+import com.destrostudios.grid.eventbus.update.playerenchantments.UpdatePlayerEnchantmentsEvent;
+import com.destrostudios.grid.eventbus.update.playerenchantments.UpdatePlayerEnchantmentsHandler;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnHandler;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnValidator;
@@ -79,6 +76,8 @@ import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.Getter;
+
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -88,7 +87,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import lombok.Getter;
 
 @Getter
 public class GridGame {
@@ -126,23 +124,22 @@ public class GridGame {
         world.getWorld().putAll(initMap(startGameInfo.getMapName()).getComponents());
 
         List<Integer> startingEntities = world.list(WalkableComponent.class, StartingFieldComponent.class);
-        Random rand = new Random();
         for (PlayerInfo playerInfo : startGameInfo.getTeam1()) {
-            initTeam(startingEntities, rand, playerInfo, 1);
+            initTeam(startingEntities, playerInfo, 1);
         }
         for (PlayerInfo playerInfo : startGameInfo.getTeam2()) {
-            initTeam(startingEntities, rand, playerInfo, 2);
+            initTeam(startingEntities, playerInfo, 2);
         }
         addInstantHandler();
     }
 
-    private void initTeam(List<Integer> startingEntities, Random rand, PlayerInfo playerInfo, int team) {
+    private void initTeam(List<Integer> startingEntities, PlayerInfo playerInfo, int team) {
         int playerEntity = world.createEntity();
 
         CharacterContainer characterContainer = initCharacter(playerInfo);
         addComponentsForCharacter(playerEntity, characterContainer, playerInfo.getLogin());
 
-        Integer startEntity = startingEntities.remove(rand.nextInt(startingEntities.size()));
+        Integer startEntity = startingEntities.remove(random.nextInt(startingEntities.size()));
         PositionComponent startingPosition = world.getComponent(startEntity, PositionComponent.class);
         if (team == 1) {
             world.addComponent(playerEntity, new TurnComponent());
@@ -226,7 +223,7 @@ public class GridGame {
         addInstantHandler(UpdatedTurnEvent.class, new UpdatedTurnHandler(eventBus));
         addInstantHandler(AttackPointsChangedEvent.class, new AttackPointsChangedHandler());
         addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler(eventBus));
-        addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus));
+        addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus, random));
         addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler(eventBus));
         addInstantHandler(MaxHealthPointsChangedEvent.class, new MaxHealthPointsChangedHandler());
         addInstantHandler(MaxAttackPointsChangedEvent.class, new MaxAttackPointsChangedHandler());
@@ -234,20 +231,22 @@ public class GridGame {
         addInstantHandler(PlayerBuffAddedEvent.class, new PlayerBuffAddedHandler(eventBus));
         addInstantHandler(BuffsUpdateEvent.class, new UpdateBuffsHandler(eventBus));
         addInstantHandler(BuffsUpdateEvent.class, new UpdateBuffsHandler(eventBus));
-        addInstantHandler(PoisonAddedEvent.class, new PoisonAddedHandler());
+        addInstantHandler(StatsPerTurnEvent.class, new StatsPerTurnHandler());
         addInstantHandler(PositionUpdateEvent.class, new PositionUpdateHandler());
-        addInstantHandler(UpdatePoisonsEvent.class, new UpdatePoisonsHandler(eventBus, random));
-        addInstantHandler(UpdateAcitveDurationSpellsEvent.class, new UpdateActiveDurationSpellsHandler());
+        addInstantHandler(UpdateStatsPerTurnEvent.class, new UpdateStatsPerTurnHandler(eventBus, random));
+        addInstantHandler(UpdatePlayerEnchantmentsEvent.class, new UpdatePlayerEnchantmentsHandler());
         addInstantHandler(MoveEvent.class, new MoveHandler(eventBus));
         addInstantHandler(EndTurnEvent.class, new EndTurnHandler(eventBus));
         addInstantHandler(BeginTurnEvent.class, new BeginTurnHandler(eventBus));
         addInstantHandler(DisplacementEvent.class, new DisplacementHandler(eventBus));
+        addInstantHandler(UpdateSpellsEvent.class, new UpdateSpellsHandler());
+        addInstantHandler(SpellBuffAddedEvent.class, new SpellBuffAddedHandler(eventBus));
 
         addValidator(WalkEvent.class, new WalkValidator());
         addValidator(SpellCastedEvent.class, new SpellCastedValidator());
         addValidator(UpdatedTurnEvent.class, new UpdatedTurnValidator());
         addValidator(DamageTakenEvent.class, new DamageTakenValidator());
-        addValidator(UpdatePoisonsEvent.class, new UpdatePoisonValidator());
+        addValidator(UpdateStatsPerTurnEvent.class, new UpdateStatsPerTurnValidator());
         addValidator(MoveEvent.class, new MoveValidator());
         addValidator(DisplacementEvent.class, new DisplacementValidator());
     }
