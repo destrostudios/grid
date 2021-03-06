@@ -32,9 +32,9 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
     private int barHeight = 80;
     private int buttonWidth = 150;
     private int containerToolWidth = 200;
-    private MapEditorTool tool;
     private Label lblTool;
     private Label lblSelection;
+    private MapEditorTool tool;
     private int visualIndexGround;
     private int visualIndexObstacle;
 
