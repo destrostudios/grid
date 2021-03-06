@@ -197,7 +197,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns. TODO"
+        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns."
       },
       {
         "component": "CostComponent",

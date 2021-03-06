@@ -1,16 +1,18 @@
 package com.destrostudios.grid.characters;
 
 import com.destrostudios.grid.GridGame;
+import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.CastSpellAction;
+import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
-import com.destrostudios.grid.components.spells.limitations.CostComponent;
+import com.destrostudios.grid.components.spells.buffs.DamageBuffComponent;
+import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.random.RandomProxy;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
@@ -55,32 +57,65 @@ public class IopTest {
     @Test
     public void concentration() {
         // given
-        String concentrationName = "Concentration";
+        String spellName = "Concentration";
         PositionComponent position1 = new PositionComponent(0, 0);
         PositionComponent position2 = new PositionComponent(1, 0);
 
         int character1 = getCharacter(player1.getLogin());
         int character2 = getCharacter(player2.getLogin());
-        int concentration = getSpell(character1, concentrationName);
+        int spell = getSpell(character1, spellName);
 
         set(character1, position1);
         set(character2, position2);
 
         int health2 = get(character2, HealthPointsComponent.class).getHealth();
-        int ap1 = get(character1, AttackPointsComponent.class).getAttackPoints();
-        int apCost = get(concentration, CostComponent.class).getApCost();
-        DamageComponent damageComponent = get(concentration, DamageComponent.class);
+        DamageComponent damageComponent = get(spell, DamageComponent.class);
         int damage = damageComponent.getMinDmg();
         Mockito.when(randomProxy.nextInt(Mockito.eq(damageComponent.getMinDmg()), Mockito.eq(damageComponent.getMaxDmg())))
                 .thenReturn(damage);
 
         // when
-        CastSpellAction action = new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), concentration);
-        applyAction(action);
+        applyAction(new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), spell));
 
         // then
         assertEquals(health2 - damage, get(character2, HealthPointsComponent.class).getHealth());
-        assertEquals(ap1 - apCost, get(character1, AttackPointsComponent.class).getAttackPoints());
+    }
+
+    @Test
+    public void iopsWrath() {
+        // given
+        String spellName = "Iop's Wrath";
+        PositionComponent position1 = new PositionComponent(0, 0);
+        PositionComponent position2 = new PositionComponent(1, 0);
+
+        int character1 = getCharacter(player1.getLogin());
+        int character2 = getCharacter(player2.getLogin());
+        int spell = getSpell(character1, spellName);
+
+        set(character1, position1);
+        set(character2, position2);
+
+        int health2 = get(character2, HealthPointsComponent.class).getHealth();
+        DamageComponent damageComponent = get(spell, DamageComponent.class);
+        DamageBuffComponent buffComponent = get(spell, DamageBuffComponent.class);
+        int cooldown = get(spell, CooldownComponent.class).getCooldown();
+        int unbuffedDamage = damageComponent.getMinDmg();
+        Mockito.when(randomProxy.nextInt(Mockito.eq(damageComponent.getMinDmg()), Mockito.eq(damageComponent.getMaxDmg())))
+                .thenReturn(unbuffedDamage);
+        int buffedDamage = damageComponent.getMinDmg() + buffComponent.getBuffAmount();
+        Mockito.when(randomProxy.nextInt(Mockito.eq(damageComponent.getMinDmg() + buffComponent.getBuffAmount()), Mockito.eq(damageComponent.getMaxDmg() + buffComponent.getBuffAmount())))
+                .thenReturn(buffedDamage);
+
+        // when
+        applyAction(new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), spell));
+        for (int i = 0; i < cooldown; i++) {
+            applyAction(new SkipRoundAction(Integer.toString(character1)));
+            applyAction(new SkipRoundAction(Integer.toString(character2)));
+        }
+        applyAction(new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), spell));
+
+        // then
+        assertEquals(health2 - unbuffedDamage - buffedDamage, get(character2, HealthPointsComponent.class).getHealth());
     }
 
     private void set(int entity, Component component) {
@@ -91,7 +126,7 @@ public class IopTest {
         return game.getWorld().getComponent(entity, type);
     }
 
-    private void applyAction(CastSpellAction action) {
+    private void applyAction(Action action) {
         game.registerAction(action);
         while (game.triggeredHandlersInQueue()) {
             game.triggerNextHandler();
