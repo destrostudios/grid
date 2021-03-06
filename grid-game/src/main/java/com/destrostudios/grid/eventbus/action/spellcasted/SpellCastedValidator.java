@@ -12,7 +12,6 @@ import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.EventValidator;
 import com.destrostudios.grid.util.RangeUtils;
-
 import java.util.function.Supplier;
 
 import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
@@ -39,9 +38,9 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
         boolean isOnCooldown = entityWorld.hasComponents(event.getSpell(), OnCooldownComponent.class);
         boolean teleportCanBeDone = !entityWorld.hasComponents(event.getSpell(), TeleportComponent.class) || isPositionIsFree(entityWorld, position, event.getPlayerEntity())
                 && entityWorld.hasComponents(event.getSpell(), TeleportComponent.class);
-        boolean costsCanBePayed = attackPointsPlayer.getAttackPoints() > costComponent.getApCost()
-                && movementPointsPlayer.getMovementPoints() > costComponent.getMpCost()
-                && healthPointsComponent.getHealth() > costComponent.getHpCost();
+        boolean costsCanBePayed = attackPointsPlayer.getAttackPoints() >= costComponent.getApCost()
+                && movementPointsPlayer.getMovementPoints() >= costComponent.getMpCost()
+                && healthPointsComponent.getHealth() >= costComponent.getHpCost();
         boolean maxCastsReaced = castsPerTurnComponent != null && castsPerTurnComponent.getMaxCastsPerTurn() == castsPerTurnComponent.getCastsThisTurn();
 
         return fieldIsReachable && !isOnCooldown && teleportCanBeDone && costsCanBePayed && !maxCastsReaced;
