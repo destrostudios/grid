@@ -12,6 +12,7 @@ import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
 import com.destrostudios.grid.components.spells.buffs.DamageBuffComponent;
+import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.random.RandomProxy;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
@@ -97,6 +98,7 @@ public class IopTest {
         int health2 = get(character2, HealthPointsComponent.class).getHealth();
         DamageComponent damageComponent = get(spell, DamageComponent.class);
         DamageBuffComponent buffComponent = get(spell, DamageBuffComponent.class);
+        int cooldown = get(spell, CooldownComponent.class).getCooldown();
         int unbuffedDamage = damageComponent.getMinDmg();
         Mockito.when(randomProxy.nextInt(Mockito.eq(damageComponent.getMinDmg()), Mockito.eq(damageComponent.getMaxDmg())))
                 .thenReturn(unbuffedDamage);
@@ -106,7 +108,7 @@ public class IopTest {
 
         // when
         applyAction(new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), spell));
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < cooldown; i++) {
             applyAction(new SkipRoundAction(Integer.toString(character1)));
             applyAction(new SkipRoundAction(Integer.toString(character2)));
         }
