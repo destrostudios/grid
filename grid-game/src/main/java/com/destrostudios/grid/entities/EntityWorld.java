@@ -39,7 +39,7 @@ public class EntityWorld implements EntityData {
     }
 
     public List<Component> getComponents(int entity) {
-        return world.get(entity);
+        return world.getOrDefault(entity, new ArrayList<>());
     }
 
     /**
@@ -106,6 +106,11 @@ public class EntityWorld implements EntityData {
                 .filter(e -> e.getValue().stream().anyMatch(component::isInstance))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean hasEntity(int entity) {
+        return world.containsKey(entity);
     }
 
 

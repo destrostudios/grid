@@ -34,4 +34,6 @@ public interface EntityData {
         return true;
     }
 
+    boolean hasEntity(int entity);
+
 }

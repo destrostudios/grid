@@ -6,8 +6,11 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.BuffsComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
+import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
+import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.entities.EntityWorld;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,60 @@ public class RangeUtils {
         return result;
     }
 
+    public static List<Integer> getAffectedEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityWorld world) {
+        List<PositionComponent> positionComponents = calculateAffectedPosEntities(spellEntity, sourcePos, clickedPos, world);
+        return world.list(PlayerComponent.class).stream()
+                .filter(e -> positionComponents.contains(world.getComponent(e, PositionComponent.class)))
+                .collect(Collectors.toList());
+    }
+
+    public static List<PositionComponent> calculateAffectedPosEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityWorld world) {
+        AffectedAreaComponent component = world.getComponent(spellEntity, AffectedAreaComponent.class);
+        int impact = component.getImpact();
+        int halfImpact = impact / 2;
+        int yPos = sourcePos.getY();
+        int xPos = sourcePos.getX();
+
+        List<PositionComponent> result = Lists.newArrayList(clickedPos);
+
+        if (component.getIndicator() == AffectedAreaIndicator.LINE) {
+            if (sourcePos.getX() == clickedPos.getX()) {
+                // from bot or top
+                int signum = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
+                for (int y = yPos; y < signum * impact; y += signum) {
+                    result.add(new PositionComponent(xPos, y));
+                }
+
+            } else if (sourcePos.getY() == clickedPos.getY()) {
+                // from left or right
+                int signum = (int) Math.signum(clickedPos.getX() - sourcePos.getX());
+                for (int x = xPos; x < signum * impact; x += signum) {
+                    result.add(new PositionComponent(x, yPos));
+                }
+            }
+
+        } else if (component.getIndicator() == AffectedAreaIndicator.CROSS) {
+            if (sourcePos.getX() == clickedPos.getX()) {
+                // from bot or top
+                for (int y = yPos - halfImpact; y <= yPos + halfImpact; y++) {
+                    result.add(new PositionComponent(xPos, y));
+                }
+
+            } else if (sourcePos.getY() == clickedPos.getY()) {
+                // from left or right
+                for (int x = xPos - halfImpact; x <= xPos + halfImpact; x++) {
+                    result.add(new PositionComponent(x, yPos));
+                }
+            }
+
+        } else if (component.getIndicator() == AffectedAreaIndicator.CIRCLE) {
+            for (int y = yPos - halfImpact; y < yPos + halfImpact; y++) {
+                // TODO: 06.03.21
+            }
+        }
+        return result;
+    }
+
     public static int calculateTargetEntity(int x, int y, EntityWorld world) {
         Optional<Integer> targetEntity = world.list(PositionComponent.class).stream()
                 .filter(e -> world.getComponent(e, PositionComponent.class).getX() == x
@@ -54,7 +111,7 @@ public class RangeUtils {
         return targetEntity.orElse(-1);
     }
 
-    public static <E extends BuffComponent> int getBuff(int spellEntity, int playerEntity, EntityWorld world, Class<E> classz) {
+    public static <E extends BuffComponent> int getBuffAmount(int spellEntity, int playerEntity, EntityWorld world, Class<E> classz) {
         int buffPlayer = world.hasComponents(playerEntity, classz)
                 ? world.getComponent(playerEntity, classz).getBuffAmount()
                 : 0;

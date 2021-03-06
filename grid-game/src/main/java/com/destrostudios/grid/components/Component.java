@@ -17,6 +17,7 @@ import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
 import com.destrostudios.grid.components.spells.perturn.*;
+import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -63,6 +64,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = MovementPointResistenceComponent.class, name = "MovementPointResistenceComponent"),
         @JsonSubTypes.Type(value = DisplacementComponent.class, name = "DisplacementComponent"),
         @JsonSubTypes.Type(value = HealBuffComponent.class, name = "HealBuffComponent"),
+        @JsonSubTypes.Type(value = AffectedAreaComponent.class, name = "AffectedAreaComponent"),
         @JsonSubTypes.Type(value = StatsPerRoundComponent.class, name = "StatsPerRoundComponent")
 })
 public interface Component {

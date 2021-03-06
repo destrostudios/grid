@@ -83,14 +83,19 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         if (entityWorld.hasComponents(spell, HealComponent.class)) {
             HealComponent heal = entityWorld.getComponent(spell, HealComponent.class);
             int healAmount = randomProxy.nextInt(heal.getMinHeal(), heal.getMaxHeal());
-            followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuff(spell, playerEntity, entityWorld, HealBuffComponent.class), targetEntity));
+            followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityWorld, HealBuffComponent.class), targetEntity));
         }
 
         // 3. Damage
         if (entityWorld.hasComponents(spell, DamageComponent.class)) {
             DamageComponent damage = entityWorld.getComponent(spell, DamageComponent.class);
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
-            followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuff(spell, playerEntity, entityWorld, DamageBuffComponent.class), targetEntity));
+            List<Integer> affectedEntities = RangeUtils.getAffectedEntities(spell, entityWorld.getComponent(event.getPlayerEntity(), PositionComponent.class),
+                    new PositionComponent(event.getX(), event.getY()), entityWorld);
+            
+            for (Integer affectedEntity : affectedEntities) {
+                followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityWorld, DamageBuffComponent.class), affectedEntity));
+            }
         }
 
         // 4. displacement && Teleport
