@@ -68,9 +68,15 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             MovementPointsComponent mp = entityWorld.getComponent(event.getPlayerEntity(), MovementPointsComponent.class);
             HealthPointsComponent hp = entityWorld.getComponent(event.getPlayerEntity(), HealthPointsComponent.class);
 
-            followUpEvents.add(new AttackPointsChangedEvent(event.getPlayerEntity(), ap.getAttackPoints() - costComponent.getApCost()));
-            followUpEvents.add(new MovementPointsChangedEvent(event.getPlayerEntity(), mp.getMovementPoints() - costComponent.getMpCost()));
-            followUpEvents.add(new HealthPointsChangedEvent(event.getPlayerEntity(), hp.getHealth() - costComponent.getHpCost()));
+            if (costComponent.getApCost() > 0) {
+                followUpEvents.add(new AttackPointsChangedEvent(event.getPlayerEntity(), ap.getAttackPoints() - costComponent.getApCost()));
+            }
+            if (costComponent.getMpCost() > 0) {
+                followUpEvents.add(new MovementPointsChangedEvent(event.getPlayerEntity(), mp.getMovementPoints() - costComponent.getMpCost()));
+            }
+            if (costComponent.getHpCost() > 0) {
+                followUpEvents.add(new HealthPointsChangedEvent(event.getPlayerEntity(), hp.getHealth() - costComponent.getHpCost()));
+            }
         }
 
         // 2. Heals
