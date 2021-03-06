@@ -55,9 +55,6 @@
         "tooltip": "[5 AP] Jump to target location."
       },
       {
-        "component": "TeleportComponent"
-      },
-      {
         "component": "CostComponent",
         "apCost": 5,
         "mpCost": 0,
@@ -67,6 +64,14 @@
         "component": "RangeComponent",
         "minRange": 1,
         "maxRange": 6
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "TeleportComponent"
       }
     ],
     "3": [
