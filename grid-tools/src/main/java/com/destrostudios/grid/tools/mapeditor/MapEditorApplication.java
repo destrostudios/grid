@@ -78,8 +78,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
         inputManager.addMapping("remove", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         inputManager.addMapping("previous", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
         inputManager.addMapping("next", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
-        inputManager.addMapping("save", new KeyTrigger(KeyInput.KEY_S));
-        inputManager.addListener(this, "add", "remove", "previous", "next", "save");
+        inputManager.addListener(this, "add", "remove", "previous", "next");
 
         setTool(MapEditorTool.GROUND);
 
@@ -206,9 +205,6 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
                     } else if (tool == MapEditorTool.OBSTACLE) {
                         changeVisualIndexObstacle(1);
                     }
-                    break;
-                case "save":
-                    saveMap(MAP_NAME);
                     break;
             }
         }
