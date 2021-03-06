@@ -5,10 +5,12 @@ import lombok.Getter;
 public abstract class Animation {
 
     @Getter
+    private boolean blocking;
+    @Getter
     private boolean finished;
 
     public void start() {
-
+        blocking = true;
     }
 
     public void update(float tpf) {
@@ -16,7 +18,12 @@ public abstract class Animation {
     }
 
     protected void finish() {
+        unblock();
         finished = true;
+    }
+
+    protected void unblock() {
+        blocking = false;
     }
 
     public void end() {

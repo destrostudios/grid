@@ -5,10 +5,10 @@ import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
-import com.destrostudios.grid.client.animations.Animation;
-import com.destrostudios.grid.client.animations.AnnouncementAnimation;
-import com.destrostudios.grid.client.animations.HealthAnimation;
-import com.destrostudios.grid.client.animations.WalkAnimation;
+import com.destrostudios.grid.client.JMonkeyUtil;
+import com.destrostudios.grid.client.animations.*;
+import com.destrostudios.grid.client.characters.CastAnimations;
+import com.destrostudios.grid.client.characters.ModelAnimationInfo;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
@@ -21,6 +21,7 @@ import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
+import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
@@ -30,6 +31,8 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +64,16 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
             playAnimation(new HealthAnimation(playerVisual, event.getNewPoints()));
         });
+        gameProxy.addPreHandler(SpellCastedEvent.class, (EventHandler<SpellCastedEvent>) (event, entityWorldSupplier) -> {
+            EntityWorld entityWorld = gameProxy.getGame().getWorld();
+            PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getPlayerEntity());
+            String spellName = entityWorld.getComponent(event.getSpell(), NameComponent.class).getName();
+            ModelAnimationInfo castAnimation = CastAnimations.get(spellName);
+            if (castAnimation != null) {
+                lookAt(entityWorld, event.getPlayerEntity(), playerVisual.getModelObject(), event.getX(), event.getY());
+                playAnimation(new PlayerModelAnimation(playerVisual, castAnimation));
+            }
+        });
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
         gameProxy.addResolvedHandler(UpdatedTurnEvent.class, (event, entityWorldSupplier) -> {
             EntityWorld entityWorld = gameProxy.getGame().getWorld();
@@ -80,7 +93,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     @Override
     public void update(float tpf) {
         do {
-            while (gameProxy.triggeredHandlersInQueue() && playingAnimations.isEmpty()) {
+            while (gameProxy.triggeredHandlersInQueue() && playingAnimations.stream().noneMatch(Animation::isBlocking)) {
                 gameProxy.triggerNextHandler();
             }
         } while (gameProxy.applyNextAction());
@@ -95,8 +108,8 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     }
 
     private void updateVisuals() {
+        setTargetingSpell(null);
         MapAppState mapAppState = getAppState(MapAppState.class);
-        mapAppState.clearValidTargetEntities();
         mapAppState.updateVisuals();
         updateGui();
     }
@@ -179,15 +192,23 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                                     clickedPosition.getZ(),
                                     gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
                                 );
-                            } else {
-                                setTargetingSpell(null);
                             }
+                            setTargetingSpell(null);
                         } else {
                             gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), playerEntity.toString()));
                         }
                     }
                     break;
             }
+        }
+    }
+
+    private void lookAt(EntityWorld entityWorld, int sourceEntity, Spatial sourceSpatial, int targetX, int targetY) {
+        PositionComponent sourcePositionComponent = entityWorld.getComponent(sourceEntity, PositionComponent.class);
+        float distanceX = (targetX - sourcePositionComponent.getX());
+        float distanceY = (targetY - sourcePositionComponent.getY());
+        if ((distanceX != 0) || (distanceY != 0)) {
+            JMonkeyUtil.lookAtDirection(sourceSpatial, new Vector3f(distanceX, 0, distanceY));
         }
     }
 

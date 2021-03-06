@@ -163,11 +163,6 @@ public class MapAppState extends BaseAppState<BaseApplication> {
         updateTerrain();
     }
 
-    public void clearValidTargetEntities() {
-        validTargetEntities.clear();
-        updateTerrain();
-    }
-
     private void updateTerrain() {
         blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(mapSizeX, 1, mapSizeY));
         for (int groundEntity : entityWorld.list(WalkableComponent.class)) {
