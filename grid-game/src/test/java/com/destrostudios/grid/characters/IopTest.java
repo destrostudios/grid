@@ -1,0 +1,128 @@
+package com.destrostudios.grid.characters;
+
+import com.destrostudios.grid.GridGame;
+import com.destrostudios.grid.actions.CastSpellAction;
+import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.spells.base.DamageComponent;
+import com.destrostudios.grid.components.spells.limitations.CostComponent;
+import com.destrostudios.grid.random.RandomProxy;
+import com.destrostudios.grid.shared.PlayerInfo;
+import com.destrostudios.grid.shared.StartGameInfo;
+import java.util.List;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import static org.junit.Assert.assertEquals;
+
+public class IopTest {
+
+    GridGame game;
+    RandomProxy randomProxy;
+    PlayerInfo player1;
+    PlayerInfo player2;
+
+    @Before
+    public void init() {
+        // TODO: create utility methods to add/remove players/characters and start an empty game instead
+
+        randomProxy = Mockito.mock(RandomProxy.class);
+        StartGameInfo startInfo = new StartGameInfo();
+        startInfo.setMapName("empty10x10");
+        player1 = createPlayerInfo(1, "iop");
+        startInfo.setTeam1(List.of(player1));
+        player2 = createPlayerInfo(2, "iop");
+        startInfo.setTeam2(List.of(player2));
+        game = new GridGame(randomProxy);
+        game.initGame(startInfo);
+    }
+
+    @After
+    public void cleanup() {
+        game = null;
+        randomProxy = null;
+        player1 = null;
+        player2 = null;
+    }
+
+    @Test
+    public void concentration() {
+        // given
+        String concentrationName = "Concentration";
+        PositionComponent position1 = new PositionComponent(0, 0);
+        PositionComponent position2 = new PositionComponent(1, 0);
+
+        int character1 = getCharacter(player1.getLogin());
+        int character2 = getCharacter(player2.getLogin());
+        int concentration = getSpell(character1, concentrationName);
+
+        set(character1, position1);
+        set(character2, position2);
+
+        int health2 = get(character2, HealthPointsComponent.class).getHealth();
+        int ap1 = get(character1, AttackPointsComponent.class).getAttackPoints();
+        int apCost = get(concentration, CostComponent.class).getApCost();
+        DamageComponent damageComponent = get(concentration, DamageComponent.class);
+        int damage = damageComponent.getMinDmg();
+        Mockito.when(randomProxy.nextInt(Mockito.eq(damageComponent.getMinDmg()), Mockito.eq(damageComponent.getMaxDmg())))
+                .thenReturn(damage);
+
+        // when
+        CastSpellAction action = new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), concentration);
+        applyAction(action);
+
+        // then
+        assertEquals(health2 - damage, get(character2, HealthPointsComponent.class).getHealth());
+        assertEquals(ap1 - apCost, get(character1, AttackPointsComponent.class).getAttackPoints());
+    }
+
+    private void set(int entity, Component component) {
+        game.getWorld().addComponent(entity, component);
+    }
+
+    private <T extends Component> T get(int entity, Class<T> type) {
+        return game.getWorld().getComponent(entity, type);
+    }
+
+    private void applyAction(CastSpellAction action) {
+        game.registerAction(action);
+        while (game.triggeredHandlersInQueue()) {
+            game.triggerNextHandler();
+        }
+    }
+
+    private int getCharacter(String playerName) {
+        for (Integer entity : game.getWorld().list(PlayerComponent.class)) {
+            NameComponent nameComponent = game.getWorld().getComponent(entity, NameComponent.class);
+            if (nameComponent.getName().equals(playerName)) {
+                return entity;
+            }
+        }
+        throw new AssertionError("Player " + playerName + " does not have a character.");
+    }
+
+    private int getSpell(int character, String spellName) {
+        for (int spell : game.getWorld().getComponent(character, SpellsComponent.class).getSpells()) {
+            NameComponent nameComponent = game.getWorld().getComponent(spell, NameComponent.class);
+            if (nameComponent.getName().equals(spellName)) {
+                return spell;
+            }
+        }
+        throw new AssertionError("#" + character + " does not have a spell named " + spellName + ".");
+    }
+
+    private PlayerInfo createPlayerInfo(long id, String character) {
+        PlayerInfo player = new PlayerInfo();
+        player.setCharacterName(character);
+        player.setId(id);
+        player.setLogin("login-" + Long.toUnsignedString(id));
+        return player;
+    }
+}
