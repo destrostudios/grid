@@ -61,8 +61,14 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             playAnimation(new WalkAnimation(playerVisual, positionComponent.getX(), positionComponent.getY()));
         });
         gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
-            PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
-            playAnimation(new HealthAnimation(playerVisual, event.getNewPoints()));
+            EntityWorld entityWorld = gameProxy.getGame().getWorld();
+            int currentHealth = entityWorld.getComponent(event.getEntity(), HealthPointsComponent.class).getHealth();
+            int newHealth = event.getNewPoints();
+            // TODO: Ideally, we wouldn't even trigger a health changed event when the health didn't change...
+            if (currentHealth != newHealth) {
+                PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
+                playAnimation(new HealthAnimation(playerVisual, newHealth));
+            }
         });
         gameProxy.addPreHandler(SpellCastedEvent.class, (EventHandler<SpellCastedEvent>) (event, entityWorldSupplier) -> {
             EntityWorld entityWorld = gameProxy.getGame().getWorld();
@@ -97,7 +103,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                 gameProxy.triggerNextHandler();
             }
         } while (gameProxy.applyNextAction());
-        for (Animation animation : playingAnimations.toArray(new Animation[0])) {
+        for (Animation animation : playingAnimations.toArray(Animation[]::new)) {
             animation.update(tpf);
             if (animation.isFinished()) {
                 animation.end();
