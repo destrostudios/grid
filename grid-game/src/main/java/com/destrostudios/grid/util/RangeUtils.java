@@ -89,7 +89,7 @@ public class RangeUtils {
         List<PositionComponent> result = Lists.newArrayList();
 
         if (component.getIndicator() == AffectedAreaIndicator.LINE) {
-            if (sourcePos.getX() == clickedPos.getX()) {
+            if (Math.abs(sourcePos.getX() - clickedPos.getX()) < Math.abs(sourcePos.getY() - clickedPos.getY())) {
                 // from bot or top
                 int signum = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
                 Function<Integer, Boolean> test = signum < 0
@@ -99,7 +99,7 @@ public class RangeUtils {
                     result.add(new PositionComponent(xPos, y));
                 }
 
-            } else if (sourcePos.getY() == clickedPos.getY()) {
+            } else if (Math.abs(sourcePos.getX() - clickedPos.getX()) > Math.abs(sourcePos.getY() - clickedPos.getY())) {
                 // from left or right
                 int signum = (int) Math.signum(clickedPos.getX() - sourcePos.getX());
                 Function<Integer, Boolean> test = signum < 0
@@ -108,6 +108,8 @@ public class RangeUtils {
                 for (int x = xPos; test.apply(x); x += signum) {
                     result.add(new PositionComponent(x, yPos));
                 }
+            } else {
+                // TODO: 07.03.2021 diagonal 
             }
 
         } else if (component.getIndicator() == AffectedAreaIndicator.PLUS) {
