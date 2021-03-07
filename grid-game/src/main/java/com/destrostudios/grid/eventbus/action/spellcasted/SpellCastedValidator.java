@@ -41,8 +41,8 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
         boolean costsCanBePayed = attackPointsPlayer.getAttackPoints() >= costComponent.getApCost()
                 && movementPointsPlayer.getMovementPoints() >= costComponent.getMpCost()
                 && healthPointsComponent.getHealth() >= costComponent.getHpCost();
-        boolean maxCastsReaced = castsPerTurnComponent != null && castsPerTurnComponent.getMaxCastsPerTurn() == castsPerTurnComponent.getCastsThisTurn();
+        boolean maxCastsReached = castsPerTurnComponent != null && castsPerTurnComponent.getMaxCastsPerTurn() == castsPerTurnComponent.getCastsThisTurn();
 
-        return fieldIsReachable && !isOnCooldown && teleportCanBeDone && costsCanBePayed && !maxCastsReaced;
+        return fieldIsReachable && !isOnCooldown && teleportCanBeDone && costsCanBePayed && !maxCastsReached;
     }
 }
