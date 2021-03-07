@@ -92,7 +92,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
             List<Integer> affectedEntities = RangeUtils.getAffectedEntities(spell, entityWorld.getComponent(event.getPlayerEntity(), PositionComponent.class),
                     new PositionComponent(event.getX(), event.getY()), entityWorld);
-            
+
             for (Integer affectedEntity : affectedEntities) {
                 followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityWorld, DamageBuffComponent.class), affectedEntity));
             }

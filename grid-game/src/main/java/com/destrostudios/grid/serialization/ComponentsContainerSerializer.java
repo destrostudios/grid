@@ -27,7 +27,7 @@ public class ComponentsContainerSerializer {
     public static final String CHARACTER = "/character/";
     public static final String MAPS = "/maps/";
     public static final String JSON = ".json";
-    public static String BASE_PATH = "../grid-game/src/main/resources";
+    public static String BASE_PATH = "D:/Workspace/Grid/grid-game/src/main/resources";
 //    public static void main(String[] args) throws JsonProcessingException {
 //        generateAndSaveMap("DestroMap");
 //        generateAndSaveMap("EtherMap");
@@ -62,13 +62,17 @@ public class ComponentsContainerSerializer {
     public static void generateAndSaveCharacter(String characterName) {
         GridGame gridGame = new GridGame();
         initTestCharacter(gridGame.getWorld(), characterName);
+        // TODO: 07.03.2021
         Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getWorld(), CharacterContainer.class);
+
         try {
             ComponentsContainerSerializer.writeSeriazableToResources(new CharacterContainer(components), characterName);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     public static void generateAndSaveMap(String name) {
         GridGame gridGame = new GridGame();

@@ -4,8 +4,12 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
 import com.destrostudios.grid.components.properties.BuffsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
+import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
@@ -59,23 +63,29 @@ public class RangeUtils {
         AffectedAreaComponent component = world.getComponent(spellEntity, AffectedAreaComponent.class);
         int impact = component.getImpact();
         int halfImpact = impact / 2;
-        int yPos = sourcePos.getY();
-        int xPos = sourcePos.getX();
+        int yPos = clickedPos.getY();
+        int xPos = clickedPos.getX();
 
-        List<PositionComponent> result = Lists.newArrayList(clickedPos);
+        List<PositionComponent> result = Lists.newArrayList();
 
         if (component.getIndicator() == AffectedAreaIndicator.LINE) {
             if (sourcePos.getX() == clickedPos.getX()) {
                 // from bot or top
                 int signum = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
-                for (int y = yPos; y < signum * impact; y += signum) {
+                Function<Integer, Boolean> test = signum < 0
+                        ? y -> y > yPos - impact
+                        : y -> y < yPos + impact;
+                for (int y = yPos; test.apply(y); y += signum) {
                     result.add(new PositionComponent(xPos, y));
                 }
 
             } else if (sourcePos.getY() == clickedPos.getY()) {
                 // from left or right
                 int signum = (int) Math.signum(clickedPos.getX() - sourcePos.getX());
-                for (int x = xPos; x < signum * impact; x += signum) {
+                Function<Integer, Boolean> test = signum < 0
+                        ? x -> x > xPos - impact
+                        : x -> x < xPos + impact;
+                for (int x = xPos; test.apply(x); x += signum) {
                     result.add(new PositionComponent(x, yPos));
                 }
             }
@@ -95,9 +105,27 @@ public class RangeUtils {
             }
 
         } else if (component.getIndicator() == AffectedAreaIndicator.CIRCLE) {
-            for (int y = yPos - halfImpact; y < yPos + halfImpact; y++) {
-                // TODO: 06.03.21
+            // TODO: 07.03.2021 clarify, how it should look
+            for (int y = yPos; y >= yPos - halfImpact; y--) {
+                int delta = halfImpact;
+                for (int x = xPos - halfImpact; x <= xPos + halfImpact && delta > 0; x++, delta = delta - 2) {
+                    result.add(new PositionComponent(x, y));
+                }
             }
+            int delta = halfImpact - 2;
+            for (int y = yPos + 1; y < yPos + halfImpact; y++) {
+                for (int x = xPos - halfImpact; x < xPos + halfImpact && delta > 0; x++, delta = delta - 2) {
+                    result.add(new PositionComponent(x, y));
+                }
+            }
+        } else if (component.getIndicator() == AffectedAreaIndicator.SQUARE) {
+            for (int y = yPos - halfImpact; y <= yPos + halfImpact; y++) {
+                for (int x = xPos - halfImpact; x <= xPos + halfImpact; x++) {
+                    result.add(new PositionComponent(x, y));
+                }
+            }
+        } else {
+            result.add(clickedPos);
         }
         return result;
     }
@@ -190,6 +218,14 @@ public class RangeUtils {
             }
             return posNew;
         }
+    }
+
+    public boolean isCostPayable(int casterEntity, int spellEntity, EntityWorld entityWorld) {
+        CostComponent cost = entityWorld.getComponent(spellEntity, CostComponent.class);
+        AttackPointsComponent apComp = entityWorld.getComponent(casterEntity, AttackPointsComponent.class);
+        MovementPointsComponent mpComp = entityWorld.getComponent(casterEntity, MovementPointsComponent.class);
+        HealthPointsComponent hpComp = entityWorld.getComponent(casterEntity, HealthPointsComponent.class);
+        return apComp.getAttackPoints() >= cost.getApCost() && mpComp.getMovementPoints() >= cost.getMpCost() && hpComp.getHealth() >= cost.getHpCost();
     }
 
 }

@@ -1,1 +1,296 @@
-{"SeriazableComponent":"character","components":{"1":[{"component":"MaxMovementPointsComponent","maxMovementPoints":13},{"component":"MaxAttackPointsComponent","maxAttackPoints":14},{"component":"AttackPointResistenceComponent","resitanceValue":23},{"component":"MovementPointResistenceComponent","resitanceValue":11},{"component":"StatsPerRoundComponent","statsPerRoundEntites":[]},{"component":"BuffsComponent","buffEntities":[]},{"component":"ObstacleComponent"},{"component":"PlayerComponent"},{"component":"VisualComponent","name":"dosaz"},{"component":"MaxHealthComponent","maxHealth":670},{"component":"SpellsComponent","spells":[2,3,4,5,6]}],"2":[{"component":"CostComponent","apCost":8,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":25,"maxDmg":75},{"component":"NameComponent","name":"Arrow"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 25 damage for 8 AP"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","minRange":1,"maxRange":3}],"3":[{"component":"CostComponent","apCost":10,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":25,"maxDmg":75},{"component":"NameComponent","name":"Arrow"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 25 damage for 10 AP"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","minRange":1,"maxRange":4}],"4":[{"component":"TeleportComponent"},{"component":"CostComponent","apCost":5,"mpCost":0,"hpCost":0},{"component":"NameComponent","name":"Jump"},{"component":"RangeComponent","minRange":1,"maxRange":3},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"Teleporting in a range of 3"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":2,"castsThisTurn":0}],"5":[{"component":"CostComponent","apCost":11,"mpCost":0,"hpCost":0},{"component":"AttackPointsPoisonComponent","poisonMinValue":-1,"poisonMaxValue":-3,"poisonDuration":2,"sourceEntity":1},{"component":"DamagePerTurnComponent","damageMinValue":-50,"damageMaxValue":-100,"duration":3,"sourceEntity":1},{"component":"NameComponent","name":"Wound"},{"component":"BuffsComponent","buffEntities":[]},{"component":"RangeComponent","minRange":1,"maxRange":3},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"TooltipComponent","tooltip":"Spell adds 1-3 AP poison for 2 rounds and 50-100 HP poison for 3 rounds"}],"6":[{"component":"CostComponent","apCost":12,"mpCost":0,"hpCost":0},{"component":"HealthPointBuffComponent","buffAmount":115,"buffDuration":3,"spellBuff":false},{"component":"NameComponent","name":"Twist"},{"component":"BuffsComponent","buffEntities":[]},{"component":"RangeComponent","minRange":0,"maxRange":0},{"component":"TooltipComponent","tooltip":"Spell buffing 115 HP for 12 AP. \nCD: 3, Range: 0 "},{"component":"CooldownComponent","cooldown":3},{"component":"CastsPerTurnComponent","maxCastsPerTurn":1,"castsThisTurn":0}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "component": "MaxMovementPointsComponent",
+        "maxMovementPoints": 7
+      },
+      {
+        "component": "MaxAttackPointsComponent",
+        "maxAttackPoints": 10
+      },
+      {
+        "component": "AttackPointResistenceComponent",
+        "resitanceValue": 18
+      },
+      {
+        "component": "MovementPointResistenceComponent",
+        "resitanceValue": 9
+      },
+      {
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "ObstacleComponent"
+      },
+      {
+        "component": "PlayerComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "dosaz"
+      },
+      {
+        "component": "MaxHealthComponent",
+        "maxHealth": 500
+      },
+      {
+        "component": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    ],
+    "2": [
+      {
+        "component": "CostComponent",
+        "apCost": 9,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 9 AP in LINE"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 3
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "LINE",
+        "impact": 4
+      }
+    ],
+    "3": [
+      {
+        "component": "CostComponent",
+        "apCost": 2,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 2 AP in SQUARE"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 4
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "SQUARE",
+        "impact": 4
+      }
+    ],
+    "4": [
+      {
+        "component": "CostComponent",
+        "apCost": 9,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Nothing"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 9 AP in CROSS"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 5
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "CROSS",
+        "impact": 4
+      }
+    ],
+    "5": [
+      {
+        "component": "TeleportComponent"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 6,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "ALL",
+        "minRange": 1,
+        "maxRange": 4
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Teleporting in a range of 4"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      }
+    ],
+    "6": [
+      {
+        "component": "CostComponent",
+        "apCost": 9,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "AttackPointsPerTurnComponent",
+        "poisonMinValue": -1,
+        "poisonMaxValue": -3,
+        "poisonDuration": 2,
+        "sourceEntity": 1
+      },
+      {
+        "component": "DamagePerTurnComponent",
+        "damageMinValue": -50,
+        "damageMaxValue": -100,
+        "duration": 3,
+        "sourceEntity": 1
+      },
+      {
+        "component": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 4
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Spell adds 1-3 AP poison for 2 rounds and 50-100 HP poison for 3 rounds"
+      }
+    ],
+    "7": [
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "HealPerTurnComponent",
+        "healMinValue": 50,
+        "healMaxValue": 100,
+        "duration": 4,
+        "sourceEntity": 1
+      },
+      {
+        "component": "NameComponent",
+        "name": "Blblbl"
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "ALL",
+        "minRange": 0,
+        "maxRange": 3
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Spell heals 50-100 hp for 4 rounds"
+      }
+    ]
+  }
+}
