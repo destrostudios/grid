@@ -215,7 +215,7 @@
       {
         "component": "AffectedAreaComponent",
         "indicator": "PLUS",
-        "impact": 2
+        "impact": 5
       }
     ],
     "7": [

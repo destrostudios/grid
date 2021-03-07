@@ -118,6 +118,35 @@ public class IopTest {
         assertEquals(health2 - unbuffedDamage - buffedDamage, get(character2, HealthPointsComponent.class).getHealth());
     }
 
+    @Test
+    public void swordOfIop() {
+        // given
+        String spellName = "Sword of Iop";
+        PositionComponent position1 = new PositionComponent(0, 0);
+        PositionComponent position2 = new PositionComponent(4, 2);
+        int targetX = 4;
+        int targetY = 0;
+
+        int character1 = getCharacter(player1.getLogin());
+        int character2 = getCharacter(player2.getLogin());
+        int spell = getSpell(character1, spellName);
+
+        set(character1, position1);
+        set(character2, position2);
+
+        int health2 = get(character2, HealthPointsComponent.class).getHealth();
+        DamageComponent damageComponent = get(spell, DamageComponent.class);
+        int damage = damageComponent.getMinDmg();
+        Mockito.when(randomProxy.nextInt(Mockito.eq(damageComponent.getMinDmg()), Mockito.eq(damageComponent.getMaxDmg())))
+                .thenReturn(damage);
+
+        // when
+        applyAction(new CastSpellAction(targetX, targetY, Integer.toString(character1), spell));
+
+        // then
+        assertEquals(health2 - damage, get(character2, HealthPointsComponent.class).getHealth());
+    }
+
     private void set(int entity, Component component) {
         game.getData().addComponent(entity, component);
     }
