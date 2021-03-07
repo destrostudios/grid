@@ -10,5 +10,6 @@ public class GuiSpell {
     private String tooltip;
     private Integer remainingCooldown;
     private boolean isCostPayable;
+    private boolean isTargeting;
     private Runnable cast;
 }

@@ -19,6 +19,7 @@ import java.util.List;
 public class GameGuiAppState extends BaseAppState<ClientApplication> {
 
     private static final ColorRGBA COLOR_SPELL_DISABLED = new ColorRGBA(0.3f, 0.3f, 0.3f, 1);
+    private static final ColorRGBA COLOR_SPELL_TARGETING = new ColorRGBA(1.75f, 1.75f, 1.75f, 1);
 
     private int barMarginX = 100;
     private int barMarginBottom = 50;
@@ -193,6 +194,9 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
             }
             if (isButtonEnabled) {
                 button.addCommands(Button.ButtonAction.Up, source -> spell.getCast().run());
+                if (spell.isTargeting()) {
+                    icon.setColor(COLOR_SPELL_TARGETING);
+                }
             } else {
                 icon.setColor(COLOR_SPELL_DISABLED);
             }

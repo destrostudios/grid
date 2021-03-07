@@ -37,6 +37,7 @@ import com.jme3.scene.Spatial;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GameAppState extends BaseAppState<ClientApplication> implements ActionListener {
@@ -161,7 +162,8 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                             : null;
                     CostComponent costComponent = entityData.getComponent(spellEntity, CostComponent.class);
                     boolean isCostPayable = ((costComponent == null) || ((ownPlayerAP >= costComponent.getApCost()) && (ownPlayerMP >= costComponent.getMpCost()) && (ownPlayerCurrentHealth >= costComponent.getHpCost())));
-                    return new GuiSpell(name, tooltip, remainingCooldown, isCostPayable, () -> {
+                    boolean isTargeting = Objects.equals(targetingSpellEntity, spellEntity);
+                    return new GuiSpell(name, tooltip, remainingCooldown, isCostPayable, isTargeting, () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
                             setTargetingSpell(spellEntity);
                         } else {
@@ -237,6 +239,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             validSpellTargetEntities.clear();
         }
         getAppState(MapAppState.class).setValidTargetEntities(validSpellTargetEntities);
+        updateGui();
     }
 
     public void playAnimation(Animation animation) {
