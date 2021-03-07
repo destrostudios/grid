@@ -1,12 +1,14 @@
 package com.destrostudios.grid.eventbus.action.displace;
 
+import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventValidator;
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 import java.util.function.Supplier;
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class DisplacementValidator implements EventValidator<DisplacementEvent> {
@@ -18,7 +20,8 @@ public class DisplacementValidator implements EventValidator<DisplacementEvent> 
                 new PositionComponent(event.getXDisplacementSource(), event.getYDisplacementSource() + 1),
                 new PositionComponent(event.getXDisplacementSource(), event.getYDisplacementSource() - 1)
         );
-        return entityDataSupplier.get().hasComponents(event.getEntityToDisplace(), PositionComponent.class)
+        return entityDataSupplier.get().hasComponents(event.getEntityToDisplace(), PlayerComponent.class)
+                && entityDataSupplier.get().hasComponents(event.getEntityToDisplace(), PositionComponent.class)
                 && relevantPos.contains(entityDataSupplier.get().getComponent(event.getEntityToDisplace(), PositionComponent.class));
     }
 }

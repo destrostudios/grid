@@ -6,11 +6,7 @@ import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
-import com.destrostudios.grid.client.animations.Animation;
-import com.destrostudios.grid.client.animations.AnnouncementAnimation;
-import com.destrostudios.grid.client.animations.HealthAnimation;
-import com.destrostudios.grid.client.animations.PlayerModelAnimation;
-import com.destrostudios.grid.client.animations.WalkAnimation;
+import com.destrostudios.grid.client.animations.*;
 import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.ModelAnimationInfo;
 import com.destrostudios.grid.client.characters.PlayerVisual;
@@ -18,12 +14,7 @@ import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.components.properties.MaxHealthComponent;
-import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
@@ -43,6 +34,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -240,7 +232,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void setTargetingSpell(Integer spellEntity) {
         targetingSpellEntity = spellEntity;
         if (spellEntity != null) {
-            validSpellTargetEntities = RangeUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            validSpellTargetEntities = RangeUtils.getTargetablePositionsInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
         } else {
             validSpellTargetEntities.clear();
         }

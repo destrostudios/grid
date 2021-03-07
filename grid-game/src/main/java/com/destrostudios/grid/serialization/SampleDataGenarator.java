@@ -99,7 +99,7 @@ public class SampleDataGenarator {
         spells.add(spell2);
 
         int spell3 = data.createEntity();
-        addDmgSpell(data, rand, attackPoints, spell3, AffectedAreaIndicator.CROSS);
+        addDmgSpell(data, rand, attackPoints, spell3, AffectedAreaIndicator.PLUS);
         spells.add(spell3);
 
 
@@ -152,7 +152,7 @@ public class SampleDataGenarator {
         int apCost = Math.max(2, rand.nextInt(attackPoints));
         data.addComponent(spell, new CostComponent(apCost, 0, 0));
         int dmg = Math.max(25, rand.nextInt(50));
-        int range = Math.max(3, rand.nextInt(6));
+        int range = 6;
         data.addComponent(spell, new DamageComponent(dmg, dmg + 50));
         data.addComponent(spell, new NameComponent(spellName));
         data.addComponent(spell, new BuffsComponent(new ArrayList<>()));

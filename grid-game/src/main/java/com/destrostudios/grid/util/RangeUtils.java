@@ -13,41 +13,60 @@ import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
+import com.destrostudios.grid.components.spells.range.RangeIndicator;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.turnbasedgametools.grid.LineOfSight;
+import com.destrostudios.turnbasedgametools.grid.Position;
 import com.google.common.collect.Lists;
 
-import com.destrostudios.grid.entities.EntityData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class RangeUtils {
-    /**
-     * Calculates the entities of the targetable spells.
-     *
-     * @param spellEntity  with range
-     * @param casterEntity of the spell caster
-     * @param entityData   with entites
-     * @return empty List, if it is a self target spell and List of entities of targetable spells otherwise
-     */
-    public static List<Integer> getRange(int spellEntity, int casterEntity, EntityData entityData) {
+
+    public static List<Integer> getTargetablePositionsInRange(int spellEntity, int casterEntity, EntityData entityData) {
+        PositionComponent posCaster = entityData.getComponent(casterEntity, PositionComponent.class);
         RangeComponent rangeComponentOpt = entityData.getComponent(spellEntity, RangeComponent.class);
         PositionComponent casterPositionOpt = entityData.getComponent(casterEntity, PositionComponent.class);
         int maxRange = rangeComponentOpt.getMaxRange();
         int minRange = rangeComponentOpt.getMinRange();
-        PositionComponent positionComponent = casterPositionOpt;
-        int x = positionComponent.getX();
-        int y = positionComponent.getY();
+        int x = casterPositionOpt.getX();
+        int y = casterPositionOpt.getY();
         List<Integer> walkableAndTargetablePos = entityData.list(PositionComponent.class, WalkableComponent.class);
-        List<Integer> result = new ArrayList<>();
+        List<Integer> targetableInRange = new ArrayList<>();
 
         for (int walkableAndTargetablePo : walkableAndTargetablePos) {
             PositionComponent posC = entityData.getComponent(walkableAndTargetablePo, PositionComponent.class);
             if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= maxRange
                     && Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) >= minRange) {
-                result.add(walkableAndTargetablePo);
+                targetableInRange.add(walkableAndTargetablePo);
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        LineOfSight lineOfSight = new LineOfSight();
+
+        RangeComponent component = entityData.getComponent(spellEntity, RangeComponent.class);
+        if (component.getRangeIndicator() == RangeIndicator.ALL) {
+            return targetableInRange;
+        }
+
+        Predicate<Position> predicate = pos -> {
+            PositionComponent positionComponent = new PositionComponent(pos.x, pos.y);
+            List<Integer> obstacleEntities = entityData.list(ObstacleComponent.class);
+            return obstacleEntities.stream()
+                    .noneMatch(e -> entityData.getComponent(e, PositionComponent.class).equals(positionComponent));
+        };
+
+        for (Integer entity : targetableInRange) {
+            PositionComponent pos = entityData.getComponent(entity, PositionComponent.class);
+            if (lineOfSight.inLineOfSight(predicate, new Position(posCaster.getX(), posCaster.getY()), new Position(pos.getX(), pos.getY()))) {
+                result.add(entity);
             }
         }
         return result;
@@ -91,18 +110,15 @@ public class RangeUtils {
                 }
             }
 
-        } else if (component.getIndicator() == AffectedAreaIndicator.CROSS) {
-            if (sourcePos.getX() == clickedPos.getX()) {
-                // from bot or top
-                for (int y = yPos - halfImpact; y <= yPos + halfImpact; y++) {
-                    result.add(new PositionComponent(xPos, y));
-                }
+        } else if (component.getIndicator() == AffectedAreaIndicator.PLUS) {
+            int yGoal = yPos + halfImpact;
+            for (int y = yPos - halfImpact; y <= yGoal; y++) {
+                result.add(new PositionComponent(xPos, y));
+            }
 
-            } else if (sourcePos.getY() == clickedPos.getY()) {
-                // from left or right
-                for (int x = xPos - halfImpact; x <= xPos + halfImpact; x++) {
-                    result.add(new PositionComponent(x, yPos));
-                }
+            int xGoal = xPos + halfImpact;
+            for (int x = xPos - halfImpact; x <= xGoal; x++) {
+                result.add(new PositionComponent(x, yPos));
             }
 
         } else if (component.getIndicator() == AffectedAreaIndicator.CIRCLE) {
@@ -128,7 +144,9 @@ public class RangeUtils {
         } else {
             result.add(clickedPos);
         }
-        return result;
+        return result.stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     public static int calculateTargetEntity(int x, int y, EntityData data) {
@@ -156,7 +174,7 @@ public class RangeUtils {
     }
 
     public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityData entityData) {
-        return getRange(spellEntity, casterEntity, entityData).stream()
+        return getTargetablePositionsInRange(spellEntity, casterEntity, entityData).stream()
                 .map(e -> entityData.getComponent(e, PositionComponent.class))
                 .collect(Collectors.toList());
     }
@@ -179,6 +197,7 @@ public class RangeUtils {
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }
 
+    // TODO: 07.03.2021 refactor
     public static PositionComponent getDisplacementGoal(EntityData entityData, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
         if (posEntityToDisplace.equals(posSource)) {
             return posSource;
