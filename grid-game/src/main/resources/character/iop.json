@@ -11,12 +11,12 @@
         "maxAttackPoints": 11
       },
       {
-        "component": "AttackPointResistenceComponent",
-        "resitanceValue": 0
+        "component": "AttackPointResistanceComponent",
+        "resistanceValue": 0
       },
       {
-        "component": "MovementPointResistenceComponent",
-        "resitanceValue": 0
+        "component": "MovementPointResistanceComponent",
+        "resistanceValue": 0
       },
       {
         "component": "StatsPerRoundComponent",

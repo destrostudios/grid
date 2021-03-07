@@ -13,8 +13,8 @@ import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
-import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
-import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
+import com.destrostudios.grid.components.properties.resistance.AttackPointResistanceComponent;
+import com.destrostudios.grid.components.properties.resistance.MovementPointResistanceComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
@@ -137,8 +137,8 @@ public class SampleDataGenarator {
 
         data.addComponent(playerEntity, new MaxMovementPointsComponent(movementPoints));
         data.addComponent(playerEntity, new MaxAttackPointsComponent(attackPoints));
-        data.addComponent(playerEntity, new AttackPointResistenceComponent(rand.nextInt(50)));
-        data.addComponent(playerEntity, new MovementPointResistenceComponent(rand.nextInt(50)));
+        data.addComponent(playerEntity, new AttackPointResistanceComponent(rand.nextInt(50)));
+        data.addComponent(playerEntity, new MovementPointResistanceComponent(rand.nextInt(50)));
         data.addComponent(playerEntity, new StatsPerRoundComponent(new ArrayList<>()));
         data.addComponent(playerEntity, new BuffsComponent(new ArrayList<>()));
         data.addComponent(playerEntity, new ObstacleComponent());

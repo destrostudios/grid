@@ -1,1 +1,234 @@
-{"SeriazableComponent":"character","components":{"1":[{"component":"MaxMovementPointsComponent","maxMovementPoints":12},{"component":"MaxAttackPointsComponent","maxAttackPoints":7},{"component":"AttackPointResistenceComponent","resitanceValue":48},{"component":"MovementPointResistenceComponent","resitanceValue":31},{"component":"StatsPerRoundComponent","statsPerRoundEntites":[]},{"component":"BuffsComponent","buffEntities":[]},{"component":"ObstacleComponent"},{"component":"PlayerComponent"},{"component":"VisualComponent","name":"aland"},{"component":"MaxHealthComponent","maxHealth":745},{"component":"SpellsComponent","spells":[2,3,4,5,6]}],"2":[{"component":"CostComponent","apCost":4,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":46,"maxDmg":96},{"component":"NameComponent","name":"Jump"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 46 damage for 4 AP"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","minRange":1,"maxRange":4}],"3":[{"component":"CostComponent","apCost":3,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":25,"maxDmg":75},{"component":"NameComponent","name":"Confusion"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 25 damage for 3 AP"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","minRange":1,"maxRange":3}],"4":[{"component":"TeleportComponent"},{"component":"CostComponent","apCost":3,"mpCost":0,"hpCost":0},{"component":"NameComponent","name":"Jump"},{"component":"RangeComponent","minRange":1,"maxRange":4},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"Teleporting in a range of 4"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":2,"castsThisTurn":0}],"5":[{"component":"CostComponent","apCost":0,"mpCost":9,"hpCost":0},{"component":"AttackPointsBuffComponent","buffAmount":1,"buffDuration":2,"spellBuff":false},{"component":"NameComponent","name":"Buff"},{"component":"BuffsComponent","buffEntities":[]},{"component":"RangeComponent","minRange":0,"maxRange":0},{"component":"CastsPerTurnComponent","maxCastsPerTurn":1,"castsThisTurn":0},{"component":"TooltipComponent","tooltip":"Spell buffing 1 AP for 9 MP \nRange: 3"}],"6":[{"component":"CostComponent","apCost":5,"mpCost":0,"hpCost":0},{"component":"HealthPointBuffComponent","buffAmount":83,"buffDuration":5,"spellBuff":false},{"component":"NameComponent","name":"Twist"},{"component":"BuffsComponent","buffEntities":[]},{"component":"RangeComponent","minRange":0,"maxRange":0},{"component":"TooltipComponent","tooltip":"Spell buffing 83 HP for 5 AP. \nCD: 3, Range: 0 "},{"component":"CooldownComponent","cooldown":3},{"component":"CastsPerTurnComponent","maxCastsPerTurn":1,"castsThisTurn":0}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "component": "MaxMovementPointsComponent",
+        "maxMovementPoints": 12
+      },
+      {
+        "component": "MaxAttackPointsComponent",
+        "maxAttackPoints": 7
+      },
+      {
+        "component": "AttackPointResistanceComponent",
+        "resistanceValue": 48
+      },
+      {
+        "component": "MovementPointResistanceComponent",
+        "resistanceValue": 31
+      },
+      {
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "ObstacleComponent"
+      },
+      {
+        "component": "PlayerComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "aland"
+      },
+      {
+        "component": "MaxHealthComponent",
+        "maxHealth": 745
+      },
+      {
+        "component": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "2": [
+      {
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 46,
+        "maxDmg": 96
+      },
+      {
+        "component": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 46 damage for 4 AP"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 4
+      }
+    ],
+    "3": [
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Confusion"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 3 AP"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 3
+      }
+    ],
+    "4": [
+      {
+        "component": "TeleportComponent"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "component": "RangeComponent",
+        "minRange": 1,
+        "maxRange": 4
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Teleporting in a range of 4"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      }
+    ],
+    "5": [
+      {
+        "component": "CostComponent",
+        "apCost": 0,
+        "mpCost": 9,
+        "hpCost": 0
+      },
+      {
+        "component": "AttackPointsBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 2,
+        "spellBuff": false
+      },
+      {
+        "component": "NameComponent",
+        "name": "Buff"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "RangeComponent",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Spell buffing 1 AP for 9 MP \nRange: 3"
+      }
+    ],
+    "6": [
+      {
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "HealthPointBuffComponent",
+        "buffAmount": 83,
+        "buffDuration": 5,
+        "spellBuff": false
+      },
+      {
+        "component": "NameComponent",
+        "name": "Twist"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "RangeComponent",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Spell buffing 83 HP for 5 AP. \nCD: 3, Range: 0 "
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 3
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      }
+    ]
+  }
+}

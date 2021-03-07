@@ -1,4 +1,4 @@
-package com.destrostudios.grid.components.properties.resistence;
+package com.destrostudios.grid.components.properties.resistance;
 
 import com.destrostudios.grid.components.Component;
 import lombok.AccessLevel;
@@ -9,6 +9,6 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class MovementPointResistenceComponent implements Component {
-    private int resitanceValue;
+public class AttackPointResistanceComponent implements Component {
+    private int resistanceValue;
 }

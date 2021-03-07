@@ -5,8 +5,8 @@ import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
-import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
-import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
+import com.destrostudios.grid.components.properties.resistance.AttackPointResistanceComponent;
+import com.destrostudios.grid.components.properties.resistance.MovementPointResistanceComponent;
 import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
@@ -49,18 +49,18 @@ public class UpdateStatsPerTurnHandler implements EventHandler<UpdateStatsPerTur
         for (int poison : poisons.getStatsPerRoundEntites()) {
             if (entityData.hasComponents(poison, AttackPointsPerTurnComponent.class)) {
                 AttackPointsPerTurnComponent apPoison = entityData.getComponent(poison, AttackPointsPerTurnComponent.class);
-                AttackPointResistenceComponent apResSource = entityData.getComponent(apPoison.getSourceEntity(), AttackPointResistenceComponent.class);
-                AttackPointResistenceComponent apResTarget = entityData.getComponent(playerEntity, AttackPointResistenceComponent.class);
+                AttackPointResistanceComponent apResSource = entityData.getComponent(apPoison.getSourceEntity(), AttackPointResistanceComponent.class);
+                AttackPointResistanceComponent apResTarget = entityData.getComponent(playerEntity, AttackPointResistanceComponent.class);
                 apPoisonSum += getResultingValue(apPoison.getPoisonMaxValue() - apPoison.getPoisonMinValue(),
-                        apResSource.getResitanceValue(), apResTarget.getResitanceValue());
+                        apResSource.getResistanceValue(), apResTarget.getResistanceValue());
 
             } else if (entityData.hasComponents(poison, MovementPointsPerTurnComponent.class)) {
                 MovementPointsPerTurnComponent mpPoison = entityData.getComponent(poison, MovementPointsPerTurnComponent.class);
-                MovementPointResistenceComponent mpResSource = entityData.getComponent(mpPoison.getSourceEntity(),
-                        MovementPointResistenceComponent.class);
-                MovementPointResistenceComponent mpResTarget = entityData.getComponent(playerEntity, MovementPointResistenceComponent.class);
+                MovementPointResistanceComponent mpResSource = entityData.getComponent(mpPoison.getSourceEntity(),
+                        MovementPointResistanceComponent.class);
+                MovementPointResistanceComponent mpResTarget = entityData.getComponent(playerEntity, MovementPointResistanceComponent.class);
                 mpPoisonSum += getResultingValue(mpPoison.getPoisonMaxValue() - mpPoison.getPoisonMinValue(),
-                        mpResSource.getResitanceValue(), mpResTarget.getResitanceValue());
+                        mpResSource.getResistanceValue(), mpResTarget.getResistanceValue());
 
             } else if (entityData.hasComponents(poison, HealPerTurnComponent.class)) {
                 HealPerTurnComponent heal = entityData.getComponent(poison, HealPerTurnComponent.class);

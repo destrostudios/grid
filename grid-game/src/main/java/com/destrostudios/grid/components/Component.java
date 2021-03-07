@@ -1,22 +1,43 @@
 package com.destrostudios.grid.components;
 
 import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
-import com.destrostudios.grid.components.map.*;
-import com.destrostudios.grid.components.properties.*;
-import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
-import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
+import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.map.ObstacleComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.StartingFieldComponent;
+import com.destrostudios.grid.components.map.VisualComponent;
+import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.BuffsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
+import com.destrostudios.grid.components.properties.resistance.AttackPointResistanceComponent;
+import com.destrostudios.grid.components.properties.resistance.MovementPointResistanceComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
 import com.destrostudios.grid.components.spells.base.HealComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
-import com.destrostudios.grid.components.spells.buffs.*;
+import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.DamageBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
-import com.destrostudios.grid.components.spells.perturn.*;
+import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
+import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -59,8 +80,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = BuffsComponent.class, name = "BuffsComponent"),
         @JsonSubTypes.Type(value = StartingFieldComponent.class, name = "StartingFieldComponent"),
         @JsonSubTypes.Type(value = DamageBuffComponent.class, name = "DamageBuffComponent"),
-        @JsonSubTypes.Type(value = AttackPointResistenceComponent.class, name = "AttackPointResistenceComponent"),
-        @JsonSubTypes.Type(value = MovementPointResistenceComponent.class, name = "MovementPointResistenceComponent"),
+        @JsonSubTypes.Type(value = AttackPointResistanceComponent.class, name = "AttackPointResistanceComponent"),
+        @JsonSubTypes.Type(value = MovementPointResistanceComponent.class, name = "MovementPointResistanceComponent"),
         @JsonSubTypes.Type(value = DisplacementComponent.class, name = "DisplacementComponent"),
         @JsonSubTypes.Type(value = HealBuffComponent.class, name = "HealBuffComponent"),
         @JsonSubTypes.Type(value = StatsPerRoundComponent.class, name = "StatsPerRoundComponent")
