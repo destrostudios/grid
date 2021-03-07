@@ -10,7 +10,15 @@ import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -45,8 +53,6 @@ import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedHandler;
 import com.destrostudios.grid.eventbus.update.buff.BuffsUpdateEvent;
 import com.destrostudios.grid.eventbus.update.buff.UpdateBuffsHandler;
-import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsHandler;
-import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedHandler;
 import com.destrostudios.grid.eventbus.update.maxap.MaxAttackPointsChangedEvent;
@@ -57,13 +63,15 @@ import com.destrostudios.grid.eventbus.update.maxmp.MaxMovementPointsChangedEven
 import com.destrostudios.grid.eventbus.update.maxmp.MaxMovementPointsChangedHandler;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedHandler;
-import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnValidator;
-import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnEvent;
-import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnHandler;
-import com.destrostudios.grid.eventbus.update.position.PositionUpdateEvent;
-import com.destrostudios.grid.eventbus.update.position.PositionUpdateHandler;
 import com.destrostudios.grid.eventbus.update.playerenchantments.UpdatePlayerEnchantmentsEvent;
 import com.destrostudios.grid.eventbus.update.playerenchantments.UpdatePlayerEnchantmentsHandler;
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnEvent;
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnHandler;
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnValidator;
+import com.destrostudios.grid.eventbus.update.position.PositionUpdateEvent;
+import com.destrostudios.grid.eventbus.update.position.PositionUpdateHandler;
+import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsEvent;
+import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsHandler;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnHandler;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnValidator;
@@ -76,8 +84,6 @@ import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.Getter;
-
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -87,6 +93,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 @Getter
 public class GridGame {
@@ -118,6 +125,10 @@ public class GridGame {
         this.eventBus = new Eventbus(() -> world);
         this.actionDispatcher = new ActionDispatcher(() -> world);
         this.random = random;
+    }
+
+    public EntityData getData() {
+        return world;
     }
 
     public void initGame(StartGameInfo startGameInfo) {

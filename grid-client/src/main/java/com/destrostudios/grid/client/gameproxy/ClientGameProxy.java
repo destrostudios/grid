@@ -5,7 +5,7 @@ import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.shared.StartGameInfo;
@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -73,11 +72,11 @@ public class ClientGameProxy implements GameProxy {
 
     @Override
     public Integer getPlayerEntity() {
-        EntityWorld world = getGame().getWorld();
-        List<Integer> list = world.list(PlayerComponent.class);
+        EntityData data = getGame().getData();
+        List<Integer> list = data.list(PlayerComponent.class);
         Integer playerEntity = list.stream()
-                .filter(entity -> world.hasComponents(entity, PlayerComponent.class))
-                .filter(entity -> world.getComponent(entity, NameComponent.class).getName().equals(jwtAuthenticationUser.login)) // TODO: use Id instead
+                .filter(entity -> data.hasComponents(entity, PlayerComponent.class))
+                .filter(entity -> data.getComponent(entity, NameComponent.class).getName().equals(jwtAuthenticationUser.login)) // TODO: use Id instead
                 .findFirst().orElse(null);
         return playerEntity;
     }

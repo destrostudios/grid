@@ -18,6 +18,8 @@ import java.util.List;
 
 public class GameGuiAppState extends BaseAppState<ClientApplication> {
 
+    private static final ColorRGBA COLOR_SPELL_DISABLED = new ColorRGBA(0.3f, 0.3f, 0.3f, 1);
+
     private int barMarginX = 100;
     private int barMarginBottom = 50;
     private int barHeight = 80;
@@ -180,12 +182,19 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
             icon.setHAlignment(HAlignment.Center);
             icon.setVAlignment(VAlignment.Center);
             button.setBackground(icon);
-            button.addCommands(Button.ButtonAction.Up, source -> spell.getCast().run());
             button.addCommands(Button.ButtonAction.HighlightOn, source -> showTooltip(spell.getName() + ": " + spell.getTooltip()));
             button.addCommands(Button.ButtonAction.HighlightOff, source -> hideTooltip());
+            boolean isButtonEnabled = true;
             if (spell.getRemainingCooldown() != null) {
                 button.setText("" + spell.getRemainingCooldown());
-                icon.setColor(ColorRGBA.Gray);
+                isButtonEnabled = false;
+            } else if (!spell.isCostPayable()) {
+                isButtonEnabled = false;
+            }
+            if (isButtonEnabled) {
+                button.addCommands(Button.ButtonAction.Up, source -> spell.getCast().run());
+            } else {
+                icon.setColor(COLOR_SPELL_DISABLED);
             }
             currentPlayerNode.attachChild(button);
             buttonX += (barHeight - 2);

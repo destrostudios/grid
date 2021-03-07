@@ -7,10 +7,8 @@ import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
-import com.destrostudios.turnbasedgametools.bot.RolloutToEvaluation;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
-import java.security.SecureRandom;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +26,7 @@ public class Main {
 
         GridBotState botState = new GridBotState(game);
         MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot();
-        while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
+        while (!GameOverUtils.getGameOverInfo(game.getData()).isGameIsOver()) {
             log.info("calculating...");
             List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
             log.info("{}", actions);
@@ -46,7 +44,8 @@ public class Main {
         botSettings.verbose = true;
         botSettings.maxThreads = 2;
         botSettings.strength = 100;
-        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 10, Main::eval)::evaluate;
+//        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 10, Main::eval)::evaluate;
+        botSettings.evaluation = Main::eval;
 
         return new MctsBot<>(new GridBotService(), botSettings);
     }
@@ -54,16 +53,16 @@ public class Main {
     private static float[] eval(GridBotState s) {
         float[] scores = new float[s.getTeams().size()];
         if (s.isGameOver()) {
-            GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(s.game.getWorld());
+            GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(s.game.getData());
             int winningTeam = gameOverInfo.getWinningTeamEntity();
             int teamIndex = s.getTeams().indexOf(new Team(winningTeam));
             scores[teamIndex] = 1;
         } else {
             float sum = 0;
-            for (int entity : s.game.getWorld().list(TeamComponent.class)) {
-                Team team = new Team(s.game.getWorld().getComponent(entity, TeamComponent.class).getTeam());
+            for (int entity : s.game.getData().list(TeamComponent.class)) {
+                Team team = new Team(s.game.getData().getComponent(entity, TeamComponent.class).getTeam());
                 int teamIndex = s.getTeams().indexOf(team);
-                HealthPointsComponent health = s.game.getWorld().getComponent(entity, HealthPointsComponent.class);
+                HealthPointsComponent health = s.game.getData().getComponent(entity, HealthPointsComponent.class);
                 if (health != null) {
                     float value = health.getHealth();
                     scores[teamIndex] += value;

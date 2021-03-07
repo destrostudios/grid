@@ -6,6 +6,7 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.serialization.container.CharacterContainer;
 import com.destrostudios.grid.serialization.container.ComponentsContainer;
@@ -13,12 +14,15 @@ import com.destrostudios.grid.serialization.container.GameStateContainer;
 import com.destrostudios.grid.serialization.container.MapContainer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.destrostudios.grid.serialization.SampleDataGenarator.initTestCharacter;
 import static com.destrostudios.grid.serialization.SampleDataGenarator.initTestMap;
@@ -64,7 +68,6 @@ public class ComponentsContainerSerializer {
         initTestCharacter(gridGame.getWorld(), characterName);
         // TODO: 07.03.2021
         Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getWorld(), CharacterContainer.class);
-
         try {
             ComponentsContainerSerializer.writeSeriazableToResources(new CharacterContainer(components), characterName);
         } catch (IOException e) {
@@ -76,8 +79,8 @@ public class ComponentsContainerSerializer {
 
     public static void generateAndSaveMap(String name) {
         GridGame gridGame = new GridGame();
-        initTestMap(gridGame.getWorld());
-        Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getWorld(), MapContainer.class);
+        initTestMap(gridGame.getData());
+        Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getData(), MapContainer.class);
         try {
             ComponentsContainerSerializer.writeSeriazableToResources(new MapContainer(components), name);
         } catch (IOException e) {
@@ -122,30 +125,30 @@ public class ComponentsContainerSerializer {
         return "";
     }
 
-    private static Map<Integer, List<Component>> getComponents(EntityWorld world, Class<? extends ComponentsContainer> seriazableComponentsClass) {
+    private static Map<Integer, List<Component>> getComponents(EntityData data, Class<? extends ComponentsContainer> seriazableComponentsClass) {
         Map<Integer, List<Component>> result = new LinkedHashMap<>();
 
         if (seriazableComponentsClass.equals(CharacterContainer.class)) {
-            Optional<Integer> champOpt = world.list(PlayerComponent.class).stream()
+            Optional<Integer> champOpt = data.list(PlayerComponent.class).stream()
                     .findFirst();
 
             // 1. add all character components
-            List<Component> champComponents = world.getComponents(champOpt.get());
+            List<Component> champComponents = data.getComponents(champOpt.get());
             result.put(champOpt.get(), champComponents);
             // 2. add all spells of that character
             Optional<SpellsComponent> allSpellsFromChamp = champComponents.stream()
                     .filter(c -> c instanceof SpellsComponent)
                     .map(c -> (SpellsComponent) c)
                     .findFirst();
-            allSpellsFromChamp.get().getSpells().forEach(spell -> result.put(spell, world.getComponents(spell)));
+            allSpellsFromChamp.get().getSpells().forEach(spell -> result.put(spell, data.getComponents(spell)));
 
         } else if (seriazableComponentsClass.equals(MapContainer.class)) {
             List<Integer> entities = new ArrayList<>();
-            entities.addAll(world.list(WalkableComponent.class));
-            entities.addAll(world.list(ObstacleComponent.class));
+            entities.addAll(data.list(WalkableComponent.class));
+            entities.addAll(data.list(ObstacleComponent.class));
 
             for (Integer entity : entities) {
-                List<Component> components = world.getComponents(entity);
+                List<Component> components = data.getComponents(entity);
                 result.put(entity, components);
             }
         }

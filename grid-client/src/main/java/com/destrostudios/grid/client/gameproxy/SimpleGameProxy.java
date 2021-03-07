@@ -6,11 +6,10 @@ import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.shared.StartGameInfo;
-import lombok.Getter;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import lombok.Getter;
 
 public class SimpleGameProxy implements GameProxy {
 
@@ -58,7 +57,7 @@ public class SimpleGameProxy implements GameProxy {
 
     @Override
     public Integer getPlayerEntity() {
-        List<Integer> list = gridGame.getWorld().list(TurnComponent.class);
+        List<Integer> list = gridGame.getData().list(TurnComponent.class);
         return list.isEmpty() ? null : list.get(0);
     }
 

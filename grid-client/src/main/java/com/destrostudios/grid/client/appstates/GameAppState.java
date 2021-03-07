@@ -6,7 +6,11 @@ import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
-import com.destrostudios.grid.client.animations.*;
+import com.destrostudios.grid.client.animations.Animation;
+import com.destrostudios.grid.client.animations.AnnouncementAnimation;
+import com.destrostudios.grid.client.animations.HealthAnimation;
+import com.destrostudios.grid.client.animations.PlayerModelAnimation;
+import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.ModelAnimationInfo;
 import com.destrostudios.grid.client.characters.PlayerVisual;
@@ -14,10 +18,16 @@ import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.properties.*;
-import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.components.spells.limitations.CostComponent;
+import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
@@ -33,7 +43,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,39 +64,40 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
 
         updateVisuals();
 
-        gameProxy.addPreHandler(WalkEvent.class, (EventHandler<WalkEvent>) (event, entityWorldSupplier) -> {
+        gameProxy.addPreHandler(WalkEvent.class, (EventHandler<WalkEvent>) (event, entityDataSupplier) -> {
             PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
             PositionComponent positionComponent = event.getPositionComponent();
             playAnimation(new WalkAnimation(playerVisual, positionComponent.getX(), positionComponent.getY()));
         });
-        gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
-            EntityWorld entityWorld = gameProxy.getGame().getWorld();
-            int currentHealth = entityWorld.getComponent(event.getEntity(), HealthPointsComponent.class).getHealth();
+        gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityDataSupplier) -> {
+            EntityData entityData = entityDataSupplier.get();
+            int currentHealth = entityData.getComponent(event.getEntity(), HealthPointsComponent.class).getHealth();
             int newHealth = event.getNewPoints();
-            // TODO: Ideally, we wouldn't even trigger a health changed event when the health didn't change...
             if (currentHealth != newHealth) {
                 PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
                 playAnimation(new HealthAnimation(playerVisual, newHealth));
+            } else {
+                System.err.println("HealthPointsChangedEvent, where health didn't change...");
             }
         });
-        gameProxy.addPreHandler(SpellCastedEvent.class, (EventHandler<SpellCastedEvent>) (event, entityWorldSupplier) -> {
-            EntityWorld entityWorld = gameProxy.getGame().getWorld();
+        gameProxy.addPreHandler(SpellCastedEvent.class, (EventHandler<SpellCastedEvent>) (event, entityDataSupplier) -> {
+            EntityData entityData = entityDataSupplier.get();
             PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getPlayerEntity());
-            String spellName = entityWorld.getComponent(event.getSpell(), NameComponent.class).getName();
+            String spellName = entityData.getComponent(event.getSpell(), NameComponent.class).getName();
             ModelAnimationInfo castAnimation = CastAnimations.get(spellName);
             if (castAnimation != null) {
-                lookAt(entityWorld, event.getPlayerEntity(), playerVisual.getModelObject(), event.getX(), event.getY());
+                lookAt(entityData, event.getPlayerEntity(), playerVisual.getModelObject(), event.getX(), event.getY());
                 playAnimation(new PlayerModelAnimation(playerVisual, castAnimation));
             }
         });
-        gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
-        gameProxy.addResolvedHandler(UpdatedTurnEvent.class, (event, entityWorldSupplier) -> {
-            EntityWorld entityWorld = gameProxy.getGame().getWorld();
-            int activePlayerEntity = entityWorld.list(TurnComponent.class).get(0);
-            String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
+        gameProxy.addResolvedHandler(Event.class, (event, entityDataSupplier) -> updateVisuals());
+        gameProxy.addResolvedHandler(UpdatedTurnEvent.class, (event, entityDataSupplier) -> {
+            EntityData entityData = entityDataSupplier.get();
+            int activePlayerEntity = entityData.list(TurnComponent.class).get(0);
+            String activePlayerName = entityData.getComponent(activePlayerEntity, NameComponent.class).getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
-        gameProxy.addResolvedHandler(GameOverEvent.class, (EventHandler<GameOverEvent>) (event, entityWorldSupplier) -> {
+        gameProxy.addResolvedHandler(GameOverEvent.class, (EventHandler<GameOverEvent>) (event, entityDataSupplier) -> {
             getAppState(GameGuiAppState.class).onGameOver("Team #" + event.getWinnerTeam());
         });
 
@@ -128,12 +138,12 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         }
 
         GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
-        EntityWorld entityWorld = gameProxy.getGame().getWorld();
+        EntityData entityData = gameProxy.getGame().getData();
 
-        int activePlayerEntity = entityWorld.list(TurnComponent.class).get(0);
-        String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
-        int activePlayerMP = entityWorld.getComponent(activePlayerEntity, MovementPointsComponent.class).getMovementPoints();
-        int activePlayerAP = entityWorld.getComponent(activePlayerEntity, AttackPointsComponent.class).getAttackPoints();
+        int activePlayerEntity = entityData.list(TurnComponent.class).get(0);
+        String activePlayerName = entityData.getComponent(activePlayerEntity, NameComponent.class).getName();
+        int activePlayerMP = entityData.getComponent(activePlayerEntity, MovementPointsComponent.class).getMovementPoints();
+        int activePlayerAP = entityData.getComponent(activePlayerEntity, AttackPointsComponent.class).getAttackPoints();
         gameGuiAppState.setActivePlayerName(activePlayerName);
         gameGuiAppState.setActivePlayerMP(activePlayerMP);
         gameGuiAppState.setActivePlayerAP(activePlayerAP);
@@ -141,23 +151,25 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         gameGuiAppState.removeAllCurrentPlayerElements();
 
         gameGuiAppState.createAttributes();
-        int ownPlayerCurrentHealth = entityWorld.getComponent(playerEntity, HealthPointsComponent.class).getHealth();
-        int ownPlayerMaximumHealth = entityWorld.getComponent(playerEntity, MaxHealthComponent.class).getMaxHealth();
-        int ownPlayerMP = entityWorld.getComponent(playerEntity, MovementPointsComponent.class).getMovementPoints();
-        int ownPlayerAP = entityWorld.getComponent(playerEntity, AttackPointsComponent.class).getAttackPoints();
+        int ownPlayerCurrentHealth = entityData.getComponent(playerEntity, HealthPointsComponent.class).getHealth();
+        int ownPlayerMaximumHealth = entityData.getComponent(playerEntity, MaxHealthComponent.class).getMaxHealth();
+        int ownPlayerMP = entityData.getComponent(playerEntity, MovementPointsComponent.class).getMovementPoints();
+        int ownPlayerAP = entityData.getComponent(playerEntity, AttackPointsComponent.class).getAttackPoints();
         gameGuiAppState.setOwnPlayerHealth(ownPlayerCurrentHealth, ownPlayerMaximumHealth);
         gameGuiAppState.setOwnPlayerMP(ownPlayerMP);
         gameGuiAppState.setOwnPlayerAP(ownPlayerAP);
 
-        SpellsComponent spells = entityWorld.getComponent(playerEntity, SpellsComponent.class);
+        SpellsComponent spells = entityData.getComponent(playerEntity, SpellsComponent.class);
         List<GuiSpell> guiSpells = spells.getSpells().stream()
                 .map(spellEntity -> {
-                    String name = entityWorld.getComponent(spellEntity, NameComponent.class).getName();
-                    String tooltip = entityWorld.getComponent(spellEntity, TooltipComponent.class).getTooltip();
-                    Integer remainingCooldown = entityWorld.hasComponents(spellEntity, OnCooldownComponent.class)
-                            ? entityWorld.getComponent(spellEntity, OnCooldownComponent.class).getRemainingRounds()
+                    String name = entityData.getComponent(spellEntity, NameComponent.class).getName();
+                    String tooltip = entityData.getComponent(spellEntity, TooltipComponent.class).getTooltip();
+                    Integer remainingCooldown = entityData.hasComponents(spellEntity, OnCooldownComponent.class)
+                            ? entityData.getComponent(spellEntity, OnCooldownComponent.class).getRemainingRounds()
                             : null;
-                    return new GuiSpell(name, tooltip, remainingCooldown, () -> {
+                    CostComponent costComponent = entityData.getComponent(spellEntity, CostComponent.class);
+                    boolean isCostPayable = ((costComponent == null) || ((ownPlayerAP >= costComponent.getApCost()) && (ownPlayerMP >= costComponent.getMpCost()) && (ownPlayerCurrentHealth >= costComponent.getHpCost())));
+                    return new GuiSpell(name, tooltip, remainingCooldown, isCostPayable, () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
                             setTargetingSpell(spellEntity);
                         } else {
@@ -192,11 +204,11 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     Vector3Int clickedPosition = getAppState(MapAppState.class).getHoveredPosition(false);
                     if (clickedPosition != null) {
                         if (targetingSpellEntity != null) {
-                            if (containsEntity(gameProxy.getGame().getWorld(), validSpellTargetEntities, clickedPosition.getX(), clickedPosition.getZ())) {
+                            if (containsEntity(gameProxy.getGame().getData(), validSpellTargetEntities, clickedPosition.getX(), clickedPosition.getZ())) {
                                 gameProxy.requestAction(new CastSpellAction(
-                                    clickedPosition.getX(),
-                                    clickedPosition.getZ(),
-                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
+                                        clickedPosition.getX(),
+                                        clickedPosition.getZ(),
+                                        gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
                                 );
                             }
                             setTargetingSpell(null);
@@ -209,8 +221,8 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         }
     }
 
-    private void lookAt(EntityWorld entityWorld, int sourceEntity, Spatial sourceSpatial, int targetX, int targetY) {
-        PositionComponent sourcePositionComponent = entityWorld.getComponent(sourceEntity, PositionComponent.class);
+    private void lookAt(EntityData entityData, int sourceEntity, Spatial sourceSpatial, int targetX, int targetY) {
+        PositionComponent sourcePositionComponent = entityData.getComponent(sourceEntity, PositionComponent.class);
         float distanceX = (targetX - sourcePositionComponent.getX());
         float distanceY = (targetY - sourcePositionComponent.getY());
         if ((distanceX != 0) || (distanceY != 0)) {
@@ -218,9 +230,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         }
     }
 
-    private boolean containsEntity(EntityWorld entityWorld, List<Integer> entities, int x, int y) {
+    private boolean containsEntity(EntityData entityData, List<Integer> entities, int x, int y) {
         return entities.stream().anyMatch(entity -> {
-            PositionComponent positionComponent = entityWorld.getComponent(entity, PositionComponent.class);
+            PositionComponent positionComponent = entityData.getComponent(entity, PositionComponent.class);
             return ((positionComponent.getX() == x) && (positionComponent.getY() == y));
         });
     }
@@ -228,7 +240,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void setTargetingSpell(Integer spellEntity) {
         targetingSpellEntity = spellEntity;
         if (spellEntity != null) {
-            validSpellTargetEntities = RangeUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getWorld());
+            validSpellTargetEntities = RangeUtils.getRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
         } else {
             validSpellTargetEntities.clear();
         }

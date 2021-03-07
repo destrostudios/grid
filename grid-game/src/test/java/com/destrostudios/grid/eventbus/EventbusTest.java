@@ -1,6 +1,8 @@
 package com.destrostudios.grid.eventbus;
 
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Assertions;
@@ -9,16 +11,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-
 class EventbusTest {
     private Eventbus eventbus;
 
     @BeforeEach
     void before() {
-        EntityWorld entityWorld = Mockito.mock(EntityWorld.class);
-        eventbus = new Eventbus(() -> entityWorld);
+        EntityData entityData = Mockito.mock(EntityData.class);
+        eventbus = new Eventbus(() -> entityData);
     }
 
     @Test
@@ -26,7 +25,7 @@ class EventbusTest {
     void testEventQueue() {
         AtomicReference<String> eventTracker = new AtomicReference<>("");
 
-        eventbus.addInstantHandler(SimpleEvent.class, (EventHandler<SimpleEvent>) (event, entityWorldSupplier) -> {
+        eventbus.addInstantHandler(SimpleEvent.class, (EventHandler<SimpleEvent>) (event, entityDataSupplier) -> {
             eventTracker.set(event.getName());
             System.out.println(event.getName());
             if (event.name.equals("A")) {
@@ -73,13 +72,13 @@ class EventbusTest {
     void triggeredHandlersInQueue() {
         AtomicReference<String> eventTracker = new AtomicReference<>("");
 
-        EventHandler<Event> preHandler = (event, entityWorldSupplier) -> {
+        EventHandler<Event> preHandler = (event, entityDataSupplier) -> {
             eventTracker.set("Pre");
         };
-        EventHandler<Event> instantHandler = (event, entityWorldSupplier) -> {
+        EventHandler<Event> instantHandler = (event, entityDataSupplier) -> {
             eventTracker.set("Instant");
         };
-        EventHandler<Event> resolvedHandler = (event, entityWorldSupplier) -> {
+        EventHandler<Event> resolvedHandler = (event, entityDataSupplier) -> {
             eventTracker.set("Resolved");
         };
 
@@ -103,7 +102,7 @@ class EventbusTest {
     public void testEventRemovedWhenTriggering() {
         AtomicInteger valueTracker = new AtomicInteger(0);
 
-        eventbus.addInstantHandler(SimpleValueEvent.class, (EventHandler<SimpleValueEvent>) (event, entityWorldSupplier) -> {
+        eventbus.addInstantHandler(SimpleValueEvent.class, (EventHandler<SimpleValueEvent>) (event, entityDataSupplier) -> {
             valueTracker.addAndGet(event.getValue());
         });
 

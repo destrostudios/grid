@@ -1,25 +1,24 @@
 package com.destrostudios.grid.eventbus.action.beginturn;
 
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.update.buff.BuffsUpdateEvent;
-import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsEvent;
-import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnEvent;
 import com.destrostudios.grid.eventbus.update.playerenchantments.UpdatePlayerEnchantmentsEvent;
-import lombok.AllArgsConstructor;
-
+import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnEvent;
+import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class BeginTurnHandler implements EventHandler<BeginTurnEvent> {
     private final Eventbus eventbus;
 
     @Override
-    public void onEvent(BeginTurnEvent event, Supplier<EntityWorld> entityWorldSupplier) {
+    public void onEvent(BeginTurnEvent event, Supplier<EntityData> entityDataSupplier) {
         int currentEntity = event.getBeginTurnEntity();
 
         List<Event> followUpEvents = new ArrayList<>();

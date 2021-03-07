@@ -1,10 +1,9 @@
 package com.destrostudios.grid.eventbus;
 
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -20,10 +19,10 @@ public class Eventbus {
 
     private final Deque<TriggeredEventHandler> triggeredHandlers;
 
-    private final Supplier<EntityWorld> entityWorldSupplier;
+    private final Supplier<EntityData> entityDataSupplier;
 
-    public Eventbus(Supplier<EntityWorld> entityWorldSupplier) {
-        this.entityWorldSupplier = entityWorldSupplier;
+    public Eventbus(Supplier<EntityData> entityDataSupplier) {
+        this.entityDataSupplier = entityDataSupplier;
         this.validator = MultimapBuilder.linkedHashKeys().arrayListValues().build();
         this.preHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();
         this.instantHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();
@@ -92,7 +91,7 @@ public class Eventbus {
         for (Class<?> eventClass : validator.keySet()) {
             if (eventClass.isAssignableFrom(e.getClass())) {
                 for (EventValidator<? extends Event> ev : validator.get(eventClass)) {
-                    if (!ev.validate(cast(e), entityWorldSupplier)) {
+                    if (!ev.validate(cast(e), entityDataSupplier)) {
                         return false;
                     }
                 }
@@ -114,7 +113,7 @@ public class Eventbus {
             TriggeredEventHandler triggeredEventHandler = triggeredHandlers.pollFirst();
 
             if (validateTriggeredHandler(triggeredEventHandler)) {
-                triggeredEventHandler.onEvent(entityWorldSupplier);
+                triggeredEventHandler.onEvent(entityDataSupplier);
             }
         }
     }

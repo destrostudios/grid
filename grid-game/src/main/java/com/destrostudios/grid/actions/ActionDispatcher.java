@@ -2,26 +2,25 @@ package com.destrostudios.grid.actions;
 
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
-import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
+import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
+import java.util.function.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.function.Supplier;
 
 @AllArgsConstructor
 @Getter
 public class ActionDispatcher {
-    private final Supplier<EntityWorld> getEntityWorld;
+    private final Supplier<EntityData> entityDataSupplier;
 
     // todo generate all possible actions
 
     public Event dispatchAction(Action action) throws ActionNotAllowedException {
         int entity = Integer.parseInt(action.getPlayerIdentifier());
-        TurnComponent component = getEntityWorld.get().getComponent(entity, TurnComponent.class);
+        TurnComponent component = entityDataSupplier.get().getComponent(entity, TurnComponent.class);
 
         if (component == null) {
             throw new ActionNotAllowedException("not player turn");

@@ -74,6 +74,7 @@ public class BaseApplication extends SimpleApplication {
 
         addSky("miramar");
 
+        flyCam.setMoveSpeed(100);
         flyCam.setEnabled(false);
 
         GuiGlobals.initialize(this);

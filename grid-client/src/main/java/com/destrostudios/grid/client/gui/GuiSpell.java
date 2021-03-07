@@ -9,5 +9,6 @@ public class GuiSpell {
     private String name;
     private String tooltip;
     private Integer remainingCooldown;
+    private boolean isCostPayable;
     private Runnable cast;
 }

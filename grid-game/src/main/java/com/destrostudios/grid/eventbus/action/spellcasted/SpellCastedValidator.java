@@ -9,36 +9,35 @@ import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventValidator;
 import com.destrostudios.grid.util.RangeUtils;
-
 import java.util.function.Supplier;
 
 import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
 
 public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
     @Override
-    public boolean validate(SpellCastedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
-        EntityWorld entityWorld = entityWorldSupplier.get();
+    public boolean validate(SpellCastedEvent event, Supplier<EntityData> entityDataSupplier) {
+        EntityData entityData = entityDataSupplier.get();
 
-        if (!entityWorld.hasComponents(event.getPlayerEntity(), TurnComponent.class)) {
+        if (!entityData.hasComponents(event.getPlayerEntity(), TurnComponent.class)) {
             return false;
         }
 
         // check Range
-        int target = RangeUtils.calculateTargetEntity(event.getX(), event.getY(), entityWorld);
-        PositionComponent position = entityWorld.getComponent(target, PositionComponent.class);
-        AttackPointsComponent attackPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
-        MovementPointsComponent movementPointsPlayer = entityWorld.getComponent(event.getPlayerEntity(), MovementPointsComponent.class);
-        HealthPointsComponent healthPointsComponent = entityWorld.getComponent(event.getPlayerEntity(), HealthPointsComponent.class);
-        CostComponent costComponent = entityWorld.getComponent(event.getSpell(), CostComponent.class);
-        CastsPerTurnComponent castsPerTurnComponent = entityWorld.getComponent(event.getSpell(), CastsPerTurnComponent.class);
+        int target = RangeUtils.calculateTargetEntity(event.getX(), event.getY(), entityData);
+        PositionComponent position = entityData.getComponent(target, PositionComponent.class);
+        AttackPointsComponent attackPointsPlayer = entityData.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
+        MovementPointsComponent movementPointsPlayer = entityData.getComponent(event.getPlayerEntity(), MovementPointsComponent.class);
+        HealthPointsComponent healthPointsComponent = entityData.getComponent(event.getPlayerEntity(), HealthPointsComponent.class);
+        CostComponent costComponent = entityData.getComponent(event.getSpell(), CostComponent.class);
+        CastsPerTurnComponent castsPerTurnComponent = entityData.getComponent(event.getSpell(), CastsPerTurnComponent.class);
 
-        boolean fieldIsReachable = RangeUtils.getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityWorld).contains(position);
-        boolean isOnCooldown = entityWorld.hasComponents(event.getSpell(), OnCooldownComponent.class);
-        boolean teleportCanBeDone = !entityWorld.hasComponents(event.getSpell(), TeleportComponent.class) || isPositionIsFree(entityWorld, position, event.getPlayerEntity())
-                && entityWorld.hasComponents(event.getSpell(), TeleportComponent.class);
+        boolean fieldIsReachable = RangeUtils.getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityData).contains(position);
+        boolean isOnCooldown = entityData.hasComponents(event.getSpell(), OnCooldownComponent.class);
+        boolean teleportCanBeDone = !entityData.hasComponents(event.getSpell(), TeleportComponent.class) || isPositionIsFree(entityData, position, event.getPlayerEntity())
+                && entityData.hasComponents(event.getSpell(), TeleportComponent.class);
         boolean costsCanBePayed = attackPointsPlayer.getAttackPoints() >= costComponent.getApCost()
                 && movementPointsPlayer.getMovementPoints() >= costComponent.getMpCost()
                 && healthPointsComponent.getHealth() >= costComponent.getHpCost();
