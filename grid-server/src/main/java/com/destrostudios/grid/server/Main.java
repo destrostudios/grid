@@ -49,7 +49,7 @@ public class Main {
             @Override
             public void startGameRequest(Connection connection, StartGameInfo startGameInfo) {
                 UUID gameId = UUID.randomUUID();
-                GridGame gridGame = new GridGame(new MutableRandomProxy());
+                GridGame gridGame = new GridGame(new MutableRandomProxy(new SecureRandom()::nextInt));
                 gridGame.initGame(startGameInfo);
 
                 lobbyModule.listGame(gameId, startGameInfo);
