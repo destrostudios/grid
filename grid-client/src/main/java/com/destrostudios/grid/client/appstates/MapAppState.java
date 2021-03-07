@@ -208,7 +208,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     public void cleanup() {
         super.cleanup();
         mainApplication.getRootNode().detachChild(rootNode);
-        mainApplication.getRootNode().detachChild(guiNode);
+        mainApplication.getGuiNode().detachChild(guiNode);
     }
 
     public PlayerVisual getPlayerVisual(int playerEntity) {
