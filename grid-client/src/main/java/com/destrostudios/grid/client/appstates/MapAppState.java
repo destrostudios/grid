@@ -43,7 +43,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
 
     private Map map;
     @Getter
-    private EntityData entityWorld;
+    private EntityData entityData;
     private int mapSizeX;
     private int mapSizeY;
     private Node rootNode;
@@ -55,9 +55,9 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private List<Integer> validTargetEntities = new LinkedList<>();
     private List<Integer> tmpRemovedEntities = new LinkedList<>();
 
-    public MapAppState(String mapName, EntityData entityWorld) {
+    public MapAppState(String mapName, EntityData entityData) {
         this.map = Maps.get(mapName);
-        this.entityWorld = entityWorld;
+        this.entityData = entityData;
     }
 
     @Override
@@ -102,8 +102,8 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private void calculateMapSize() {
         int maxX = -1;
         int maxY = -1;
-        for (int groundEntity : entityWorld.list(WalkableComponent.class)) {
-            PositionComponent positionComponent = entityWorld.getComponent(groundEntity, PositionComponent.class);
+        for (int groundEntity : entityData.list(WalkableComponent.class)) {
+            PositionComponent positionComponent = entityData.getComponent(groundEntity, PositionComponent.class);
             if (positionComponent.getX() > maxX) {
                 maxX = positionComponent.getX();
             }
@@ -120,7 +120,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
 
         // Obstacles
         obstacleModels.forEach((obstacleEntity, modelObject) -> {
-            if (!hasEntity(entityWorld, obstacleEntity)) {
+            if (!hasEntity(entityData, obstacleEntity)) {
                 rootNode.detachChild(modelObject);
                 tmpRemovedEntities.add(obstacleEntity);
             }
@@ -129,24 +129,24 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             obstacleModels.remove(entityToRemove);
         }
         tmpRemovedEntities.clear();
-        List<Integer> obstacleEntities = entityWorld.list(ObstacleComponent.class).stream()
-                .filter(entity -> !entityWorld.hasComponents(entity, PlayerComponent.class))
+        List<Integer> obstacleEntities = entityData.list(ObstacleComponent.class).stream()
+                .filter(entity -> !entityData.hasComponents(entity, PlayerComponent.class))
                 .collect(Collectors.toList());
         for (int obstacleEntity : obstacleEntities) {
             ModelObject obstacleModel = obstacleModels.computeIfAbsent(obstacleEntity, pe -> {
-                String modelName = entityWorld.getComponent(obstacleEntity, VisualComponent.class).getName();
+                String modelName = entityData.getComponent(obstacleEntity, VisualComponent.class).getName();
                 ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
                 rootNode.attachChild(newObstacleModel);
                 return newObstacleModel;
             });
 
-            PositionComponent positionComponent = entityWorld.getComponent(obstacleEntity, PositionComponent.class);
+            PositionComponent positionComponent = entityData.getComponent(obstacleEntity, PositionComponent.class);
             obstacleModel.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), PositionUtil.CHARACTER_Y, PositionUtil.get3dCoordinate(positionComponent.getY()));
         }
 
         // Players
         playerVisuals.forEach((playerEntity, playerVisual) -> {
-            if (!hasEntity(entityWorld, playerEntity)) {
+            if (!hasEntity(entityData, playerEntity)) {
                 rootNode.detachChild(playerVisual.getModelObject());
                 guiNode.detachChild(playerVisual.getLblName());
                 guiNode.detachChild(playerVisual.getHealthBar());
@@ -157,9 +157,9 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             playerVisuals.remove(entityToRemove);
         }
         tmpRemovedEntities.clear();
-        for (int playerEntity : entityWorld.list(PlayerComponent.class)) {
+        for (int playerEntity : entityData.list(PlayerComponent.class)) {
             PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
-                String characterName = entityWorld.getComponent(playerEntity, VisualComponent.class).getName();
+                String characterName = entityData.getComponent(playerEntity, VisualComponent.class).getName();
                 CharacterModel characterModel = CharacterModels.get(characterName);
                 PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), characterModel, map.getPlayerNameColor());
                 rootNode.attachChild(newPlayerVisual.getModelObject());
@@ -169,13 +169,13 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             });
 
             ModelObject modelObject = playerVisual.getModelObject();
-            PositionComponent positionComponent = entityWorld.getComponent(playerEntity, PositionComponent.class);
-            HealthPointsComponent healthPointsComponent = entityWorld.getComponent(playerEntity, HealthPointsComponent.class);
-            MaxHealthComponent maxHealthComponent = entityWorld.getComponent(playerEntity, MaxHealthComponent.class);
+            PositionComponent positionComponent = entityData.getComponent(playerEntity, PositionComponent.class);
+            HealthPointsComponent healthPointsComponent = entityData.getComponent(playerEntity, HealthPointsComponent.class);
+            MaxHealthComponent maxHealthComponent = entityData.getComponent(playerEntity, MaxHealthComponent.class);
             modelObject.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), 3, PositionUtil.get3dCoordinate(positionComponent.getY()));
 
             Label lblName = playerVisual.getLblName();
-            String name = entityWorld.getComponent(playerEntity, NameComponent.class).getName();
+            String name = entityData.getComponent(playerEntity, NameComponent.class).getName();
             lblName.setText(name);
 
             playerVisual.setMaximumHealth(maxHealthComponent.getMaxHealth());
@@ -183,8 +183,8 @@ public class MapAppState extends BaseAppState<BaseApplication> {
         }
     }
 
-    private boolean hasEntity(EntityData entityWorld, int entity) {
-        List<Component> components = entityWorld.getComponents(entity);
+    private boolean hasEntity(EntityData entityData, int entity) {
+        List<Component> components = entityData.getComponents(entity);
         return ((components != null) && (components.size() > 0));
     }
 
@@ -195,9 +195,9 @@ public class MapAppState extends BaseAppState<BaseApplication> {
 
     private void updateTerrain() {
         blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(mapSizeX, 1, mapSizeY));
-        for (int groundEntity : entityWorld.list(WalkableComponent.class)) {
-            PositionComponent positionComponent = entityWorld.getComponent(groundEntity, PositionComponent.class);
-            String gridBlockName = entityWorld.getComponent(groundEntity, VisualComponent.class).getName();
+        for (int groundEntity : entityData.list(WalkableComponent.class)) {
+            PositionComponent positionComponent = entityData.getComponent(groundEntity, PositionComponent.class);
+            String gridBlockName = entityData.getComponent(groundEntity, VisualComponent.class).getName();
             GridBlock gridBlock = GridBlocks.get(gridBlockName);
             Block block = (validTargetEntities.contains(groundEntity) ? gridBlock.getBlockTopTarget() : gridBlock.getBlockTopGrid());
             blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), block);

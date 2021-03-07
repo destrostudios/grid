@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public class DamageTakenValidator implements EventValidator<DamageTakenEvent> {
     @Override
-    public boolean validate(DamageTakenEvent event, Supplier<EntityData> entityWorldSupplier) {
-        return entityWorldSupplier.get().hasComponents(event.getTargetEntity(), HealthPointsComponent.class);
+    public boolean validate(DamageTakenEvent event, Supplier<EntityData> entityDataSupplier) {
+        return entityDataSupplier.get().hasComponents(event.getTargetEntity(), HealthPointsComponent.class);
     }
 }

@@ -119,11 +119,11 @@ public class IopTest {
     }
 
     private void set(int entity, Component component) {
-        game.getWorld().addComponent(entity, component);
+        game.getData().addComponent(entity, component);
     }
 
     private <T extends Component> T get(int entity, Class<T> type) {
-        return game.getWorld().getComponent(entity, type);
+        return game.getData().getComponent(entity, type);
     }
 
     private void applyAction(Action action) {
@@ -134,8 +134,8 @@ public class IopTest {
     }
 
     private int getCharacter(String playerName) {
-        for (Integer entity : game.getWorld().list(PlayerComponent.class)) {
-            NameComponent nameComponent = game.getWorld().getComponent(entity, NameComponent.class);
+        for (Integer entity : game.getData().list(PlayerComponent.class)) {
+            NameComponent nameComponent = game.getData().getComponent(entity, NameComponent.class);
             if (nameComponent.getName().equals(playerName)) {
                 return entity;
             }
@@ -144,8 +144,8 @@ public class IopTest {
     }
 
     private int getSpell(int character, String spellName) {
-        for (int spell : game.getWorld().getComponent(character, SpellsComponent.class).getSpells()) {
-            NameComponent nameComponent = game.getWorld().getComponent(spell, NameComponent.class);
+        for (int spell : game.getData().getComponent(character, SpellsComponent.class).getSpells()) {
+            NameComponent nameComponent = game.getData().getComponent(spell, NameComponent.class);
             if (nameComponent.getName().equals(spellName)) {
                 return spell;
             }

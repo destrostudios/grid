@@ -14,18 +14,18 @@ import lombok.Getter;
 
 public class GameOverUtils {
 
-    public static GameOverInfo getGameOverInfo(EntityData entityWorld) {
-        List<Integer> playerEntities = entityWorld.list(PlayerComponent.class);
+    public static GameOverInfo getGameOverInfo(EntityData entityData) {
+        List<Integer> playerEntities = entityData.list(PlayerComponent.class);
         Map<Integer, List<Integer>> playersByTeam = new LinkedHashMap<>();
 
         for (Integer player : playerEntities) {
-            TeamComponent teamComp = entityWorld.getComponent(player, TeamComponent.class);
+            TeamComponent teamComp = entityData.getComponent(player, TeamComponent.class);
             playersByTeam.computeIfAbsent(teamComp.getTeam(), s -> new ArrayList<>()).add(player);
         }
         AtomicInteger losingTeam = new AtomicInteger(-1);
         for (Map.Entry<Integer, List<Integer>> playersByTeamEntry : playersByTeam.entrySet()) {
             List<Integer> players = playersByTeamEntry.getValue();
-            boolean teamNoHealth = players.stream().allMatch(e -> entityWorld.getComponent(e, HealthPointsComponent.class).getHealth() <= 0);
+            boolean teamNoHealth = players.stream().allMatch(e -> entityData.getComponent(e, HealthPointsComponent.class).getHealth() <= 0);
             if (teamNoHealth) {
                 losingTeam.set(playersByTeamEntry.getKey());
             }

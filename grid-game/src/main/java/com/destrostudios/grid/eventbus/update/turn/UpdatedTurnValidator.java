@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 
 public class UpdatedTurnValidator implements EventValidator<UpdatedTurnEvent> {
     @Override
-    public boolean validate(UpdatedTurnEvent event, Supplier<EntityData> entityWorldSupplier) {
-        EntityData entityWorld = entityWorldSupplier.get();
-        TurnComponent component = entityWorld.getComponent(event.getEntity(), TurnComponent.class);
+    public boolean validate(UpdatedTurnEvent event, Supplier<EntityData> entityDataSupplier) {
+        EntityData entityData = entityDataSupplier.get();
+        TurnComponent component = entityData.getComponent(event.getEntity(), TurnComponent.class);
         return component != null;
     }
 }

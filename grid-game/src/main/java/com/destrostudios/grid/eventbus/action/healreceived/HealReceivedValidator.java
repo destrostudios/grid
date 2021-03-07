@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public class HealReceivedValidator implements EventValidator<HealReceivedEvent> {
     @Override
-    public boolean validate(HealReceivedEvent event, Supplier<EntityData> entityWorldSupplier) {
-        return entityWorldSupplier.get().hasComponents(event.getTargetEntity(), HealthPointsComponent.class);
+    public boolean validate(HealReceivedEvent event, Supplier<EntityData> entityDataSupplier) {
+        return entityDataSupplier.get().hasComponents(event.getTargetEntity(), HealthPointsComponent.class);
     }
 }

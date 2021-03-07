@@ -16,6 +16,6 @@ public class SerializationTest {
         GridGame deserialized = new GridGame();
         deserialized.intializeGame(serialized);
 
-        assertEquals(game.getWorld(), deserialized.getWorld());
+        assertEquals(game.getData(), deserialized.getData());
     }
 }

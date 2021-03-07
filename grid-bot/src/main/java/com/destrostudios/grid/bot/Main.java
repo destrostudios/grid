@@ -28,7 +28,7 @@ public class Main {
 
         GridBotState botState = new GridBotState(game);
         MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot();
-        while (!GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver()) {
+        while (!GameOverUtils.getGameOverInfo(game.getData()).isGameIsOver()) {
             log.info("calculating...");
             List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
             log.info("{}", actions);
@@ -54,16 +54,16 @@ public class Main {
     private static float[] eval(GridBotState s) {
         float[] scores = new float[s.getTeams().size()];
         if (s.isGameOver()) {
-            GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(s.game.getWorld());
+            GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(s.game.getData());
             int winningTeam = gameOverInfo.getWinningTeamEntity();
             int teamIndex = s.getTeams().indexOf(new Team(winningTeam));
             scores[teamIndex] = 1;
         } else {
             float sum = 0;
-            for (int entity : s.game.getWorld().list(TeamComponent.class)) {
-                Team team = new Team(s.game.getWorld().getComponent(entity, TeamComponent.class).getTeam());
+            for (int entity : s.game.getData().list(TeamComponent.class)) {
+                Team team = new Team(s.game.getData().getComponent(entity, TeamComponent.class).getTeam());
                 int teamIndex = s.getTeams().indexOf(team);
-                HealthPointsComponent health = s.game.getWorld().getComponent(entity, HealthPointsComponent.class);
+                HealthPointsComponent health = s.game.getData().getComponent(entity, HealthPointsComponent.class);
                 if (health != null) {
                     float value = health.getHealth();
                     scores[teamIndex] += value;

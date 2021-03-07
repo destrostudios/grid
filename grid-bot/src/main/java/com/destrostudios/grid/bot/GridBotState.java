@@ -34,10 +34,10 @@ public class GridBotState implements BotGameState<Action, Team> {
     public GridBotState(GridGame game) {
         this.game = game;
 
-        List<Integer> characters = game.getWorld().list(TeamComponent.class);
+        List<Integer> characters = game.getData().list(TeamComponent.class);
         Set<Team> teamsSet = new HashSet<>();
         for (int character : characters) {
-            teamsSet.add(new Team(game.getWorld().getComponent(character, TeamComponent.class).getTeam()));
+            teamsSet.add(new Team(game.getData().getComponent(character, TeamComponent.class).getTeam()));
         }
         teams = new ArrayList<>(teamsSet);
         teams.sort(Comparator.comparingInt(Team::getTeam));
@@ -54,10 +54,10 @@ public class GridBotState implements BotGameState<Action, Team> {
 
     @Override
     public Team activeTeam() {
-        List<Integer> characters = game.getWorld().list(TurnComponent.class);
+        List<Integer> characters = game.getData().list(TurnComponent.class);
         Set<Team> activeTeams = new HashSet<>();
         for (int character : characters) {
-            activeTeams.add(new Team(game.getWorld().getComponent(character, TeamComponent.class).getTeam()));
+            activeTeams.add(new Team(game.getData().getComponent(character, TeamComponent.class).getTeam()));
         }
         if (activeTeams.size() != 1) {
             throw new IllegalStateException();
@@ -68,28 +68,28 @@ public class GridBotState implements BotGameState<Action, Team> {
     @Override
     public List<Action> generateActions(Team team) {
         List<Action> actions = new ArrayList<>();
-        EntityData world = game.getWorld();
-        for (int entity : world.list(TurnComponent.class)) {
+        EntityData data = game.getData();
+        for (int entity : data.list(TurnComponent.class)) {
             String playerIdentifier = Integer.toString(entity);
-            PositionComponent position = world.getComponent(entity, PositionComponent.class);
-            MovementPointsComponent mp = world.getComponent(entity, MovementPointsComponent.class);
+            PositionComponent position = data.getComponent(entity, PositionComponent.class);
+            MovementPointsComponent mp = data.getComponent(entity, MovementPointsComponent.class);
             if (position != null && mp != null && mp.getMovementPoints() > 0) {
-                tryAddMoveAction(position.getX(), position.getY() + 1, playerIdentifier, world, entity, actions);
-                tryAddMoveAction(position.getX(), position.getY() - 1, playerIdentifier, world, entity, actions);
-                tryAddMoveAction(position.getX() + 1, position.getY(), playerIdentifier, world, entity, actions);
-                tryAddMoveAction(position.getX() - 1, position.getY(), playerIdentifier, world, entity, actions);
+                tryAddMoveAction(position.getX(), position.getY() + 1, playerIdentifier, data, entity, actions);
+                tryAddMoveAction(position.getX(), position.getY() - 1, playerIdentifier, data, entity, actions);
+                tryAddMoveAction(position.getX() + 1, position.getY(), playerIdentifier, data, entity, actions);
+                tryAddMoveAction(position.getX() - 1, position.getY(), playerIdentifier, data, entity, actions);
             }
-            SpellsComponent spells = world.getComponent(entity, SpellsComponent.class);
+            SpellsComponent spells = data.getComponent(entity, SpellsComponent.class);
             if (spells != null) {
                 for (int spell : spells.getSpells()) {
                     SpellCastedValidator validator = new SpellCastedValidator();
 
                     // simplified targeting, good enough for this early version
-                    List<Integer> healthEntities = world.list(HealthPointsComponent.class);
+                    List<Integer> healthEntities = data.list(HealthPointsComponent.class);
                     for (int healthEntity : healthEntities) {
-                        PositionComponent target = world.getComponent(healthEntity, PositionComponent.class);
+                        PositionComponent target = data.getComponent(healthEntity, PositionComponent.class);
                         if (target != null) {
-                            if (validator.validate(new SpellCastedEvent(spell, entity, target.getX(), target.getY()), () -> world)) {
+                            if (validator.validate(new SpellCastedEvent(spell, entity, target.getX(), target.getY()), () -> data)) {
                                 actions.add(new CastSpellAction(target.getX(), target.getY(), playerIdentifier, spell));
                             }
                         }
@@ -103,16 +103,16 @@ public class GridBotState implements BotGameState<Action, Team> {
         return actions;
     }
 
-    private static void tryAddMoveAction(int x, int y, String playerIdentifier, EntityData world, int entity, List<Action> actions) {
+    private static void tryAddMoveAction(int x, int y, String playerIdentifier, EntityData data, int entity, List<Action> actions) {
         WalkValidator validator = new WalkValidator();
-        if (validator.validate(new WalkEvent(entity, new PositionComponent(x, y)), () -> world)) {
+        if (validator.validate(new WalkEvent(entity, new PositionComponent(x, y)), () -> data)) {
             actions.add(new PositionUpdateAction(x, y, playerIdentifier));
         }
     }
 
     @Override
     public boolean isGameOver() {
-        return GameOverUtils.getGameOverInfo(game.getWorld()).isGameIsOver();
+        return GameOverUtils.getGameOverInfo(game.getData()).isGameIsOver();
     }
 
     @Override

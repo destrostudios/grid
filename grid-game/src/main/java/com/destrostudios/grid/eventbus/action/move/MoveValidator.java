@@ -9,7 +9,7 @@ import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
 public class MoveValidator implements EventValidator<MoveEvent> {
 
     @Override
-    public boolean validate(MoveEvent event, Supplier<EntityData> entityWorldSupplier) {
-        return isPositionIsFree(entityWorldSupplier.get(), event.getPositionComponent(), event.getEntity());
+    public boolean validate(MoveEvent event, Supplier<EntityData> entityDataSupplier) {
+        return isPositionIsFree(entityDataSupplier.get(), event.getPositionComponent(), event.getEntity());
     }
 }

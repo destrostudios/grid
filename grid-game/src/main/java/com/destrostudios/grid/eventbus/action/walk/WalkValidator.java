@@ -13,20 +13,20 @@ public class WalkValidator implements EventValidator<WalkEvent> {
 
     @Override
     public boolean validate(WalkEvent componentUpdateEvent, Supplier<EntityData> supplier) {
-        EntityData entityWorld = supplier.get();
+        EntityData entityData = supplier.get();
         int entity = componentUpdateEvent.getEntity();
         PositionComponent newPosition = componentUpdateEvent.getPositionComponent();
 
-        boolean entityCanMove = entityWorld.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, TurnComponent.class);
-        boolean positionIsFree = isPositionIsFree(entityWorld, newPosition, entity);
-        int neededMovementPoints = getWalkedDistance(entityWorld, componentUpdateEvent);
-        int movementPoints = entityWorld.getComponent(entity, MovementPointsComponent.class).getMovementPoints();
+        boolean entityCanMove = entityData.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, TurnComponent.class);
+        boolean positionIsFree = isPositionIsFree(entityData, newPosition, entity);
+        int neededMovementPoints = getWalkedDistance(entityData, componentUpdateEvent);
+        int movementPoints = entityData.getComponent(entity, MovementPointsComponent.class).getMovementPoints();
         return positionIsFree && entityCanMove && neededMovementPoints == 1 && movementPoints > 0;
     }
 
 
-    private int getWalkedDistance(EntityData entityWorld, WalkEvent componentUpdateEvent) {
-        PositionComponent posComp = entityWorld.getComponent(componentUpdateEvent.getEntity(), PositionComponent.class);
+    private int getWalkedDistance(EntityData entityData, WalkEvent componentUpdateEvent) {
+        PositionComponent posComp = entityData.getComponent(componentUpdateEvent.getEntity(), PositionComponent.class);
         if (posComp == null) {
             return -1;
         }

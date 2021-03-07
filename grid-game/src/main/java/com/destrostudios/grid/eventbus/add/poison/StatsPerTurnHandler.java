@@ -5,58 +5,57 @@ import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnCompo
 import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventHandler;
-import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class StatsPerTurnHandler implements EventHandler<StatsPerTurnEvent> {
 
     @Override
-    public void onEvent(StatsPerTurnEvent event, Supplier<EntityWorld> entityWorldSupplier) {
-        EntityWorld entityWorld = entityWorldSupplier.get();
+    public void onEvent(StatsPerTurnEvent event, Supplier<EntityData> entityDataSupplier) {
+        EntityData entityData = entityDataSupplier.get();
         int spell = event.getSpellEntity();
-        List<Integer> poisons = getPoisons(event, entityWorld);
+        List<Integer> poisons = getPoisons(event, entityData);
 
-        if (entityWorld.hasComponents(spell, AttackPointsPerTurnComponent.class)) {
-            int activePoison = entityWorld.createEntity();
-            AttackPointsPerTurnComponent apPoison = entityWorld.getComponent(event.getSpellEntity(), AttackPointsPerTurnComponent.class);
-            entityWorld.addComponent(activePoison, new AttackPointsPerTurnComponent(apPoison.getPoisonMinValue(), apPoison.getPoisonMaxValue(),
+        if (entityData.hasComponents(spell, AttackPointsPerTurnComponent.class)) {
+            int activePoison = entityData.createEntity();
+            AttackPointsPerTurnComponent apPoison = entityData.getComponent(event.getSpellEntity(), AttackPointsPerTurnComponent.class);
+            entityData.addComponent(activePoison, new AttackPointsPerTurnComponent(apPoison.getPoisonMinValue(), apPoison.getPoisonMaxValue(),
                     apPoison.getPoisonDuration(), event.getSourceEntity()));
             poisons.add(activePoison);
         }
-        if (entityWorld.hasComponents(spell, MovementPointsPerTurnComponent.class)) {
-            int activePoison = entityWorld.createEntity();
-            MovementPointsPerTurnComponent mpPoison = entityWorld.getComponent(event.getSpellEntity(), MovementPointsPerTurnComponent.class);
-            entityWorld.addComponent(activePoison, new MovementPointsPerTurnComponent(mpPoison.getPoisonMinValue(), mpPoison.getPoisonMaxValue(),
+        if (entityData.hasComponents(spell, MovementPointsPerTurnComponent.class)) {
+            int activePoison = entityData.createEntity();
+            MovementPointsPerTurnComponent mpPoison = entityData.getComponent(event.getSpellEntity(), MovementPointsPerTurnComponent.class);
+            entityData.addComponent(activePoison, new MovementPointsPerTurnComponent(mpPoison.getPoisonMinValue(), mpPoison.getPoisonMaxValue(),
                     mpPoison.getPoisonDuration(), event.getSourceEntity()));
             poisons.add(activePoison);
         }
-        if (entityWorld.hasComponents(spell, DamagePerTurnComponent.class)) {
-            int activePoison = entityWorld.createEntity();
-            DamagePerTurnComponent hpPoison = entityWorld.getComponent(event.getSpellEntity(), DamagePerTurnComponent.class);
-            entityWorld.addComponent(activePoison, new DamagePerTurnComponent(hpPoison.getDamageMinValue(), hpPoison.getDamageMaxValue(),
+        if (entityData.hasComponents(spell, DamagePerTurnComponent.class)) {
+            int activePoison = entityData.createEntity();
+            DamagePerTurnComponent hpPoison = entityData.getComponent(event.getSpellEntity(), DamagePerTurnComponent.class);
+            entityData.addComponent(activePoison, new DamagePerTurnComponent(hpPoison.getDamageMinValue(), hpPoison.getDamageMaxValue(),
                     hpPoison.getDuration(), event.getSourceEntity()));
             poisons.add(activePoison);
         }
-        if (entityWorld.hasComponents(spell, HealPerTurnComponent.class)) {
-            int activePoison = entityWorld.createEntity();
-            HealPerTurnComponent healPerTurn = entityWorld.getComponent(event.getSpellEntity(), HealPerTurnComponent.class);
-            entityWorld.addComponent(activePoison, new DamagePerTurnComponent(healPerTurn.getHealMinValue(), healPerTurn.getHealMaxValue(),
+        if (entityData.hasComponents(spell, HealPerTurnComponent.class)) {
+            int activePoison = entityData.createEntity();
+            HealPerTurnComponent healPerTurn = entityData.getComponent(event.getSpellEntity(), HealPerTurnComponent.class);
+            entityData.addComponent(activePoison, new DamagePerTurnComponent(healPerTurn.getHealMinValue(), healPerTurn.getHealMaxValue(),
                     healPerTurn.getDuration(), event.getSourceEntity()));
             poisons.add(activePoison);
         }
 
-        entityWorld.addComponent(event.getTargetEntity(), new StatsPerRoundComponent(poisons));
+        entityData.addComponent(event.getTargetEntity(), new StatsPerRoundComponent(poisons));
     }
 
-    private List<Integer> getPoisons(StatsPerTurnEvent event, EntityWorld entityWorld) {
-        return entityWorld.hasComponents(event.getTargetEntity(), StatsPerRoundComponent.class)
-                ? entityWorld.getComponent(event.getTargetEntity(), StatsPerRoundComponent.class).getStatsPerRoundEntites()
+    private List<Integer> getPoisons(StatsPerTurnEvent event, EntityData entityData) {
+        return entityData.hasComponents(event.getTargetEntity(), StatsPerRoundComponent.class)
+                ? entityData.getComponent(event.getTargetEntity(), StatsPerRoundComponent.class).getStatsPerRoundEntites()
                 : new ArrayList<>();
     }
 

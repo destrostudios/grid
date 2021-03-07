@@ -47,13 +47,13 @@ public class Main {
                 for (ClientGameData<GridGame, Action> game : gameModule.getJoinedGames()) {
                     while (game.applyNextAction(gameModule.getGameService())) {
                     }
-                    if (GameOverUtils.getGameOverInfo(game.getState().getWorld()).isGameIsOver()) {
+                    if (GameOverUtils.getGameOverInfo(game.getState().getData()).isGameIsOver()) {
                         break;
                     }
                     boolean active = false;
-                    List<Integer> activeCharacters = game.getState().getWorld().list(TurnComponent.class);
+                    List<Integer> activeCharacters = game.getState().getData().list(TurnComponent.class);
                     for (int activeCharacter : activeCharacters) {
-                        NameComponent nameComponent = game.getState().getWorld().getComponent(activeCharacter, NameComponent.class);
+                        NameComponent nameComponent = game.getState().getData().getComponent(activeCharacter, NameComponent.class);
                         if (nameComponent.getName().equals(login)) {
                             active = true;
                         }

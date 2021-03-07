@@ -18,7 +18,7 @@ import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnCompo
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.Eventbus;
@@ -35,11 +35,10 @@ import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
 import com.destrostudios.grid.random.RandomProxy;
 import com.destrostudios.grid.util.RangeUtils;
-import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import lombok.AllArgsConstructor;
 
 import static com.destrostudios.grid.util.RangeUtils.calculateTargetEntity;
 
@@ -49,24 +48,24 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
     private final RandomProxy randomProxy;
 
     @Override
-    public void onEvent(SpellCastedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
-        EntityWorld entityWorld = entityWorldSupplier.get();
+    public void onEvent(SpellCastedEvent event, Supplier<EntityData> entityDataSupplier) {
+        EntityData entityData = entityDataSupplier.get();
         int spell = event.getSpell();
-        int targetEntity = calculateTargetEntity(event.getX(), event.getY(), entityWorld);
+        int targetEntity = calculateTargetEntity(event.getX(), event.getY(), entityData);
         int playerEntity = event.getPlayerEntity();
 
-        if (entityWorld.hasComponents(spell, CooldownComponent.class)) {
-            entityWorld.addComponent(spell, new OnCooldownComponent(entityWorld.getComponent(spell, CooldownComponent.class).getCooldown()));
+        if (entityData.hasComponents(spell, CooldownComponent.class)) {
+            entityData.addComponent(spell, new OnCooldownComponent(entityData.getComponent(spell, CooldownComponent.class).getCooldown()));
         }
 
         List<Event> followUpEvents = new ArrayList<>();
 
         // 1. Costs
-        if (entityWorld.hasComponents(event.getSpell(), CostComponent.class)) {
-            CostComponent costComponent = entityWorld.getComponent(event.getSpell(), CostComponent.class);
-            AttackPointsComponent ap = entityWorld.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
-            MovementPointsComponent mp = entityWorld.getComponent(event.getPlayerEntity(), MovementPointsComponent.class);
-            HealthPointsComponent hp = entityWorld.getComponent(event.getPlayerEntity(), HealthPointsComponent.class);
+        if (entityData.hasComponents(event.getSpell(), CostComponent.class)) {
+            CostComponent costComponent = entityData.getComponent(event.getSpell(), CostComponent.class);
+            AttackPointsComponent ap = entityData.getComponent(event.getPlayerEntity(), AttackPointsComponent.class);
+            MovementPointsComponent mp = entityData.getComponent(event.getPlayerEntity(), MovementPointsComponent.class);
+            HealthPointsComponent hp = entityData.getComponent(event.getPlayerEntity(), HealthPointsComponent.class);
 
             if (costComponent.getApCost() > 0) {
                 followUpEvents.add(new AttackPointsChangedEvent(event.getPlayerEntity(), ap.getAttackPoints() - costComponent.getApCost()));
@@ -80,60 +79,60 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         }
 
         // 2. Heals
-        if (entityWorld.hasComponents(spell, HealComponent.class)) {
-            HealComponent heal = entityWorld.getComponent(spell, HealComponent.class);
+        if (entityData.hasComponents(spell, HealComponent.class)) {
+            HealComponent heal = entityData.getComponent(spell, HealComponent.class);
             int healAmount = randomProxy.nextInt(heal.getMinHeal(), heal.getMaxHeal());
-            followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuff(spell, playerEntity, entityWorld, HealBuffComponent.class), targetEntity));
+            followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuff(spell, playerEntity, entityData, HealBuffComponent.class), targetEntity));
         }
 
         // 3. Damage
-        if (entityWorld.hasComponents(spell, DamageComponent.class)) {
-            DamageComponent damage = entityWorld.getComponent(spell, DamageComponent.class);
+        if (entityData.hasComponents(spell, DamageComponent.class)) {
+            DamageComponent damage = entityData.getComponent(spell, DamageComponent.class);
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
-            followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuff(spell, playerEntity, entityWorld, DamageBuffComponent.class), targetEntity));
+            followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuff(spell, playerEntity, entityData, DamageBuffComponent.class), targetEntity));
         }
 
         // 4. displacement && Teleport
-        if (entityWorld.hasComponents(spell, DisplacementComponent.class) && targetEntity != playerEntity) {
-            DisplacementComponent displacement = entityWorld.getComponent(spell, DisplacementComponent.class);
-            PositionComponent posSource = entityWorld.getComponent(playerEntity, PositionComponent.class);
+        if (entityData.hasComponents(spell, DisplacementComponent.class) && targetEntity != playerEntity) {
+            DisplacementComponent displacement = entityData.getComponent(spell, DisplacementComponent.class);
+            PositionComponent posSource = entityData.getComponent(playerEntity, PositionComponent.class);
             followUpEvents.add(new DisplacementEvent(targetEntity, displacement.getDisplacement(), posSource.getX(), posSource.getY()));
         }
-        if (entityWorld.hasComponents(spell, TeleportComponent.class)) {
+        if (entityData.hasComponents(spell, TeleportComponent.class)) {
             followUpEvents.add(new MoveEvent(playerEntity, new PositionComponent(event.getX(), event.getY()), MoveType.TELEPORT));
         }
 
         // 5. buffs
-        List<Event> buffEvents = getBuffEvents(event, entityWorld, spell, playerEntity);
+        List<Event> buffEvents = getBuffEvents(event, entityData, spell, playerEntity);
         if (!buffEvents.isEmpty()) {
             followUpEvents.addAll(buffEvents);
         }
 
         // 6. Stats per turn
-        if (entityWorld.hasComponents(spell, AttackPointsPerTurnComponent.class) || entityWorld.hasComponents(spell, MovementPointsPerTurnComponent.class)
-                || entityWorld.hasComponents(spell, DamagePerTurnComponent.class)) {
+        if (entityData.hasComponents(spell, AttackPointsPerTurnComponent.class) || entityData.hasComponents(spell, MovementPointsPerTurnComponent.class)
+                || entityData.hasComponents(spell, DamagePerTurnComponent.class)) {
             followUpEvents.add(new StatsPerTurnEvent(playerEntity, targetEntity, spell));
         }
         // update casts
-        if (entityWorld.hasComponents(spell, CastsPerTurnComponent.class)) {
-            CastsPerTurnComponent castsPerTurnComponent = entityWorld.getComponent(spell, CastsPerTurnComponent.class);
-            entityWorld.addComponent(spell, new CastsPerTurnComponent(castsPerTurnComponent.getMaxCastsPerTurn(), castsPerTurnComponent.getCastsThisTurn() - 1));
+        if (entityData.hasComponents(spell, CastsPerTurnComponent.class)) {
+            CastsPerTurnComponent castsPerTurnComponent = entityData.getComponent(spell, CastsPerTurnComponent.class);
+            entityData.addComponent(spell, new CastsPerTurnComponent(castsPerTurnComponent.getMaxCastsPerTurn(), castsPerTurnComponent.getCastsThisTurn() - 1));
         }
         eventbusInstance.registerSubEvents(followUpEvents);
     }
 
-    private List<Event> getBuffEvents(SpellCastedEvent event, EntityWorld entityWorld, int spell, int playerEntity) {
+    private List<Event> getBuffEvents(SpellCastedEvent event, EntityData entityData, int spell, int playerEntity) {
         List<Event> followUpEvents = new ArrayList<>();
 
-        boolean hasBuff = entityWorld.getComponents(spell).stream()
+        boolean hasBuff = entityData.getComponents(spell).stream()
                 .anyMatch(c -> c instanceof BuffComponent);
 
-        boolean hasSpellBuff = entityWorld.getComponents(spell).stream()
+        boolean hasSpellBuff = entityData.getComponents(spell).stream()
                 .filter(c -> c instanceof BuffComponent)
                 .map(c -> (BuffComponent) c)
                 .anyMatch(BuffComponent::isSpellBuff);
 
-        boolean hasPlayerBuff = entityWorld.getComponents(spell).stream()
+        boolean hasPlayerBuff = entityData.getComponents(spell).stream()
                 .filter(c -> c instanceof BuffComponent)
                 .map(c -> (BuffComponent) c)
                 .anyMatch(c -> !c.isSpellBuff());

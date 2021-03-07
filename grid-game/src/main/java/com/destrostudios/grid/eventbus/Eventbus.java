@@ -19,10 +19,10 @@ public class Eventbus {
 
     private final Deque<TriggeredEventHandler> triggeredHandlers;
 
-    private final Supplier<EntityData> entityWorldSupplier;
+    private final Supplier<EntityData> entityDataSupplier;
 
-    public Eventbus(Supplier<EntityData> entityWorldSupplier) {
-        this.entityWorldSupplier = entityWorldSupplier;
+    public Eventbus(Supplier<EntityData> entityDataSupplier) {
+        this.entityDataSupplier = entityDataSupplier;
         this.validator = MultimapBuilder.linkedHashKeys().arrayListValues().build();
         this.preHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();
         this.instantHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();
@@ -91,7 +91,7 @@ public class Eventbus {
         for (Class<?> eventClass : validator.keySet()) {
             if (eventClass.isAssignableFrom(e.getClass())) {
                 for (EventValidator<? extends Event> ev : validator.get(eventClass)) {
-                    if (!ev.validate(cast(e), entityWorldSupplier)) {
+                    if (!ev.validate(cast(e), entityDataSupplier)) {
                         return false;
                     }
                 }
@@ -113,7 +113,7 @@ public class Eventbus {
             TriggeredEventHandler triggeredEventHandler = triggeredHandlers.pollFirst();
 
             if (validateTriggeredHandler(triggeredEventHandler)) {
-                triggeredEventHandler.onEvent(entityWorldSupplier);
+                triggeredEventHandler.onEvent(entityDataSupplier);
             }
         }
     }

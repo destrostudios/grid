@@ -65,8 +65,8 @@ public class ComponentsContainerSerializer {
 
     public static void generateAndSaveCharacter(String characterName) {
         GridGame gridGame = new GridGame();
-        initTestCharacter(gridGame.getWorld(), characterName);
-        Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getWorld(), CharacterContainer.class);
+        initTestCharacter(gridGame.getData(), characterName);
+        Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getData(), CharacterContainer.class);
         try {
             ComponentsContainerSerializer.writeSeriazableToResources(new CharacterContainer(components), characterName);
         } catch (IOException e) {
@@ -76,8 +76,8 @@ public class ComponentsContainerSerializer {
 
     public static void generateAndSaveMap(String name) {
         GridGame gridGame = new GridGame();
-        initTestMap(gridGame.getWorld());
-        Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getWorld(), MapContainer.class);
+        initTestMap(gridGame.getData());
+        Map<Integer, List<Component>> components = ComponentsContainerSerializer.getComponents(gridGame.getData(), MapContainer.class);
         try {
             ComponentsContainerSerializer.writeSeriazableToResources(new MapContainer(components), name);
         } catch (IOException e) {
@@ -122,30 +122,30 @@ public class ComponentsContainerSerializer {
         return "";
     }
 
-    private static Map<Integer, List<Component>> getComponents(EntityData world, Class<? extends ComponentsContainer> seriazableComponentsClass) {
+    private static Map<Integer, List<Component>> getComponents(EntityData data, Class<? extends ComponentsContainer> seriazableComponentsClass) {
         Map<Integer, List<Component>> result = new LinkedHashMap<>();
 
         if (seriazableComponentsClass.equals(CharacterContainer.class)) {
-            Optional<Integer> champOpt = world.list(PlayerComponent.class).stream()
+            Optional<Integer> champOpt = data.list(PlayerComponent.class).stream()
                     .findFirst();
 
             // 1. add all character components
-            List<Component> champComponents = world.getComponents(champOpt.get());
+            List<Component> champComponents = data.getComponents(champOpt.get());
             result.put(champOpt.get(), champComponents);
             // 2. add all spells of that character
             Optional<SpellsComponent> allSpellsFromChamp = champComponents.stream()
                     .filter(c -> c instanceof SpellsComponent)
                     .map(c -> (SpellsComponent) c)
                     .findFirst();
-            allSpellsFromChamp.get().getSpells().forEach(spell -> result.put(spell, world.getComponents(spell)));
+            allSpellsFromChamp.get().getSpells().forEach(spell -> result.put(spell, data.getComponents(spell)));
 
         } else if (seriazableComponentsClass.equals(MapContainer.class)) {
             List<Integer> entities = new ArrayList<>();
-            entities.addAll(world.list(WalkableComponent.class));
-            entities.addAll(world.list(ObstacleComponent.class));
+            entities.addAll(data.list(WalkableComponent.class));
+            entities.addAll(data.list(ObstacleComponent.class));
 
             for (Integer entity : entities) {
-                List<Component> components = world.getComponents(entity);
+                List<Component> components = data.getComponents(entity);
                 result.put(entity, components);
             }
         }

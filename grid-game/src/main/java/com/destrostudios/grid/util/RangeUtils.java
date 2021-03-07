@@ -20,22 +20,22 @@ public class RangeUtils {
      *
      * @param spellEntity  with range
      * @param casterEntity of the spell caster
-     * @param entityWorld  with entites
+     * @param entityData   with entites
      * @return empty List, if it is a self target spell and List of entities of targetable spells otherwise
      */
-    public static List<Integer> getRange(int spellEntity, int casterEntity, EntityData entityWorld) {
-        RangeComponent rangeComponentOpt = entityWorld.getComponent(spellEntity, RangeComponent.class);
-        PositionComponent casterPositionOpt = entityWorld.getComponent(casterEntity, PositionComponent.class);
+    public static List<Integer> getRange(int spellEntity, int casterEntity, EntityData entityData) {
+        RangeComponent rangeComponentOpt = entityData.getComponent(spellEntity, RangeComponent.class);
+        PositionComponent casterPositionOpt = entityData.getComponent(casterEntity, PositionComponent.class);
         int maxRange = rangeComponentOpt.getMaxRange();
         int minRange = rangeComponentOpt.getMinRange();
         PositionComponent positionComponent = casterPositionOpt;
         int x = positionComponent.getX();
         int y = positionComponent.getY();
-        List<Integer> walkableAndTargetablePos = entityWorld.list(PositionComponent.class, WalkableComponent.class);
+        List<Integer> walkableAndTargetablePos = entityData.list(PositionComponent.class, WalkableComponent.class);
         List<Integer> result = new ArrayList<>();
 
         for (int walkableAndTargetablePo : walkableAndTargetablePos) {
-            PositionComponent posC = entityWorld.getComponent(walkableAndTargetablePo, PositionComponent.class);
+            PositionComponent posC = entityData.getComponent(walkableAndTargetablePo, PositionComponent.class);
             if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= maxRange
                     && Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) >= minRange) {
                 result.add(walkableAndTargetablePo);
@@ -44,24 +44,24 @@ public class RangeUtils {
         return result;
     }
 
-    public static int calculateTargetEntity(int x, int y, EntityData world) {
-        Optional<Integer> targetEntity = world.list(PositionComponent.class).stream()
-                .filter(e -> world.getComponent(e, PositionComponent.class).getX() == x
-                        && world.getComponent(e, PositionComponent.class).getY() == y)
-                .min((e1, e2) -> Boolean.compare(world.hasComponents(e2, PlayerComponent.class), world.hasComponents(e1, PlayerComponent.class)));
+    public static int calculateTargetEntity(int x, int y, EntityData data) {
+        Optional<Integer> targetEntity = data.list(PositionComponent.class).stream()
+                .filter(e -> data.getComponent(e, PositionComponent.class).getX() == x
+                        && data.getComponent(e, PositionComponent.class).getY() == y)
+                .min((e1, e2) -> Boolean.compare(data.hasComponents(e2, PlayerComponent.class), data.hasComponents(e1, PlayerComponent.class)));
 
         return targetEntity.orElse(-1);
     }
 
-    public static <E extends BuffComponent> int getBuff(int spellEntity, int playerEntity, EntityData world, Class<E> classz) {
-        int buffPlayer = world.hasComponents(playerEntity, classz)
-                ? world.getComponent(playerEntity, classz).getBuffAmount()
+    public static <E extends BuffComponent> int getBuff(int spellEntity, int playerEntity, EntityData data, Class<E> classz) {
+        int buffPlayer = data.hasComponents(playerEntity, classz)
+                ? data.getComponent(playerEntity, classz).getBuffAmount()
                 : 0;
-        List<Integer> spellBuffEntities = world.hasComponents(spellEntity, BuffsComponent.class)
-                ? world.getComponent(spellEntity, BuffsComponent.class).getBuffEntities()
+        List<Integer> spellBuffEntities = data.hasComponents(spellEntity, BuffsComponent.class)
+                ? data.getComponent(spellEntity, BuffsComponent.class).getBuffEntities()
                 : new ArrayList<>();
         int buffSpell = spellBuffEntities.stream()
-                .flatMap(spellBuff -> world.getComponents(spellBuff).stream())
+                .flatMap(spellBuff -> data.getComponents(spellBuff).stream())
                 .filter(classz::isInstance)
                 .map(spellBuff -> (BuffComponent) spellBuff)
                 .mapToInt(BuffComponent::getBuffAmount)
@@ -69,31 +69,31 @@ public class RangeUtils {
         return buffPlayer + buffSpell;
     }
 
-    public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityData entityWorld) {
-        return getRange(spellEntity, casterEntity, entityWorld).stream()
-                .map(e -> entityWorld.getComponent(e, PositionComponent.class))
+    public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityData entityData) {
+        return getRange(spellEntity, casterEntity, entityData).stream()
+                .map(e -> entityData.getComponent(e, PositionComponent.class))
                 .collect(Collectors.toList());
     }
 
-    public static boolean isPositionIsFree(EntityData entityWorld, PositionComponent newPosition, int entity) {
-        List<Integer> allPlayersEntites = entityWorld.list(PositionComponent.class, PlayerComponent.class).stream()
+    public static boolean isPositionIsFree(EntityData entityData, PositionComponent newPosition, int entity) {
+        List<Integer> allPlayersEntites = entityData.list(PositionComponent.class, PlayerComponent.class).stream()
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
-        List<Integer> allObstacleEntites = entityWorld.list(PositionComponent.class, ObstacleComponent.class).stream()
+        List<Integer> allObstacleEntites = entityData.list(PositionComponent.class, ObstacleComponent.class).stream()
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
-        List<Integer> allWalkableEntities = entityWorld.list(PositionComponent.class, WalkableComponent.class).stream()
+        List<Integer> allWalkableEntities = entityData.list(PositionComponent.class, WalkableComponent.class).stream()
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
 
-        boolean collidesWithOtherPlayer = allPlayersEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
-        boolean collidesWithObstacle = allObstacleEntites.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
-        boolean isWalkableField = allWalkableEntities.stream().anyMatch(pE -> newPosition.equals(entityWorld.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithOtherPlayer = allPlayersEntites.stream().anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithObstacle = allObstacleEntites.stream().anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean isWalkableField = allWalkableEntities.stream().anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
 
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }
 
-    public static PositionComponent getDisplacementGoal(EntityData entityWorld, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
+    public static PositionComponent getDisplacementGoal(EntityData entityData, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
         if (posEntityToDisplace.equals(posSource)) {
             return posSource;
         } else if (Math.abs(posEntityToDisplace.getX() - posSource.getX()) < Math.abs(posEntityToDisplace.getY() - posSource.getY())) {
@@ -106,7 +106,7 @@ public class RangeUtils {
 
             PositionComponent posNew = posEntityToDisplace;
             for (int y = 0; predicate.apply(y); y += displacementSignum) {
-                boolean positionIsFree = isPositionIsFree(entityWorld, new PositionComponent(posEntityToDisplace.getX(), posEntityToDisplace.getY() + y), entity);
+                boolean positionIsFree = isPositionIsFree(entityData, new PositionComponent(posEntityToDisplace.getX(), posEntityToDisplace.getY() + y), entity);
                 if (positionIsFree) {
                     posNew = new PositionComponent(posEntityToDisplace.getX(), posEntityToDisplace.getY() + y);
                 } else {
@@ -123,7 +123,7 @@ public class RangeUtils {
 
             PositionComponent posNew = posEntityToDisplace;
             for (int x = 0; predicate.apply(x); x += displacementSignum) {
-                boolean positionIsFree = isPositionIsFree(entityWorld, new PositionComponent(posEntityToDisplace.getX() + x, posEntityToDisplace.getY()), entity);
+                boolean positionIsFree = isPositionIsFree(entityData, new PositionComponent(posEntityToDisplace.getX() + x, posEntityToDisplace.getY()), entity);
                 if (positionIsFree) {
                     posNew = new PositionComponent(posEntityToDisplace.getX() + x, posEntityToDisplace.getY());
                 } else {

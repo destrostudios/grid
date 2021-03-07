@@ -69,7 +69,7 @@ public class Main {
                 if (object instanceof GameActionRequest) {
                     GameActionRequest message = (GameActionRequest) object;
                     ServerGameData<GridGame> game = gameModule.getGame(message.game);
-                    GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(game.state.getWorld());
+                    GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(game.state.getData());
                     if (gameOverInfo.isGameIsOver()) {
                         lobbyModule.unlistGame(game.id);
                         gameModule.unregisterGame(game.id);

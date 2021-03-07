@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 
 public class UpdateStatsPerTurnValidator implements EventValidator<UpdateStatsPerTurnEvent> {
     @Override
-    public boolean validate(UpdateStatsPerTurnEvent event, Supplier<EntityData> entityWorldSupplier) {
-        return entityWorldSupplier.get().hasComponents(event.getEntity(), StatsPerRoundComponent.class)
-                && !entityWorldSupplier.get().getComponent(event.getEntity(), StatsPerRoundComponent.class).getStatsPerRoundEntites().isEmpty();
+    public boolean validate(UpdateStatsPerTurnEvent event, Supplier<EntityData> entityDataSupplier) {
+        return entityDataSupplier.get().hasComponents(event.getEntity(), StatsPerRoundComponent.class)
+                && !entityDataSupplier.get().getComponent(event.getEntity(), StatsPerRoundComponent.class).getStatsPerRoundEntites().isEmpty();
     }
 }

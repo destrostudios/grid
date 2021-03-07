@@ -127,7 +127,7 @@ public class GridGame {
         this.random = random;
     }
 
-    public EntityData getWorld() {
+    public EntityData getData() {
         return world;
     }
 

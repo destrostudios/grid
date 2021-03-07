@@ -11,14 +11,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class DisplacementValidator implements EventValidator<DisplacementEvent> {
     @Override
-    public boolean validate(DisplacementEvent event, Supplier<EntityData> entityWorldSupplier) {
+    public boolean validate(DisplacementEvent event, Supplier<EntityData> entityDataSupplier) {
         List<PositionComponent> relevantPos = Lists.newArrayList(new PositionComponent(event.getXDisplacementSource(), event.getYDisplacementSource()),
                 new PositionComponent(event.getXDisplacementSource() + 1, event.getYDisplacementSource()),
                 new PositionComponent(event.getXDisplacementSource() - 1, event.getYDisplacementSource()),
                 new PositionComponent(event.getXDisplacementSource(), event.getYDisplacementSource() + 1),
                 new PositionComponent(event.getXDisplacementSource(), event.getYDisplacementSource() - 1)
         );
-        return entityWorldSupplier.get().hasComponents(event.getEntityToDisplace(), PositionComponent.class)
-                && relevantPos.contains(entityWorldSupplier.get().getComponent(event.getEntityToDisplace(), PositionComponent.class));
+        return entityDataSupplier.get().hasComponents(event.getEntityToDisplace(), PositionComponent.class)
+                && relevantPos.contains(entityDataSupplier.get().getComponent(event.getEntityToDisplace(), PositionComponent.class));
     }
 }

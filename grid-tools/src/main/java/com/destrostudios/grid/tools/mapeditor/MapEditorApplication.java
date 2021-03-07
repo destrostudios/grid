@@ -154,7 +154,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
 
     private void saveMap(String mapName) {
         MapAppState mapAppState = stateManager.getState(MapAppState.class);
-        MapContainer mapContainer = new MapContainer(((EntityWorld) mapAppState.getEntityWorld()).getWorld());
+        MapContainer mapContainer = new MapContainer(((EntityWorld) mapAppState.getEntityData()).getWorld());
         try {
             ComponentsContainerSerializer.writeSeriazableToResources(mapContainer, mapName);
             JOptionPane.showMessageDialog(null, "Map '" + mapName + "' saved successfully.");
@@ -166,23 +166,23 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
     @Override
     public void onAction(String actionName, boolean isPressed, float tpf) {
         MapAppState mapAppState = stateManager.getState(MapAppState.class);
-        EntityData entityWorld = mapAppState.getEntityWorld();
+        EntityData entityData = mapAppState.getEntityData();
         if (isPressed) {
             switch (actionName) {
                 case "add":
                     Vector3Int positionToAdd = mapAppState.getHoveredPosition(tool == MapEditorTool.GROUND);
                     if ((positionToAdd != null) && (positionToAdd.getY() == 0)) {
                         if (tool == MapEditorTool.GROUND) {
-                            int groundEntity = entityWorld.createEntity();
-                            entityWorld.addComponent(groundEntity, new PositionComponent(positionToAdd.getX(), positionToAdd.getZ()));
-                            entityWorld.addComponent(groundEntity, new WalkableComponent());
-                            entityWorld.addComponent(groundEntity, new VisualComponent(VISUALS_GROUND[visualIndexGround]));
+                            int groundEntity = entityData.createEntity();
+                            entityData.addComponent(groundEntity, new PositionComponent(positionToAdd.getX(), positionToAdd.getZ()));
+                            entityData.addComponent(groundEntity, new WalkableComponent());
+                            entityData.addComponent(groundEntity, new VisualComponent(VISUALS_GROUND[visualIndexGround]));
                             mapAppState.updateVisuals();
                         } else if (tool == MapEditorTool.OBSTACLE) {
-                            int obstacleEntity = entityWorld.createEntity();
-                            entityWorld.addComponent(obstacleEntity, new PositionComponent(positionToAdd.getX(), positionToAdd.getZ()));
-                            entityWorld.addComponent(obstacleEntity, new ObstacleComponent());
-                            entityWorld.addComponent(obstacleEntity, new VisualComponent(VISUALS_OBSTACLES[visualIndexObstacle]));
+                            int obstacleEntity = entityData.createEntity();
+                            entityData.addComponent(obstacleEntity, new PositionComponent(positionToAdd.getX(), positionToAdd.getZ()));
+                            entityData.addComponent(obstacleEntity, new ObstacleComponent());
+                            entityData.addComponent(obstacleEntity, new VisualComponent(VISUALS_OBSTACLES[visualIndexObstacle]));
                             mapAppState.updateVisuals();
                         }
                     }
@@ -191,13 +191,13 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
                     Vector3Int positionToRemove = mapAppState.getHoveredPosition(false);
                     if (positionToRemove != null) {
                         if (tool == MapEditorTool.GROUND) {
-                            int groundEntity = getEntity(entityWorld, new Class[]{PositionComponent.class, WalkableComponent.class}, positionToRemove.getX(), positionToRemove.getZ());
-                            entityWorld.removeEntity(groundEntity);
+                            int groundEntity = getEntity(entityData, new Class[]{PositionComponent.class, WalkableComponent.class}, positionToRemove.getX(), positionToRemove.getZ());
+                            entityData.removeEntity(groundEntity);
                             mapAppState.updateVisuals();
                         } else if (tool == MapEditorTool.OBSTACLE) {
-                            Integer obstacleEntity = getEntity(entityWorld, new Class[]{PositionComponent.class, ObstacleComponent.class}, positionToRemove.getX(), positionToRemove.getZ());
+                            Integer obstacleEntity = getEntity(entityData, new Class[]{PositionComponent.class, ObstacleComponent.class}, positionToRemove.getX(), positionToRemove.getZ());
                             if (obstacleEntity != null) {
-                                entityWorld.removeEntity(obstacleEntity);
+                                entityData.removeEntity(obstacleEntity);
                                 mapAppState.updateVisuals();
                             }
                         }
@@ -227,10 +227,10 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
         }
     }
 
-    private Integer getEntity(EntityData entityWorld, Class<?>[] components, int x, int y) {
-        return entityWorld.list(components).stream()
+    private Integer getEntity(EntityData entityData, Class<?>[] components, int x, int y) {
+        return entityData.list(components).stream()
                 .filter(entity -> {
-                    PositionComponent positionComponent = entityWorld.getComponent(entity, PositionComponent.class);
+                    PositionComponent positionComponent = entityData.getComponent(entity, PositionComponent.class);
                     return ((positionComponent.getX() == x) && (positionComponent.getY() == y));
                 })
                 .findFirst()
