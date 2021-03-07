@@ -7,10 +7,8 @@ import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
-import com.destrostudios.turnbasedgametools.bot.RolloutToEvaluation;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
-import java.security.SecureRandom;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +44,8 @@ public class Main {
         botSettings.verbose = true;
         botSettings.maxThreads = 2;
         botSettings.strength = 100;
-        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 10, Main::eval)::evaluate;
+//        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 10, Main::eval)::evaluate;
+        botSettings.evaluation = Main::eval;
 
         return new MctsBot<>(new GridBotService(), botSettings);
     }
