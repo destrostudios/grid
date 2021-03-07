@@ -1,18 +1,8 @@
 package com.destrostudios.grid.serialization;
 
 import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.map.ObstacleComponent;
-import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.map.StartingFieldComponent;
-import com.destrostudios.grid.components.map.VisualComponent;
-import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.BuffsComponent;
-import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
-import com.destrostudios.grid.components.properties.MaxHealthComponent;
-import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
-import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
-import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
+import com.destrostudios.grid.components.map.*;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.properties.resistance.AttackPointResistanceComponent;
 import com.destrostudios.grid.components.properties.resistance.MovementPointResistanceComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
@@ -32,18 +22,14 @@ import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.components.spells.range.RangeIndicator;
-import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.entities.EntityData;
 import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.destrostudios.grid.GridGame.MAP_X;
-import static com.destrostudios.grid.GridGame.MAP_Y;
-import static com.destrostudios.grid.GridGame.MAX_AP;
-import static com.destrostudios.grid.GridGame.MAX_HEALTH;
-import static com.destrostudios.grid.GridGame.MAX_MP;
+import static com.destrostudios.grid.GridGame.*;
 
 public class SampleDataGenarator {
 
@@ -187,7 +173,7 @@ public class SampleDataGenarator {
         data.addComponent(dmgMpSpell, new DamageComponent(dmg, dmg + 30));
         data.addComponent(dmgMpSpell, new NameComponent(spellName));
         data.addComponent(dmgMpSpell, new MovementPointBuffComponent(mpBuff, 1, false));
-        data.addComponent(dmgMpSpell, new RangeComponent(1, range));
+        data.addComponent(dmgMpSpell, new RangeComponent(RangeIndicator.ALL, 1, range));
         data.addComponent(dmgMpSpell, new CastsPerTurnComponent(2, 0));
         data.addComponent(dmgMpSpell, new TooltipComponent(String.format("Dmg spell doing %s dmg for %s AP and buffing %s MP\nRange: %s", dmg, apCost, mpBuff, range)));
 

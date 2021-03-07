@@ -53,15 +53,15 @@ public class RangeUtils {
         return result;
     }
 
-    public static List<Integer> getAffectedEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityWorld world) {
-        List<PositionComponent> positionComponents = calculateAffectedPosEntities(spellEntity, sourcePos, clickedPos, world);
-        return world.list(PlayerComponent.class).stream()
-                .filter(e -> positionComponents.contains(world.getComponent(e, PositionComponent.class)))
+    public static List<Integer> getAffectedEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
+        List<PositionComponent> positionComponents = calculateAffectedPosEntities(spellEntity, sourcePos, clickedPos, entityData);
+        return entityData.list(PlayerComponent.class).stream()
+                .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .collect(Collectors.toList());
     }
 
-    public static List<PositionComponent> calculateAffectedPosEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityWorld world) {
-        AffectedAreaComponent component = world.getComponent(spellEntity, AffectedAreaComponent.class);
+    public static List<PositionComponent> calculateAffectedPosEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
+        AffectedAreaComponent component = entityData.getComponent(spellEntity, AffectedAreaComponent.class);
         int impact = component.getImpact();
         int halfImpact = impact / 2;
         int yPos = clickedPos.getY();
