@@ -7,6 +7,7 @@ import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.VisualComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.MapContainer;
@@ -18,16 +19,20 @@ import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.simsilica.lemur.*;
-
-import javax.swing.*;
+import com.simsilica.lemur.Button;
+import com.simsilica.lemur.Container;
+import com.simsilica.lemur.HAlignment;
+import com.simsilica.lemur.Insets3f;
+import com.simsilica.lemur.Label;
+import com.simsilica.lemur.VAlignment;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 
 public class MapEditorApplication extends BaseApplication implements ActionListener {
 
     private static final String MAP_NAME = "DestroMap";
-    private static final String[] VISUALS_GROUND = new String[] { "grass", "sand", "snow" };
-    private static final String[] VISUALS_OBSTACLES = new String[] { "tree", "rock" };
+    private static final String[] VISUALS_GROUND = new String[]{"grass", "sand", "snow"};
+    private static final String[] VISUALS_OBSTACLES = new String[]{"tree", "rock"};
 
     private int marginX = 100;
     private int marginBottom = 50;
@@ -149,10 +154,10 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
 
     private void saveMap(String mapName) {
         MapAppState mapAppState = stateManager.getState(MapAppState.class);
-        MapContainer mapContainer = new MapContainer(mapAppState.getEntityWorld().getWorld());
+        MapContainer mapContainer = new MapContainer(((EntityWorld) mapAppState.getEntityWorld()).getWorld());
         try {
             ComponentsContainerSerializer.writeSeriazableToResources(mapContainer, mapName);
-            JOptionPane.showMessageDialog(null, "Map '" + mapName  + "' saved successfully.");
+            JOptionPane.showMessageDialog(null, "Map '" + mapName + "' saved successfully.");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -161,7 +166,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
     @Override
     public void onAction(String actionName, boolean isPressed, float tpf) {
         MapAppState mapAppState = stateManager.getState(MapAppState.class);
-        EntityWorld entityWorld = mapAppState.getEntityWorld();
+        EntityData entityWorld = mapAppState.getEntityWorld();
         if (isPressed) {
             switch (actionName) {
                 case "add":
@@ -222,7 +227,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
         }
     }
 
-    private Integer getEntity(EntityWorld entityWorld, Class<?>[] components, int x, int y) {
+    private Integer getEntity(EntityData entityWorld, Class<?>[] components, int x, int y) {
         return entityWorld.list(components).stream()
                 .filter(entity -> {
                     PositionComponent positionComponent = entityWorld.getComponent(entity, PositionComponent.class);

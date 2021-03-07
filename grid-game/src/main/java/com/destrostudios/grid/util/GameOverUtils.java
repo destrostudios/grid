@@ -3,7 +3,7 @@ package com.destrostudios.grid.util;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,7 +14,7 @@ import lombok.Getter;
 
 public class GameOverUtils {
 
-    public static GameOverInfo getGameOverInfo(EntityWorld entityWorld) {
+    public static GameOverInfo getGameOverInfo(EntityData entityWorld) {
         List<Integer> playerEntities = entityWorld.list(PlayerComponent.class);
         Map<Integer, List<Integer>> playersByTeam = new LinkedHashMap<>();
 

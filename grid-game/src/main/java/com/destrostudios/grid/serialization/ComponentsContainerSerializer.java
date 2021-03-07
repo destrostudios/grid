@@ -6,6 +6,7 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.serialization.container.CharacterContainer;
 import com.destrostudios.grid.serialization.container.ComponentsContainer;
@@ -13,12 +14,15 @@ import com.destrostudios.grid.serialization.container.GameStateContainer;
 import com.destrostudios.grid.serialization.container.MapContainer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.destrostudios.grid.serialization.SampleDataGenarator.initTestCharacter;
 import static com.destrostudios.grid.serialization.SampleDataGenarator.initTestMap;
@@ -118,7 +122,7 @@ public class ComponentsContainerSerializer {
         return "";
     }
 
-    private static Map<Integer, List<Component>> getComponents(EntityWorld world, Class<? extends ComponentsContainer> seriazableComponentsClass) {
+    private static Map<Integer, List<Component>> getComponents(EntityData world, Class<? extends ComponentsContainer> seriazableComponentsClass) {
         Map<Integer, List<Component>> result = new LinkedHashMap<>();
 
         if (seriazableComponentsClass.equals(CharacterContainer.class)) {

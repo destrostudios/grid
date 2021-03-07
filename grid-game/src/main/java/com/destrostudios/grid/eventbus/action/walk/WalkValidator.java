@@ -3,9 +3,8 @@ package com.destrostudios.grid.eventbus.action.walk;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventValidator;
-
 import java.util.function.Supplier;
 
 import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
@@ -13,8 +12,8 @@ import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
 public class WalkValidator implements EventValidator<WalkEvent> {
 
     @Override
-    public boolean validate(WalkEvent componentUpdateEvent, Supplier<EntityWorld> supplier) {
-        EntityWorld entityWorld = supplier.get();
+    public boolean validate(WalkEvent componentUpdateEvent, Supplier<EntityData> supplier) {
+        EntityData entityWorld = supplier.get();
         int entity = componentUpdateEvent.getEntity();
         PositionComponent newPosition = componentUpdateEvent.getPositionComponent();
 
@@ -26,7 +25,7 @@ public class WalkValidator implements EventValidator<WalkEvent> {
     }
 
 
-    private int getWalkedDistance(EntityWorld entityWorld, WalkEvent componentUpdateEvent) {
+    private int getWalkedDistance(EntityData entityWorld, WalkEvent componentUpdateEvent) {
         PositionComponent posComp = entityWorld.getComponent(componentUpdateEvent.getEntity(), PositionComponent.class);
         if (posComp == null) {
             return -1;

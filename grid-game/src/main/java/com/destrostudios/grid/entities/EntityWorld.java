@@ -38,6 +38,7 @@ public class EntityWorld implements EntityData {
         }
     }
 
+    @Override
     public List<Component> getComponents(int entity) {
         return world.get(entity);
     }
@@ -95,7 +96,7 @@ public class EntityWorld implements EntityData {
         componentOpt.ifPresent(components::remove);
     }
 
-
+    @Override
     public void removeEntity(int entity) {
         world.remove(entity);
     }

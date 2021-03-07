@@ -1,8 +1,18 @@
 package com.destrostudios.grid.serialization;
 
 import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.map.*;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.map.ObstacleComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.StartingFieldComponent;
+import com.destrostudios.grid.components.map.VisualComponent;
+import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.properties.BuffsComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
 import com.destrostudios.grid.components.properties.resistence.AttackPointResistenceComponent;
 import com.destrostudios.grid.components.properties.resistence.MovementPointResistenceComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
@@ -19,18 +29,21 @@ import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.destrostudios.grid.GridGame.*;
+import static com.destrostudios.grid.GridGame.MAP_X;
+import static com.destrostudios.grid.GridGame.MAP_Y;
+import static com.destrostudios.grid.GridGame.MAX_AP;
+import static com.destrostudios.grid.GridGame.MAX_HEALTH;
+import static com.destrostudios.grid.GridGame.MAX_MP;
 
 public class SampleDataGenarator {
 
-    public static void initTestMap(EntityWorld world) {
+    public static void initTestMap(EntityData world) {
         // add walkables & startingFields
         int startingFields = 15;
         String terrain = getTerrain();
@@ -79,7 +92,7 @@ public class SampleDataGenarator {
         return "snow";
     }
 
-    public static void initTestCharacter(EntityWorld world, String charackterName) {
+    public static void initTestCharacter(EntityData world, String charackterName) {
         List<Integer> spells = new ArrayList<>();
         Random rand = new Random();
         int attackPoints = Math.max(MAX_AP / 2, rand.nextInt(MAX_AP));
@@ -136,7 +149,7 @@ public class SampleDataGenarator {
         world.addComponent(playerEntity, new SpellsComponent(spells));
     }
 
-    private static void addDmgSpell(EntityWorld world, Random rand, int attackPoints, int spell) {
+    private static void addDmgSpell(EntityData world, Random rand, int attackPoints, int spell) {
         String spellName = getSpellName();
         int apCost = Math.max(2, rand.nextInt(attackPoints));
         world.addComponent(spell, new CostComponent(apCost, 0, 0));
@@ -150,7 +163,7 @@ public class SampleDataGenarator {
         world.addComponent(spell, new RangeComponent(1, range));
     }
 
-    private static void addDmgSpellWithMpBuff(EntityWorld world, Random rand, int attackPoints, int dmgMpSpell) {
+    private static void addDmgSpellWithMpBuff(EntityData world, Random rand, int attackPoints, int dmgMpSpell) {
         int apCost = Math.max(2, rand.nextInt(attackPoints));
         int dmg = Math.max(25, rand.nextInt(50));
         int mpBuff = Math.max(1, rand.nextInt(2));
@@ -166,7 +179,7 @@ public class SampleDataGenarator {
         world.addComponent(dmgMpSpell, new TooltipComponent(String.format("Dmg spell doing %s dmg for %s AP and buffing %s MP\nRange: %s", dmg, apCost, mpBuff, range)));
     }
 
-    private static void addApBuff(EntityWorld world, Random rand, int movementPoints, int spellApBuff) {
+    private static void addApBuff(EntityData world, Random rand, int movementPoints, int spellApBuff) {
         int mpCost = Math.max(4, rand.nextInt(movementPoints));
         int apBuff = Math.max(1, rand.nextInt(3));
         int range = Math.max(3, rand.nextInt(6));
@@ -179,7 +192,7 @@ public class SampleDataGenarator {
         world.addComponent(spellApBuff, new TooltipComponent(String.format("Spell buffing %s AP for %s MP \nRange: %s", apBuff, mpCost, range)));
     }
 
-    private static void addTeleport(EntityWorld world, Random rand, int attackPoints, int spellApBuff) {
+    private static void addTeleport(EntityData world, Random rand, int attackPoints, int spellApBuff) {
         int apCost = Math.max(3, rand.nextInt(attackPoints));
         int range = Math.max(3, rand.nextInt(6));
         world.addComponent(spellApBuff, new TeleportComponent());
@@ -191,7 +204,7 @@ public class SampleDataGenarator {
         world.addComponent(spellApBuff, new CastsPerTurnComponent(2, 0));
     }
 
-    private static void addApAndHpPoison(EntityWorld world, Random rand, int attackPoints, int spell, int playerEntity) {
+    private static void addApAndHpPoison(EntityData world, Random rand, int attackPoints, int spell, int playerEntity) {
         int range;
         int apCost = Math.max(2, rand.nextInt(attackPoints));
         range = Math.max(3, rand.nextInt(6));
@@ -205,7 +218,7 @@ public class SampleDataGenarator {
         world.addComponent(spell, new TooltipComponent("Spell adds 1-3 AP poison for 2 rounds and 50-100 HP poison for 3 rounds"));
     }
 
-    private static void addHealthBuff(EntityWorld world, Random rand, int attackPoints, int spellMpHealthBuff) {
+    private static void addHealthBuff(EntityData world, Random rand, int attackPoints, int spellMpHealthBuff) {
         int apCost;
         int hpBuff = Math.max(50, rand.nextInt(150));
         int hpBuffDuration = Math.max(3, rand.nextInt(6));
@@ -223,7 +236,7 @@ public class SampleDataGenarator {
 
     }
 
-    private static void addHeal(EntityWorld world, int spell, int playerEntity) {
+    private static void addHeal(EntityData world, int spell, int playerEntity) {
         int apCost = Math.max(2, 3);
         world.addComponent(spell, new CostComponent(apCost, 0, 0));
         world.addComponent(spell, new HealPerTurnComponent(50, 100, 4, playerEntity));
@@ -234,7 +247,7 @@ public class SampleDataGenarator {
         world.addComponent(spell, new TooltipComponent(String.format("Spell heals 50-100 hp for %s rounds", 4)));
     }
 
-    private static void addDisplacement(EntityWorld world, int spell, int playerEntity) {
+    private static void addDisplacement(EntityData world, int spell, int playerEntity) {
         int apCost = 4;
         world.addComponent(spell, new CostComponent(apCost, 0, 0));
         world.addComponent(spell, new NameComponent(getSpellName()));

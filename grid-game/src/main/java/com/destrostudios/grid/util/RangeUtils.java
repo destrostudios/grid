@@ -7,8 +7,7 @@ import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.BuffsComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
-import com.destrostudios.grid.entities.EntityWorld;
-
+import com.destrostudios.grid.entities.EntityData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class RangeUtils {
      * @param entityWorld  with entites
      * @return empty List, if it is a self target spell and List of entities of targetable spells otherwise
      */
-    public static List<Integer> getRange(int spellEntity, int casterEntity, EntityWorld entityWorld) {
+    public static List<Integer> getRange(int spellEntity, int casterEntity, EntityData entityWorld) {
         RangeComponent rangeComponentOpt = entityWorld.getComponent(spellEntity, RangeComponent.class);
         PositionComponent casterPositionOpt = entityWorld.getComponent(casterEntity, PositionComponent.class);
         int maxRange = rangeComponentOpt.getMaxRange();
@@ -45,7 +44,7 @@ public class RangeUtils {
         return result;
     }
 
-    public static int calculateTargetEntity(int x, int y, EntityWorld world) {
+    public static int calculateTargetEntity(int x, int y, EntityData world) {
         Optional<Integer> targetEntity = world.list(PositionComponent.class).stream()
                 .filter(e -> world.getComponent(e, PositionComponent.class).getX() == x
                         && world.getComponent(e, PositionComponent.class).getY() == y)
@@ -54,7 +53,7 @@ public class RangeUtils {
         return targetEntity.orElse(-1);
     }
 
-    public static <E extends BuffComponent> int getBuff(int spellEntity, int playerEntity, EntityWorld world, Class<E> classz) {
+    public static <E extends BuffComponent> int getBuff(int spellEntity, int playerEntity, EntityData world, Class<E> classz) {
         int buffPlayer = world.hasComponents(playerEntity, classz)
                 ? world.getComponent(playerEntity, classz).getBuffAmount()
                 : 0;
@@ -70,13 +69,13 @@ public class RangeUtils {
         return buffPlayer + buffSpell;
     }
 
-    public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityWorld entityWorld) {
+    public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityData entityWorld) {
         return getRange(spellEntity, casterEntity, entityWorld).stream()
                 .map(e -> entityWorld.getComponent(e, PositionComponent.class))
                 .collect(Collectors.toList());
     }
 
-    public static boolean isPositionIsFree(EntityWorld entityWorld, PositionComponent newPosition, int entity) {
+    public static boolean isPositionIsFree(EntityData entityWorld, PositionComponent newPosition, int entity) {
         List<Integer> allPlayersEntites = entityWorld.list(PositionComponent.class, PlayerComponent.class).stream()
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
@@ -94,7 +93,7 @@ public class RangeUtils {
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }
 
-    public static PositionComponent getDisplacementGoal(EntityWorld entityWorld, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
+    public static PositionComponent getDisplacementGoal(EntityData entityWorld, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
         if (posEntityToDisplace.equals(posSource)) {
             return posSource;
         } else if (Math.abs(posEntityToDisplace.getX() - posSource.getX()) < Math.abs(posEntityToDisplace.getY() - posSource.getY())) {

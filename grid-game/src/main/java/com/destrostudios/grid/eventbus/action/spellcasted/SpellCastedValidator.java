@@ -9,7 +9,7 @@ import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventValidator;
 import com.destrostudios.grid.util.RangeUtils;
 import java.util.function.Supplier;
@@ -18,8 +18,8 @@ import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
 
 public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
     @Override
-    public boolean validate(SpellCastedEvent event, Supplier<EntityWorld> entityWorldSupplier) {
-        EntityWorld entityWorld = entityWorldSupplier.get();
+    public boolean validate(SpellCastedEvent event, Supplier<EntityData> entityWorldSupplier) {
+        EntityData entityWorld = entityWorldSupplier.get();
 
         if (!entityWorld.hasComponents(event.getPlayerEntity(), TurnComponent.class)) {
             return false;

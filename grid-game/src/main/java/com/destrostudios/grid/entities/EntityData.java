@@ -1,13 +1,14 @@
 package com.destrostudios.grid.entities;
 
 import com.destrostudios.grid.components.Component;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public interface EntityData {
     int createEntity();
+
+    void removeEntity(int entity);
 
     <T> T getComponent(int entity, Class<T> component);
 
@@ -16,6 +17,8 @@ public interface EntityData {
     void remove(int entity, Class<?> component);
 
     List<Integer> list(Class<?> component); // all entities which have the specified component
+
+    List<Component> getComponents(int entity);
 
     default List<Integer> list(Class<?>... components) {
         return Arrays.stream(components)

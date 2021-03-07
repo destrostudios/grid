@@ -24,7 +24,7 @@ import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MaxHealthComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResults;
@@ -33,18 +33,17 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Label;
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 public class MapAppState extends BaseAppState<BaseApplication> {
 
     private Map map;
     @Getter
-    private EntityWorld entityWorld;
+    private EntityData entityWorld;
     private int mapSizeX;
     private int mapSizeY;
     private Node rootNode;
@@ -56,7 +55,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private List<Integer> validTargetEntities = new LinkedList<>();
     private List<Integer> tmpRemovedEntities = new LinkedList<>();
 
-    public MapAppState(String mapName, EntityWorld entityWorld) {
+    public MapAppState(String mapName, EntityData entityWorld) {
         this.map = Maps.get(mapName);
         this.entityWorld = entityWorld;
     }
@@ -138,7 +137,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
                 String modelName = entityWorld.getComponent(obstacleEntity, VisualComponent.class).getName();
                 ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
                 rootNode.attachChild(newObstacleModel);
-                    return newObstacleModel;
+                return newObstacleModel;
             });
 
             PositionComponent positionComponent = entityWorld.getComponent(obstacleEntity, PositionComponent.class);
@@ -184,7 +183,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
         }
     }
 
-    private boolean hasEntity(EntityWorld entityWorld, int entity) {
+    private boolean hasEntity(EntityData entityWorld, int entity) {
         List<Component> components = entityWorld.getComponents(entity);
         return ((components != null) && (components.size() > 0));
     }

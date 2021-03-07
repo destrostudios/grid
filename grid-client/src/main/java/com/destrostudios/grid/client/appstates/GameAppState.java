@@ -6,7 +6,11 @@ import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
-import com.destrostudios.grid.client.animations.*;
+import com.destrostudios.grid.client.animations.Animation;
+import com.destrostudios.grid.client.animations.AnnouncementAnimation;
+import com.destrostudios.grid.client.animations.HealthAnimation;
+import com.destrostudios.grid.client.animations.PlayerModelAnimation;
+import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.ModelAnimationInfo;
 import com.destrostudios.grid.client.characters.PlayerVisual;
@@ -14,11 +18,16 @@ import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
-import com.destrostudios.grid.components.spells.base.TooltipComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
@@ -34,7 +43,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,7 +70,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             playAnimation(new WalkAnimation(playerVisual, positionComponent.getX(), positionComponent.getY()));
         });
         gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityWorldSupplier) -> {
-            EntityWorld entityWorld = gameProxy.getGame().getWorld();
+            EntityData entityWorld = gameProxy.getGame().getWorld();
             int currentHealth = entityWorld.getComponent(event.getEntity(), HealthPointsComponent.class).getHealth();
             int newHealth = event.getNewPoints();
             if (currentHealth != newHealth) {
@@ -73,7 +81,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             }
         });
         gameProxy.addPreHandler(SpellCastedEvent.class, (EventHandler<SpellCastedEvent>) (event, entityWorldSupplier) -> {
-            EntityWorld entityWorld = gameProxy.getGame().getWorld();
+            EntityData entityWorld = gameProxy.getGame().getWorld();
             PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getPlayerEntity());
             String spellName = entityWorld.getComponent(event.getSpell(), NameComponent.class).getName();
             ModelAnimationInfo castAnimation = CastAnimations.get(spellName);
@@ -84,7 +92,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         });
         gameProxy.addResolvedHandler(Event.class, (event, entityWorldSupplier) -> updateVisuals());
         gameProxy.addResolvedHandler(UpdatedTurnEvent.class, (event, entityWorldSupplier) -> {
-            EntityWorld entityWorld = gameProxy.getGame().getWorld();
+            EntityData entityWorld = gameProxy.getGame().getWorld();
             int activePlayerEntity = entityWorld.list(TurnComponent.class).get(0);
             String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
@@ -130,7 +138,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         }
 
         GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
-        EntityWorld entityWorld = gameProxy.getGame().getWorld();
+        EntityData entityWorld = gameProxy.getGame().getWorld();
 
         int activePlayerEntity = entityWorld.list(TurnComponent.class).get(0);
         String activePlayerName = entityWorld.getComponent(activePlayerEntity, NameComponent.class).getName();
@@ -198,9 +206,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                         if (targetingSpellEntity != null) {
                             if (containsEntity(gameProxy.getGame().getWorld(), validSpellTargetEntities, clickedPosition.getX(), clickedPosition.getZ())) {
                                 gameProxy.requestAction(new CastSpellAction(
-                                    clickedPosition.getX(),
-                                    clickedPosition.getZ(),
-                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
+                                        clickedPosition.getX(),
+                                        clickedPosition.getZ(),
+                                        gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
                                 );
                             }
                             setTargetingSpell(null);
@@ -213,7 +221,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         }
     }
 
-    private void lookAt(EntityWorld entityWorld, int sourceEntity, Spatial sourceSpatial, int targetX, int targetY) {
+    private void lookAt(EntityData entityWorld, int sourceEntity, Spatial sourceSpatial, int targetX, int targetY) {
         PositionComponent sourcePositionComponent = entityWorld.getComponent(sourceEntity, PositionComponent.class);
         float distanceX = (targetX - sourcePositionComponent.getX());
         float distanceY = (targetY - sourcePositionComponent.getY());
@@ -222,7 +230,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         }
     }
 
-    private boolean containsEntity(EntityWorld entityWorld, List<Integer> entities, int x, int y) {
+    private boolean containsEntity(EntityData entityWorld, List<Integer> entities, int x, int y) {
         return entities.stream().anyMatch(entity -> {
             PositionComponent positionComponent = entityWorld.getComponent(entity, PositionComponent.class);
             return ((positionComponent.getX() == x) && (positionComponent.getY() == y));

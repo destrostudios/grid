@@ -1,10 +1,9 @@
 package com.destrostudios.grid.eventbus;
 
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -20,9 +19,9 @@ public class Eventbus {
 
     private final Deque<TriggeredEventHandler> triggeredHandlers;
 
-    private final Supplier<EntityWorld> entityWorldSupplier;
+    private final Supplier<EntityData> entityWorldSupplier;
 
-    public Eventbus(Supplier<EntityWorld> entityWorldSupplier) {
+    public Eventbus(Supplier<EntityData> entityWorldSupplier) {
         this.entityWorldSupplier = entityWorldSupplier;
         this.validator = MultimapBuilder.linkedHashKeys().arrayListValues().build();
         this.preHandlers = MultimapBuilder.linkedHashKeys().arrayListValues().build();

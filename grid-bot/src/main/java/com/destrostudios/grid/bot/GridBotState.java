@@ -11,7 +11,7 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
-import com.destrostudios.grid.entities.EntityWorld;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
@@ -68,7 +68,7 @@ public class GridBotState implements BotGameState<Action, Team> {
     @Override
     public List<Action> generateActions(Team team) {
         List<Action> actions = new ArrayList<>();
-        EntityWorld world = game.getWorld();
+        EntityData world = game.getWorld();
         for (int entity : world.list(TurnComponent.class)) {
             String playerIdentifier = Integer.toString(entity);
             PositionComponent position = world.getComponent(entity, PositionComponent.class);
@@ -103,7 +103,7 @@ public class GridBotState implements BotGameState<Action, Team> {
         return actions;
     }
 
-    private static void tryAddMoveAction(int x, int y, String playerIdentifier, EntityWorld world, int entity, List<Action> actions) {
+    private static void tryAddMoveAction(int x, int y, String playerIdentifier, EntityData world, int entity, List<Action> actions) {
         WalkValidator validator = new WalkValidator();
         if (validator.validate(new WalkEvent(entity, new PositionComponent(x, y)), () -> world)) {
             actions.add(new PositionUpdateAction(x, y, playerIdentifier));
