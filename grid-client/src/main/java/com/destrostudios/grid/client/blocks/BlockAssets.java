@@ -79,7 +79,7 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false)
     );
     public static final Block BLOCK_SAND_INVALID = new Block(
-        new BlockSkin(new BlockSkin_TextureLocation(13, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(14, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),

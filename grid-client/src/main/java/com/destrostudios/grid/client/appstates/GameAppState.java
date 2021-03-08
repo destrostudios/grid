@@ -187,10 +187,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     Integer remainingCooldown = entityData.hasComponents(spellEntity, OnCooldownComponent.class)
                             ? entityData.getComponent(spellEntity, OnCooldownComponent.class).getRemainingRounds()
                             : null;
-                    CostComponent costComponent = entityData.getComponent(spellEntity, CostComponent.class);
-                    boolean isCostPayable = ((costComponent == null) || ((ownPlayerAP >= costComponent.getApCost()) && (ownPlayerMP >= costComponent.getMpCost()) && (ownPlayerCurrentHealth >= costComponent.getHpCost())));
+                    boolean isCastable = RangeUtils.isCastable(playerEntity,spellEntity,entityData);
                     boolean isTargeting = Objects.equals(targetingSpellEntity, spellEntity);
-                    return new GuiSpell(name, tooltip, remainingCooldown, isCostPayable, isTargeting, () -> {
+                    return new GuiSpell(name, tooltip, remainingCooldown, isCastable, isTargeting, () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
                             setTargetingSpell(spellEntity);
                         } else {
@@ -227,9 +226,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                         if (targetingSpellEntity != null) {
                             if (containsEntity(gameProxy.getGame().getData(), validSpellTargetEntities, hoveredPosition.getX(), hoveredPosition.getZ())) {
                                 gameProxy.requestAction(new CastSpellAction(
-                                    hoveredPosition.getX(),
-                                    hoveredPosition.getZ(),
-                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
+                                        hoveredPosition.getX(),
+                                        hoveredPosition.getZ(),
+                                        gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
                                 );
                             }
                             setTargetingSpell(null);
@@ -266,10 +265,12 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     }
 
     private void updateValidAndInvalidGroundEntities() {
-        LinkedList<Integer> invalidSpellTargetEntities;
+        List<Integer> invalidSpellTargetEntities;
         if (targetingSpellEntity != null) {
-            validSpellTargetEntities = RangeUtils.getTargetablePositionsInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
-            invalidSpellTargetEntities = new LinkedList<>(); // TODO: Use util from game logic, that returns the invalid entities based on playerEntity+targetingSpellEntity
+            List<Integer> allEntitiesInRange = RangeUtils.getAllEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            validSpellTargetEntities = RangeUtils.getAllTargetableEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            allEntitiesInRange.removeAll(validSpellTargetEntities);
+            invalidSpellTargetEntities = allEntitiesInRange;
         } else {
             validSpellTargetEntities = new LinkedList<>();
             invalidSpellTargetEntities = new LinkedList<>();
@@ -280,21 +281,12 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void updateImpactedGroundEntities() {
         LinkedList<Integer> impactedGroundEntities = new LinkedList<>();
         if ((targetingSpellEntity != null) && (hoveredPosition != null)) {
-            // TODO: Use util from game logic, that returns the impacted entities based on targetingSpellEntity+hoveredPosition
-            impactedGroundEntities.add(getEntity(gameProxy.getGame().getData(), new Class[]{WalkableComponent.class}, hoveredPosition.getX(), hoveredPosition.getZ()));
+            EntityData data = gameProxy.getGame().getData();
+            List<Integer> affectedWalkableEntities = RangeUtils.getAffectedWalkableEntities(targetingSpellEntity, data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class),
+                    new PositionComponent(hoveredPosition.getX(), hoveredPosition.getZ()), data);
+            impactedGroundEntities.addAll(affectedWalkableEntities);
         }
         getAppState(MapAppState.class).setImpactedGroundEntities(impactedGroundEntities);
-    }
-
-    // TODO: Use util from game logic (interface TBD)
-    private Integer getEntity(EntityData entityData, Class<?>[] components, int x, int y) {
-        return entityData.list(components).stream()
-                .filter(entity -> {
-                    PositionComponent positionComponent = entityData.getComponent(entity, PositionComponent.class);
-                    return ((positionComponent.getX() == x) && (positionComponent.getY() == y));
-                })
-                .findFirst()
-                .orElse(null);
     }
 
     public void playAnimation(Animation animation) {

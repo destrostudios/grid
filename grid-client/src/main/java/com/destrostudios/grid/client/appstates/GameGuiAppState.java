@@ -189,7 +189,7 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
             if (spell.getRemainingCooldown() != null) {
                 button.setText("" + spell.getRemainingCooldown());
                 isButtonEnabled = false;
-            } else if (!spell.isCostPayable()) {
+            } else if (!spell.isCastable()) {
                 isButtonEnabled = false;
             }
             if (isButtonEnabled) {

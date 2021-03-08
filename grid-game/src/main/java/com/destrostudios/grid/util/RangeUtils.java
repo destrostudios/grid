@@ -15,7 +15,6 @@ import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.components.spells.range.RangeIndicator;
 import com.destrostudios.grid.entities.EntityData;
-import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
 import com.google.common.collect.Lists;
@@ -28,25 +27,17 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class RangeUtils {
+    // todo 1.) just attack in a line / diagonal etc
+    // todo 2.) affected area line bugfix
+    // todo 3.) targatable component
+    // todo 4.) affected area: impact ausgehend von der angezeigten position
+    // todo 5.) Tooltips automatisch generieren
+    // todo 6.) raub components
+    // todo 7.) affcted area min and max
 
-    public static List<Integer> getTargetablePositionsInRange(int spellEntity, int casterEntity, EntityData entityData) {
+    public static List<Integer> getAllTargetableEntitiesInRange(int spellEntity, int casterEntity, EntityData entityData) {
+        List<Integer> targetableInRange = getAllEntitiesInRange(spellEntity, casterEntity, entityData);
         PositionComponent posCaster = entityData.getComponent(casterEntity, PositionComponent.class);
-        RangeComponent rangeComponentOpt = entityData.getComponent(spellEntity, RangeComponent.class);
-        PositionComponent casterPositionOpt = entityData.getComponent(casterEntity, PositionComponent.class);
-        int maxRange = rangeComponentOpt.getMaxRange();
-        int minRange = rangeComponentOpt.getMinRange();
-        int x = casterPositionOpt.getX();
-        int y = casterPositionOpt.getY();
-        List<Integer> walkableAndTargetablePos = entityData.list(PositionComponent.class, WalkableComponent.class);
-        List<Integer> targetableInRange = new ArrayList<>();
-
-        for (int walkableAndTargetablePo : walkableAndTargetablePos) {
-            PositionComponent posC = entityData.getComponent(walkableAndTargetablePo, PositionComponent.class);
-            if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= maxRange
-                    && Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) >= minRange) {
-                targetableInRange.add(walkableAndTargetablePo);
-            }
-        }
 
         List<Integer> result = new ArrayList<>();
         LineOfSight lineOfSight = new LineOfSight();
@@ -72,15 +63,47 @@ public class RangeUtils {
         return result;
     }
 
-    public static List<Integer> getAffectedEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
+    public static List<Integer> getAllEntitiesInRange(int spellEntity, int casterEntity, EntityData entityData) {
+        List<Integer> targetableInRange = new ArrayList<>();
+        RangeComponent rangeComponentOpt = entityData.getComponent(spellEntity, RangeComponent.class);
+        PositionComponent casterPositionOpt = entityData.getComponent(casterEntity, PositionComponent.class);
+        int maxRange = rangeComponentOpt.getMaxRange();
+        int minRange = rangeComponentOpt.getMinRange();
+        int x = casterPositionOpt.getX();
+        int y = casterPositionOpt.getY();
+        List<Integer> walkableAndTargetablePos = entityData.list(PositionComponent.class, WalkableComponent.class);
+
+        for (int walkableAndTargetablePo : walkableAndTargetablePos) {
+            PositionComponent posC = entityData.getComponent(walkableAndTargetablePo, PositionComponent.class);
+            if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= maxRange
+                    && Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) >= minRange) {
+                targetableInRange.add(walkableAndTargetablePo);
+            }
+        }
+        return targetableInRange;
+    }
+
+    public static List<Integer> getAffectedPlayerEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
         List<PositionComponent> positionComponents = calculateAffectedPosEntities(spellEntity, sourcePos, clickedPos, entityData);
         return entityData.list(PlayerComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .collect(Collectors.toList());
     }
 
+
+    public static List<Integer> getAffectedWalkableEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
+        List<PositionComponent> positionComponents = calculateAffectedPosEntities(spellEntity, sourcePos, clickedPos, entityData);
+        return entityData.list(WalkableComponent.class).stream()
+                .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
+                .collect(Collectors.toList());
+    }
+
+
     public static List<PositionComponent> calculateAffectedPosEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
         AffectedAreaComponent component = entityData.getComponent(spellEntity, AffectedAreaComponent.class);
+        if (component == null) {
+            return new ArrayList<>();
+        }
         int impact = component.getImpact();
         int halfImpact = impact / 2;
         int yPos = clickedPos.getY();
@@ -123,7 +146,7 @@ public class RangeUtils {
                 result.add(new PositionComponent(x, yPos));
             }
 
-        } else if (component.getIndicator() == AffectedAreaIndicator.CIRCLE) {
+        } else if (component.getIndicator() == AffectedAreaIndicator.DIAMOND) {
             // TODO: 07.03.2021 clarify, how it should look
             for (int y = yPos; y >= yPos - halfImpact; y--) {
                 int delta = halfImpact;
@@ -176,7 +199,7 @@ public class RangeUtils {
     }
 
     public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityData entityData) {
-        return getTargetablePositionsInRange(spellEntity, casterEntity, entityData).stream()
+        return getAllTargetableEntitiesInRange(spellEntity, casterEntity, entityData).stream()
                 .map(e -> entityData.getComponent(e, PositionComponent.class))
                 .collect(Collectors.toList());
     }
@@ -241,11 +264,15 @@ public class RangeUtils {
         }
     }
 
-    public boolean isCostPayable(int casterEntity, int spellEntity, EntityWorld entityWorld) {
-        CostComponent cost = entityWorld.getComponent(spellEntity, CostComponent.class);
-        AttackPointsComponent apComp = entityWorld.getComponent(casterEntity, AttackPointsComponent.class);
-        MovementPointsComponent mpComp = entityWorld.getComponent(casterEntity, MovementPointsComponent.class);
-        HealthPointsComponent hpComp = entityWorld.getComponent(casterEntity, HealthPointsComponent.class);
+    public static boolean isCastable(int casterEntity, int spellEntity, EntityData entityData) {
+        return isCostPayable(casterEntity, spellEntity, entityData); // todo max turn
+    }
+
+    public static boolean isCostPayable(int casterEntity, int spellEntity, EntityData entityData) {
+        CostComponent cost = entityData.getComponent(spellEntity, CostComponent.class);
+        AttackPointsComponent apComp = entityData.getComponent(casterEntity, AttackPointsComponent.class);
+        MovementPointsComponent mpComp = entityData.getComponent(casterEntity, MovementPointsComponent.class);
+        HealthPointsComponent hpComp = entityData.getComponent(casterEntity, HealthPointsComponent.class);
         return apComp.getAttackPoints() >= cost.getApCost() && mpComp.getMovementPoints() >= cost.getMpCost() && hpComp.getHealth() >= cost.getHpCost();
     }
 

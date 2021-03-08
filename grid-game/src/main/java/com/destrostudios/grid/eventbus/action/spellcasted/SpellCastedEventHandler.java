@@ -91,7 +91,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         if (entityData.hasComponents(spell, DamageComponent.class)) {
             DamageComponent damage = entityData.getComponent(spell, DamageComponent.class);
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
-            List<Integer> affectedEntities = RangeUtils.getAffectedEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
+            List<Integer> affectedEntities = RangeUtils.getAffectedPlayerEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
                     new PositionComponent(event.getX(), event.getY()), entityData);
 
             for (Integer affectedEntity : affectedEntities) {
