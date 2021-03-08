@@ -6,11 +6,7 @@ import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
-import com.destrostudios.grid.client.animations.Animation;
-import com.destrostudios.grid.client.animations.AnnouncementAnimation;
-import com.destrostudios.grid.client.animations.HealthAnimation;
-import com.destrostudios.grid.client.animations.PlayerModelAnimation;
-import com.destrostudios.grid.client.animations.WalkAnimation;
+import com.destrostudios.grid.client.animations.*;
 import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.ModelAnimationInfo;
 import com.destrostudios.grid.client.characters.PlayerVisual;
@@ -31,8 +27,9 @@ import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
+import com.destrostudios.grid.eventbus.action.move.MoveEvent;
+import com.destrostudios.grid.eventbus.action.move.MoveType;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
-import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.util.RangeUtils;
@@ -65,10 +62,14 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
 
         updateVisuals();
 
-        gameProxy.addPreHandler(WalkEvent.class, (EventHandler<WalkEvent>) (event, entityDataSupplier) -> {
+        gameProxy.addPreHandler(MoveEvent.class, (EventHandler<MoveEvent>) (event, entityDataSupplier) -> {
             PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
             PositionComponent positionComponent = event.getPositionComponent();
-            playAnimation(new WalkAnimation(playerVisual, positionComponent.getX(), positionComponent.getY()));
+            if (event.getMoveType() == MoveType.WALK) {
+                playAnimation(new WalkAnimation(playerVisual, positionComponent.getX(), positionComponent.getY(), 8));
+            } else if (event.getMoveType() != MoveType.TELEPORT) {
+                playAnimation(new MoveAnimation(playerVisual, positionComponent.getX(), positionComponent.getY(), 30));
+            }
         });
         gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityDataSupplier) -> {
             EntityData entityData = entityDataSupplier.get();
