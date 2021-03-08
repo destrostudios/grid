@@ -29,6 +29,7 @@ public class BaseApplication extends SimpleApplication {
         settings.setWidth(1600);
         settings.setHeight(900);
         settings.setVSync(true);
+        settings.setFrameRate(144);
         settings.setTitle("Grid");
         settings.setIcons(new BufferedImage[]{
             FileAssets.getImage("textures/icon/16.png"),
