@@ -34,6 +34,7 @@
         <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
         <version.maven-source-plugin>3.2.0</version.maven-source-plugin>
         <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
+        <version.maven-jar-plugin>3.1.2</version.maven-jar-plugin>
         <version.mockito>1.9.5</version.mockito>
         <version.slf4j>2.0.0-alpha1</version.slf4j>
         <version.turn-based-game-tools>a82d20e41950977457ca724a6eda107f124dff5f</version.turn-based-game-tools>
@@ -138,8 +139,8 @@
             <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-launcher</artifactId>
-                <version>1.7.1</version>
-                <scope>${version.junit.platform}</scope>
+                <version>${version.junit.platform}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -150,8 +151,8 @@
             <dependency>
                 <groupId>org.junit.vintage</groupId>
                 <artifactId>junit-vintage-engine</artifactId>
-                <version>5.7.1</version>
-                <scope>${version.junit5}</scope>
+                <version>${version.junit5}</version>
+                <scope>test</scope>
             </dependency>
             <!--Lemur-->
             <dependency>

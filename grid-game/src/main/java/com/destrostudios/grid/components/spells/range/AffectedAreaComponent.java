@@ -9,8 +9,7 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class RangeComponent implements Component {
-    RangeIndicator rangeIndicator;
-    int minRange;
-    int maxRange;
+public class AffectedAreaComponent implements Component {
+    AffectedAreaIndicator indicator;
+    int impact;
 }

@@ -33,6 +33,7 @@ import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
+import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
@@ -71,8 +72,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = AttackPointsBuffComponent.class, name = "AttackPointsBuffComponent"),
         @JsonSubTypes.Type(value = MovementPointBuffComponent.class, name = "MovementPointBuffComponent"),
         @JsonSubTypes.Type(value = HealthPointBuffComponent.class, name = "HealthPointBuffComponent"),
-        @JsonSubTypes.Type(value = AttackPointsPerTurnComponent.class, name = "AttackPointsPoisonComponent"),
-        @JsonSubTypes.Type(value = MovementPointsPerTurnComponent.class, name = "MovementPointsPoisonComponent"),
+        @JsonSubTypes.Type(value = AttackPointsPerTurnComponent.class, name = "AttackPointsPerTurnComponent"),
+        @JsonSubTypes.Type(value = MovementPointsPerTurnComponent.class, name = "MovementPointsPerTurnComponent"),
         @JsonSubTypes.Type(value = DamagePerTurnComponent.class, name = "DamagePerTurnComponent"),
         @JsonSubTypes.Type(value = TeleportComponent.class, name = "TeleportComponent"),
         @JsonSubTypes.Type(value = OnCooldownComponent.class, name = "OnCooldownComponent"),
@@ -84,6 +85,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = MovementPointResistanceComponent.class, name = "MovementPointResistanceComponent"),
         @JsonSubTypes.Type(value = DisplacementComponent.class, name = "DisplacementComponent"),
         @JsonSubTypes.Type(value = HealBuffComponent.class, name = "HealBuffComponent"),
+        @JsonSubTypes.Type(value = AffectedAreaComponent.class, name = "AffectedAreaComponent"),
         @JsonSubTypes.Type(value = StatsPerRoundComponent.class, name = "StatsPerRoundComponent")
 })
 public interface Component {

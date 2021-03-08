@@ -35,10 +35,11 @@ import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
 import com.destrostudios.grid.random.RandomProxy;
 import com.destrostudios.grid.util.RangeUtils;
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-import lombok.AllArgsConstructor;
 
 import static com.destrostudios.grid.util.RangeUtils.calculateTargetEntity;
 
@@ -82,14 +83,20 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         if (entityData.hasComponents(spell, HealComponent.class)) {
             HealComponent heal = entityData.getComponent(spell, HealComponent.class);
             int healAmount = randomProxy.nextInt(heal.getMinHeal(), heal.getMaxHeal());
-            followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuff(spell, playerEntity, entityData, HealBuffComponent.class), targetEntity));
+            followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), targetEntity));
+            ;
         }
 
         // 3. Damage
         if (entityData.hasComponents(spell, DamageComponent.class)) {
             DamageComponent damage = entityData.getComponent(spell, DamageComponent.class);
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
-            followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuff(spell, playerEntity, entityData, DamageBuffComponent.class), targetEntity));
+            List<Integer> affectedEntities = RangeUtils.getAffectedEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
+                    new PositionComponent(event.getX(), event.getY()), entityData);
+
+            for (Integer affectedEntity : affectedEntities) {
+                followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), affectedEntity));
+            }
         }
 
         // 4. displacement && Teleport

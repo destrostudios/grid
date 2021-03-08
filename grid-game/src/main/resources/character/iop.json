@@ -110,6 +110,11 @@
       {
         "component": "DisplacementComponent",
         "displacement": 3
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "SINGLE",
+        "impact": 0
       }
     ],
     "4": [
@@ -170,6 +175,11 @@
         "component": "DamageComponent",
         "minDmg": 20,
         "maxDmg": 24
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "SINGLE",
+        "impact": 0
       }
     ],
     "6": [
@@ -201,6 +211,11 @@
         "component": "RangeComponent",
         "minRange": 1,
         "maxRange": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "PLUS",
+        "impact": 5
       }
     ],
     "7": [
@@ -237,6 +252,11 @@
       {
         "component": "CooldownComponent",
         "cooldown": 4
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "SINGLE",
+        "impact": 0
       }
     ],
     "8": [
@@ -263,6 +283,11 @@
         "component": "DamageComponent",
         "minDmg": 26,
         "maxDmg": 30
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "SINGLE",
+        "impact": 0
       }
     ]
   }
