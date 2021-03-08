@@ -159,7 +159,7 @@ public class SampleDataGenarator {
         data.addComponent(spell, new TooltipComponent(String.format("OP spell doing %s damage for %s AP in %s", Math.abs(dmg), apCost, indicator)));
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
         data.addComponent(spell, new RangeComponent(RangeIndicator.LINE_OF_SIGHT, 1, range));
-        data.addComponent(spell, new AffectedAreaComponent(indicator, 4));
+        data.addComponent(spell, new AffectedAreaComponent(indicator, 0,4));
     }
 
     private static void addDmgSpellWithMpBuff(EntityData data, Random rand, int attackPoints, int dmgMpSpell) {

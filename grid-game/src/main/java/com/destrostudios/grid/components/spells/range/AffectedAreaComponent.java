@@ -11,5 +11,6 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class AffectedAreaComponent implements Component {
     AffectedAreaIndicator indicator;
-    int impact;
+    int minImpact;
+    int maxImpact;
 }

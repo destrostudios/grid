@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 public class RangeUtils {
     // todo 1.) just attack in a line / diagonal etc
-    // todo 2.) affected area line -> diagonal
     // todo 3.) targatable component
     // todo 4.) affected area: 4.1) impact ausgehend von der angezeigten position 4.2) ausgehend vom caster (0Range)
     // todo 5.) Tooltips automatisch generieren
@@ -108,32 +107,33 @@ public class RangeUtils {
         if (component == null) {
             return result;
         }
-        result.add(clickedPos);
-        if (component.getIndicator() == AffectedAreaIndicator.SINGLE) {
-            return result;
-        }
 
-        int impact = component.getImpact();
+        int maxImpact = component.getMaxImpact();
+        int minImpact = component.getMinImpact();
         int yPos = clickedPos.getY();
         int xPos = clickedPos.getX();
 
+        if (component.getIndicator() == AffectedAreaIndicator.SINGLE) {
+            return Lists.newArrayList(clickedPos);
 
-        if (component.getIndicator() == AffectedAreaIndicator.LINE) {
-            return calculateAffectedPosEntitiesForLine(sourcePos, clickedPos, impact, yPos, xPos);
+        } else if (component.getIndicator() == AffectedAreaIndicator.LINE) {
+            return calculateAffectedPosEntitiesForLine(sourcePos, clickedPos, maxImpact, minImpact, yPos, xPos);
+
+        } else if (component.getIndicator() == AffectedAreaIndicator.DIAMON_SELFCAST && sourcePos.equals(clickedPos)) {
+            result.addAll(getBaseSquare(sourcePos, maxImpact));
+            result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) + Math.abs(pos.getY() - sourcePos.getY()) > maxImpact);
+            result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) <= minImpact || Math.abs(pos.getY() - sourcePos.getY()) <= minImpact);
 
         } else {
-            // base is  a square
-            for (int y = yPos - impact; y <= yPos + impact; y++) {
-                for (int x = xPos - impact; x <= xPos + impact; x++) {
-                    result.add(new PositionComponent(x, y));
-                }
-            }
+            result.addAll(getBaseSquare(clickedPos, maxImpact));
 
             if (component.getIndicator() == AffectedAreaIndicator.PLUS) {
                 result.removeIf(pos -> !(pos.getX() == xPos || pos.getY() == yPos));
+                result.removeAll(getBaseSquare(clickedPos, minImpact));
 
             } else if (component.getIndicator() == AffectedAreaIndicator.DIAMOND) {
-                result.removeIf(pos -> Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) > impact);
+                result.removeIf(pos -> Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) > maxImpact
+                        || Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) <= minImpact);
             }
         }
         return result.stream()
@@ -141,9 +141,24 @@ public class RangeUtils {
                 .collect(Collectors.toList());
     }
 
-    private static List<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int impact, int yPos, int xPos) {
+    private static List<PositionComponent> getBaseSquare(PositionComponent pos, int impact) {
+        // add big square
+        List<PositionComponent> resultTmp = new ArrayList<>();
+        if (impact <= 0) {
+            return resultTmp;
+        }
+        for (int y = pos.getY() - impact; y <= pos.getY() + impact; y++) {
+            for (int x = pos.getX() - impact; x <= pos.getX() + impact; x++) {
+                resultTmp.add(new PositionComponent(x, y));
+            }
+        }
+        return resultTmp;
+    }
+
+    private static List<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int maxImpact, int minImpact, int yPos, int xPos) {
         List<PositionComponent> result = new ArrayList<>();
         int signumY = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
+        int impact = maxImpact - minImpact;
         Function<Integer, Boolean> testY = signumY < 0
                 ? y -> y > yPos - impact
                 : y -> y < yPos + impact;
