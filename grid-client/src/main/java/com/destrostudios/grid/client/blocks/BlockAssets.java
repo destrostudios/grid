@@ -29,7 +29,7 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
     );
-    public static final Block BLOCK_GRASS_TOP_GRID = new Block(
+    public static final Block BLOCK_GRASS_GRID = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(1, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(3, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
@@ -37,7 +37,23 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
     );
-    public static final Block BLOCK_GRASS_TOP_TARGET = new Block(
+    public static final Block BLOCK_GRASS_VALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(13, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
+    );
+    public static final Block BLOCK_GRASS_INVALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(14, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
+    );
+    public static final Block BLOCK_GRASS_IMPACTED = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(15, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(3, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
@@ -46,7 +62,7 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
     );
     public static final Block BLOCK_SAND = new Block(new BlockSkin(new BlockSkin_TextureLocation(0, 2), false));
-    public static final Block BLOCK_SAND_TOP_GRID = new Block(
+    public static final Block BLOCK_SAND_GRID = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(1, 2), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
@@ -54,7 +70,23 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false)
     );
-    public static final Block BLOCK_SAND_TOP_TARGET = new Block(
+    public static final Block BLOCK_SAND_VALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(13, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false)
+    );
+    public static final Block BLOCK_SAND_INVALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(13, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false)
+    );
+    public static final Block BLOCK_SAND_IMPACTED = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(15, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
@@ -70,7 +102,7 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
     );
-    public static final Block BLOCK_SNOW_TOP_GRID = new Block(
+    public static final Block BLOCK_SNOW_GRID = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(1, 1), false),
         new BlockSkin(new BlockSkin_TextureLocation(3, 1), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
@@ -78,7 +110,23 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
     );
-    public static final Block BLOCK_SNOW_TOP_TARGET = new Block(
+    public static final Block BLOCK_SNOW_VALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(13, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
+    );
+    public static final Block BLOCK_SNOW_INVALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(14, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(3, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
+        new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
+    );
+    public static final Block BLOCK_SNOW_IMPACTED = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(15, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(3, 1), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
@@ -89,13 +137,19 @@ public class BlockAssets {
 
     public static void registerBlocks() {
         BlockManager.register(BLOCK_GRASS);
-        BlockManager.register(BLOCK_GRASS_TOP_GRID);
-        BlockManager.register(BLOCK_GRASS_TOP_TARGET);
+        BlockManager.register(BLOCK_GRASS_GRID);
+        BlockManager.register(BLOCK_GRASS_VALID);
+        BlockManager.register(BLOCK_GRASS_INVALID);
+        BlockManager.register(BLOCK_GRASS_IMPACTED);
         BlockManager.register(BLOCK_SAND);
-        BlockManager.register(BLOCK_SAND_TOP_GRID);
-        BlockManager.register(BLOCK_SAND_TOP_TARGET);
+        BlockManager.register(BLOCK_SAND_GRID);
+        BlockManager.register(BLOCK_SAND_VALID);
+        BlockManager.register(BLOCK_SAND_INVALID);
+        BlockManager.register(BLOCK_SAND_IMPACTED);
         BlockManager.register(BLOCK_SNOW);
-        BlockManager.register(BLOCK_SNOW_TOP_GRID);
-        BlockManager.register(BLOCK_SNOW_TOP_TARGET);
+        BlockManager.register(BLOCK_SNOW_GRID);
+        BlockManager.register(BLOCK_SNOW_VALID);
+        BlockManager.register(BLOCK_SNOW_INVALID);
+        BlockManager.register(BLOCK_SNOW_IMPACTED);
     }
 }

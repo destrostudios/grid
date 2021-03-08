@@ -14,6 +14,7 @@ import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
@@ -46,7 +47,8 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private GameProxy gameProxy;
     private LinkedList<Animation> playingAnimations = new LinkedList<>();
     private Integer targetingSpellEntity;
-    private List<Integer> validSpellTargetEntities = new LinkedList<>();
+    private List<Integer> validSpellTargetEntities;
+    private Vector3Int hoveredPosition;
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
@@ -106,11 +108,23 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
 
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+        updateGame();
+        updateAnimations(tpf);
+        if (targetingSpellEntity != null) {
+            updateHoveredPosition();
+        }
+    }
+
+    private void updateGame() {
         do {
             while (gameProxy.triggeredHandlersInQueue() && playingAnimations.stream().noneMatch(Animation::isBlocking)) {
                 gameProxy.triggerNextHandler();
             }
         } while (gameProxy.applyNextAction());
+    }
+
+    private void updateAnimations(float tpf) {
         for (Animation animation : playingAnimations.toArray(Animation[]::new)) {
             animation.update(tpf);
             if (animation.isFinished()) {
@@ -118,7 +132,15 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                 playingAnimations.remove(animation);
             }
         }
-        super.update(tpf);
+    }
+
+    private void updateHoveredPosition() {
+        Vector3Int newHoveredPosition = getAppState(MapAppState.class).getHoveredPosition(false);
+        boolean hasHoveredPositionChanged = (!Objects.equals(hoveredPosition, newHoveredPosition));
+        hoveredPosition = newHoveredPosition;
+        if ((targetingSpellEntity != null) && hasHoveredPositionChanged) {
+            updateImpactedGroundEntities();
+        }
     }
 
     private void updateVisuals() {
@@ -200,19 +222,19 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             switch (actionName) {
                 case "mouse_left":
                 case "mouse_right":
-                    Vector3Int clickedPosition = getAppState(MapAppState.class).getHoveredPosition(false);
-                    if (clickedPosition != null) {
+                    updateHoveredPosition();
+                    if (hoveredPosition != null) {
                         if (targetingSpellEntity != null) {
-                            if (containsEntity(gameProxy.getGame().getData(), validSpellTargetEntities, clickedPosition.getX(), clickedPosition.getZ())) {
+                            if (containsEntity(gameProxy.getGame().getData(), validSpellTargetEntities, hoveredPosition.getX(), hoveredPosition.getZ())) {
                                 gameProxy.requestAction(new CastSpellAction(
-                                        clickedPosition.getX(),
-                                        clickedPosition.getZ(),
-                                        gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
+                                    hoveredPosition.getX(),
+                                    hoveredPosition.getZ(),
+                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
                                 );
                             }
                             setTargetingSpell(null);
                         } else {
-                            gameProxy.requestAction(new PositionUpdateAction(clickedPosition.getX(), clickedPosition.getZ(), playerEntity.toString()));
+                            gameProxy.requestAction(new PositionUpdateAction(hoveredPosition.getX(), hoveredPosition.getZ(), playerEntity.toString()));
                         }
                     }
                     break;
@@ -238,13 +260,41 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
 
     private void setTargetingSpell(Integer spellEntity) {
         targetingSpellEntity = spellEntity;
-        if (spellEntity != null) {
-            validSpellTargetEntities = RangeUtils.getTargetablePositionsInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
-        } else {
-            validSpellTargetEntities.clear();
-        }
-        getAppState(MapAppState.class).setValidTargetEntities(validSpellTargetEntities);
+        updateValidAndInvalidGroundEntities();
+        updateImpactedGroundEntities();
         updateGui();
+    }
+
+    private void updateValidAndInvalidGroundEntities() {
+        LinkedList<Integer> invalidSpellTargetEntities;
+        if (targetingSpellEntity != null) {
+            validSpellTargetEntities = RangeUtils.getTargetablePositionsInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            invalidSpellTargetEntities = new LinkedList<>(); // TODO: Use util from game logic, that returns the invalid entities based on playerEntity+targetingSpellEntity
+        } else {
+            validSpellTargetEntities = new LinkedList<>();
+            invalidSpellTargetEntities = new LinkedList<>();
+        }
+        getAppState(MapAppState.class).setValidGroundEntities(validSpellTargetEntities, invalidSpellTargetEntities);
+    }
+
+    private void updateImpactedGroundEntities() {
+        LinkedList<Integer> impactedGroundEntities = new LinkedList<>();
+        if ((targetingSpellEntity != null) && (hoveredPosition != null)) {
+            // TODO: Use util from game logic, that returns the impacted entities based on targetingSpellEntity+hoveredPosition
+            impactedGroundEntities.add(getEntity(gameProxy.getGame().getData(), new Class[]{WalkableComponent.class}, hoveredPosition.getX(), hoveredPosition.getZ()));
+        }
+        getAppState(MapAppState.class).setImpactedGroundEntities(impactedGroundEntities);
+    }
+
+    // TODO: Use util from game logic (interface TBD)
+    private Integer getEntity(EntityData entityData, Class<?>[] components, int x, int y) {
+        return entityData.list(components).stream()
+                .filter(entity -> {
+                    PositionComponent positionComponent = entityData.getComponent(entity, PositionComponent.class);
+                    return ((positionComponent.getX() == x) && (positionComponent.getY() == y));
+                })
+                .findFirst()
+                .orElse(null);
     }
 
     public void playAnimation(Animation animation) {

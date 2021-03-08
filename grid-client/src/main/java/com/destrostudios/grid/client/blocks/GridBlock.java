@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class GridBlock {
-    private Block blockTopGrid;
-    private Block blockTopTarget;
+    private Block blockGrid;
+    private Block blockValid;
+    private Block blockInvalid;
+    private Block blockImpacted;
 }

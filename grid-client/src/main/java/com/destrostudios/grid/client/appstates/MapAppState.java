@@ -52,7 +52,9 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private BlockTerrainControl blockTerrainControl;
     private HashMap<Integer, PlayerVisual> playerVisuals = new HashMap<>();
     private HashMap<Integer, ModelObject> obstacleModels = new HashMap<>();
-    private List<Integer> validTargetEntities = new LinkedList<>();
+    private List<Integer> validGroundEntities = new LinkedList<>();
+    private List<Integer> invalidGroundEntities = new LinkedList<>();
+    private List<Integer> impactedGroundEntities = new LinkedList<>();
     private List<Integer> tmpRemovedEntities = new LinkedList<>();
 
     public MapAppState(String mapName, EntityData entityData) {
@@ -188,8 +190,14 @@ public class MapAppState extends BaseAppState<BaseApplication> {
         return ((components != null) && (components.size() > 0));
     }
 
-    public void setValidTargetEntities(List<Integer> validTargetEntities) {
-        this.validTargetEntities = validTargetEntities;
+    public void setValidGroundEntities(List<Integer> validGroundEntities, List<Integer> invalidGroundEntities) {
+        this.validGroundEntities = validGroundEntities;
+        this.invalidGroundEntities = invalidGroundEntities;
+        updateTerrain();
+    }
+
+    public void setImpactedGroundEntities(List<Integer> impactedGroundEntities) {
+        this.impactedGroundEntities = impactedGroundEntities;
         updateTerrain();
     }
 
@@ -199,7 +207,16 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             PositionComponent positionComponent = entityData.getComponent(groundEntity, PositionComponent.class);
             String gridBlockName = entityData.getComponent(groundEntity, VisualComponent.class).getName();
             GridBlock gridBlock = GridBlocks.get(gridBlockName);
-            Block block = (validTargetEntities.contains(groundEntity) ? gridBlock.getBlockTopTarget() : gridBlock.getBlockTopGrid());
+            Block block;
+            if (impactedGroundEntities.contains(groundEntity)) {
+                block = gridBlock.getBlockImpacted();
+            } else if (invalidGroundEntities.contains(groundEntity)) {
+                block = gridBlock.getBlockInvalid();
+            } else if (validGroundEntities.contains(groundEntity)) {
+                block = gridBlock.getBlockValid();
+            } else {
+                block= gridBlock.getBlockGrid();
+            }
             blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), block);
         }
     }
