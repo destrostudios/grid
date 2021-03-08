@@ -28,12 +28,15 @@ import java.util.stream.Collectors;
 
 public class RangeUtils {
     // todo 1.) just attack in a line / diagonal etc
-    // todo 2.) affected area line bugfix
+    // todo 2.) affected area line -> diagonal
     // todo 3.) targatable component
-    // todo 4.) affected area: impact ausgehend von der angezeigten position
+    // todo 4.) affected area: 4.1) impact ausgehend von der angezeigten position 4.2) ausgehend vom caster (0Range)
     // todo 5.) Tooltips automatisch generieren
     // todo 6.) raub components
     // todo 7.) affcted area min and max
+    // todo 8.) push / pull @Phil
+    // todo 9.) swap
+
 
     public static List<Integer> getAllTargetableEntitiesInRange(int spellEntity, int casterEntity, EntityData entityData) {
         List<Integer> targetableInRange = getAllEntitiesInRange(spellEntity, casterEntity, entityData);
