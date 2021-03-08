@@ -104,77 +104,74 @@ public class RangeUtils {
 
     public static List<PositionComponent> calculateAffectedPosEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
         AffectedAreaComponent component = entityData.getComponent(spellEntity, AffectedAreaComponent.class);
+        List<PositionComponent> result = Lists.newArrayList();
         if (component == null) {
-            return new ArrayList<>();
+            return result;
         }
+        result.add(clickedPos);
+        if (component.getIndicator() == AffectedAreaIndicator.SINGLE) {
+            return result;
+        }
+
         int impact = component.getImpact();
-        int halfImpact = impact / 2;
         int yPos = clickedPos.getY();
         int xPos = clickedPos.getX();
 
-        List<PositionComponent> result = Lists.newArrayList();
 
         if (component.getIndicator() == AffectedAreaIndicator.LINE) {
-            if (Math.abs(sourcePos.getX() - clickedPos.getX()) < Math.abs(sourcePos.getY() - clickedPos.getY())) {
-                // from bot or top
-                int signum = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
-                Function<Integer, Boolean> test = signum < 0
-                        ? y -> y > yPos - impact
-                        : y -> y < yPos + impact;
-                for (int y = yPos; test.apply(y); y += signum) {
-                    result.add(new PositionComponent(xPos, y));
-                }
+            return calculateAffectedPosEntitiesForLine(sourcePos, clickedPos, impact, yPos, xPos);
 
-            } else if (Math.abs(sourcePos.getX() - clickedPos.getX()) > Math.abs(sourcePos.getY() - clickedPos.getY())) {
-                // from left or right
-                int signum = (int) Math.signum(clickedPos.getX() - sourcePos.getX());
-                Function<Integer, Boolean> test = signum < 0
-                        ? x -> x > xPos - impact
-                        : x -> x < xPos + impact;
-                for (int x = xPos; test.apply(x); x += signum) {
-                    result.add(new PositionComponent(x, yPos));
-                }
-            } else {
-                // TODO: 07.03.2021 diagonal 
-            }
-
-        } else if (component.getIndicator() == AffectedAreaIndicator.PLUS) {
-            int yGoal = yPos + halfImpact;
-            for (int y = yPos - halfImpact; y <= yGoal; y++) {
-                result.add(new PositionComponent(xPos, y));
-            }
-
-            int xGoal = xPos + halfImpact;
-            for (int x = xPos - halfImpact; x <= xGoal; x++) {
-                result.add(new PositionComponent(x, yPos));
-            }
-
-        } else if (component.getIndicator() == AffectedAreaIndicator.DIAMOND) {
-            // TODO: 07.03.2021 clarify, how it should look
-            for (int y = yPos; y >= yPos - halfImpact; y--) {
-                int delta = halfImpact;
-                for (int x = xPos - halfImpact; x <= xPos + halfImpact && delta > 0; x++, delta = delta - 2) {
-                    result.add(new PositionComponent(x, y));
-                }
-            }
-            int delta = halfImpact - 2;
-            for (int y = yPos + 1; y < yPos + halfImpact; y++) {
-                for (int x = xPos - halfImpact; x < xPos + halfImpact && delta > 0; x++, delta = delta - 2) {
-                    result.add(new PositionComponent(x, y));
-                }
-            }
-        } else if (component.getIndicator() == AffectedAreaIndicator.SQUARE) {
-            for (int y = yPos - halfImpact; y <= yPos + halfImpact; y++) {
-                for (int x = xPos - halfImpact; x <= xPos + halfImpact; x++) {
-                    result.add(new PositionComponent(x, y));
-                }
-            }
         } else {
-            result.add(clickedPos);
+            // base is  a square
+            for (int y = yPos - impact; y <= yPos + impact; y++) {
+                for (int x = xPos - impact; x <= xPos + impact; x++) {
+                    result.add(new PositionComponent(x, y));
+                }
+            }
+
+            if (component.getIndicator() == AffectedAreaIndicator.PLUS) {
+                result.removeIf(pos -> !(pos.getX() == xPos || pos.getY() == yPos));
+
+            } else if (component.getIndicator() == AffectedAreaIndicator.DIAMOND) {
+                result.removeIf(pos -> Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) > impact);
+            }
         }
         return result.stream()
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    private static List<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int impact, int yPos, int xPos) {
+        List<PositionComponent> result = new ArrayList<>();
+        int signumY = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
+        Function<Integer, Boolean> testY = signumY < 0
+                ? y -> y > yPos - impact
+                : y -> y < yPos + impact;
+        int signumX = (int) Math.signum(clickedPos.getX() - sourcePos.getX());
+        Function<Integer, Boolean> testX = signumX < 0
+                ? x -> x > xPos - impact
+                : x -> x < xPos + impact;
+
+        if (Math.abs(sourcePos.getX() - clickedPos.getX()) < Math.abs(sourcePos.getY() - clickedPos.getY())) {
+            int signum = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
+
+            for (int y = yPos; testY.apply(y); y += signum) {
+                result.add(new PositionComponent(xPos, y));
+            }
+
+        } else if (Math.abs(sourcePos.getX() - clickedPos.getX()) > Math.abs(sourcePos.getY() - clickedPos.getY())) {
+            // from left or right
+            for (int x = xPos; testX.apply(x); x += signumX) {
+                result.add(new PositionComponent(x, yPos));
+            }
+
+        } else if (signumY != 0 && signumX != 0) {
+            // diagonal
+            for (int x = xPos, y = yPos; testX.apply(x) && testY.apply(y); x += signumX, y += signumY) {
+                result.add(new PositionComponent(x, y));
+            }
+        }
+        return result;
     }
 
     public static int calculateTargetEntity(int x, int y, EntityData data) {
