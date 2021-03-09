@@ -18,11 +18,8 @@ import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.action.displace.Direction;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -126,11 +123,13 @@ public class RangeUtils {
 
             if (component.getIndicator() == AffectedAreaIndicator.PLUS) {
                 result.removeIf(pos -> !(pos.getX() == xPos || pos.getY() == yPos));
-                result.removeAll(getBaseSquare(clickedPos, minImpact));
+                result.removeAll(getBaseSquare(clickedPos, minImpact - 1));
 
             } else if (component.getIndicator() == AffectedAreaIndicator.DIAMOND) {
                 result.removeIf(pos -> Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) > maxImpact
-                        || Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) <= minImpact);
+                        || Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) < minImpact);
+            } else if (component.getIndicator() == AffectedAreaIndicator.SQUARE) {
+                result.removeAll(getBaseSquare(clickedPos, minImpact - 1));
             }
         }
         return result;
@@ -139,9 +138,7 @@ public class RangeUtils {
     private static List<PositionComponent> getBaseSquare(PositionComponent pos, int impact) {
         // add big square
         List<PositionComponent> resultTmp = new ArrayList<>();
-        if (impact <= 0) {
-            return resultTmp;
-        }
+
         for (int y = pos.getY() - impact; y <= pos.getY() + impact; y++) {
             for (int x = pos.getX() - impact; x <= pos.getX() + impact; x++) {
                 resultTmp.add(new PositionComponent(x, y));
@@ -153,31 +150,30 @@ public class RangeUtils {
     private static Set<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int maxImpact, int minImpact, int yPos, int xPos) {
         Set<PositionComponent> result = new HashSet<>();
         int signumY = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
-        int impact = maxImpact - minImpact;
         Function<Integer, Boolean> testY = signumY < 0
-                ? y -> y > yPos - impact
-                : y -> y < yPos + impact;
+                ? y -> y >= yPos - maxImpact
+                : y -> y <= yPos + maxImpact;
         int signumX = (int) Math.signum(clickedPos.getX() - sourcePos.getX());
         Function<Integer, Boolean> testX = signumX < 0
-                ? x -> x > xPos - impact
-                : x -> x < xPos + impact;
+                ? x -> x >= xPos - maxImpact
+                : x -> x <= xPos + maxImpact;
 
         if (Math.abs(sourcePos.getX() - clickedPos.getX()) < Math.abs(sourcePos.getY() - clickedPos.getY())) {
             int signum = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
 
-            for (int y = yPos; testY.apply(y); y += signum) {
+            for (int y = yPos + signumX * minImpact; testY.apply(y); y += signum) {
                 result.add(new PositionComponent(xPos, y));
             }
 
         } else if (Math.abs(sourcePos.getX() - clickedPos.getX()) > Math.abs(sourcePos.getY() - clickedPos.getY())) {
             // from left or right
-            for (int x = xPos; testX.apply(x); x += signumX) {
+            for (int x = xPos + signumX * minImpact; testX.apply(x); x += signumX) {
                 result.add(new PositionComponent(x, yPos));
             }
 
         } else if (signumY != 0 && signumX != 0) {
             // diagonal
-            for (int x = xPos, y = yPos; testX.apply(x) && testY.apply(y); x += signumX, y += signumY) {
+            for (int x = xPos + signumX * minImpact, y = yPos + signumY * minImpact; testX.apply(x) && testY.apply(y); x += signumX, y += signumY) {
                 result.add(new PositionComponent(x, y));
             }
         }
