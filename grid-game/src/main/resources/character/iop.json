@@ -111,7 +111,7 @@
         "castsThisTurn": 0
       },
       {
-        "component": "DisplacementComponent",
+        "component": "PushComponent",
         "displacement": 3
       },
       {
@@ -147,7 +147,7 @@
         "cooldown": 2
       },
       {
-        "component": "DisplacementComponent",
+        "component": "PushComponent",
         "displacement": 1,
         "useTargetAsOrigin": true
       },

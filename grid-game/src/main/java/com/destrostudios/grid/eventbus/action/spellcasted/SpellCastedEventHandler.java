@@ -13,8 +13,8 @@ import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.movements.DashComponent;
-import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
 import com.destrostudios.grid.components.spells.movements.PullComponent;
+import com.destrostudios.grid.components.spells.movements.PushComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
 import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
@@ -100,17 +100,17 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         }
 
         // 4. movement effects
-        if (entityData.hasComponents(spell, DisplacementComponent.class)) {
-            DisplacementComponent displacement = entityData.getComponent(spell, DisplacementComponent.class);
+        PushComponent push = entityData.getComponent(spell, PushComponent.class);
+        if (push != null) {
             PositionComponent pushOrigin;
-            if (displacement.isUseTargetAsOrigin()) {
+            if (push.isUseTargetAsOrigin()) {
                 pushOrigin = new PositionComponent(event.getX(), event.getY());
             } else {
                 pushOrigin = entityData.getComponent(playerEntity, PositionComponent.class);
             }
 
             for (Integer affectedEntity : affectedEntities) {
-                followUpEvents.add(new DisplacementEvent(affectedEntity, displacement.getDisplacement(), pushOrigin.getX(), pushOrigin.getY()));
+                followUpEvents.add(new DisplacementEvent(affectedEntity, push.getDisplacement(), pushOrigin.getX(), pushOrigin.getY()));
             }
         }
         PullComponent pull = entityData.getComponent(spell, PullComponent.class);

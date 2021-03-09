@@ -22,7 +22,7 @@ import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
-import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
+import com.destrostudios.grid.components.spells.movements.PushComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
 import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
@@ -266,7 +266,7 @@ public class SampleDataGenarator {
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
         data.addComponent(spell, new RangeComponent(RangeIndicator.LINE_OF_SIGHT, 1, 1));
         data.addComponent(spell, new BuffsComponent(new ArrayList<>()));
-        data.addComponent(spell, new DisplacementComponent(5, false));
+        data.addComponent(spell, new PushComponent(5, false));
         data.addComponent(spell, new TooltipComponent(String.format("Displaces player 5 positions for 4 AP")));
     }
 

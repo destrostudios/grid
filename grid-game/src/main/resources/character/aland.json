@@ -1,1 +1,296 @@
-{"SeriazableComponent":"character","components":{"1":[{"component":"MaxMovementPointsComponent","maxMovementPoints":8},{"component":"MaxAttackPointsComponent","maxAttackPoints":12},{"component":"AttackPointResistanceComponent","resistanceValue":44},{"component":"MovementPointResistanceComponent","resistanceValue":38},{"component":"StatsPerRoundComponent","statsPerRoundEntites":[]},{"component":"BuffsComponent","buffEntities":[]},{"component":"ObstacleComponent"},{"component":"PlayerComponent"},{"component":"VisualComponent","name":"aland"},{"component":"MaxHealthComponent","maxHealth":500},{"component":"SpellsComponent","spells":[2,3,4,5,6,7]}],"2":[{"component":"CostComponent","apCost":5,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":46,"maxDmg":96},{"component":"NameComponent","name":"Wound"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 46 damage for 5 AP in LINE"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","rangeIndicator":"LINE_OF_SIGHT","minRange":1,"maxRange":6},{"component":"AffectedAreaComponent","indicator":"LINE","minImpact":0,"maxImpact":4}],"3":[{"component":"CostComponent","apCost":8,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":38,"maxDmg":88},{"component":"NameComponent","name":"Confusion"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 38 damage for 8 AP in SQUARE"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","rangeIndicator":"LINE_OF_SIGHT","minRange":1,"maxRange":6},{"component":"AffectedAreaComponent","indicator":"SQUARE","minImpact":0,"maxImpact":4}],"4":[{"component":"CostComponent","apCost":2,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":25,"maxDmg":75},{"component":"NameComponent","name":"Twist"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 25 damage for 2 AP in PLUS"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","rangeIndicator":"LINE_OF_SIGHT","minRange":1,"maxRange":6},{"component":"AffectedAreaComponent","indicator":"PLUS","minImpact":0,"maxImpact":4}],"5":[{"component":"CostComponent","apCost":2,"mpCost":0,"hpCost":0},{"component":"BuffsComponent","buffEntities":[]},{"component":"DamageComponent","minDmg":29,"maxDmg":59},{"component":"NameComponent","name":"Confusion"},{"component":"MovementPointBuffComponent","buffAmount":1,"buffDuration":1,"spellBuff":false},{"component":"RangeComponent","rangeIndicator":"ALL","minRange":1,"maxRange":5},{"component":"CastsPerTurnComponent","maxCastsPerTurn":2,"castsThisTurn":0},{"component":"TooltipComponent","tooltip":"Dmg spell doing 29 dmg for 2 AP and buffing 1 MP\nRange: 5"}],"6":[{"component":"CostComponent","apCost":0,"mpCost":4,"hpCost":0},{"component":"AttackPointsBuffComponent","buffAmount":1,"buffDuration":2,"spellBuff":false},{"component":"NameComponent","name":"Buff"},{"component":"BuffsComponent","buffEntities":[]},{"component":"RangeComponent","rangeIndicator":"ALL","minRange":0,"maxRange":0},{"component":"CastsPerTurnComponent","maxCastsPerTurn":1,"castsThisTurn":0},{"component":"TooltipComponent","tooltip":"Spell buffing 1 AP for 4 MP \nRange: 3"}],"7":[{"component":"CostComponent","apCost":4,"mpCost":0,"hpCost":0},{"component":"NameComponent","name":"Twist"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","rangeIndicator":"LINE_OF_SIGHT","minRange":1,"maxRange":1},{"component":"BuffsComponent","buffEntities":[]},{"component":"DisplacementComponent","displacement":5},{"component":"TooltipComponent","tooltip":"Displaces player 5 positions for 4 AP"}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "component": "MaxMovementPointsComponent",
+        "maxMovementPoints": 8
+      },
+      {
+        "component": "MaxAttackPointsComponent",
+        "maxAttackPoints": 12
+      },
+      {
+        "component": "AttackPointResistanceComponent",
+        "resistanceValue": 44
+      },
+      {
+        "component": "MovementPointResistanceComponent",
+        "resistanceValue": 38
+      },
+      {
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "ObstacleComponent"
+      },
+      {
+        "component": "PlayerComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "aland"
+      },
+      {
+        "component": "MaxHealthComponent",
+        "maxHealth": 500
+      },
+      {
+        "component": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    ],
+    "2": [
+      {
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 46,
+        "maxDmg": 96
+      },
+      {
+        "component": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 46 damage for 5 AP in LINE"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "LINE",
+        "minImpact": 0,
+        "maxImpact": 4
+      }
+    ],
+    "3": [
+      {
+        "component": "CostComponent",
+        "apCost": 8,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 38,
+        "maxDmg": 88
+      },
+      {
+        "component": "NameComponent",
+        "name": "Confusion"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 38 damage for 8 AP in SQUARE"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "SQUARE",
+        "minImpact": 0,
+        "maxImpact": 4
+      }
+    ],
+    "4": [
+      {
+        "component": "CostComponent",
+        "apCost": 2,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Twist"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 2 AP in PLUS"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "PLUS",
+        "minImpact": 0,
+        "maxImpact": 4
+      }
+    ],
+    "5": [
+      {
+        "component": "CostComponent",
+        "apCost": 2,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 29,
+        "maxDmg": 59
+      },
+      {
+        "component": "NameComponent",
+        "name": "Confusion"
+      },
+      {
+        "component": "MovementPointBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 1,
+        "spellBuff": false
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "ALL",
+        "minRange": 1,
+        "maxRange": 5
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Dmg spell doing 29 dmg for 2 AP and buffing 1 MP\nRange: 5"
+      }
+    ],
+    "6": [
+      {
+        "component": "CostComponent",
+        "apCost": 0,
+        "mpCost": 4,
+        "hpCost": 0
+      },
+      {
+        "component": "AttackPointsBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 2,
+        "spellBuff": false
+      },
+      {
+        "component": "NameComponent",
+        "name": "Buff"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "ALL",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Spell buffing 1 AP for 4 MP \nRange: 3"
+      }
+    ],
+    "7": [
+      {
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "NameComponent",
+        "name": "Twist"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 1
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "PushComponent",
+        "displacement": 5
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Displaces player 5 positions for 4 AP"
+      }
+    ]
+  }
+}

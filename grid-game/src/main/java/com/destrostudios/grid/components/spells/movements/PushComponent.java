@@ -9,7 +9,7 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class DisplacementComponent implements Component {
+public class PushComponent implements Component {
     private int displacement;
     private boolean useTargetAsOrigin;
 }

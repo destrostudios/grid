@@ -32,8 +32,8 @@ import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.movements.DashComponent;
-import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
 import com.destrostudios.grid.components.spells.movements.PullComponent;
+import com.destrostudios.grid.components.spells.movements.PushComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
 import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
@@ -85,7 +85,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = DamageBuffComponent.class, name = "DamageBuffComponent"),
         @JsonSubTypes.Type(value = AttackPointResistanceComponent.class, name = "AttackPointResistanceComponent"),
         @JsonSubTypes.Type(value = MovementPointResistanceComponent.class, name = "MovementPointResistanceComponent"),
-        @JsonSubTypes.Type(value = DisplacementComponent.class, name = "DisplacementComponent"),
+        @JsonSubTypes.Type(value = PushComponent.class, name = "PushComponent"),
         @JsonSubTypes.Type(value = DashComponent.class, name = "DashComponent"),
         @JsonSubTypes.Type(value = PullComponent.class, name = "PullComponent"),
         @JsonSubTypes.Type(value = HealBuffComponent.class, name = "HealBuffComponent"),
