@@ -60,15 +60,15 @@ public class RangeUtilsTest {
     public void squareAoE() {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.SQUARE, 1, 2);
+        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.SQUARE, 2, 2);
         Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
 
         assertEquals(toSet(
                 new char[][]{
                         {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', 'X', 'X', ' ', 'X', 'X'},
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
+                        {' ', 'X', ' ', ' ', ' ', 'X'},
+                        {' ', 'X', ' ', ' ', ' ', 'X'},
+                        {' ', 'X', ' ', ' ', ' ', 'X'},
                         {' ', 'X', 'X', 'X', 'X', 'X'}
                 }
         ), actual);
