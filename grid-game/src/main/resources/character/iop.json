@@ -145,6 +145,12 @@
       {
         "component": "DisplacementComponent",
         "displacement": 1
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "PLUS",
+        "minImpact": 1,
+        "maxImpact": 1
       }
     ],
     "5": [

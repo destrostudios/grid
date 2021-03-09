@@ -17,11 +17,11 @@ import com.destrostudios.grid.components.spells.range.RangeIndicator;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -83,7 +83,7 @@ public class RangeUtils {
     }
 
     public static List<Integer> getAffectedPlayerEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
-        List<PositionComponent> positionComponents = calculateAffectedPosEntities(spellEntity, sourcePos, clickedPos, entityData);
+        Set<PositionComponent> positionComponents = calculateAffectedPosEntities(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         return entityData.list(PlayerComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .collect(Collectors.toList());
@@ -91,16 +91,15 @@ public class RangeUtils {
 
 
     public static List<Integer> getAffectedWalkableEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
-        List<PositionComponent> positionComponents = calculateAffectedPosEntities(spellEntity, sourcePos, clickedPos, entityData);
+        Set<PositionComponent> positionComponents = calculateAffectedPosEntities(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         return entityData.list(WalkableComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .collect(Collectors.toList());
     }
 
 
-    public static List<PositionComponent> calculateAffectedPosEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
-        AffectedAreaComponent component = entityData.getComponent(spellEntity, AffectedAreaComponent.class);
-        List<PositionComponent> result = Lists.newArrayList();
+    public static Set<PositionComponent> calculateAffectedPosEntities(PositionComponent sourcePos, PositionComponent clickedPos, AffectedAreaComponent component) {
+        Set<PositionComponent> result = new HashSet<>();
         if (component == null) {
             return result;
         }
@@ -111,7 +110,7 @@ public class RangeUtils {
         int xPos = clickedPos.getX();
 
         if (component.getIndicator() == AffectedAreaIndicator.SINGLE) {
-            return Lists.newArrayList(clickedPos);
+            return Set.of(clickedPos);
 
         } else if (component.getIndicator() == AffectedAreaIndicator.LINE) {
             return calculateAffectedPosEntitiesForLine(sourcePos, clickedPos, maxImpact, minImpact, yPos, xPos);
@@ -133,9 +132,7 @@ public class RangeUtils {
                         || Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) <= minImpact);
             }
         }
-        return result.stream()
-                .distinct()
-                .collect(Collectors.toList());
+        return result;
     }
 
     private static List<PositionComponent> getBaseSquare(PositionComponent pos, int impact) {
@@ -152,8 +149,8 @@ public class RangeUtils {
         return resultTmp;
     }
 
-    private static List<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int maxImpact, int minImpact, int yPos, int xPos) {
-        List<PositionComponent> result = new ArrayList<>();
+    private static Set<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int maxImpact, int minImpact, int yPos, int xPos) {
+        Set<PositionComponent> result = new HashSet<>();
         int signumY = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
         int impact = maxImpact - minImpact;
         Function<Integer, Boolean> testY = signumY < 0
