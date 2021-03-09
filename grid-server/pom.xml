@@ -53,6 +53,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
+                            <includeScope>runtime</includeScope>
                             <addClasspath>true</addClasspath>
                             <mainClass>com.destrostudios.grid.server.Main</mainClass>
                         </manifest>

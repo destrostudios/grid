@@ -37,7 +37,7 @@
         <version.maven-jar-plugin>3.1.2</version.maven-jar-plugin>
         <version.mockito>1.9.5</version.mockito>
         <version.slf4j>2.0.0-alpha1</version.slf4j>
-        <version.turn-based-game-tools>a82d20e41950977457ca724a6eda107f124dff5f</version.turn-based-game-tools>
+        <version.turn-based-game-tools>bb750fb05771a2ec153ed09d52764b6d97a1a492</version.turn-based-game-tools>
         <version.jackson>2.12.1</version.jackson>
     </properties>
     <repositories>
