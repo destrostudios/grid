@@ -12,7 +12,9 @@ import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
+import com.destrostudios.grid.components.spells.movements.DashComponent;
 import com.destrostudios.grid.components.spells.movements.DisplacementComponent;
+import com.destrostudios.grid.components.spells.movements.PullComponent;
 import com.destrostudios.grid.components.spells.movements.TeleportComponent;
 import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
@@ -35,11 +37,10 @@ import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
 import com.destrostudios.grid.random.RandomProxy;
 import com.destrostudios.grid.util.RangeUtils;
-import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import lombok.AllArgsConstructor;
 
 import static com.destrostudios.grid.util.RangeUtils.calculateTargetEntity;
 
@@ -84,7 +85,6 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             HealComponent heal = entityData.getComponent(spell, HealComponent.class);
             int healAmount = randomProxy.nextInt(heal.getMinHeal(), heal.getMaxHeal());
             followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), targetEntity));
-            ;
         }
 
         // 3. Damage
@@ -100,10 +100,26 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         }
 
         // 4. displacement && Teleport
-        if (entityData.hasComponents(spell, DisplacementComponent.class) && targetEntity != playerEntity) {
-            DisplacementComponent displacement = entityData.getComponent(spell, DisplacementComponent.class);
-            PositionComponent posSource = entityData.getComponent(playerEntity, PositionComponent.class);
-            followUpEvents.add(new DisplacementEvent(targetEntity, displacement.getDisplacement(), posSource.getX(), posSource.getY()));
+        if (targetEntity != playerEntity) {
+            if (entityData.hasComponents(spell, DisplacementComponent.class)) {
+                DisplacementComponent displacement = entityData.getComponent(spell, DisplacementComponent.class);
+                PositionComponent posSource = entityData.getComponent(playerEntity, PositionComponent.class);
+                followUpEvents.add(new DisplacementEvent(targetEntity, displacement.getDisplacement(), posSource.getX(), posSource.getY()));
+            }
+            DashComponent dash = entityData.getComponent(spell, DashComponent.class);
+            if (dash != null) {
+                PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
+                PositionComponent target = entityData.getComponent(targetEntity, PositionComponent.class);
+                PositionComponent dashTarget = RangeUtils.getDisplacementGoal(entityData, playerEntity, source, RangeUtils.directionForDelta(source, target), dash.getDistance());
+                followUpEvents.add(new MoveEvent(playerEntity, dashTarget, MoveType.DASH));
+            }
+            PullComponent pull = entityData.getComponent(spell, PullComponent.class);
+            if (pull != null) {
+                PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
+                PositionComponent target = entityData.getComponent(targetEntity, PositionComponent.class);
+                PositionComponent pullTarget = RangeUtils.getDisplacementGoal(entityData, targetEntity, target, RangeUtils.directionForDelta(target, source), pull.getDistance());
+                followUpEvents.add(new MoveEvent(targetEntity, pullTarget, MoveType.PULL));
+            }
         }
         if (entityData.hasComponents(spell, TeleportComponent.class)) {
             followUpEvents.add(new MoveEvent(playerEntity, new PositionComponent(event.getX(), event.getY()), MoveType.TELEPORT));

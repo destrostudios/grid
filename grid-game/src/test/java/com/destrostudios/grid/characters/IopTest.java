@@ -147,6 +147,48 @@ public class IopTest {
         assertEquals(health2 - damage, get(character2, HealthPointsComponent.class).getHealth());
     }
 
+    @Test
+    public void outpouring() {
+        // given
+        String spellName = "Outpouring";
+        PositionComponent position1 = new PositionComponent(0, 0);
+        PositionComponent position2 = new PositionComponent(5, 0);
+
+        int character1 = getCharacter(player1.getLogin());
+        int character2 = getCharacter(player2.getLogin());
+        int spell = getSpell(character1, spellName);
+
+        set(character1, position1);
+        set(character2, position2);
+
+        // when
+        applyAction(new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), spell));
+
+        // then
+        assertEquals(new PositionComponent(4, 0), get(character1, PositionComponent.class));
+    }
+
+    @Test
+    public void threat() {
+        // given
+        String spellName = "Threat";
+        PositionComponent position1 = new PositionComponent(0, 0);
+        PositionComponent position2 = new PositionComponent(1, 2);
+
+        int character1 = getCharacter(player1.getLogin());
+        int character2 = getCharacter(player2.getLogin());
+        int spell = getSpell(character1, spellName);
+
+        set(character1, position1);
+        set(character2, position2);
+
+        // when
+        applyAction(new CastSpellAction(position2.getX(), position2.getY(), Integer.toString(character1), spell));
+
+        // then
+        assertEquals(new PositionComponent(1, 0), get(character2, PositionComponent.class));
+    }
+
     private void set(int entity, Component component) {
         game.getData().addComponent(entity, component);
     }

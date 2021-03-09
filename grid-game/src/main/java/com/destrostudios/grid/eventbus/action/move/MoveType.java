@@ -1,5 +1,5 @@
 package com.destrostudios.grid.eventbus.action.move;
 
 public enum MoveType {
-    WALK, TELEPORT, PUSHBACK
+    WALK, TELEPORT, PUSHBACK, PULL, DASH
 }

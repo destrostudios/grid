@@ -15,6 +15,7 @@ import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.components.spells.range.RangeIndicator;
 import com.destrostudios.grid.entities.EntityData;
+import com.destrostudios.grid.eventbus.action.displace.Direction;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
 import java.util.ArrayList;
@@ -214,6 +215,7 @@ public class RangeUtils {
     }
 
     public static boolean isPositionIsFree(EntityData entityData, PositionComponent newPosition, int entity) {
+        // TODO: do we really need entity here? it will only block itself if we try to move it to its own position.
         List<Integer> allPlayersEntites = entityData.list(PositionComponent.class, PlayerComponent.class).stream()
                 .filter(e -> e != entity)
                 .collect(Collectors.toList());
@@ -231,46 +233,21 @@ public class RangeUtils {
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }
 
-    // TODO: 07.03.2021 refactor
     public static PositionComponent getDisplacementGoal(EntityData entityData, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
-        if (posEntityToDisplace.equals(posSource)) {
-            return posSource;
-        } else if (Math.abs(posEntityToDisplace.getX() - posSource.getX()) < Math.abs(posEntityToDisplace.getY() - posSource.getY())) {
-            // displacement from top or bot
-            int displacementSignum = (int) Math.signum(posEntityToDisplace.getY() - posSource.getY());
+        Direction direction = directionForDelta(posSource, posEntityToDisplace);
+        return getDisplacementGoal(entityData, entity, posEntityToDisplace, direction, displacement);
+    }
 
-            Function<Integer, Boolean> predicate = number -> posSource.getY() < posEntityToDisplace.getY()
-                    ? number < displacement
-                    : number > -displacement;
-
-            PositionComponent posNew = posEntityToDisplace;
-            for (int y = 0; predicate.apply(y); y += displacementSignum) {
-                boolean positionIsFree = isPositionIsFree(entityData, new PositionComponent(posEntityToDisplace.getX(), posEntityToDisplace.getY() + y), entity);
-                if (positionIsFree) {
-                    posNew = new PositionComponent(posEntityToDisplace.getX(), posEntityToDisplace.getY() + y);
-                } else {
-                    return posNew;
-                }
+    public static PositionComponent getDisplacementGoal(EntityData entityData, int entity, PositionComponent from, Direction direction, int steps) {
+        PositionComponent result = from;
+        for (int i = 1; i <= steps; i++) {
+            PositionComponent next = new PositionComponent(from.getX() + i * direction.getDeltaX(), from.getY() + i * direction.getDeltaY());
+            if (!isPositionIsFree(entityData, next, entity)) {
+                break;
             }
-            return posNew;
-        } else {
-            // displacement from right or left
-            int displacementSignum = (int) Math.signum(posEntityToDisplace.getX() - posSource.getX());
-            Function<Integer, Boolean> predicate = number -> posSource.getX() < posEntityToDisplace.getX()
-                    ? number < displacement
-                    : number > -displacement;
-
-            PositionComponent posNew = posEntityToDisplace;
-            for (int x = 0; predicate.apply(x); x += displacementSignum) {
-                boolean positionIsFree = isPositionIsFree(entityData, new PositionComponent(posEntityToDisplace.getX() + x, posEntityToDisplace.getY()), entity);
-                if (positionIsFree) {
-                    posNew = new PositionComponent(posEntityToDisplace.getX() + x, posEntityToDisplace.getY());
-                } else {
-                    return posNew;
-                }
-            }
-            return posNew;
+            result = next;
         }
+        return result;
     }
 
     public static boolean isCastable(int casterEntity, int spellEntity, EntityData entityData) {
@@ -283,6 +260,27 @@ public class RangeUtils {
         MovementPointsComponent mpComp = entityData.getComponent(casterEntity, MovementPointsComponent.class);
         HealthPointsComponent hpComp = entityData.getComponent(casterEntity, HealthPointsComponent.class);
         return apComp.getAttackPoints() >= cost.getApCost() && mpComp.getMovementPoints() >= cost.getMpCost() && hpComp.getHealth() >= cost.getHpCost();
+    }
+
+    public static Direction directionForDelta(PositionComponent from, PositionComponent to) {
+        return directionForDelta(to.getX() - from.getX(), to.getY() - from.getY());
+    }
+
+    public static Direction directionForDelta(int deltaX, int deltaY) {
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            deltaY = 0;
+        } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
+            deltaX = 0;
+        }
+
+        int signX = Integer.signum(deltaX);
+        int signY = Integer.signum(deltaY);
+        for (Direction direction : Direction.values()) {
+            if (direction.getDeltaX() == signX && direction.getDeltaY() == signY) {
+                return direction;
+            }
+        }
+        throw new AssertionError();
     }
 
 }
