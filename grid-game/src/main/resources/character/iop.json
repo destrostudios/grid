@@ -240,7 +240,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns."
+        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns. TODO: requires target"
       },
       {
         "component": "CostComponent",
@@ -315,7 +315,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[4 AP] Dash towards the target, deal 38 to 42 damage. TODO: cast in line only"
+        "tooltip": "[4 AP] Dash towards the target, deal 38 to 42 damage. TODO: cast in line only, requires target"
       },
       {
         "component": "CostComponent",
@@ -352,7 +352,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[3 AP] Pull the target towards you, deal 26 to 28 damage."
+        "tooltip": "[3 AP] Pull the target towards you, deal 26 to 28 damage. requires target"
       },
       {
         "component": "CostComponent",
