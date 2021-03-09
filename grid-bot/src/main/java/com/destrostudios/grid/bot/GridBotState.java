@@ -17,6 +17,7 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
 import com.destrostudios.grid.util.GameOverUtils;
+import com.destrostudios.grid.util.RangeUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.BotGameState;
 import java.util.ArrayList;
@@ -79,18 +80,28 @@ public class GridBotState implements BotGameState<Action, Team> {
                 tryAddMoveAction(position.getX() + 1, position.getY(), playerIdentifier, data, entity, actions);
                 tryAddMoveAction(position.getX() - 1, position.getY(), playerIdentifier, data, entity, actions);
             }
+            SpellCastedValidator validator = new SpellCastedValidator();
             SpellsComponent spells = data.getComponent(entity, SpellsComponent.class);
             if (spells != null) {
                 for (int spell : spells.getSpells()) {
-                    SpellCastedValidator validator = new SpellCastedValidator();
+                    if (RangeUtils.isCastable(entity, spell, data)) {
 
-                    // simplified targeting, good enough for this early version
-                    List<Integer> healthEntities = data.list(HealthPointsComponent.class);
-                    for (int healthEntity : healthEntities) {
-                        PositionComponent target = data.getComponent(healthEntity, PositionComponent.class);
-                        if (target != null) {
-                            if (validator.validate(new SpellCastedEvent(spell, entity, target.getX(), target.getY()), () -> data)) {
-                                actions.add(new CastSpellAction(target.getX(), target.getY(), playerIdentifier, spell));
+//                        List<Integer> targets = RangeUtils.getAllTargetableEntitiesInRange(spell, entity, data);
+//                        for (int target : targets) {
+//                            PositionComponent targetPos = data.getComponent(target, PositionComponent.class);
+//                            if (validator.validate(new SpellCastedEvent(spell, entity, targetPos.getX(), targetPos.getY()), () -> data)) {
+//                                actions.add(new CastSpellAction(targetPos.getX(), targetPos.getY(), playerIdentifier, spell));
+//                            }
+//                        }
+
+                        // simplified targeting, good enough for this early version
+                        List<Integer> healthEntities = data.list(HealthPointsComponent.class);
+                        for (int healthEntity : healthEntities) {
+                            PositionComponent target = data.getComponent(healthEntity, PositionComponent.class);
+                            if (target != null) {
+                                if (validator.validate(new SpellCastedEvent(spell, entity, target.getX(), target.getY()), () -> data)) {
+                                    actions.add(new CastSpellAction(target.getX(), target.getY(), playerIdentifier, spell));
+                                }
                             }
                         }
                     }

@@ -18,8 +18,12 @@ import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.action.displace.Direction;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -97,7 +101,7 @@ public class RangeUtils {
 
 
     public static Set<PositionComponent> calculateAffectedPositions(PositionComponent sourcePos, PositionComponent clickedPos, AffectedAreaComponent component) {
-        Set<PositionComponent> result = new HashSet<>();
+        Set<PositionComponent> result = new LinkedHashSet<>();
         if (component == null) {
             return result;
         }

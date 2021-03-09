@@ -38,7 +38,7 @@ public class Main {
         Logger log = LoggerFactory.getLogger(com.destrostudios.grid.bot.Main.class);
         Log.DEBUG();
         Log.info(new Date().toString());// time reference for kryo logs
-        String hostUrl = "localhost";// "destrostudios.com";
+        String hostUrl = "destrostudios.com";
         String login = "Bot";
         ToolsClient client = getToolsClient(hostUrl, fakeJwt(-1, login));
         try {
