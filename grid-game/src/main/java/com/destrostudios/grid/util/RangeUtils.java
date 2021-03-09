@@ -19,7 +19,6 @@ import com.destrostudios.grid.eventbus.action.displace.Direction;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +28,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class RangeUtils {
-    // todo 3.) targatable component
+    // todo 3.) targetable component
     // todo 5.) Tooltips automatisch generieren
-    // todo 6.) raub components
-    // todo 8.) push / pull @Phil
-    // todo 9.) swap
+    // todo 6.) AP/MP reduction/steal components
+    // todo 9.) position swap
 
 
     public static List<Integer> getAllTargetableEntitiesInRange(int spellEntity, int casterEntity, EntityData entityData) {
@@ -152,7 +150,7 @@ public class RangeUtils {
     }
 
     private static Set<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int maxImpact, int minImpact, int yPos, int xPos) {
-        Set<PositionComponent> result = new HashSet<>();
+        Set<PositionComponent> result = new LinkedHashSet<>();
         int signumY = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
         Function<Integer, Boolean> testY = signumY < 0
                 ? y -> y >= yPos - maxImpact

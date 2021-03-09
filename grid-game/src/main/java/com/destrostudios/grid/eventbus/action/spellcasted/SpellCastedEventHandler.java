@@ -42,8 +42,6 @@ import java.util.List;
 import java.util.function.Supplier;
 import lombok.AllArgsConstructor;
 
-import static com.destrostudios.grid.util.RangeUtils.calculateTargetEntity;
-
 @AllArgsConstructor
 public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
     private final Eventbus eventbusInstance;
@@ -53,7 +51,6 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
     public void onEvent(SpellCastedEvent event, Supplier<EntityData> entityDataSupplier) {
         EntityData entityData = entityDataSupplier.get();
         int spell = event.getSpell();
-        int targetEntity = calculateTargetEntity(event.getX(), event.getY(), entityData);
         int playerEntity = event.getPlayerEntity();
 
         if (entityData.hasComponents(spell, CooldownComponent.class)) {
@@ -79,47 +76,58 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
                 followUpEvents.add(new HealthPointsChangedEvent(event.getPlayerEntity(), hp.getHealth() - costComponent.getHpCost()));
             }
         }
+        List<Integer> affectedEntities = RangeUtils.getAffectedPlayerEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
+                new PositionComponent(event.getX(), event.getY()), entityData);
 
         // 2. Heals
         if (entityData.hasComponents(spell, HealComponent.class)) {
             HealComponent heal = entityData.getComponent(spell, HealComponent.class);
             int healAmount = randomProxy.nextInt(heal.getMinHeal(), heal.getMaxHeal());
-            followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), targetEntity));
+
+            for (Integer affectedEntity : affectedEntities) {
+                followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), affectedEntity));
+            }
         }
 
         // 3. Damage
         if (entityData.hasComponents(spell, DamageComponent.class)) {
             DamageComponent damage = entityData.getComponent(spell, DamageComponent.class);
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
-            List<Integer> affectedEntities = RangeUtils.getAffectedPlayerEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
-                    new PositionComponent(event.getX(), event.getY()), entityData);
 
             for (Integer affectedEntity : affectedEntities) {
                 followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), affectedEntity));
             }
         }
 
-        // 4. displacement && Teleport
-        if (targetEntity != playerEntity) {
-            if (entityData.hasComponents(spell, DisplacementComponent.class)) {
-                DisplacementComponent displacement = entityData.getComponent(spell, DisplacementComponent.class);
-                PositionComponent posSource = entityData.getComponent(playerEntity, PositionComponent.class);
-                followUpEvents.add(new DisplacementEvent(targetEntity, displacement.getDisplacement(), posSource.getX(), posSource.getY()));
+        // 4. movement effects
+        if (entityData.hasComponents(spell, DisplacementComponent.class)) {
+            DisplacementComponent displacement = entityData.getComponent(spell, DisplacementComponent.class);
+            PositionComponent pushOrigin;
+            if (displacement.isUseTargetAsOrigin()) {
+                pushOrigin = new PositionComponent(event.getX(), event.getY());
+            } else {
+                pushOrigin = entityData.getComponent(playerEntity, PositionComponent.class);
             }
-            DashComponent dash = entityData.getComponent(spell, DashComponent.class);
-            if (dash != null) {
-                PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
-                PositionComponent target = entityData.getComponent(targetEntity, PositionComponent.class);
-                PositionComponent dashTarget = RangeUtils.getDisplacementGoal(entityData, playerEntity, source, RangeUtils.directionForDelta(source, target), dash.getDistance());
-                followUpEvents.add(new MoveEvent(playerEntity, dashTarget, MoveType.DASH));
+
+            for (Integer affectedEntity : affectedEntities) {
+                followUpEvents.add(new DisplacementEvent(affectedEntity, displacement.getDisplacement(), pushOrigin.getX(), pushOrigin.getY()));
             }
-            PullComponent pull = entityData.getComponent(spell, PullComponent.class);
-            if (pull != null) {
-                PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
-                PositionComponent target = entityData.getComponent(targetEntity, PositionComponent.class);
-                PositionComponent pullTarget = RangeUtils.getDisplacementGoal(entityData, targetEntity, target, RangeUtils.directionForDelta(target, source), pull.getDistance());
-                followUpEvents.add(new MoveEvent(targetEntity, pullTarget, MoveType.PULL));
+        }
+        PullComponent pull = entityData.getComponent(spell, PullComponent.class);
+        if (pull != null) {
+            PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
+            for (Integer affectedEntity : affectedEntities) {
+                PositionComponent target = entityData.getComponent(affectedEntity, PositionComponent.class);
+                PositionComponent pullTarget = RangeUtils.getDisplacementGoal(entityData, affectedEntity, target, RangeUtils.directionForDelta(target, source), pull.getDistance());
+                followUpEvents.add(new MoveEvent(affectedEntity, pullTarget, MoveType.PULL));
             }
+        }
+        DashComponent dash = entityData.getComponent(spell, DashComponent.class);
+        if (dash != null) {
+            PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
+            PositionComponent target = new PositionComponent(event.getX(), event.getY());
+            PositionComponent dashTarget = RangeUtils.getDisplacementGoal(entityData, playerEntity, source, RangeUtils.directionForDelta(source, target), dash.getDistance());
+            followUpEvents.add(new MoveEvent(playerEntity, dashTarget, MoveType.DASH));
         }
         if (entityData.hasComponents(spell, TeleportComponent.class)) {
             followUpEvents.add(new MoveEvent(playerEntity, new PositionComponent(event.getX(), event.getY()), MoveType.TELEPORT));
@@ -134,7 +142,9 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         // 6. Stats per turn
         if (entityData.hasComponents(spell, AttackPointsPerTurnComponent.class) || entityData.hasComponents(spell, MovementPointsPerTurnComponent.class)
                 || entityData.hasComponents(spell, DamagePerTurnComponent.class)) {
-            followUpEvents.add(new StatsPerTurnEvent(playerEntity, targetEntity, spell));
+            for (Integer affectedEntity : affectedEntities) {
+                followUpEvents.add(new StatsPerTurnEvent(playerEntity, affectedEntity, spell));
+            }
         }
         // update casts
         if (entityData.hasComponents(spell, CastsPerTurnComponent.class)) {

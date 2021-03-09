@@ -128,7 +128,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[2 AP] Push neighbors of target cell back by 1 tile. TODO: push"
+        "tooltip": "[2 AP] Push neighbors of target cell back by 1 tile."
       },
       {
         "component": "CostComponent",
@@ -148,7 +148,8 @@
       },
       {
         "component": "DisplacementComponent",
-        "displacement": 1
+        "displacement": 1,
+        "useTargetAsOrigin": true
       },
       {
         "component": "AffectedAreaComponent",

@@ -1,8 +1,18 @@
 package com.destrostudios.grid.serialization;
 
 import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.map.*;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.map.ObstacleComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.StartingFieldComponent;
+import com.destrostudios.grid.components.map.VisualComponent;
+import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.properties.BuffsComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
 import com.destrostudios.grid.components.properties.resistance.AttackPointResistanceComponent;
 import com.destrostudios.grid.components.properties.resistance.MovementPointResistanceComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
@@ -24,12 +34,15 @@ import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.components.spells.range.RangeIndicator;
 import com.destrostudios.grid.entities.EntityData;
 import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.destrostudios.grid.GridGame.*;
+import static com.destrostudios.grid.GridGame.MAP_X;
+import static com.destrostudios.grid.GridGame.MAP_Y;
+import static com.destrostudios.grid.GridGame.MAX_AP;
+import static com.destrostudios.grid.GridGame.MAX_HEALTH;
+import static com.destrostudios.grid.GridGame.MAX_MP;
 
 public class SampleDataGenarator {
 
@@ -159,7 +172,7 @@ public class SampleDataGenarator {
         data.addComponent(spell, new TooltipComponent(String.format("OP spell doing %s damage for %s AP in %s", Math.abs(dmg), apCost, indicator)));
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
         data.addComponent(spell, new RangeComponent(RangeIndicator.LINE_OF_SIGHT, 1, range));
-        data.addComponent(spell, new AffectedAreaComponent(indicator, 0,4));
+        data.addComponent(spell, new AffectedAreaComponent(indicator, 0, 4));
     }
 
     private static void addDmgSpellWithMpBuff(EntityData data, Random rand, int attackPoints, int dmgMpSpell) {
@@ -253,7 +266,7 @@ public class SampleDataGenarator {
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
         data.addComponent(spell, new RangeComponent(RangeIndicator.LINE_OF_SIGHT, 1, 1));
         data.addComponent(spell, new BuffsComponent(new ArrayList<>()));
-        data.addComponent(spell, new DisplacementComponent(5));
+        data.addComponent(spell, new DisplacementComponent(5, false));
         data.addComponent(spell, new TooltipComponent(String.format("Displaces player 5 positions for 4 AP")));
     }
 

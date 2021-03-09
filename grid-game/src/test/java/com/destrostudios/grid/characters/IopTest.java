@@ -189,6 +189,27 @@ public class IopTest {
         assertEquals(new PositionComponent(1, 0), get(character2, PositionComponent.class));
     }
 
+    @Test
+    public void blow() {
+        // given
+        String spellName = "Blow";
+        PositionComponent position1 = new PositionComponent(0, 0);
+        PositionComponent position2 = new PositionComponent(3, 0);
+
+        int character1 = getCharacter(player1.getLogin());
+        int character2 = getCharacter(player2.getLogin());
+        int spell = getSpell(character1, spellName);
+
+        set(character1, position1);
+        set(character2, position2);
+
+        // when
+        applyAction(new CastSpellAction(4, 0, Integer.toString(character1), spell));
+
+        // then
+        assertEquals(new PositionComponent(2, 0), get(character2, PositionComponent.class));
+    }
+
     private void set(int entity, Component component) {
         game.getData().addComponent(entity, component);
     }

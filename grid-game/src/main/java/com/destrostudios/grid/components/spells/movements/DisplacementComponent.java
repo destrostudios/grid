@@ -11,4 +11,5 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class DisplacementComponent implements Component {
     private int displacement;
+    private boolean useTargetAsOrigin;
 }
