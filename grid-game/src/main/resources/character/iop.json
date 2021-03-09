@@ -72,6 +72,7 @@
       },
       {
         "component": "RangeComponent",
+        "rangeIndicator": "ALL",
         "minRange": 1,
         "maxRange": 6
       },
@@ -127,7 +128,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[2 AP] Push neighbors of target cell back by 1 tile. TODO"
+        "tooltip": "[2 AP] Push neighbors of target cell back by 1 tile. TODO: push"
       },
       {
         "component": "CostComponent",
@@ -137,6 +138,7 @@
       },
       {
         "component": "RangeComponent",
+        "rangeIndicator": "ALL",
         "minRange": 2,
         "maxRange": 8
       },
@@ -199,7 +201,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[5 AP] Deal 37-41 damage in a cross-shaped AoE. TODO"
+        "tooltip": "[5 AP] Deal 37-41 damage in a cross-shaped AoE. TODO: cast in line only"
       },
       {
         "component": "CostComponent",
@@ -219,6 +221,7 @@
       },
       {
         "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
         "minRange": 1,
         "maxRange": 6
       },
@@ -288,6 +291,7 @@
       },
       {
         "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
         "minRange": 1,
         "maxRange": 3
       },
@@ -310,7 +314,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[4 AP] Dash towards the target, deal 38 to 42 damage. TODO"
+        "tooltip": "[4 AP] Dash towards the target, deal 38 to 42 damage. TODO: cast in line only"
       },
       {
         "component": "CostComponent",
