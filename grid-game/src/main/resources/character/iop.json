@@ -170,7 +170,7 @@
       {
         "component": "RangeComponent",
         "minRange": 1,
-        "maxRange": 8
+        "maxRange": 1
       },
       {
         "component": "DamageComponent",
@@ -179,9 +179,9 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "LINE",
-        "minImpact": 2,
-        "maxImpact": 4
+        "indicator": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
       }
     ],
     "6": [
@@ -217,8 +217,8 @@
       {
         "component": "AffectedAreaComponent",
         "indicator": "PLUS",
-        "minImpact": 2,
-        "maxImpact": 4
+        "minImpact": 0,
+        "maxImpact": 2
       }
     ],
     "7": [
@@ -260,7 +260,7 @@
         "component": "AffectedAreaComponent",
         "indicator": "SINGLE",
         "minImpact": 0,
-        "maxImpact": 1
+        "maxImpact": 0
       }
     ],
     "8": [
@@ -281,7 +281,7 @@
       {
         "component": "RangeComponent",
         "minRange": 1,
-        "maxRange": 9
+        "maxRange": 3
       },
       {
         "component": "DamageComponent",
@@ -290,9 +290,9 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "DIAMOND",
-        "minImpact": 2,
-        "maxImpact": 4
+        "indicator": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
       }
     ]
   }
