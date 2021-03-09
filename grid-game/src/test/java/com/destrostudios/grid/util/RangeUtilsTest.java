@@ -16,7 +16,7 @@ public class RangeUtilsTest {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
         AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.SINGLE, 0, 0);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPosEntities(sourcePos, targetPos, affectedAreaComponent);
+        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
         assertEquals(Set.of(targetPos), actual);
     }
 
@@ -24,8 +24,8 @@ public class RangeUtilsTest {
     public void plusAoE() {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.PLUS, 0, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPosEntities(sourcePos, targetPos, affectedAreaComponent);
+        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.PLUS, 1, 2);
+        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
 
         assertEquals(toSet(
                 new char[][]{
@@ -43,7 +43,7 @@ public class RangeUtilsTest {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
         AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.DIAMOND, 2, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPosEntities(sourcePos, targetPos, affectedAreaComponent);
+        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
 
         assertEquals(toSet(
                 new char[][]{
@@ -61,7 +61,7 @@ public class RangeUtilsTest {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
         AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.SQUARE, 1, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPosEntities(sourcePos, targetPos, affectedAreaComponent);
+        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
 
         assertEquals(toSet(
                 new char[][]{
@@ -79,7 +79,7 @@ public class RangeUtilsTest {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
         AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.LINE, 1, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPosEntities(sourcePos, targetPos, affectedAreaComponent);
+        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
 
         assertEquals(toSet(
                 new char[][]{

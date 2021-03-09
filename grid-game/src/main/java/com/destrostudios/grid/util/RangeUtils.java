@@ -83,7 +83,7 @@ public class RangeUtils {
     }
 
     public static List<Integer> getAffectedPlayerEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
-        Set<PositionComponent> positionComponents = calculateAffectedPosEntities(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
+        Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         return entityData.list(PlayerComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .collect(Collectors.toList());
@@ -91,14 +91,14 @@ public class RangeUtils {
 
 
     public static List<Integer> getAffectedWalkableEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
-        Set<PositionComponent> positionComponents = calculateAffectedPosEntities(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
+        Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         return entityData.list(WalkableComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .collect(Collectors.toList());
     }
 
 
-    public static Set<PositionComponent> calculateAffectedPosEntities(PositionComponent sourcePos, PositionComponent clickedPos, AffectedAreaComponent component) {
+    public static Set<PositionComponent> calculateAffectedPositions(PositionComponent sourcePos, PositionComponent clickedPos, AffectedAreaComponent component) {
         Set<PositionComponent> result = new HashSet<>();
         if (component == null) {
             return result;
