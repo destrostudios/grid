@@ -3,7 +3,9 @@ package com.destrostudios.grid.util;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,183 +35,12 @@ public class RangeUtilsTest {
         assertEquals(Set.of(targetPos), actual);
     }
 
-    @Test
-    public void plusFullAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.PLUS, 0, 2);
+    @ParameterizedTest(name = "{index} - {4}: Impact ({2}, {3}), source {0}, target {1} => result should be {5} ")
+    @ArgumentsSource(RangeUtilsTestArgumentProvider.class)
+    public void plusAoE(PositionComponent sourcePos, PositionComponent targetPos, int minImpact, int maxImpact, AffectedAreaIndicator affectedArea, char[][] expectedResult) {
+        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(affectedArea, minImpact, maxImpact);
         Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', ' ', ' ', 'X', ' ', ' '}
-                }
-        ), actual);
+        assertEquals(toSet(expectedResult), actual);
     }
 
-    @Test
-    public void plusAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.PLUS, 1, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', 'X', 'X', ' ', 'X', 'X'},
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', ' ', ' ', 'X', ' ', ' '}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void plusAoE2() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.PLUS, 2, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', 'X', ' ', ' ', ' ', 'X'},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', 'X', ' ', ' '}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void diamondFullAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.DIAMOND, 0, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', ' ', 'X', 'X', 'X', ' '},
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', ' ', 'X', 'X', 'X', ' '},
-                        {' ', ' ', ' ', 'X', ' ', ' '}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void diamondAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.DIAMOND, 2, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', 'X', ' ', ' '},
-                        {' ', ' ', 'X', ' ', 'X', ' '},
-                        {' ', 'X', ' ', ' ', ' ', 'X'},
-                        {' ', ' ', 'X', ' ', 'X', ' '},
-                        {' ', ' ', ' ', 'X', ' ', ' '}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void squareFullAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.SQUARE, 0, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', 'X', 'X', 'X', 'X', 'X'}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void squareAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.SQUARE, 2, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', 'X', 'X', 'X', 'X', 'X'},
-                        {' ', 'X', ' ', ' ', ' ', 'X'},
-                        {' ', 'X', ' ', ' ', ' ', 'X'},
-                        {' ', 'X', ' ', ' ', ' ', 'X'},
-                        {' ', 'X', 'X', 'X', 'X', 'X'}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void lineFullAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.LINE, 0, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', 'X', 'X', 'X'},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' ', ' '}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void lineAoE() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.LINE, 1, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', 'X', 'X'},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' ', ' '}
-                }
-        ), actual);
-    }
-
-    @Test
-    public void lineAoE2() {
-        PositionComponent sourcePos = new PositionComponent(0, 0);
-        PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.LINE, 0, 2);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
-
-        assertEquals(toSet(
-                new char[][]{
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', 'X', 'X', 'X'},
-                        {' ', ' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' ', ' '}
-                }
-        ), actual);
-    }
 }
