@@ -45,7 +45,8 @@
         "spells": [
           2,
           3,
-          4
+          4,
+          5
         ]
       }
     ],
@@ -178,6 +179,48 @@
         "component": "PullComponent",
         "distance": 2,
         "useTargetAsOrigin": true
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      }
+    ],
+    "5": [
+      {
+        "component": "NameComponent",
+        "name": "Explosive Arrow"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[4 AP] Deal 30-34 damage in a diamond. TODO: requires target"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 8
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "DIAMOND",
+        "minImpact": 0,
+        "maxImpact": 2
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 30,
+        "maxDmg": 34
       },
       {
         "component": "BuffsComponent",
