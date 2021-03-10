@@ -2,13 +2,12 @@ package com.destrostudios.grid.util;
 
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
-import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
+import com.destrostudios.grid.components.spells.range.AreaShape;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,14 +29,14 @@ public class RangeUtilsTest {
     public void singleAoE() {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
-        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AffectedAreaIndicator.SINGLE, 0, 0);
+        AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AreaShape.SINGLE, 0, 0);
         Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
         assertEquals(Set.of(targetPos), actual);
     }
 
     @ParameterizedTest(name = "{index} - {4}: Impact ({2}, {3}), source {0}, target {1} => result should be {5} ")
     @ArgumentsSource(RangeUtilsTestArgumentProvider.class)
-    public void plusAoE(PositionComponent sourcePos, PositionComponent targetPos, int minImpact, int maxImpact, AffectedAreaIndicator affectedArea, char[][] expectedResult) {
+    public void plusAoE(PositionComponent sourcePos, PositionComponent targetPos, int minImpact, int maxImpact, AreaShape affectedArea, char[][] expectedResult) {
         AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(affectedArea, minImpact, maxImpact);
         Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
         assertEquals(toSet(expectedResult), actual);

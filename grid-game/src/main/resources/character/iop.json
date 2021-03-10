@@ -73,6 +73,7 @@
       {
         "component": "RangeComponent",
         "rangeIndicator": "ALL",
+        "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 6
       },
@@ -102,6 +103,8 @@
       },
       {
         "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 1
       },
@@ -116,7 +119,7 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "SINGLE",
+        "shape": "SINGLE",
         "minImpact": 0,
         "maxImpact": 0
       }
@@ -139,6 +142,7 @@
       {
         "component": "RangeComponent",
         "rangeIndicator": "ALL",
+        "rangeShape": "DIAMOND",
         "minRange": 2,
         "maxRange": 8
       },
@@ -153,7 +157,7 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "PLUS",
+        "shape": "PLUS",
         "minImpact": 1,
         "maxImpact": 1
       }
@@ -180,6 +184,8 @@
       },
       {
         "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 1
       },
@@ -190,7 +196,7 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "SINGLE",
+        "shape": "SINGLE",
         "minImpact": 0,
         "maxImpact": 0
       }
@@ -202,11 +208,11 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[5 AP] Deal 37-41 damage in a cross-shaped AoE. TODO: cast in line only"
+        "tooltip": "[4 AP] Deal 37-41 damage in a cross-shaped AoE."
       },
       {
         "component": "CostComponent",
-        "apCost": 5,
+        "apCost": 4,
         "mpCost": 0,
         "hpCost": 0
       },
@@ -223,12 +229,13 @@
       {
         "component": "RangeComponent",
         "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "PLUS",
         "minRange": 1,
         "maxRange": 6
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "PLUS",
+        "shape": "PLUS",
         "minImpact": 0,
         "maxImpact": 2
       }
@@ -250,6 +257,8 @@
       },
       {
         "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 1
       },
@@ -270,7 +279,7 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "SINGLE",
+        "shape": "SINGLE",
         "minImpact": 0,
         "maxImpact": 0
       }
@@ -293,6 +302,7 @@
       {
         "component": "RangeComponent",
         "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 3
       },
@@ -303,7 +313,7 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "SINGLE",
+        "shape": "SINGLE",
         "minImpact": 0,
         "maxImpact": 0
       }
@@ -315,7 +325,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[4 AP, 2 MP] Dash towards the target, deal 38 to 42 damage. TODO: cast in line only, requires target"
+        "tooltip": "[4 AP, 2 MP] Dash towards the target, deal 38 to 42 damage. TODO: requires target"
       },
       {
         "component": "CostComponent",
@@ -326,6 +336,7 @@
       {
         "component": "RangeComponent",
         "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "PLUS",
         "minRange": 5,
         "maxRange": 5
       },
@@ -336,7 +347,7 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "SINGLE",
+        "shape": "SINGLE",
         "minImpact": 0,
         "maxImpact": 0
       },
@@ -363,6 +374,7 @@
       {
         "component": "RangeComponent",
         "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
         "minRange": 3,
         "maxRange": 3
       },
@@ -378,7 +390,7 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "indicator": "SINGLE",
+        "shape": "SINGLE",
         "minImpact": 0,
         "maxImpact": 0
       },

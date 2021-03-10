@@ -1,1 +1,300 @@
-{"SeriazableComponent":"character","components":{"1":[{"component":"MaxMovementPointsComponent","maxMovementPoints":11},{"component":"MaxAttackPointsComponent","maxAttackPoints":8},{"component":"AttackPointResistanceComponent","resistanceValue":39},{"component":"MovementPointResistanceComponent","resistanceValue":15},{"component":"StatsPerRoundComponent","statsPerRoundEntites":[]},{"component":"BuffsComponent","buffEntities":[]},{"component":"ObstacleComponent"},{"component":"PlayerComponent"},{"component":"VisualComponent","name":"scarlet"},{"component":"MaxHealthComponent","maxHealth":857},{"component":"SpellsComponent","spells":[2,3,4,5,6,7]}],"2":[{"component":"CostComponent","apCost":4,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":25,"maxDmg":75},{"component":"NameComponent","name":"Nothing"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 25 damage for 4 AP in LINE"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","rangeIndicator":"LINE_OF_SIGHT","minRange":1,"maxRange":6},{"component":"AffectedAreaComponent","indicator":"LINE","minImpact":0,"maxImpact":4}],"3":[{"component":"CostComponent","apCost":2,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":25,"maxDmg":75},{"component":"NameComponent","name":"Wound"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 25 damage for 2 AP in SQUARE"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","rangeIndicator":"LINE_OF_SIGHT","minRange":1,"maxRange":6},{"component":"AffectedAreaComponent","indicator":"SQUARE","minImpact":0,"maxImpact":4}],"4":[{"component":"CostComponent","apCost":3,"mpCost":0,"hpCost":0},{"component":"DamageComponent","minDmg":25,"maxDmg":75},{"component":"NameComponent","name":"Jump"},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"OP spell doing 25 damage for 3 AP in PLUS"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":3,"castsThisTurn":0},{"component":"RangeComponent","rangeIndicator":"LINE_OF_SIGHT","minRange":1,"maxRange":6},{"component":"AffectedAreaComponent","indicator":"PLUS","minImpact":0,"maxImpact":4}],"5":[{"component":"TeleportComponent"},{"component":"CostComponent","apCost":3,"mpCost":0,"hpCost":0},{"component":"NameComponent","name":"Jump"},{"component":"RangeComponent","rangeIndicator":"ALL","minRange":1,"maxRange":3},{"component":"BuffsComponent","buffEntities":[]},{"component":"TooltipComponent","tooltip":"Teleporting in a range of 3"},{"component":"CastsPerTurnComponent","maxCastsPerTurn":2,"castsThisTurn":0}],"6":[{"component":"CostComponent","apCost":0,"mpCost":10,"hpCost":0},{"component":"AttackPointsBuffComponent","buffAmount":1,"buffDuration":2,"spellBuff":false},{"component":"NameComponent","name":"Buff"},{"component":"BuffsComponent","buffEntities":[]},{"component":"RangeComponent","rangeIndicator":"ALL","minRange":0,"maxRange":0},{"component":"CastsPerTurnComponent","maxCastsPerTurn":1,"castsThisTurn":0},{"component":"TooltipComponent","tooltip":"Spell buffing 1 AP for 10 MP \nRange: 3"}],"7":[{"component":"CostComponent","apCost":6,"mpCost":0,"hpCost":0},{"component":"HealthPointBuffComponent","buffAmount":50,"buffDuration":4,"spellBuff":false},{"component":"NameComponent","name":"Twist"},{"component":"BuffsComponent","buffEntities":[]},{"component":"RangeComponent","rangeIndicator":"ALL","minRange":0,"maxRange":0},{"component":"TooltipComponent","tooltip":"Spell buffing 50 HP for 6 AP. \nCD: 3, Range: 0 "},{"component":"CooldownComponent","cooldown":3},{"component":"CastsPerTurnComponent","maxCastsPerTurn":1,"castsThisTurn":0}]}}
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "component": "MaxMovementPointsComponent",
+        "maxMovementPoints": 11
+      },
+      {
+        "component": "MaxAttackPointsComponent",
+        "maxAttackPoints": 8
+      },
+      {
+        "component": "AttackPointResistanceComponent",
+        "resistanceValue": 39
+      },
+      {
+        "component": "MovementPointResistanceComponent",
+        "resistanceValue": 15
+      },
+      {
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "ObstacleComponent"
+      },
+      {
+        "component": "PlayerComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "scarlet"
+      },
+      {
+        "component": "MaxHealthComponent",
+        "maxHealth": 857
+      },
+      {
+        "component": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    ],
+    "2": [
+      {
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Nothing"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 4 AP in LINE"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "LINE",
+        "minImpact": 0,
+        "maxImpact": 4
+      }
+    ],
+    "3": [
+      {
+        "component": "CostComponent",
+        "apCost": 2,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 2 AP in SQUARE"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SQUARE",
+        "minImpact": 0,
+        "maxImpact": 4
+      }
+    ],
+    "4": [
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 25,
+        "maxDmg": 75
+      },
+      {
+        "component": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "OP spell doing 25 damage for 3 AP in PLUS"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "rangeShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "PLUS",
+        "minImpact": 0,
+        "maxImpact": 4
+      }
+    ],
+    "5": [
+      {
+        "component": "TeleportComponent"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "NameComponent",
+        "name": "Jump"
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "ALL",
+        "rangeShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 3
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Teleporting in a range of 3"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      }
+    ],
+    "6": [
+      {
+        "component": "CostComponent",
+        "apCost": 0,
+        "mpCost": 10,
+        "hpCost": 0
+      },
+      {
+        "component": "AttackPointsBuffComponent",
+        "buffAmount": 1,
+        "buffDuration": 2,
+        "spellBuff": false
+      },
+      {
+        "component": "NameComponent",
+        "name": "Buff"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "ALL",
+        "rangeShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Spell buffing 1 AP for 10 MP \nRange: 3"
+      }
+    ],
+    "7": [
+      {
+        "component": "CostComponent",
+        "apCost": 6,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "HealthPointBuffComponent",
+        "buffAmount": 50,
+        "buffDuration": 4,
+        "spellBuff": false
+      },
+      {
+        "component": "NameComponent",
+        "name": "Twist"
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "ALL",
+        "rangeShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "Spell buffing 50 HP for 6 AP. \nCD: 3, Range: 0 "
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 3
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      }
+    ]
+  }
+}

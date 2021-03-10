@@ -11,7 +11,7 @@ import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
-import com.destrostudios.grid.components.spells.range.AffectedAreaIndicator;
+import com.destrostudios.grid.components.spells.range.AreaShape;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.components.spells.range.RangeIndicator;
 import com.destrostudios.grid.entities.EntityData;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class RangeUtils {
     // todo 3.) targetable component
     // todo 5.) Tooltips automatisch generieren
-    // todo 6.) AP/MP reduction/steal components
+    // todo 6.) AP/MP steal components
     // todo 9.) position swap
 
 
@@ -68,14 +68,15 @@ public class RangeUtils {
         PositionComponent casterPositionOpt = entityData.getComponent(casterEntity, PositionComponent.class);
         int maxRange = rangeComponentOpt.getMaxRange();
         int minRange = rangeComponentOpt.getMinRange();
-        int x = casterPositionOpt.getX();
-        int y = casterPositionOpt.getY();
+        AreaShape area = rangeComponentOpt.getRangeShape();
+
+        Set<PositionComponent> rangablePositions = calculateAffectedPositions(null, casterPositionOpt, new AffectedAreaComponent(area, minRange, maxRange));
+
         List<Integer> walkableAndTargetablePos = entityData.list(PositionComponent.class, WalkableComponent.class);
 
         for (int walkableAndTargetablePo : walkableAndTargetablePos) {
             PositionComponent posC = entityData.getComponent(walkableAndTargetablePo, PositionComponent.class);
-            if (Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) <= maxRange
-                    && Math.abs(posC.getX() - x) + Math.abs(posC.getY() - y) >= minRange) {
+            if (rangablePositions.contains(posC)) {
                 targetableInRange.add(walkableAndTargetablePo);
             }
         }
@@ -109,13 +110,13 @@ public class RangeUtils {
         int yPos = clickedPos.getY();
         int xPos = clickedPos.getX();
 
-        if (component.getIndicator() == AffectedAreaIndicator.SINGLE) {
+        if (component.getShape() == AreaShape.SINGLE) {
             return Set.of(clickedPos);
 
-        } else if (component.getIndicator() == AffectedAreaIndicator.LINE) {
+        } else if (component.getShape() == AreaShape.LINE) {
             return calculateAffectedPosEntitiesForLine(sourcePos, clickedPos, maxImpact, minImpact, yPos, xPos);
 
-        } else if (component.getIndicator() == AffectedAreaIndicator.DIAMON_SELFCAST && sourcePos.equals(clickedPos)) {
+        } else if (component.getShape() == AreaShape.DIAMON_SELFCAST && sourcePos.equals(clickedPos)) {
             result.addAll(getBaseSquare(sourcePos, maxImpact));
             result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) + Math.abs(pos.getY() - sourcePos.getY()) > maxImpact);
             result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) <= minImpact || Math.abs(pos.getY() - sourcePos.getY()) <= minImpact);
@@ -123,14 +124,14 @@ public class RangeUtils {
         } else {
             result.addAll(getBaseSquare(clickedPos, maxImpact));
 
-            if (component.getIndicator() == AffectedAreaIndicator.PLUS) {
+            if (component.getShape() == AreaShape.PLUS) {
                 result.removeIf(pos -> !(pos.getX() == xPos || pos.getY() == yPos));
                 result.removeAll(getBaseSquare(clickedPos, minImpact - 1));
 
-            } else if (component.getIndicator() == AffectedAreaIndicator.DIAMOND) {
+            } else if (component.getShape() == AreaShape.DIAMOND) {
                 result.removeIf(pos -> Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) > maxImpact
                         || Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) < minImpact);
-            } else if (component.getIndicator() == AffectedAreaIndicator.SQUARE) {
+            } else if (component.getShape() == AreaShape.SQUARE) {
                 result.removeAll(getBaseSquare(clickedPos, minImpact - 1));
             }
         }
@@ -229,11 +230,6 @@ public class RangeUtils {
         boolean isWalkableField = allWalkableEntities.stream().anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
 
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
-    }
-
-    public static PositionComponent getDisplacementGoal(EntityData entityData, PositionComponent posEntityToDisplace, PositionComponent posSource, int entity, int displacement) {
-        Direction direction = directionForDelta(posSource, posEntityToDisplace);
-        return getDisplacementGoal(entityData, entity, posEntityToDisplace, direction, displacement);
     }
 
     public static PositionComponent getDisplacementGoal(EntityData entityData, int entity, PositionComponent from, Direction direction, int steps) {
