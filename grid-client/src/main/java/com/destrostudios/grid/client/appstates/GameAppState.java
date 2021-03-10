@@ -6,7 +6,12 @@ import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
-import com.destrostudios.grid.client.animations.*;
+import com.destrostudios.grid.client.animations.Animation;
+import com.destrostudios.grid.client.animations.AnnouncementAnimation;
+import com.destrostudios.grid.client.animations.HealthAnimation;
+import com.destrostudios.grid.client.animations.MoveAnimation;
+import com.destrostudios.grid.client.animations.PlayerModelAnimation;
+import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.ModelAnimationInfo;
 import com.destrostudios.grid.client.characters.PlayerVisual;
@@ -15,9 +20,13 @@ import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
-import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
@@ -29,6 +38,8 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.util.RangeUtils;
+import com.destrostudios.turnbasedgametools.grid.Pathfinder;
+import com.destrostudios.turnbasedgametools.grid.Position;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.MouseInput;
@@ -36,10 +47,10 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameAppState extends BaseAppState<ClientApplication> implements ActionListener {
@@ -111,9 +122,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         super.update(tpf);
         updateGame();
         updateAnimations(tpf);
-        if (targetingSpellEntity != null) {
-            updateHoveredPosition();
-        }
+        updateHoveredPosition();
     }
 
     private void updateGame() {
@@ -138,7 +147,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         Vector3Int newHoveredPosition = getAppState(MapAppState.class).getHoveredPosition(false);
         boolean hasHoveredPositionChanged = (!Objects.equals(hoveredPosition, newHoveredPosition));
         hoveredPosition = newHoveredPosition;
-        if ((targetingSpellEntity != null) && hasHoveredPositionChanged) {
+        if (hasHoveredPositionChanged) {
             updateImpactedGroundEntities();
         }
     }
@@ -187,7 +196,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     Integer remainingCooldown = entityData.hasComponents(spellEntity, OnCooldownComponent.class)
                             ? entityData.getComponent(spellEntity, OnCooldownComponent.class).getRemainingRounds()
                             : null;
-                    boolean isCastable = RangeUtils.isCastable(playerEntity,spellEntity,entityData);
+                    boolean isCastable = RangeUtils.isCastable(playerEntity, spellEntity, entityData);
                     boolean isTargeting = Objects.equals(targetingSpellEntity, spellEntity);
                     return new GuiSpell(name, tooltip, remainingCooldown, isCastable, isTargeting, () -> {
                         if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
@@ -233,7 +242,12 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                             }
                             setTargetingSpell(null);
                         } else {
-                            gameProxy.requestAction(new PositionUpdateAction(hoveredPosition.getX(), hoveredPosition.getZ(), playerEntity.toString()));
+                            Optional<List<Position>> path = findPathToHoveredPosition();
+                            if (path.isPresent()) {
+                                for (Position step : path.get()) {
+                                    gameProxy.requestAction(new PositionUpdateAction(step.x, step.y, playerEntity.toString()));
+                                }
+                            }
                         }
                     }
                     break;
@@ -280,13 +294,31 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
 
     private void updateImpactedGroundEntities() {
         LinkedList<Integer> impactedGroundEntities = new LinkedList<>();
+        EntityData data = gameProxy.getGame().getData();
+        PositionComponent playerPosition = data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class);
         if ((targetingSpellEntity != null) && (hoveredPosition != null)) {
-            EntityData data = gameProxy.getGame().getData();
-            List<Integer> affectedWalkableEntities = RangeUtils.getAffectedWalkableEntities(targetingSpellEntity, data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class),
+            List<Integer> affectedWalkableEntities = RangeUtils.getAffectedWalkableEntities(targetingSpellEntity, playerPosition,
                     new PositionComponent(hoveredPosition.getX(), hoveredPosition.getZ()), data);
             impactedGroundEntities.addAll(affectedWalkableEntities);
+        } else if (hoveredPosition != null) {
+            Optional<List<Position>> path = findPathToHoveredPosition();
+            if (path.isPresent()) {
+                impactedGroundEntities.addAll(data.list(WalkableComponent.class).stream()
+                        .filter(e -> path.get().contains(new Position(data.getComponent(e, PositionComponent.class).getX(), data.getComponent(e, PositionComponent.class).getY())))
+                        .collect(Collectors.toSet()));
+            }
         }
         getAppState(MapAppState.class).setImpactedGroundEntities(impactedGroundEntities);
+    }
+
+    private Optional<List<Position>> findPathToHoveredPosition() {
+        EntityData data = gameProxy.getGame().getData();
+        PositionComponent playerPosition = data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class);
+        return new Pathfinder().findPath(
+                p -> RangeUtils.isPositionIsFree(data, new PositionComponent(p.x, p.y), gameProxy.getPlayerEntity()),
+                new Position(playerPosition.getX(), playerPosition.getY()),
+                new Position(hoveredPosition.getX(), hoveredPosition.getZ()),
+                data.getComponent(gameProxy.getPlayerEntity(), MovementPointsComponent.class).getMovementPoints());
     }
 
     public void playAnimation(Animation animation) {

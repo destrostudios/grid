@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RangeUtils {
     // todo 3.) targetable component
@@ -215,19 +216,16 @@ public class RangeUtils {
 
     public static boolean isPositionIsFree(EntityData entityData, PositionComponent newPosition, int entity) {
         // TODO: do we really need entity here? it will only block itself if we try to move it to its own position.
-        List<Integer> allPlayersEntites = entityData.list(PositionComponent.class, PlayerComponent.class).stream()
-                .filter(e -> e != entity)
-                .collect(Collectors.toList());
-        List<Integer> allObstacleEntites = entityData.list(PositionComponent.class, ObstacleComponent.class).stream()
-                .filter(e -> e != entity)
-                .collect(Collectors.toList());
-        List<Integer> allWalkableEntities = entityData.list(PositionComponent.class, WalkableComponent.class).stream()
-                .filter(e -> e != entity)
-                .collect(Collectors.toList());
+        Stream<Integer> allPlayersEntites = entityData.list(PositionComponent.class, PlayerComponent.class).stream()
+                .filter(e -> e != entity);
+        Stream<Integer> allObstacleEntites = entityData.list(PositionComponent.class, ObstacleComponent.class).stream()
+                .filter(e -> e != entity);
+        Stream<Integer> allWalkableEntities = entityData.list(PositionComponent.class, WalkableComponent.class).stream()
+                .filter(e -> e != entity);
 
-        boolean collidesWithOtherPlayer = allPlayersEntites.stream().anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
-        boolean collidesWithObstacle = allObstacleEntites.stream().anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
-        boolean isWalkableField = allWalkableEntities.stream().anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithOtherPlayer = allPlayersEntites.anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithObstacle = allObstacleEntites.anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean isWalkableField = allWalkableEntities.anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
 
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }
