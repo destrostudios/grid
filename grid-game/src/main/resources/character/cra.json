@@ -147,12 +147,12 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[3 AP] Deal 18-21 damage in a cross and pull targets towards the center. TODO: requires target"
+        "tooltip": "[3 AP, 1 MP] Deal 18-21 damage in a cross and pull targets towards the center. TODO: requires target"
       },
       {
         "component": "CostComponent",
         "apCost": 3,
-        "mpCost": 0,
+        "mpCost": 1,
         "hpCost": 0
       },
       {

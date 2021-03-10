@@ -62,12 +62,12 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[5 AP, 2 MP] Jump to target location."
+        "tooltip": "[5 AP] Jump to target location."
       },
       {
         "component": "CostComponent",
         "apCost": 5,
-        "mpCost": 2,
+        "mpCost": 0,
         "hpCost": 0
       },
       {
