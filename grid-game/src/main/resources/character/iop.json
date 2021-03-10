@@ -62,12 +62,12 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[5 AP] Jump to target location."
+        "tooltip": "[5 AP, 2 MP] Jump to target location."
       },
       {
         "component": "CostComponent",
         "apCost": 5,
-        "mpCost": 0,
+        "mpCost": 2,
         "hpCost": 0
       },
       {
@@ -92,7 +92,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[2 AP] Push target 3 tiles."
+        "tooltip": "[2 AP] Push target 2 tiles."
       },
       {
         "component": "CostComponent",
@@ -112,7 +112,7 @@
       },
       {
         "component": "PushComponent",
-        "displacement": 3
+        "displacement": 2
       },
       {
         "component": "AffectedAreaComponent",
@@ -315,12 +315,12 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[4 AP] Dash towards the target, deal 38 to 42 damage. TODO: cast in line only, requires target"
+        "tooltip": "[4 AP, 2 MP] Dash towards the target, deal 38 to 42 damage. TODO: cast in line only, requires target"
       },
       {
         "component": "CostComponent",
         "apCost": 4,
-        "mpCost": 0,
+        "mpCost": 2,
         "hpCost": 0
       },
       {
@@ -352,12 +352,12 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[3 AP] Pull the target towards you, deal 26 to 28 damage. requires target"
+        "tooltip": "[3 AP, 1 MP] Pull the target towards you, deal 26 to 28 damage. requires target"
       },
       {
         "component": "CostComponent",
         "apCost": 3,
-        "mpCost": 0,
+        "mpCost": 1,
         "hpCost": 0
       },
       {
