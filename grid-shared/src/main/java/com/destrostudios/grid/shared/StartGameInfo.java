@@ -1,10 +1,9 @@
 package com.destrostudios.grid.shared;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.LinkedList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -18,7 +17,7 @@ public class StartGameInfo {
         StartGameInfo startGameInfo = new StartGameInfo();
 
         LinkedList<PlayerInfo> team1 = new LinkedList<>();
-        team1.add(new PlayerInfo(1, "destroflyer", Characters.getRandomCharacterName()));
+        team1.add(new PlayerInfo(1, "destroflyer", "cra"));
         startGameInfo.team1 = team1;
 
         LinkedList<PlayerInfo> team2 = new LinkedList<>();

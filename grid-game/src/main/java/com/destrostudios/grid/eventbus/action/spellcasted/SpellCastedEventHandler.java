@@ -25,7 +25,7 @@ import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.action.damagetaken.DamageTakenEvent;
-import com.destrostudios.grid.eventbus.action.displace.DisplacementEvent;
+import com.destrostudios.grid.eventbus.action.displace.PushEvent;
 import com.destrostudios.grid.eventbus.action.healreceived.HealReceivedEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveType;
@@ -110,15 +110,21 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             }
 
             for (Integer affectedEntity : affectedEntities) {
-                followUpEvents.add(new DisplacementEvent(affectedEntity, push.getDisplacement(), pushOrigin.getX(), pushOrigin.getY()));
+                PositionComponent target = entityData.getComponent(affectedEntity, PositionComponent.class);
+                followUpEvents.add(new PushEvent(affectedEntity, push.getDisplacement(), RangeUtils.directionForDelta(pushOrigin, target)));
             }
         }
         PullComponent pull = entityData.getComponent(spell, PullComponent.class);
         if (pull != null) {
-            PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
+            PositionComponent pullOrigin;
+            if (pull.isUseTargetAsOrigin()) {
+                pullOrigin = new PositionComponent(event.getX(), event.getY());
+            } else {
+                pullOrigin = entityData.getComponent(playerEntity, PositionComponent.class);
+            }
             for (Integer affectedEntity : affectedEntities) {
                 PositionComponent target = entityData.getComponent(affectedEntity, PositionComponent.class);
-                PositionComponent pullTarget = RangeUtils.getDisplacementGoal(entityData, affectedEntity, target, RangeUtils.directionForDelta(target, source), pull.getDistance());
+                PositionComponent pullTarget = RangeUtils.getDisplacementGoal(entityData, affectedEntity, target, RangeUtils.directionForDelta(target, pullOrigin), pull.getDistance());
                 followUpEvents.add(new MoveEvent(affectedEntity, pullTarget, MoveType.PULL));
             }
         }

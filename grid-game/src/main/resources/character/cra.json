@@ -1,0 +1,188 @@
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "component": "MaxMovementPointsComponent",
+        "maxMovementPoints": 5
+      },
+      {
+        "component": "MaxAttackPointsComponent",
+        "maxAttackPoints": 11
+      },
+      {
+        "component": "AttackPointResistanceComponent",
+        "resistanceValue": 0
+      },
+      {
+        "component": "MovementPointResistanceComponent",
+        "resistanceValue": 0
+      },
+      {
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "ObstacleComponent"
+      },
+      {
+        "component": "PlayerComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "elven_archer"
+      },
+      {
+        "component": "MaxHealthComponent",
+        "maxHealth": 500
+      },
+      {
+        "component": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "2": [
+      {
+        "component": "NameComponent",
+        "name": "Conniving Arrow"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[4 AP] Deal 38-42 damage."
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 5,
+        "maxRange": 8
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 38,
+        "maxDmg": 42
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      }
+    ],
+    "3": [
+      {
+        "component": "NameComponent",
+        "name": "Burning Arrow"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[4 AP, 1 MP] Deal 31-33 damage in a line and push targets 1 tile. TODO: cast on line only"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 1,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 1,
+        "maxRange": 5
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "LINE",
+        "minImpact": 0,
+        "maxImpact": 4
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 33,
+        "maxDmg": 35
+      },
+      {
+        "component": "PushComponent",
+        "displacement": 1
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      }
+    ],
+    "4": [
+      {
+        "component": "NameComponent",
+        "name": "Concentration Arrow"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Deal 18-21 damage in a cross and pull targets towards the center. TODO: requires target"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeIndicator": "LINE_OF_SIGHT",
+        "minRange": 3,
+        "maxRange": 7
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "indicator": "PLUS",
+        "minImpact": 0,
+        "maxImpact": 2
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 18,
+        "maxDmg": 21
+      },
+      {
+        "component": "PullComponent",
+        "distance": 2,
+        "useTargetAsOrigin": true
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      }
+    ]
+  }
+}

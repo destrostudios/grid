@@ -6,9 +6,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class DisplacementEvent implements Event {
+public class PushEvent implements Event {
     private final int entityToDisplace;
-    private final int displacementAmount;
-    private final int xDisplacementSource;
-    private final int yDisplacementSource;
+    private final int strength;
+    private final Direction direction;
 }

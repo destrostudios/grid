@@ -29,9 +29,9 @@ import com.destrostudios.grid.eventbus.action.beginturn.BeginTurnHandler;
 import com.destrostudios.grid.eventbus.action.damagetaken.DamageTakenEvent;
 import com.destrostudios.grid.eventbus.action.damagetaken.DamageTakenHandler;
 import com.destrostudios.grid.eventbus.action.damagetaken.DamageTakenValidator;
-import com.destrostudios.grid.eventbus.action.displace.DisplacementEvent;
-import com.destrostudios.grid.eventbus.action.displace.DisplacementHandler;
-import com.destrostudios.grid.eventbus.action.displace.DisplacementValidator;
+import com.destrostudios.grid.eventbus.action.displace.PushEvent;
+import com.destrostudios.grid.eventbus.action.displace.PushHandler;
+import com.destrostudios.grid.eventbus.action.displace.PushValidator;
 import com.destrostudios.grid.eventbus.action.endturn.EndTurnEvent;
 import com.destrostudios.grid.eventbus.action.endturn.EndTurnHandler;
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
@@ -84,7 +84,6 @@ import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +93,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 @Getter
 public class GridGame {
@@ -193,26 +193,14 @@ public class GridGame {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    @SneakyThrows
     private MapContainer initMap(String mapName) {
-        MapContainer destroMap;
-        try {
-            destroMap = ComponentsContainerSerializer.readSeriazableFromRessources(mapName, MapContainer.class);
-        } catch (IOException e) {
-            destroMap = new MapContainer();
-            logger.warning("Error reading file " + mapName + " from ressources");
-        }
-        return destroMap;
+        return ComponentsContainerSerializer.readSeriazableFromRessources(mapName, MapContainer.class);
     }
 
+    @SneakyThrows
     private CharacterContainer initCharacter(PlayerInfo playerInfo) {
-        CharacterContainer characterContainer;
-        try {
-            characterContainer = ComponentsContainerSerializer.readSeriazableFromRessources(playerInfo.getCharacterName(), CharacterContainer.class);
-        } catch (IOException e) {
-            characterContainer = new CharacterContainer();
-            logger.warning("Error reading file " + playerInfo + " from resources");
-        }
-        return characterContainer;
+        return ComponentsContainerSerializer.readSeriazableFromRessources(playerInfo.getCharacterName(), CharacterContainer.class);
     }
 
 
@@ -249,7 +237,7 @@ public class GridGame {
         addInstantHandler(MoveEvent.class, new MoveHandler(eventBus));
         addInstantHandler(EndTurnEvent.class, new EndTurnHandler(eventBus));
         addInstantHandler(BeginTurnEvent.class, new BeginTurnHandler(eventBus));
-        addInstantHandler(DisplacementEvent.class, new DisplacementHandler(eventBus));
+        addInstantHandler(PushEvent.class, new PushHandler(eventBus));
         addInstantHandler(UpdateSpellsEvent.class, new UpdateSpellsHandler());
         addInstantHandler(SpellBuffAddedEvent.class, new SpellBuffAddedHandler(eventBus));
 
@@ -259,7 +247,7 @@ public class GridGame {
         addValidator(DamageTakenEvent.class, new DamageTakenValidator());
         addValidator(UpdateStatsPerTurnEvent.class, new UpdateStatsPerTurnValidator());
         addValidator(MoveEvent.class, new MoveValidator());
-        addValidator(DisplacementEvent.class, new DisplacementValidator());
+        addValidator(PushEvent.class, new PushValidator());
     }
 
     public void intializeGame(String gameState) {
