@@ -1,6 +1,5 @@
 package com.destrostudios.grid.client.animations;
 
-import com.destrostudios.grid.client.JMonkeyUtil;
 import com.destrostudios.grid.client.PositionUtil;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.models.ModelObject;
@@ -19,6 +18,12 @@ public class MoveAnimation extends Animation {
     }
 
     @Override
+    public void start() {
+        super.start();
+        playerVisual.getModelObject().lookAt(targetPosition, Vector3f.UNIT_Y);
+    }
+
+    @Override
     public void update(float tpf) {
         super.update(tpf);
         ModelObject modelObject = playerVisual.getModelObject();
@@ -27,9 +32,7 @@ public class MoveAnimation extends Animation {
         Vector3f directionToTarget = targetPosition.subtract(oldPosition).normalizeLocal();
         Vector3f newPosition = oldPosition.add(directionToTarget.mult(tpf * speed));
         float newDistanceSquared = newPosition.distanceSquared(targetPosition);
-        if (newDistanceSquared < oldDistanceSquared) {
-            JMonkeyUtil.lookAtDirection(modelObject, directionToTarget);
-        } else {
+        if (newDistanceSquared >= oldDistanceSquared) {
             newPosition.set(targetPosition);
             finish();
         }
