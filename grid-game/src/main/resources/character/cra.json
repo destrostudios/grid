@@ -124,7 +124,7 @@
         "component": "AffectedAreaComponent",
         "shape": "LINE",
         "minImpact": 0,
-        "maxImpact": 4
+        "maxImpact": 3
       },
       {
         "component": "DamageComponent",
@@ -171,7 +171,7 @@
         "component": "AffectedAreaComponent",
         "shape": "PLUS",
         "minImpact": 0,
-        "maxImpact": 2
+        "maxImpact": 3
       },
       {
         "component": "DamageComponent",
