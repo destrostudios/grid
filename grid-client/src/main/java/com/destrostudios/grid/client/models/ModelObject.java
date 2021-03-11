@@ -47,13 +47,17 @@ public class ModelObject extends Node {
         playAnimation(animationName, loopDuration, true);
     }
 
-    public void playAnimation(String animationName, float loopDuration, boolean isLoop) {
-        setAnimationName(animationName);
+    public void playAnimation(String animationName, float loopDuration, boolean restartIfAlreadySet) {
+        playAnimation(animationName, loopDuration, restartIfAlreadySet, true);
+    }
+
+    public void playAnimation(String animationName, float loopDuration, boolean restartIfAlreadySet, boolean isLoop) {
+        setAnimationName(animationName, restartIfAlreadySet);
         setAnimationProperties(loopDuration, isLoop);
     }
 
-    public void setAnimationName(String animationName) {
-        registeredModels.forEach(registeredModel -> registeredModel.setAnimationName(animationName));
+    public void setAnimationName(String animationName, boolean restartIfAlreadySet) {
+        registeredModels.forEach(registeredModel -> registeredModel.setAnimationName(animationName, restartIfAlreadySet));
     }
 
     public void setAnimationProperties(float loopDuration, boolean isLoop) {

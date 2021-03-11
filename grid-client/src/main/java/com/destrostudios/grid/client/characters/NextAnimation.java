@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ModelAnimationInfo {
+public class NextAnimation {
     private String name;
-    private float blockDuration;
-    private float totalDuration;
+    private float loopDuration;
 }

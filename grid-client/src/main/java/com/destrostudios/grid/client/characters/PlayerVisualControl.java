@@ -17,6 +17,7 @@ public class PlayerVisualControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
+        playerVisual.updateAnimation();
         playerVisual.updateGuiControlPositions(camera);
     }
 

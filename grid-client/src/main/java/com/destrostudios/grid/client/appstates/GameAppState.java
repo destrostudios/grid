@@ -13,7 +13,7 @@ import com.destrostudios.grid.client.animations.MoveAnimation;
 import com.destrostudios.grid.client.animations.PlayerModelAnimation;
 import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.characters.CastAnimations;
-import com.destrostudios.grid.client.characters.ModelAnimationInfo;
+import com.destrostudios.grid.client.characters.BlockingAnimation;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
@@ -95,7 +95,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             EntityData entityData = entityDataSupplier.get();
             PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getPlayerEntity());
             String spellName = entityData.getComponent(event.getSpell(), NameComponent.class).getName();
-            ModelAnimationInfo castAnimation = CastAnimations.get(spellName);
+            BlockingAnimation castAnimation = CastAnimations.get(spellName);
             if (castAnimation != null) {
                 lookAt(entityData, event.getPlayerEntity(), playerVisual.getModelObject(), event.getX(), event.getY());
                 playAnimation(new PlayerModelAnimation(playerVisual, castAnimation));
@@ -120,17 +120,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        updateGame();
         updateAnimations(tpf);
+        updateGame();
         updateHoveredPosition();
-    }
-
-    private void updateGame() {
-        do {
-            while (gameProxy.triggeredHandlersInQueue() && playingAnimations.stream().noneMatch(Animation::isBlocking)) {
-                gameProxy.triggerNextHandler();
-            }
-        } while (gameProxy.applyNextAction());
     }
 
     private void updateAnimations(float tpf) {
@@ -141,6 +133,14 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                 playingAnimations.remove(animation);
             }
         }
+    }
+
+    private void updateGame() {
+        do {
+            while (gameProxy.triggeredHandlersInQueue() && playingAnimations.stream().noneMatch(Animation::isBlocking)) {
+                gameProxy.triggerNextHandler();
+            }
+        } while (gameProxy.applyNextAction());
     }
 
     private void updateHoveredPosition() {

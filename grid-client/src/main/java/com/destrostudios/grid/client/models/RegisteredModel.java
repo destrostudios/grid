@@ -38,9 +38,15 @@ public class RegisteredModel {
     }
 
     public void setAnimationName(String animationName) {
+        setAnimationName(animationName, true);
+    }
+
+    public void setAnimationName(String animationName, boolean restartIfAlreadySet) {
         AnimChannel animationChannel = getAnimationChannel();
         try {
-            animationChannel.setAnim(animationName);
+            if (restartIfAlreadySet || (!animationName.equals(animationChannel.getAnimationName()))) {
+                animationChannel.setAnim(animationName);
+            }
         } catch (IllegalArgumentException ex) {
             stopAndRewindAnimation();
         }

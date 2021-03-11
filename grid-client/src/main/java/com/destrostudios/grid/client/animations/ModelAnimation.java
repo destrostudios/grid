@@ -1,34 +1,34 @@
 package com.destrostudios.grid.client.animations;
 
-import com.destrostudios.grid.client.characters.ModelAnimationInfo;
+import com.destrostudios.grid.client.characters.BlockingAnimation;
 import com.destrostudios.grid.client.models.ModelObject;
 
 public class ModelAnimation extends Animation {
 
     private ModelObject modelObject;
-    private ModelAnimationInfo modelAnimationInfo;
+    private BlockingAnimation blockingAnimation;
     private float passedTime;
 
-    public ModelAnimation(ModelObject modelObject, ModelAnimationInfo modelAnimationInfo) {
+    public ModelAnimation(ModelObject modelObject, BlockingAnimation blockingAnimation) {
         this.modelObject = modelObject;
-        this.modelAnimationInfo = modelAnimationInfo;
+        this.blockingAnimation = blockingAnimation;
     }
 
     @Override
     public void start() {
         super.start();
-        modelObject.playAnimation(modelAnimationInfo.getName(), modelAnimationInfo.getTotalDuration());
+        modelObject.playAnimation(blockingAnimation.getName(), blockingAnimation.getTotalDuration());
     }
 
     @Override
     public void update(float tpf) {
         super.update(tpf);
         passedTime += tpf;
-        if (passedTime >= modelAnimationInfo.getBlockDuration()) {
+        if (passedTime >= blockingAnimation.getBlockDuration()) {
             if (isBlocking()) {
                 unblock();
             }
-            if (passedTime >= modelAnimationInfo.getTotalDuration()) {
+            if (passedTime >= blockingAnimation.getTotalDuration()) {
                 finish();
             }
         }

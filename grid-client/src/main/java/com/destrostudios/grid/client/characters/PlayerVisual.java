@@ -41,6 +41,22 @@ public class PlayerVisual {
     private Label lblName;
     @Getter
     private ProgressBar healthBar;
+    private NextAnimation nextAnimation;
+
+    public void updateAnimation() {
+        if (nextAnimation != null) {
+            modelObject.playAnimation(nextAnimation.getName(), nextAnimation.getLoopDuration(), false);
+            nextAnimation = null;
+        }
+    }
+
+    public void playIdleAnimation() {
+        nextAnimation = new NextAnimation(characterModel.getIdleAnimationName(), characterModel.getIdleAnimationLoopDuration());
+    }
+
+    public void playWalkAnimation(float walkSpeed) {
+        nextAnimation = new NextAnimation(characterModel.getWalkAnimationName(), (characterModel.getWalkStepDistance() / walkSpeed));
+    }
 
     public void updateGuiControlPositions(Camera camera) {
         placeAboveModel(camera, healthBar, 0);
@@ -51,14 +67,6 @@ public class PlayerVisual {
         Vector3f screenPosition = camera.getScreenCoordinates(modelObject.getWorldTranslation().add(0, height + 1, 0));
         screenPosition.addLocal(panel.getPreferredSize().getX() / -2, additionalScreenY, 0);
         panel.setLocalTranslation(screenPosition);
-    }
-
-    public void playIdleAnimation() {
-        modelObject.playAnimation(characterModel.getIdleAnimationName(), characterModel.getIdleAnimationLoopDuration());
-    }
-
-    public void playWalkAnimation(float walkSpeed) {
-        modelObject.playAnimation(characterModel.getWalkAnimationName(), (characterModel.getWalkStepDistance() / walkSpeed));
     }
 
     public void setMaximumHealth(float maximumHealth) {
