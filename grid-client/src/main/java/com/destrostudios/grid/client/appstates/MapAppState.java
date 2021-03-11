@@ -55,6 +55,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private List<Integer> validGroundEntities = new LinkedList<>();
     private List<Integer> invalidGroundEntities = new LinkedList<>();
     private List<Integer> impactedGroundEntities = new LinkedList<>();
+    private List<Integer> reachableGroundEntities = new LinkedList<>();
     private List<Integer> tmpRemovedEntities = new LinkedList<>();
 
     public MapAppState(String mapName, EntityData entityData) {
@@ -201,6 +202,11 @@ public class MapAppState extends BaseAppState<BaseApplication> {
         updateTerrain();
     }
 
+    public void setReachableGroundEntities(List<Integer> reachableGroundEntities) {
+        this.reachableGroundEntities = reachableGroundEntities;
+        updateTerrain();
+    }
+
     private void updateTerrain() {
         blockTerrainControl.removeBlockArea(new Vector3Int(), new Vector3Int(mapSizeX, 1, mapSizeY));
         for (int groundEntity : entityData.list(WalkableComponent.class)) {
@@ -208,7 +214,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             String gridBlockName = entityData.getComponent(groundEntity, VisualComponent.class).getName();
             GridBlock gridBlock = GridBlocks.get(gridBlockName);
             Block block;
-            if (impactedGroundEntities.contains(groundEntity)) {
+            if (impactedGroundEntities.contains(groundEntity) || reachableGroundEntities.contains(groundEntity)) {
                 block = gridBlock.getBlockImpacted();
             } else if (invalidGroundEntities.contains(groundEntity)) {
                 block = gridBlock.getBlockInvalid();

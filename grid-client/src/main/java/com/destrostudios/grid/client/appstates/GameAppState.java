@@ -148,15 +148,66 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         boolean hasHoveredPositionChanged = (!Objects.equals(hoveredPosition, newHoveredPosition));
         hoveredPosition = newHoveredPosition;
         if (hasHoveredPositionChanged) {
-            updateImpactedGroundEntities();
+            updateImpactedAndReachableGroundEntities();
         }
     }
 
     private void updateVisuals() {
         setTargetingSpell(null);
-        MapAppState mapAppState = getAppState(MapAppState.class);
-        mapAppState.updateVisuals();
+        getAppState(MapAppState.class).updateVisuals();
+    }
+
+    private void setTargetingSpell(Integer spellEntity) {
+        targetingSpellEntity = spellEntity;
+        updateValidAndInvalidGroundEntities();
+        updateImpactedAndReachableGroundEntities();
         updateGui();
+    }
+
+    private void updateValidAndInvalidGroundEntities() {
+        List<Integer> invalidSpellTargetEntities;
+        if (targetingSpellEntity != null) {
+            validSpellTargetEntities = RangeUtils.getAllTargetableEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            invalidSpellTargetEntities = RangeUtils.getAllEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            invalidSpellTargetEntities.removeAll(validSpellTargetEntities);
+        } else {
+            validSpellTargetEntities = new LinkedList<>();
+            invalidSpellTargetEntities = new LinkedList<>();
+        }
+        getAppState(MapAppState.class).setValidGroundEntities(validSpellTargetEntities, invalidSpellTargetEntities);
+    }
+
+    private void updateImpactedAndReachableGroundEntities() {
+        LinkedList<Integer> impactedGroundEntities = new LinkedList<>();
+        LinkedList<Integer> reachableGroundEntities = new LinkedList<>();
+        if ((gameProxy.getPlayerEntity() != null) && (hoveredPosition != null)) {
+            EntityData data = gameProxy.getGame().getData();
+            // Impacted
+            if (targetingSpellEntity != null) {
+                List<Integer> affectedWalkableEntities = RangeUtils.getAffectedWalkableEntities(
+                    targetingSpellEntity,
+                    data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class),
+                    new PositionComponent(hoveredPosition.getX(), hoveredPosition.getZ()),
+                    data
+                );
+                impactedGroundEntities.addAll(affectedWalkableEntities);
+            } else {
+                // Reachable
+                if (data.hasComponents(gameProxy.getPlayerEntity(), TurnComponent.class) && (!gameProxy.triggeredHandlersInQueue())) {
+                    Optional<List<Position>> path = findPathToHoveredPosition();
+                    if (path.isPresent()) {
+                        reachableGroundEntities.addAll(data.list(WalkableComponent.class).stream()
+                            .filter(groundEntity -> {
+                                PositionComponent positionComponent = data.getComponent(groundEntity, PositionComponent.class);
+                                return path.get().contains(new Position(positionComponent.getX(), positionComponent.getY()));
+                            })
+                            .collect(Collectors.toSet()));
+                    }
+                }
+            }
+        }
+        getAppState(MapAppState.class).setImpactedGroundEntities(impactedGroundEntities);
+        getAppState(MapAppState.class).setReachableGroundEntities(reachableGroundEntities);
     }
 
     private void updateGui() {
@@ -199,10 +250,12 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     boolean isCastable = RangeUtils.isCastable(playerEntity, spellEntity, entityData);
                     boolean isTargeting = Objects.equals(targetingSpellEntity, spellEntity);
                     return new GuiSpell(name, tooltip, remainingCooldown, isCastable, isTargeting, () -> {
-                        if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
-                            setTargetingSpell(spellEntity);
-                        } else {
-                            setTargetingSpell(null);
+                        if (!gameProxy.triggeredHandlersInQueue()) {
+                            if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
+                                setTargetingSpell(spellEntity);
+                            } else {
+                                setTargetingSpell(null);
+                            }
                         }
                     });
                 })
@@ -269,46 +322,6 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             PositionComponent positionComponent = entityData.getComponent(entity, PositionComponent.class);
             return ((positionComponent.getX() == x) && (positionComponent.getY() == y));
         });
-    }
-
-    private void setTargetingSpell(Integer spellEntity) {
-        targetingSpellEntity = spellEntity;
-        updateValidAndInvalidGroundEntities();
-        updateImpactedGroundEntities();
-        updateGui();
-    }
-
-    private void updateValidAndInvalidGroundEntities() {
-        List<Integer> invalidSpellTargetEntities;
-        if (targetingSpellEntity != null) {
-            List<Integer> allEntitiesInRange = RangeUtils.getAllEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
-            validSpellTargetEntities = RangeUtils.getAllTargetableEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
-            allEntitiesInRange.removeAll(validSpellTargetEntities);
-            invalidSpellTargetEntities = allEntitiesInRange;
-        } else {
-            validSpellTargetEntities = new LinkedList<>();
-            invalidSpellTargetEntities = new LinkedList<>();
-        }
-        getAppState(MapAppState.class).setValidGroundEntities(validSpellTargetEntities, invalidSpellTargetEntities);
-    }
-
-    private void updateImpactedGroundEntities() {
-        LinkedList<Integer> impactedGroundEntities = new LinkedList<>();
-        EntityData data = gameProxy.getGame().getData();
-        PositionComponent playerPosition = data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class);
-        if ((targetingSpellEntity != null) && (hoveredPosition != null)) {
-            List<Integer> affectedWalkableEntities = RangeUtils.getAffectedWalkableEntities(targetingSpellEntity, playerPosition,
-                    new PositionComponent(hoveredPosition.getX(), hoveredPosition.getZ()), data);
-            impactedGroundEntities.addAll(affectedWalkableEntities);
-        } else if (hoveredPosition != null) {
-            Optional<List<Position>> path = findPathToHoveredPosition();
-            if (path.isPresent()) {
-                impactedGroundEntities.addAll(data.list(WalkableComponent.class).stream()
-                        .filter(e -> path.get().contains(new Position(data.getComponent(e, PositionComponent.class).getX(), data.getComponent(e, PositionComponent.class).getY())))
-                        .collect(Collectors.toSet()));
-            }
-        }
-        getAppState(MapAppState.class).setImpactedGroundEntities(impactedGroundEntities);
     }
 
     private Optional<List<Position>> findPathToHoveredPosition() {
