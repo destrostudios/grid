@@ -3251,6 +3251,104 @@
       {
         "component": "ObstacleComponent"
       }
+    ],
+    "230": [
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 12
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "grass"
+      }
+    ],
+    "231": [
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 9
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "grass"
+      }
+    ],
+    "232": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 12
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "grass"
+      }
+    ],
+    "233": [
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 13
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "grass"
+      }
+    ],
+    "234": [
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 13
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "grass"
+      }
+    ],
+    "235": [
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 11
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "grass"
+      }
+    ],
+    "236": [
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 5
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "grass"
+      }
     ]
   }
 }

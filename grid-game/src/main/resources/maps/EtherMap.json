@@ -3363,6 +3363,202 @@
       {
         "component": "ObstacleComponent"
       }
+    ],
+    "238": [
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 11
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "239": [
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 14
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "240": [
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 15
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "241": [
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 13
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "242": [
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 15
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "243": [
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 5
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "244": [
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 6
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "245": [
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 2
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "246": [
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 3
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "247": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 5
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "248": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 9
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "249": [
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 8
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "250": [
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 11
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
+    ],
+    "251": [
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 12
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "sand"
+      }
     ]
   }
 }

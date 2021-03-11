@@ -3476,20 +3476,6 @@
         "component": "ObstacleComponent"
       }
     ],
-    "246": [
-      {
-        "component": "PositionComponent",
-        "x": 15,
-        "y": 5
-      },
-      {
-        "component": "VisualComponent",
-        "name": "rock"
-      },
-      {
-        "component": "ObstacleComponent"
-      }
-    ],
     "247": [
       {
         "component": "PositionComponent",
@@ -3502,6 +3488,48 @@
       },
       {
         "component": "ObstacleComponent"
+      }
+    ],
+    "248": [
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 12
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "snow"
+      }
+    ],
+    "249": [
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 15
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "snow"
+      }
+    ],
+    "250": [
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 9
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "snow"
       }
     ]
   }
