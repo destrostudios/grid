@@ -42,8 +42,10 @@ import com.destrostudios.turnbasedgametools.grid.Pathfinder;
 import com.destrostudios.turnbasedgametools.grid.Position;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -112,9 +114,18 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             getAppState(GameGuiAppState.class).onGameOver("Team #" + event.getWinnerTeam());
         });
 
+        mainApplication.getInputManager().addMapping("key_1", new KeyTrigger(KeyInput.KEY_1));
+        mainApplication.getInputManager().addMapping("key_2", new KeyTrigger(KeyInput.KEY_2));
+        mainApplication.getInputManager().addMapping("key_3", new KeyTrigger(KeyInput.KEY_3));
+        mainApplication.getInputManager().addMapping("key_4", new KeyTrigger(KeyInput.KEY_4));
+        mainApplication.getInputManager().addMapping("key_5", new KeyTrigger(KeyInput.KEY_5));
+        mainApplication.getInputManager().addMapping("key_6", new KeyTrigger(KeyInput.KEY_6));
+        mainApplication.getInputManager().addMapping("key_7", new KeyTrigger(KeyInput.KEY_7));
+        mainApplication.getInputManager().addMapping("key_8", new KeyTrigger(KeyInput.KEY_8));
+        mainApplication.getInputManager().addMapping("key_9", new KeyTrigger(KeyInput.KEY_9));
         mainApplication.getInputManager().addMapping("mouse_left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         mainApplication.getInputManager().addMapping("mouse_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        mainApplication.getInputManager().addListener(this, "mouse_left", "mouse_right");
+        mainApplication.getInputManager().addListener(this, "key_1", "key_2", "key_3", "key_4", "key_5", "key_6", "key_7", "key_8", "key_9", "mouse_left", "mouse_right");
     }
 
     @Override
@@ -155,6 +166,14 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void updateVisuals() {
         setTargetingSpell(null);
         getAppState(MapAppState.class).updateVisuals();
+    }
+
+    private void selectOrDeselectTargetingSpell(int spellEntity) {
+        if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
+            setTargetingSpell(spellEntity);
+        } else {
+            setTargetingSpell(null);
+        }
     }
 
     private void setTargetingSpell(Integer spellEntity) {
@@ -251,11 +270,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     boolean isTargeting = Objects.equals(targetingSpellEntity, spellEntity);
                     return new GuiSpell(name, tooltip, remainingCooldown, isCastable, isTargeting, () -> {
                         if (!gameProxy.triggeredHandlersInQueue()) {
-                            if ((targetingSpellEntity == null) || (!targetingSpellEntity.equals(spellEntity))) {
-                                setTargetingSpell(spellEntity);
-                            } else {
-                                setTargetingSpell(null);
-                            }
+                            selectOrDeselectTargetingSpell(spellEntity);
                         }
                     });
                 })
@@ -276,21 +291,22 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     public void onAction(String actionName, boolean isPressed, float tpf) {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (playerEntity == null) {
-            // spectating only
+            // Spectating only
             return;
         }
-        if (isPressed) {
+        if (isPressed && (!gameProxy.triggeredHandlersInQueue())) {
+            EntityData entityData = gameProxy.getGame().getData();
             switch (actionName) {
                 case "mouse_left":
                 case "mouse_right":
                     updateHoveredPosition();
                     if (hoveredPosition != null) {
                         if (targetingSpellEntity != null) {
-                            if (containsEntity(gameProxy.getGame().getData(), validSpellTargetEntities, hoveredPosition.getX(), hoveredPosition.getZ())) {
+                            if (containsEntity(entityData, validSpellTargetEntities, hoveredPosition.getX(), hoveredPosition.getZ())) {
                                 gameProxy.requestAction(new CastSpellAction(
-                                        hoveredPosition.getX(),
-                                        hoveredPosition.getZ(),
-                                        gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
+                                    hoveredPosition.getX(),
+                                    hoveredPosition.getZ(),
+                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
                                 );
                             }
                             setTargetingSpell(null);
@@ -304,6 +320,19 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                         }
                     }
                     break;
+                default:
+                    if (actionName.startsWith("key_")) {
+                        SpellsComponent spellsComponent = entityData.getComponent(playerEntity, SpellsComponent.class);
+                        if (spellsComponent != null) {
+                            int spellIndex = (Integer.parseInt(actionName.substring(4)) - 1);
+                            if (spellIndex < spellsComponent.getSpells().size()) {
+                                int spellEntity = spellsComponent.getSpells().get(spellIndex);
+                                if (SpellUtils.isCastable(playerEntity, spellEntity, entityData)) {
+                                    selectOrDeselectTargetingSpell(spellEntity);
+                                }
+                            }
+                        }
+                    }
             }
         }
     }
