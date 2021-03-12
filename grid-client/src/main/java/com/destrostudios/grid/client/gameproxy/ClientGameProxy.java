@@ -4,6 +4,7 @@ import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.character.TurnComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
@@ -11,6 +12,7 @@ import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +79,7 @@ public class ClientGameProxy implements GameProxy {
         Integer playerEntity = list.stream()
                 .filter(entity -> data.hasComponents(entity, PlayerComponent.class))
                 .filter(entity -> data.getComponent(entity, NameComponent.class).getName().equals(jwtAuthenticationUser.login)) // TODO: use Id instead
+                .sorted(Comparator.comparing(entity -> !data.hasComponents(entity, TurnComponent.class)))
                 .findFirst().orElse(null);
         return playerEntity;
     }
