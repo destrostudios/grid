@@ -1,6 +1,6 @@
 package com.destrostudios.grid.actions;
 
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
@@ -20,7 +20,7 @@ public class ActionDispatcher {
 
     public Event dispatchAction(Action action) throws ActionNotAllowedException {
         int entity = Integer.parseInt(action.getPlayerIdentifier());
-        TurnComponent component = entityDataSupplier.get().getComponent(entity, TurnComponent.class);
+        ActiveTurnComponent component = entityDataSupplier.get().getComponent(entity, ActiveTurnComponent.class);
 
         if (component == null) {
             throw new ActionNotAllowedException("not player turn");

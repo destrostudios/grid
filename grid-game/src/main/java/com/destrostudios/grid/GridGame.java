@@ -4,20 +4,14 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.ActionDispatcher;
 import com.destrostudios.grid.actions.ActionNotAllowedException;
 import com.destrostudios.grid.components.Component;
+import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
-import com.destrostudios.grid.components.properties.MaxHealthComponent;
-import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
-import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
@@ -84,6 +78,9 @@ import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.Getter;
+import lombok.SneakyThrows;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +89,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import lombok.Getter;
-import lombok.SneakyThrows;
 
 @Getter
 public class GridGame {
@@ -134,29 +129,54 @@ public class GridGame {
     public void initGame(StartGameInfo startGameInfo) {
         world.getWorld().putAll(initMap(startGameInfo.getMapName()).getComponents());
 
-        List<Integer> startingEntities = world.list(WalkableComponent.class, StartingFieldComponent.class);
-        for (PlayerInfo playerInfo : startGameInfo.getTeam1()) {
-            initTeam(startingEntities, playerInfo, 1);
+        List<PositionComponent> startPositions = world.list(WalkableComponent.class, StartingFieldComponent.class).stream()
+                .map(e -> world.getComponent(e, PositionComponent.class))
+                .collect(Collectors.toList());
+
+        List<PlayerInfo> team1 = startGameInfo.getTeam1();
+        List<PlayerInfo> team2 = startGameInfo.getTeam2();
+        List<PlayerInfo> turnOrder = initTurnOrder(team1, team2);
+
+        int firstPlayer = initPlayer(startPositions.remove(random.nextInt(0, startPositions.size())), team1.get(0), 1);
+        int lastPlayer = firstPlayer;
+        for (int i = 1; i < turnOrder.size(); i++) {
+            PlayerInfo playerInfo = turnOrder.get(i);
+            int playerEntity = initPlayer(startPositions.remove(random.nextInt(0, startPositions.size())), playerInfo,
+                    team1.contains(playerInfo) ? 1 : 2);
+
+            world.addComponent(lastPlayer, new NextTurnComponent(playerEntity));
+            lastPlayer = playerEntity;
         }
-        for (PlayerInfo playerInfo : startGameInfo.getTeam2()) {
-            initTeam(startingEntities, playerInfo, 2);
-        }
+        world.addComponent(lastPlayer, new NextTurnComponent(firstPlayer));
+
         addInstantHandler();
     }
 
-    private void initTeam(List<Integer> startingEntities, PlayerInfo playerInfo, int team) {
+    private List<PlayerInfo> initTurnOrder(List<PlayerInfo> team1, List<PlayerInfo> team2) {
+        List<PlayerInfo> turnOrder = new ArrayList<>();
+        for (int i = 0; i < Math.max(team1.size(), team2.size()); i++) {
+            if (i < team1.size()) {
+                turnOrder.add(team1.get(i));
+            }
+            if (i < team2.size()) {
+                turnOrder.add(team2.get(i));
+            }
+        }
+        return turnOrder;
+    }
+
+    private int initPlayer(PositionComponent startingPosition, PlayerInfo playerInfo, int team) {
         int playerEntity = world.createEntity();
 
         CharacterContainer characterContainer = initCharacter(playerInfo);
         addComponentsForCharacter(playerEntity, characterContainer, playerInfo.getLogin());
 
-        Integer startEntity = startingEntities.remove(random.nextInt(startingEntities.size()));
-        PositionComponent startingPosition = world.getComponent(startEntity, PositionComponent.class);
         if (team == 1) {
-            world.addComponent(playerEntity, new TurnComponent());
+            world.addComponent(playerEntity, new ActiveTurnComponent());
         }
         world.addComponent(playerEntity, new TeamComponent(team));
         world.addComponent(playerEntity, new PositionComponent(startingPosition.getX(), startingPosition.getY()));
+        return playerEntity;
     }
 
     private void addComponentsForCharacter(int playerEntity, CharacterContainer characterContainer, String login) {

@@ -1,6 +1,6 @@
 package com.destrostudios.grid.eventbus.action.walk;
 
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.entities.EntityData;
@@ -17,7 +17,7 @@ public class WalkValidator implements EventValidator<WalkEvent> {
         int entity = componentUpdateEvent.getEntity();
         PositionComponent newPosition = componentUpdateEvent.getPositionComponent();
 
-        boolean entityCanMove = entityData.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, TurnComponent.class);
+        boolean entityCanMove = entityData.hasComponents(entity, PositionComponent.class, MovementPointsComponent.class, ActiveTurnComponent.class);
         boolean positionIsFree = isPositionIsFree(entityData, newPosition, entity);
         int neededMovementPoints = getWalkedDistance(entityData, componentUpdateEvent);
         int movementPoints = entityData.getComponent(entity, MovementPointsComponent.class).getMovementPoints();

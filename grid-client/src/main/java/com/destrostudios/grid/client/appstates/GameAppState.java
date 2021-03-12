@@ -17,7 +17,7 @@ import com.destrostudios.grid.client.characters.BlockingAnimation;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiSpell;
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.AttackPointsComponent;
@@ -104,7 +104,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         gameProxy.addResolvedHandler(Event.class, (event, entityDataSupplier) -> updateVisuals());
         gameProxy.addResolvedHandler(UpdatedTurnEvent.class, (event, entityDataSupplier) -> {
             EntityData entityData = entityDataSupplier.get();
-            int activePlayerEntity = entityData.list(TurnComponent.class).get(0);
+            int activePlayerEntity = entityData.list(ActiveTurnComponent.class).get(0);
             String activePlayerName = entityData.getComponent(activePlayerEntity, NameComponent.class).getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
         });
@@ -193,7 +193,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                 impactedGroundEntities.addAll(affectedWalkableEntities);
             } else {
                 // Reachable
-                if (data.hasComponents(gameProxy.getPlayerEntity(), TurnComponent.class) && (!gameProxy.triggeredHandlersInQueue())) {
+                if (data.hasComponents(gameProxy.getPlayerEntity(), ActiveTurnComponent.class) && (!gameProxy.triggeredHandlersInQueue())) {
                     Optional<List<Position>> path = findPathToHoveredPosition();
                     if (path.isPresent()) {
                         reachableGroundEntities.addAll(data.list(WalkableComponent.class).stream()
@@ -220,7 +220,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
         EntityData entityData = gameProxy.getGame().getData();
 
-        int activePlayerEntity = entityData.list(TurnComponent.class).get(0);
+        int activePlayerEntity = entityData.list(ActiveTurnComponent.class).get(0);
         String activePlayerName = entityData.getComponent(activePlayerEntity, NameComponent.class).getName();
         int activePlayerMP = entityData.getComponent(activePlayerEntity, MovementPointsComponent.class).getMovementPoints();
         int activePlayerAP = entityData.getComponent(activePlayerEntity, AttackPointsComponent.class).getAttackPoints();

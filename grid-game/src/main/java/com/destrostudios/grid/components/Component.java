@@ -2,7 +2,8 @@ package com.destrostudios.grid.components;
 
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.ActiveTurnComponent;
+import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
@@ -62,7 +63,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = NameComponent.class, name = "NameComponent"),
         @JsonSubTypes.Type(value = PlayerComponent.class, name = "PlayerComponent"),
         @JsonSubTypes.Type(value = PositionComponent.class, name = "PositionComponent"),
-        @JsonSubTypes.Type(value = TurnComponent.class, name = "TurnComponent"),
+        @JsonSubTypes.Type(value = ActiveTurnComponent.class, name = "ActiveTurnComponent"),
+        @JsonSubTypes.Type(value = NextTurnComponent.class, name = "NextTurnComponent"),
         @JsonSubTypes.Type(value = TeamComponent.class, name = "TeamComponent"),
         @JsonSubTypes.Type(value = VisualComponent.class, name = "VisualComponent"),
         @JsonSubTypes.Type(value = WalkableComponent.class, name = "WalkableComponent"),

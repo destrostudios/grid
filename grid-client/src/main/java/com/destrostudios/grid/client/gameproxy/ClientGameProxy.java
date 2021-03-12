@@ -4,7 +4,7 @@ import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
@@ -79,7 +79,7 @@ public class ClientGameProxy implements GameProxy {
         Integer playerEntity = list.stream()
                 .filter(entity -> data.hasComponents(entity, PlayerComponent.class))
                 .filter(entity -> data.getComponent(entity, NameComponent.class).getName().equals(jwtAuthenticationUser.login)) // TODO: use Id instead
-                .sorted(Comparator.comparing(entity -> !data.hasComponents(entity, TurnComponent.class)))
+                .sorted(Comparator.comparing(entity -> !data.hasComponents(entity, NextTurnComponent.class)))
                 .findFirst().orElse(null);
         return playerEntity;
     }

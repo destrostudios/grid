@@ -7,7 +7,7 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.bot.GridBotState;
 import com.destrostudios.grid.bot.SerializedGame;
 import com.destrostudios.grid.bot.Team;
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
@@ -51,7 +51,7 @@ public class Main {
                         break;
                     }
                     boolean active = false;
-                    List<Integer> activeCharacters = game.getState().getData().list(TurnComponent.class);
+                    List<Integer> activeCharacters = game.getState().getData().list(ActiveTurnComponent.class);
                     for (int activeCharacter : activeCharacters) {
                         NameComponent nameComponent = game.getState().getData().getComponent(activeCharacter, NameComponent.class);
                         if (nameComponent.getName().equals(login)) {

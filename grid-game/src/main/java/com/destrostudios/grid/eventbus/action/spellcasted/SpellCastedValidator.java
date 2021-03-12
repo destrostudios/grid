@@ -1,6 +1,6 @@
 package com.destrostudios.grid.eventbus.action.spellcasted;
 
-import com.destrostudios.grid.components.character.TurnComponent;
+import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.AttackPointsComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
@@ -21,7 +21,7 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
     public boolean validate(SpellCastedEvent event, Supplier<EntityData> entityDataSupplier) {
         EntityData entityData = entityDataSupplier.get();
 
-        if (!entityData.hasComponents(event.getPlayerEntity(), TurnComponent.class)) {
+        if (!entityData.hasComponents(event.getPlayerEntity(), ActiveTurnComponent.class)) {
             return false;
         }
 
