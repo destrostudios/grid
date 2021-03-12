@@ -15,7 +15,6 @@ import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.maps.Map;
 import com.destrostudios.grid.client.maps.Maps;
 import com.destrostudios.grid.client.models.ModelObject;
-import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
@@ -33,11 +32,12 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Label;
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
 
 public class MapAppState extends BaseAppState<BaseApplication> {
 
@@ -123,7 +123,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
 
         // Obstacles
         obstacleModels.forEach((obstacleEntity, modelObject) -> {
-            if (!hasEntity(entityData, obstacleEntity)) {
+            if (!entityData.hasEntity(obstacleEntity)) {
                 rootNode.detachChild(modelObject);
                 tmpRemovedEntities.add(obstacleEntity);
             }
@@ -149,7 +149,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
 
         // Players
         playerVisuals.forEach((playerEntity, playerVisual) -> {
-            if (!hasEntity(entityData, playerEntity)) {
+            if (!entityData.hasEntity(playerEntity)) {
                 rootNode.detachChild(playerVisual.getModelObject());
                 guiNode.detachChild(playerVisual.getLblName());
                 guiNode.detachChild(playerVisual.getHealthBar());
@@ -186,11 +186,6 @@ public class MapAppState extends BaseAppState<BaseApplication> {
         }
     }
 
-    private boolean hasEntity(EntityData entityData, int entity) {
-        List<Component> components = entityData.getComponents(entity);
-        return ((components != null) && (components.size() > 0));
-    }
-
     public void setValidGroundEntities(List<Integer> validGroundEntities, List<Integer> invalidGroundEntities) {
         this.validGroundEntities = validGroundEntities;
         this.invalidGroundEntities = invalidGroundEntities;
@@ -221,7 +216,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             } else if (validGroundEntities.contains(groundEntity)) {
                 block = gridBlock.getBlockValid();
             } else {
-                block= gridBlock.getBlockGrid();
+                block = gridBlock.getBlockGrid();
             }
             blockTerrainControl.setBlock(new Vector3Int(positionComponent.getX(), 0, positionComponent.getY()), block);
         }

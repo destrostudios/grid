@@ -67,10 +67,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 6,
         "maxRange": 8
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "CastsPerTurnComponent",
@@ -110,10 +112,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "PLUS",
         "minRange": 1,
         "maxRange": 5
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "CastsPerTurnComponent",
@@ -147,7 +151,10 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[3 AP, 1 MP] Deal 18-21 damage in a cross and pull targets towards the center. TODO: requires target"
+        "tooltip": "[3 AP, 1 MP] Deal 18-21 damage in a cross and pull targets towards the center. "
+      },
+      {
+        "component": "RequiresTargetComponent"
       },
       {
         "component": "CostComponent",
@@ -157,14 +164,16 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 3,
         "maxRange": 7
       },
       {
+        "component": "LineOfSightComponent"
+      },
+      {
         "component": "CastsPerTurnComponent",
-        "maxCastsPerTurn": 2,
+        "maxCastsPerTurn": 1,
         "castsThisTurn": 0
       },
       {
@@ -195,7 +204,10 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[4 AP] Deal 30-34 damage in a diamond. TODO: requires target"
+        "tooltip": "[4 AP] Deal 30-34 damage in a diamond."
+      },
+      {
+        "component": "RequiresTargetComponent"
       },
       {
         "component": "CostComponent",
@@ -205,10 +217,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 8
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "CastsPerTurnComponent",

@@ -9,7 +9,7 @@ import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveType;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
-import com.destrostudios.grid.util.RangeUtils;
+import com.destrostudios.grid.util.SpellUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -27,7 +27,7 @@ public class PushHandler implements EventHandler<PushEvent> {
 
         PositionComponent posEntityToDisplace = entityData.getComponent(entityToDisplace, PositionComponent.class);
 
-        PositionComponent resultingPos = RangeUtils.getDisplacementGoal(entityData, entityToDisplace, posEntityToDisplace, event.getDirection(), event.getStrength());
+        PositionComponent resultingPos = SpellUtils.getDisplacementGoal(entityData, entityToDisplace, posEntityToDisplace, event.getDirection(), event.getStrength());
         int actualDisplacement = Math.max(Math.abs(resultingPos.getX() - posEntityToDisplace.getX()), Math.abs(resultingPos.getY() - posEntityToDisplace.getY()));
         int displacementDmg = getDisplacementDmg(actualDisplacement, event.getStrength());
         followUpEvents.add(new MoveEvent(event.getEntityToDisplace(), resultingPos, MoveType.PUSHBACK));

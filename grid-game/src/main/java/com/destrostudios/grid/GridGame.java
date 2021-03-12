@@ -149,7 +149,7 @@ public class GridGame {
         }
         world.addComponent(lastPlayer, new NextTurnComponent(firstPlayer));
         world.addComponent(firstPlayer, new ActiveTurnComponent());
-        
+
         addInstantHandler();
     }
 

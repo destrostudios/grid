@@ -9,6 +9,7 @@ import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventHandler;
+
 import java.util.function.Supplier;
 
 public class UpdateSpellsHandler implements EventHandler<UpdateSpellsEvent> {
@@ -70,11 +71,7 @@ public class UpdateSpellsHandler implements EventHandler<UpdateSpellsEvent> {
     private void updateCastsPerTurn(EntityData entityData, Integer spellEntity) {
         CastsPerTurnComponent castsPerTurnComponent = entityData.getComponent(spellEntity, CastsPerTurnComponent.class);
         if (entityData.hasComponents(spellEntity, CastsPerTurnComponent.class)) {
-            if (castsPerTurnComponent.getCastsThisTurn() == castsPerTurnComponent.getMaxCastsPerTurn() - 1) {
-                entityData.remove(spellEntity, CastsPerTurnComponent.class);
-            } else {
-                entityData.addComponent(spellEntity, new CastsPerTurnComponent(castsPerTurnComponent.getMaxCastsPerTurn(), 0));
-            }
+            entityData.addComponent(spellEntity, new CastsPerTurnComponent(castsPerTurnComponent.getMaxCastsPerTurn(), 0));
         }
     }
 }

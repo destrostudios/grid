@@ -72,7 +72,6 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "ALL",
         "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 6
@@ -103,10 +102,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 1
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "CastsPerTurnComponent",
@@ -141,7 +142,6 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "ALL",
         "rangeShape": "DIAMOND",
         "minRange": 2,
         "maxRange": 8
@@ -184,10 +184,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 1
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "DamageComponent",
@@ -228,10 +230,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "PLUS",
         "minRange": 1,
         "maxRange": 6
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "AffectedAreaComponent",
@@ -247,7 +251,10 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns. TODO: requires target"
+        "tooltip": "[7 AP] Deal 81-100 damage. Deal 110 more damage if used again within 4 turns."
+      },
+      {
+        "component": "RequiresTargetComponent"
       },
       {
         "component": "CostComponent",
@@ -257,10 +264,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 1
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "DamageComponent",
@@ -301,10 +310,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 3
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "DamageComponent",
@@ -325,7 +336,10 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[4 AP, 2 MP] Dash towards the target, deal 38 to 42 damage. TODO: requires target"
+        "tooltip": "[4 AP, 2 MP] Dash towards the target, deal 38 to 42 damage."
+      },
+      {
+        "component": "RequiresTargetComponent"
       },
       {
         "component": "CostComponent",
@@ -335,10 +349,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "PLUS",
         "minRange": 5,
         "maxRange": 5
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "DamageComponent",
@@ -373,10 +389,12 @@
       },
       {
         "component": "RangeComponent",
-        "rangeIndicator": "LINE_OF_SIGHT",
         "rangeShape": "DIAMOND",
         "minRange": 3,
         "maxRange": 3
+      },
+      {
+        "component": "LineOfSightComponent"
       },
       {
         "component": "CastsPerTurnComponent",

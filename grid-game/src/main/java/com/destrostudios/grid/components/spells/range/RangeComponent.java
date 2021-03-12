@@ -10,7 +10,6 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class RangeComponent implements Component {
-    RangeIndicator rangeIndicator;
     AreaShape rangeShape;
     int minRange;
     int maxRange;

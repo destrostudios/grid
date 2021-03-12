@@ -4,7 +4,7 @@ import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventValidator;
 import java.util.function.Supplier;
 
-import static com.destrostudios.grid.util.RangeUtils.isPositionIsFree;
+import static com.destrostudios.grid.util.SpellUtils.isPositionIsFree;
 
 public class MoveValidator implements EventValidator<MoveEvent> {
 

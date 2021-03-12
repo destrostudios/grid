@@ -32,6 +32,7 @@ import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent
 import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
+import com.destrostudios.grid.components.spells.limitations.RequiresTargetComponent;
 import com.destrostudios.grid.components.spells.movements.DashComponent;
 import com.destrostudios.grid.components.spells.movements.PullComponent;
 import com.destrostudios.grid.components.spells.movements.PushComponent;
@@ -42,6 +43,7 @@ import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
+import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -65,6 +67,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = PositionComponent.class, name = "PositionComponent"),
         @JsonSubTypes.Type(value = ActiveTurnComponent.class, name = "ActiveTurnComponent"),
         @JsonSubTypes.Type(value = NextTurnComponent.class, name = "NextTurnComponent"),
+        @JsonSubTypes.Type(value = LineOfSightComponent.class, name = "LineOfSightComponent"),
+        @JsonSubTypes.Type(value = RequiresTargetComponent.class, name = "RequiresTargetComponent"),
         @JsonSubTypes.Type(value = TeamComponent.class, name = "TeamComponent"),
         @JsonSubTypes.Type(value = VisualComponent.class, name = "VisualComponent"),
         @JsonSubTypes.Type(value = WalkableComponent.class, name = "WalkableComponent"),

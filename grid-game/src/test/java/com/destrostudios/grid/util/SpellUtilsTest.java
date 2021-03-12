@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RangeUtilsTest {
+public class SpellUtilsTest {
 
     private static Set<PositionComponent> toSet(char[][] array) {
         Set<PositionComponent> result = new HashSet<>();
@@ -30,7 +30,7 @@ public class RangeUtilsTest {
         PositionComponent sourcePos = new PositionComponent(0, 0);
         PositionComponent targetPos = new PositionComponent(3, 2);
         AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(AreaShape.SINGLE, 0, 0);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
+        Set<PositionComponent> actual = SpellUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
         assertEquals(Set.of(targetPos), actual);
     }
 
@@ -38,7 +38,7 @@ public class RangeUtilsTest {
     @ArgumentsSource(RangeUtilsTestArgumentProvider.class)
     public void plusAoE(PositionComponent sourcePos, PositionComponent targetPos, int minImpact, int maxImpact, AreaShape affectedArea, char[][] expectedResult) {
         AffectedAreaComponent affectedAreaComponent = new AffectedAreaComponent(affectedArea, minImpact, maxImpact);
-        Set<PositionComponent> actual = RangeUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
+        Set<PositionComponent> actual = SpellUtils.calculateAffectedPositions(sourcePos, targetPos, affectedAreaComponent);
         assertEquals(toSet(expectedResult), actual);
     }
 

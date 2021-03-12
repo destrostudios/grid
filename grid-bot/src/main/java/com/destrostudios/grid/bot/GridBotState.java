@@ -17,7 +17,7 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
 import com.destrostudios.grid.util.GameOverUtils;
-import com.destrostudios.grid.util.RangeUtils;
+import com.destrostudios.grid.util.SpellUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.BotGameState;
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class GridBotState implements BotGameState<Action, Team> {
             SpellsComponent spells = data.getComponent(entity, SpellsComponent.class);
             if (spells != null) {
                 for (int spell : spells.getSpells()) {
-                    if (RangeUtils.isCastable(entity, spell, data)) {
+                    if (SpellUtils.isCastable(entity, spell, data)) {
 
 //                        List<Integer> targets = RangeUtils.getAllTargetableEntitiesInRange(spell, entity, data);
 //                        for (int target : targets) {

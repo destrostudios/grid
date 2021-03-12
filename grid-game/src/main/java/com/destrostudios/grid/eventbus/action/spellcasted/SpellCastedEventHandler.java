@@ -36,11 +36,12 @@ import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.mp.MovementPointsChangedEvent;
 import com.destrostudios.grid.random.RandomProxy;
-import com.destrostudios.grid.util.RangeUtils;
+import com.destrostudios.grid.util.SpellUtils;
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
@@ -76,7 +77,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
                 followUpEvents.add(new HealthPointsChangedEvent(event.getPlayerEntity(), hp.getHealth() - costComponent.getHpCost()));
             }
         }
-        List<Integer> affectedEntities = RangeUtils.getAffectedPlayerEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
+        List<Integer> affectedEntities = SpellUtils.getAffectedPlayerEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
                 new PositionComponent(event.getX(), event.getY()), entityData);
 
         // 2. Heals
@@ -85,7 +86,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             int healAmount = randomProxy.nextInt(heal.getMinHeal(), heal.getMaxHeal());
 
             for (Integer affectedEntity : affectedEntities) {
-                followUpEvents.add(new HealReceivedEvent(healAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), affectedEntity));
+                followUpEvents.add(new HealReceivedEvent(healAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), affectedEntity));
             }
         }
 
@@ -95,7 +96,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
 
             for (Integer affectedEntity : affectedEntities) {
-                followUpEvents.add(new DamageTakenEvent(damageAmount + RangeUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), affectedEntity));
+                followUpEvents.add(new DamageTakenEvent(damageAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), affectedEntity));
             }
         }
 
@@ -111,7 +112,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
 
             for (Integer affectedEntity : affectedEntities) {
                 PositionComponent target = entityData.getComponent(affectedEntity, PositionComponent.class);
-                followUpEvents.add(new PushEvent(affectedEntity, push.getDisplacement(), RangeUtils.directionForDelta(pushOrigin, target)));
+                followUpEvents.add(new PushEvent(affectedEntity, push.getDisplacement(), SpellUtils.directionForDelta(pushOrigin, target)));
             }
         }
         PullComponent pull = entityData.getComponent(spell, PullComponent.class);
@@ -124,7 +125,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             }
             for (Integer affectedEntity : affectedEntities) {
                 PositionComponent target = entityData.getComponent(affectedEntity, PositionComponent.class);
-                PositionComponent pullTarget = RangeUtils.getDisplacementGoal(entityData, affectedEntity, target, RangeUtils.directionForDelta(target, pullOrigin), pull.getDistance());
+                PositionComponent pullTarget = SpellUtils.getDisplacementGoal(entityData, affectedEntity, target, SpellUtils.directionForDelta(target, pullOrigin), pull.getDistance());
                 followUpEvents.add(new MoveEvent(affectedEntity, pullTarget, MoveType.PULL));
             }
         }
@@ -132,7 +133,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         if (dash != null) {
             PositionComponent source = entityData.getComponent(playerEntity, PositionComponent.class);
             PositionComponent target = new PositionComponent(event.getX(), event.getY());
-            PositionComponent dashTarget = RangeUtils.getDisplacementGoal(entityData, playerEntity, source, RangeUtils.directionForDelta(source, target), dash.getDistance());
+            PositionComponent dashTarget = SpellUtils.getDisplacementGoal(entityData, playerEntity, source, SpellUtils.directionForDelta(source, target), dash.getDistance());
             followUpEvents.add(new MoveEvent(playerEntity, dashTarget, MoveType.DASH));
         }
         if (entityData.hasComponents(spell, TeleportComponent.class)) {
@@ -155,7 +156,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         // update casts
         if (entityData.hasComponents(spell, CastsPerTurnComponent.class)) {
             CastsPerTurnComponent castsPerTurnComponent = entityData.getComponent(spell, CastsPerTurnComponent.class);
-            entityData.addComponent(spell, new CastsPerTurnComponent(castsPerTurnComponent.getMaxCastsPerTurn(), castsPerTurnComponent.getCastsThisTurn() - 1));
+            entityData.addComponent(spell, new CastsPerTurnComponent(castsPerTurnComponent.getMaxCastsPerTurn(), castsPerTurnComponent.getCastsThisTurn() + 1));
         }
         eventbusInstance.registerSubEvents(followUpEvents);
     }

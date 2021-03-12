@@ -10,25 +10,23 @@ import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.spells.buffs.BuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
+import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.AreaShape;
+import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
-import com.destrostudios.grid.components.spells.range.RangeIndicator;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.action.displace.Direction;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class RangeUtils {
+public class SpellUtils {
     // todo 3.) targetable component
     // todo 5.) Tooltips automatisch generieren
     // todo 6.) AP/MP steal components
@@ -42,8 +40,7 @@ public class RangeUtils {
         List<Integer> result = new ArrayList<>();
         LineOfSight lineOfSight = new LineOfSight();
 
-        RangeComponent component = entityData.getComponent(spellEntity, RangeComponent.class);
-        if (component.getRangeIndicator() == RangeIndicator.ALL) {
+        if (!entityData.hasComponents(spellEntity, LineOfSightComponent.class)) {
             return targetableInRange;
         }
 
@@ -92,13 +89,13 @@ public class RangeUtils {
     }
 
 
+
     public static List<Integer> getAffectedWalkableEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
         Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         return entityData.list(WalkableComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .collect(Collectors.toList());
     }
-
 
     public static Set<PositionComponent> calculateAffectedPositions(PositionComponent sourcePos, PositionComponent clickedPos, AffectedAreaComponent component) {
         Set<PositionComponent> result = new LinkedHashSet<>();
@@ -243,7 +240,12 @@ public class RangeUtils {
     }
 
     public static boolean isCastable(int casterEntity, int spellEntity, EntityData entityData) {
-        return isCostPayable(casterEntity, spellEntity, entityData); // todo max turn
+        return isCostPayable(casterEntity, spellEntity, entityData) && maxCastsNotReached(spellEntity, entityData);
+    }
+
+    public static boolean maxCastsNotReached(int spellEntity, EntityData entityData) {
+        CastsPerTurnComponent component = entityData.getComponent(spellEntity, CastsPerTurnComponent.class);
+        return component == null || component.getCastsThisTurn() != component.getMaxCastsPerTurn();
     }
 
     public static boolean isCostPayable(int casterEntity, int spellEntity, EntityData entityData) {

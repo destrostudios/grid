@@ -37,7 +37,7 @@ import com.destrostudios.grid.eventbus.action.move.MoveType;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
-import com.destrostudios.grid.util.RangeUtils;
+import com.destrostudios.grid.util.SpellUtils;
 import com.destrostudios.turnbasedgametools.grid.Pathfinder;
 import com.destrostudios.turnbasedgametools.grid.Position;
 import com.jme3.app.Application;
@@ -167,8 +167,8 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void updateValidAndInvalidGroundEntities() {
         List<Integer> invalidSpellTargetEntities;
         if (targetingSpellEntity != null) {
-            validSpellTargetEntities = RangeUtils.getAllTargetableEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
-            invalidSpellTargetEntities = RangeUtils.getAllEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            validSpellTargetEntities = SpellUtils.getAllTargetableEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            invalidSpellTargetEntities = SpellUtils.getAllEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
             invalidSpellTargetEntities.removeAll(validSpellTargetEntities);
         } else {
             validSpellTargetEntities = new LinkedList<>();
@@ -184,7 +184,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             EntityData data = gameProxy.getGame().getData();
             // Impacted
             if (targetingSpellEntity != null) {
-                List<Integer> affectedWalkableEntities = RangeUtils.getAffectedWalkableEntities(
+                List<Integer> affectedWalkableEntities = SpellUtils.getAffectedWalkableEntities(
                     targetingSpellEntity,
                     data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class),
                     new PositionComponent(hoveredPosition.getX(), hoveredPosition.getZ()),
@@ -247,7 +247,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     Integer remainingCooldown = entityData.hasComponents(spellEntity, OnCooldownComponent.class)
                             ? entityData.getComponent(spellEntity, OnCooldownComponent.class).getRemainingRounds()
                             : null;
-                    boolean isCastable = RangeUtils.isCastable(playerEntity, spellEntity, entityData);
+                    boolean isCastable = SpellUtils.isCastable(playerEntity, spellEntity, entityData);
                     boolean isTargeting = Objects.equals(targetingSpellEntity, spellEntity);
                     return new GuiSpell(name, tooltip, remainingCooldown, isCastable, isTargeting, () -> {
                         if (!gameProxy.triggeredHandlersInQueue()) {
@@ -328,7 +328,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         EntityData data = gameProxy.getGame().getData();
         PositionComponent playerPosition = data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class);
         return new Pathfinder().findPath(
-                p -> RangeUtils.isPositionIsFree(data, new PositionComponent(p.x, p.y), gameProxy.getPlayerEntity()),
+                p -> SpellUtils.isPositionIsFree(data, new PositionComponent(p.x, p.y), gameProxy.getPlayerEntity()),
                 new Position(playerPosition.getX(), playerPosition.getY()),
                 new Position(hoveredPosition.getX(), hoveredPosition.getZ()),
                 data.getComponent(gameProxy.getPlayerEntity(), MovementPointsComponent.class).getMovementPoints());
