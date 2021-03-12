@@ -5,9 +5,9 @@ import com.destrostudios.grid.actions.ActionDispatcher;
 import com.destrostudios.grid.actions.ActionNotAllowedException;
 import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.ActiveTurnComponent;
+import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
-import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
@@ -148,7 +148,8 @@ public class GridGame {
             lastPlayer = playerEntity;
         }
         world.addComponent(lastPlayer, new NextTurnComponent(firstPlayer));
-
+        world.addComponent(firstPlayer, new ActiveTurnComponent());
+        
         addInstantHandler();
     }
 
@@ -170,10 +171,6 @@ public class GridGame {
 
         CharacterContainer characterContainer = initCharacter(playerInfo);
         addComponentsForCharacter(playerEntity, characterContainer, playerInfo.getLogin());
-
-        if (team == 1) {
-            world.addComponent(playerEntity, new ActiveTurnComponent());
-        }
         world.addComponent(playerEntity, new TeamComponent(team));
         world.addComponent(playerEntity, new PositionComponent(startingPosition.getX(), startingPosition.getY()));
         return playerEntity;
