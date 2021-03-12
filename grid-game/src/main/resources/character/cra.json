@@ -46,7 +46,8 @@
           2,
           3,
           4,
-          5
+          5,
+          6
         ]
       }
     ],
@@ -239,6 +240,52 @@
         "component": "DamageComponent",
         "minDmg": 30,
         "maxDmg": 34
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      }
+    ],
+    "6": [
+      {
+        "component": "NameComponent",
+        "name": "Dispersing Arrow"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Push target back by 2 tiles."
+      },
+      {
+        "component": "RequiresTargetComponent"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "rangeShape": "PLUS",
+        "minRange": 1,
+        "maxRange": 12
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 2
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "PushComponent",
+        "displacement": 2
       },
       {
         "component": "BuffsComponent",
