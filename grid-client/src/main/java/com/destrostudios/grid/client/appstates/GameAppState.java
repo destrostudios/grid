@@ -40,7 +40,6 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.shared.PlayerInfo;
-import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.SpellUtils;
 import com.destrostudios.turnbasedgametools.grid.Pathfinder;
 import com.destrostudios.turnbasedgametools.grid.Position;
@@ -62,7 +61,6 @@ import java.util.stream.Collectors;
 public class GameAppState extends BaseAppState<ClientApplication> implements ActionListener {
 
     private GameProxy gameProxy;
-    private StartGameInfo startGameInfo;
     private LinkedList<Animation> playingAnimations = new LinkedList<>();
     private Integer targetingSpellEntity;
     private List<Integer> validSpellTargetEntities;
@@ -70,8 +68,6 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
 
     public GameAppState(GameProxy gameProxy) {
         this.gameProxy = gameProxy;
-        // Save the object and access it from here, since gameProxy.getStartGameInfo() will return null as soon as the game ended on server
-        startGameInfo = gameProxy.getStartGameInfo();
     }
 
     @Override
@@ -259,10 +255,10 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         int nextPlayerEntity = activePlayerEntity;
         for (int i = 0; i < guiNextPlayers.length; i++) {
             String playerName = entityData.getComponent(nextPlayerEntity, NameComponent.class).getName();
-            PlayerInfo playerInfo = startGameInfo.getTeam1().stream()
+            PlayerInfo playerInfo = gameProxy.getStartGameInfo().getTeam1().stream()
                 .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
                 .findFirst()
-                .orElse(startGameInfo.getTeam2().stream()
+                .orElse(gameProxy.getStartGameInfo().getTeam2().stream()
                         .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
                         .findFirst()
                         .orElse(null));

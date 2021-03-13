@@ -17,22 +17,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 public class ClientGameProxy implements GameProxy {
 
     private final UUID gameId;
     private final JwtAuthenticationUser jwtAuthenticationUser;
     private final GameClientModule<GridGame, Action> gameClientModule;
-    private final LobbyClientModule<StartGameInfo> lobbyClientModule;
+    private StartGameInfo startGameInfo;
+    private GridGame game;
     // proxy the listeners since the game reference may change
     private final Map<Class<? extends Event>, EventHandler<?>> preListeners = new LinkedHashMap<>();
     private final Map<Class<? extends Event>, EventHandler<?>> resolvedListeners = new LinkedHashMap<>();
 
+    public ClientGameProxy(UUID gameId, JwtAuthenticationUser jwtAuthenticationUser, GameClientModule<GridGame, Action> gameClientModule, LobbyClientModule<StartGameInfo> lobbyClientModule) {
+        this.gameId = gameId;
+        this.jwtAuthenticationUser = jwtAuthenticationUser;
+        this.gameClientModule = gameClientModule;
+        startGameInfo = lobbyClientModule.getListedGames().get(gameId);
+    }
+
     @Override
     public StartGameInfo getStartGameInfo() {
-        return lobbyClientModule.getListedGames().get(gameId);
+        return startGameInfo;
     }
 
     @Override
@@ -64,7 +70,12 @@ public class ClientGameProxy implements GameProxy {
 
     @Override
     public GridGame getGame() {
-        return gameClientModule.getJoinedGame(gameId).getState();
+        // Network library returns null as soon as the game ended - Caching it inside this getter also covers desync
+        GridGame currentGame = gameClientModule.getJoinedGame(gameId).getState();
+        if (currentGame != null) {
+            game = currentGame;
+        }
+        return game;
     }
 
     @Override
