@@ -126,9 +126,10 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         mainApplication.getInputManager().addMapping("key_7", new KeyTrigger(KeyInput.KEY_7));
         mainApplication.getInputManager().addMapping("key_8", new KeyTrigger(KeyInput.KEY_8));
         mainApplication.getInputManager().addMapping("key_9", new KeyTrigger(KeyInput.KEY_9));
+        mainApplication.getInputManager().addMapping("key_space", new KeyTrigger(KeyInput.KEY_SPACE));
         mainApplication.getInputManager().addMapping("mouse_left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         mainApplication.getInputManager().addMapping("mouse_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        mainApplication.getInputManager().addListener(this, "key_1", "key_2", "key_3", "key_4", "key_5", "key_6", "key_7", "key_8", "key_9", "mouse_left", "mouse_right");
+        mainApplication.getInputManager().addListener(this, "key_1", "key_2", "key_3", "key_4", "key_5", "key_6", "key_7", "key_8", "key_9", "key_space", "mouse_left", "mouse_right");
     }
 
     @Override
@@ -296,7 +297,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                 .collect(Collectors.toList());
         gameGuiAppState.createSpellButtons(guiSpells);
 
-        gameGuiAppState.createEndTurnButton(this::skipRound);
+        gameGuiAppState.createEndTurnButton(this::endTurn);
     }
 
     @Override
@@ -338,6 +339,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                             }
                         }
                     }
+                    break;
+                case "key_space":
+                    endTurn();
                     break;
                 default:
                     if (actionName.startsWith("key_")) {
@@ -387,7 +391,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         playingAnimations.add(animation);
     }
 
-    private void skipRound() {
+    private void endTurn() {
         gameProxy.requestAction(new SkipRoundAction(gameProxy.getPlayerEntity().toString()));
     }
 }
