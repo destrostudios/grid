@@ -271,12 +271,23 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
             Function.identity(),
             gameUUID -> {
                 StartGameInfo startGameInfo = lobbyClientModule.getListedGames().get(gameUUID);
-                return startGameInfo.getTeam1().get(0).getLogin() + " vs " + startGameInfo.getTeam2().get(0).getLogin();
+                return getTeamDescription(startGameInfo.getTeam1()) + " vs " + getTeamDescription(startGameInfo.getTeam2());
             },
             gameUUID -> false,
             gameUUID -> getGameClientModule().join(gameUUID),
             gameUUID -> {}
         );
+    }
+
+    private String getTeamDescription(List<PlayerInfo> team) {
+        String text = "";
+        for (PlayerInfo playerInfo : team) {
+            if (text.length() > 0) {
+                text += " & ";
+            }
+            text += playerInfo.getLogin();
+        }
+        return text;
     }
 
     private <K, O> void updateButtons(
