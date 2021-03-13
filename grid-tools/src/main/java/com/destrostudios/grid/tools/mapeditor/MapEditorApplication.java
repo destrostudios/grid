@@ -32,7 +32,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
 
     private static final String MAP_NAME = "DestroMap";
     private static final String[] VISUALS_GROUND = new String[]{"grass", "sand", "snow"};
-    private static final String[] VISUALS_OBSTACLES = new String[]{"tree", "rock"};
+    private static final String[] VISUALS_OBSTACLES = new String[]{"tree", "rock", "pillar", "pillar_script"};
 
     private int marginX = 100;
     private int marginBottom = 50;

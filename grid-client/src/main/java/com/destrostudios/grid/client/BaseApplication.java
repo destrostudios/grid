@@ -53,7 +53,7 @@ public class BaseApplication extends SimpleApplication {
         DirectionalLight directionalLight = new DirectionalLight();
         Vector3f lightDirection = new Vector3f(-0.5f, -1, -0.5f).normalizeLocal();
         directionalLight.setDirection(lightDirection);
-        directionalLight.setColor(new ColorRGBA(1, 1, 1, 1));
+        directionalLight.setColor(ColorRGBA.White.mult(0.5f));
         rootNode.addLight(directionalLight);
 
         DirectionalLightShadowRenderer shadowRenderer = new DirectionalLightShadowRenderer(assetManager, 2048, 3);

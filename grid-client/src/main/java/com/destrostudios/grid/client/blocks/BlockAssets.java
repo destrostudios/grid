@@ -61,7 +61,9 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 0), false)
     );
-    public static final Block BLOCK_SAND = new Block(new BlockSkin(new BlockSkin_TextureLocation(0, 2), false));
+    public static final Block BLOCK_SAND = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(0, 2), false)
+    );
     public static final Block BLOCK_SAND_GRID = new Block(
         new BlockSkin(new BlockSkin_TextureLocation(1, 2), false),
         new BlockSkin(new BlockSkin_TextureLocation(0, 2), false),
@@ -134,6 +136,41 @@ public class BlockAssets {
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false),
         new BlockSkin(new BlockSkin_TextureLocation(2, 1), false)
     );
+    public static final Block BLOCK_GLASS = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true)
+    );
+    public static final Block BLOCK_GLASS_GRID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(1, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true)
+    );
+    public static final Block BLOCK_GLASS_VALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(13, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true)
+    );
+    public static final Block BLOCK_GLASS_INVALID = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(14, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true)
+    );
+    public static final Block BLOCK_GLASS_IMPACTED = new Block(
+        new BlockSkin(new BlockSkin_TextureLocation(15, 0), false),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true),
+        new BlockSkin(new BlockSkin_TextureLocation(0, 3), true)
+    );
 
     public static void registerBlocks() {
         BlockManager.register(BLOCK_GRASS);
@@ -151,5 +188,10 @@ public class BlockAssets {
         BlockManager.register(BLOCK_SNOW_VALID);
         BlockManager.register(BLOCK_SNOW_INVALID);
         BlockManager.register(BLOCK_SNOW_IMPACTED);
+        BlockManager.register(BLOCK_GLASS);
+        BlockManager.register(BLOCK_GLASS_GRID);
+        BlockManager.register(BLOCK_GLASS_VALID);
+        BlockManager.register(BLOCK_GLASS_INVALID);
+        BlockManager.register(BLOCK_GLASS_IMPACTED);
     }
 }

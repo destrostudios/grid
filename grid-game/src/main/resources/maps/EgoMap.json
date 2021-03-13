@@ -1,0 +1,3354 @@
+{
+  "SeriazableComponent": "map",
+  "components": {
+    "1": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 1
+      }
+    ],
+    "2": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 2
+      }
+    ],
+    "3": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 3
+      }
+    ],
+    "4": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 4
+      }
+    ],
+    "5": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 6
+      }
+    ],
+    "6": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 7
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "7": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 8
+      }
+    ],
+    "8": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 9
+      }
+    ],
+    "9": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 11
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "10": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 13
+      }
+    ],
+    "11": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 14
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "12": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 15
+      }
+    ],
+    "13": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 0
+      }
+    ],
+    "14": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 1
+      }
+    ],
+    "15": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 2
+      }
+    ],
+    "16": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 3
+      }
+    ],
+    "17": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 4
+      }
+    ],
+    "18": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 5
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "19": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 8
+      }
+    ],
+    "20": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 9
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "21": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 11
+      }
+    ],
+    "22": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 12
+      }
+    ],
+    "23": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 13
+      }
+    ],
+    "24": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 14
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "25": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 0
+      }
+    ],
+    "26": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 1
+      }
+    ],
+    "27": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 2
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "28": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 3
+      }
+    ],
+    "29": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 4
+      }
+    ],
+    "30": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 5
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "31": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 6
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "32": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 8
+      }
+    ],
+    "33": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 9
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "34": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 10
+      }
+    ],
+    "35": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 12
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "36": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 14
+      }
+    ],
+    "37": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 15
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "38": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 0
+      }
+    ],
+    "39": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 2
+      }
+    ],
+    "40": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 3
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "41": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 4
+      }
+    ],
+    "42": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 6
+      }
+    ],
+    "43": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 7
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "44": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 8
+      }
+    ],
+    "45": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 9
+      }
+    ],
+    "46": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 10
+      },
+      {
+        "component": "StartingFieldComponent"
+      }
+    ],
+    "47": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 11
+      }
+    ],
+    "48": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 12
+      }
+    ],
+    "49": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 13
+      }
+    ],
+    "50": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 14
+      }
+    ],
+    "51": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 15
+      }
+    ],
+    "52": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 0
+      }
+    ],
+    "53": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 1
+      }
+    ],
+    "54": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 2
+      }
+    ],
+    "55": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 3
+      }
+    ],
+    "56": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 6
+      }
+    ],
+    "57": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 7
+      }
+    ],
+    "58": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 8
+      }
+    ],
+    "59": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 9
+      }
+    ],
+    "60": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 10
+      }
+    ],
+    "61": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 12
+      }
+    ],
+    "62": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 13
+      }
+    ],
+    "63": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 14
+      }
+    ],
+    "64": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 0
+      }
+    ],
+    "65": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 1
+      }
+    ],
+    "66": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 2
+      }
+    ],
+    "67": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 8
+      }
+    ],
+    "68": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 9
+      }
+    ],
+    "69": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 10
+      }
+    ],
+    "70": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 11
+      }
+    ],
+    "71": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 12
+      }
+    ],
+    "72": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 14
+      }
+    ],
+    "73": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 15
+      }
+    ],
+    "74": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 0
+      }
+    ],
+    "75": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 2
+      }
+    ],
+    "76": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 3
+      }
+    ],
+    "77": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 4
+      }
+    ],
+    "78": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 5
+      }
+    ],
+    "79": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 6
+      }
+    ],
+    "80": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 8
+      }
+    ],
+    "81": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 9
+      }
+    ],
+    "82": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 10
+      }
+    ],
+    "83": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 11
+      }
+    ],
+    "84": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 13
+      }
+    ],
+    "85": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 14
+      }
+    ],
+    "86": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 15
+      }
+    ],
+    "87": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 0
+      }
+    ],
+    "88": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 1
+      }
+    ],
+    "89": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 3
+      }
+    ],
+    "90": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 4
+      }
+    ],
+    "91": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 5
+      }
+    ],
+    "92": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 7
+      }
+    ],
+    "93": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 8
+      }
+    ],
+    "94": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 10
+      }
+    ],
+    "95": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 14
+      }
+    ],
+    "96": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 15
+      }
+    ],
+    "97": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 0
+      }
+    ],
+    "98": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 1
+      }
+    ],
+    "99": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 2
+      }
+    ],
+    "100": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 3
+      }
+    ],
+    "101": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 4
+      }
+    ],
+    "102": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 5
+      }
+    ],
+    "103": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 6
+      }
+    ],
+    "104": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 7
+      }
+    ],
+    "105": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 8
+      }
+    ],
+    "106": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 9
+      }
+    ],
+    "107": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 10
+      }
+    ],
+    "108": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 12
+      }
+    ],
+    "109": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 13
+      }
+    ],
+    "110": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 14
+      }
+    ],
+    "111": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 15
+      }
+    ],
+    "112": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 1
+      }
+    ],
+    "113": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 2
+      }
+    ],
+    "114": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 3
+      }
+    ],
+    "115": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 4
+      }
+    ],
+    "116": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 5
+      }
+    ],
+    "117": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 6
+      }
+    ],
+    "118": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 7
+      }
+    ],
+    "119": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 8
+      }
+    ],
+    "120": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 9
+      }
+    ],
+    "121": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 10
+      }
+    ],
+    "122": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 13
+      }
+    ],
+    "123": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 15
+      }
+    ],
+    "124": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 0
+      }
+    ],
+    "125": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 1
+      }
+    ],
+    "126": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 2
+      }
+    ],
+    "127": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 3
+      }
+    ],
+    "128": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 4
+      }
+    ],
+    "129": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 5
+      }
+    ],
+    "130": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 6
+      }
+    ],
+    "131": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 7
+      }
+    ],
+    "132": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 8
+      }
+    ],
+    "133": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 9
+      }
+    ],
+    "134": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 11
+      }
+    ],
+    "135": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 13
+      }
+    ],
+    "136": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 14
+      }
+    ],
+    "137": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 15
+      }
+    ],
+    "138": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 0
+      }
+    ],
+    "139": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 1
+      }
+    ],
+    "140": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 2
+      }
+    ],
+    "141": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 3
+      }
+    ],
+    "142": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 4
+      }
+    ],
+    "143": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 8
+      }
+    ],
+    "144": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 10
+      }
+    ],
+    "145": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 12
+      }
+    ],
+    "146": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 13
+      }
+    ],
+    "147": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 14
+      }
+    ],
+    "148": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 15
+      }
+    ],
+    "149": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 0
+      }
+    ],
+    "150": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 1
+      }
+    ],
+    "151": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 3
+      }
+    ],
+    "152": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 4
+      }
+    ],
+    "153": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 7
+      }
+    ],
+    "154": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 9
+      }
+    ],
+    "155": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 11
+      }
+    ],
+    "156": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 12
+      }
+    ],
+    "157": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 13
+      }
+    ],
+    "158": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 15
+      }
+    ],
+    "159": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 0
+      }
+    ],
+    "160": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 1
+      }
+    ],
+    "161": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 4
+      }
+    ],
+    "162": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 6
+      }
+    ],
+    "163": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 7
+      }
+    ],
+    "164": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 8
+      }
+    ],
+    "165": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 9
+      }
+    ],
+    "166": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 10
+      }
+    ],
+    "167": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 11
+      }
+    ],
+    "168": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 12
+      }
+    ],
+    "169": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 13,
+        "y": 13
+      }
+    ],
+    "170": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 0
+      }
+    ],
+    "171": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 1
+      }
+    ],
+    "172": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 2
+      }
+    ],
+    "173": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 3
+      }
+    ],
+    "174": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 4
+      }
+    ],
+    "175": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 5
+      }
+    ],
+    "176": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 6
+      }
+    ],
+    "177": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 7
+      }
+    ],
+    "178": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 8
+      }
+    ],
+    "179": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 9
+      }
+    ],
+    "180": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 10
+      }
+    ],
+    "181": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 11
+      }
+    ],
+    "182": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 12
+      }
+    ],
+    "183": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 13
+      }
+    ],
+    "184": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 15
+      }
+    ],
+    "185": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 0
+      }
+    ],
+    "186": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 1
+      }
+    ],
+    "187": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 2
+      }
+    ],
+    "188": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 4
+      }
+    ],
+    "189": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 5
+      }
+    ],
+    "190": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 6
+      }
+    ],
+    "191": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 7
+      }
+    ],
+    "192": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 10
+      }
+    ],
+    "193": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 11
+      }
+    ],
+    "194": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 12
+      }
+    ],
+    "195": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 13
+      }
+    ],
+    "196": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 14
+      }
+    ],
+    "197": [
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      },
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 15
+      }
+    ],
+    "198": [
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 1
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "199": [
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 3
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "200": [
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 3
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "201": [
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 4
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "202": [
+      {
+        "component": "PositionComponent",
+        "x": 1,
+        "y": 11
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "203": [
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 14
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "204": [
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 2
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "205": [
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 4
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "206": [
+      {
+        "component": "PositionComponent",
+        "x": 3,
+        "y": 12
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "207": [
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 3
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "208": [
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 12
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "209": [
+      {
+        "component": "PositionComponent",
+        "x": 4,
+        "y": 14
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "210": [
+      {
+        "component": "PositionComponent",
+        "x": 6,
+        "y": 14
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "211": [
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 0
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "212": [
+      {
+        "component": "PositionComponent",
+        "x": 7,
+        "y": 8
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "213": [
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 3
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "214": [
+      {
+        "component": "PositionComponent",
+        "x": 8,
+        "y": 9
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "215": [
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 3
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "216": [
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 6
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "217": [
+      {
+        "component": "PositionComponent",
+        "x": 9,
+        "y": 7
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "218": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 1
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "219": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 8
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "220": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 13
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "221": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 15
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "222": [
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 8
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "223": [
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 1
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "224": [
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 11
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "225": [
+      {
+        "component": "PositionComponent",
+        "x": 12,
+        "y": 13
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "226": [
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 9
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "227": [
+      {
+        "component": "PositionComponent",
+        "x": 14,
+        "y": 12
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar_script"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "228": [
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 0
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "229": [
+      {
+        "component": "PositionComponent",
+        "x": 15,
+        "y": 7
+      },
+      {
+        "component": "VisualComponent",
+        "name": "pillar"
+      },
+      {
+        "component": "ObstacleComponent"
+      }
+    ],
+    "230": [
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 12
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      }
+    ],
+    "231": [
+      {
+        "component": "PositionComponent",
+        "x": 11,
+        "y": 9
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      }
+    ],
+    "232": [
+      {
+        "component": "PositionComponent",
+        "x": 10,
+        "y": 12
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      }
+    ],
+    "233": [
+      {
+        "component": "PositionComponent",
+        "x": 5,
+        "y": 13
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      }
+    ],
+    "234": [
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 13
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      }
+    ],
+    "235": [
+      {
+        "component": "PositionComponent",
+        "x": 2,
+        "y": 11
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      }
+    ],
+    "236": [
+      {
+        "component": "PositionComponent",
+        "x": 0,
+        "y": 5
+      },
+      {
+        "component": "WalkableComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "glass"
+      }
+    ]
+  }
+}

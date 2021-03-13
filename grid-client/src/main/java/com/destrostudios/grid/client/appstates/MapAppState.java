@@ -139,6 +139,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             ModelObject obstacleModel = obstacleModels.computeIfAbsent(obstacleEntity, pe -> {
                 String modelName = entityData.getComponent(obstacleEntity, VisualComponent.class).getName();
                 ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
+                newObstacleModel.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
                 rootNode.attachChild(newObstacleModel);
                 return newObstacleModel;
             });

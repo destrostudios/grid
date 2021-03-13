@@ -236,7 +236,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void updateGui() {
         Integer playerEntity = gameProxy.getPlayerEntity();
         if (playerEntity == null) {
-            // spectating only
+            // Spectating only
             return;
         }
 

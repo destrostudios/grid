@@ -7,6 +7,7 @@ public class Maps {
             case "IceMap": return new Map_Icecold();
             case "DestroMap": return new Map_Destro();
             case "EtherMap": return new Map_Ether();
+            case "EgoMap": return new Map_Ego();
         }
         throw new IllegalArgumentException(name);
     }

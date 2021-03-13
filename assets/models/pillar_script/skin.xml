@@ -1,0 +1,7 @@
+<skin name="pillar_script">
+    <model scale="3">
+        <material>
+            <texture source="pillar">diffuse.png</texture>
+        </material>
+    </model>
+</skin>
