@@ -16,8 +16,10 @@ import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.BlockingAnimation;
 import com.destrostudios.grid.client.characters.PlayerVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
+import com.destrostudios.grid.client.gui.GuiNextPlayer;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.destrostudios.grid.components.character.ActiveTurnComponent;
+import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.AttackPointsComponent;
@@ -37,6 +39,7 @@ import com.destrostudios.grid.eventbus.action.move.MoveType;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
+import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.util.SpellUtils;
 import com.destrostudios.turnbasedgametools.grid.Pathfinder;
 import com.destrostudios.turnbasedgametools.grid.Position;
@@ -246,6 +249,22 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         gameGuiAppState.setActivePlayerName(activePlayerName);
         gameGuiAppState.setActivePlayerMP(activePlayerMP);
         gameGuiAppState.setActivePlayerAP(activePlayerAP);
+
+        GuiNextPlayer[] guiNextPlayers = new GuiNextPlayer[GameGuiAppState.DISPLAYED_NEXT_PLAYERS];
+        int nextPlayerEntity = activePlayerEntity;
+        for (int i = 0; i < guiNextPlayers.length; i++) {
+            String playerName = entityData.getComponent(nextPlayerEntity, NameComponent.class).getName();
+            PlayerInfo playerInfo = gameProxy.getStartGameInfo().getTeam1().stream()
+                .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
+                .findFirst()
+                .orElse(gameProxy.getStartGameInfo().getTeam2().stream()
+                        .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
+                        .findFirst()
+                        .orElse(null));
+            guiNextPlayers[i] = new GuiNextPlayer(playerName, playerInfo.getCharacterName());
+            nextPlayerEntity = entityData.getComponent(nextPlayerEntity, NextTurnComponent.class).getNextPlayer();
+        }
+        gameGuiAppState.setNextPlayers(guiNextPlayers);
 
         gameGuiAppState.removeAllCurrentPlayerElements();
 

@@ -1,6 +1,7 @@
 package com.destrostudios.grid.client.appstates;
 
 import com.destrostudios.grid.client.ClientApplication;
+import com.destrostudios.grid.client.gui.GuiNextPlayer;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -18,9 +19,12 @@ import java.util.List;
 
 public class GameGuiAppState extends BaseAppState<ClientApplication> {
 
+    public static final int DISPLAYED_NEXT_PLAYERS = 5;
     private static final ColorRGBA COLOR_SPELL_DISABLED = new ColorRGBA(0.3f, 0.3f, 0.3f, 1);
     private static final ColorRGBA COLOR_SPELL_TARGETING = new ColorRGBA(1.75f, 1.75f, 1.75f, 1);
 
+    private int topElementsMargin = 30;
+    private int nextPlayersInnerHeight;
     private int barMarginX = 100;
     private int barMarginBottom = 50;
     private int barHeight = 80;
@@ -35,6 +39,10 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
     private Label lblActivePlayerName;
     private Label lblActivePlayerMP;
     private Label lblActivePlayerAP;
+
+    private Panel[] pansNextPlayerIcon;
+    private Label[] lblsNextPlayerName;
+
     private Node currentPlayerNode;
 
     private Label lblOwnPlayerHealth;
@@ -57,9 +65,8 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
 
         guiNode = new Node();
 
-        int labelsMargin = 30;
         Container containerLabels = new Container();
-        containerLabels.setLocalTranslation(labelsMargin, totalHeight - labelsMargin, 0);
+        containerLabels.setLocalTranslation(topElementsMargin, totalHeight - topElementsMargin, 0);
         TbtQuadBackgroundComponent containerLabelsBackground = (TbtQuadBackgroundComponent) containerLabels.getBackground();
         containerLabelsBackground.setMargin(20, 10);
         lblActivePlayerName = new Label("");
@@ -90,6 +97,8 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
         lblTooltip.setColor(ColorRGBA.White);
         containerTooltip.addChild(lblTooltip);
 
+        createContainersNextPlayers();
+
         currentPlayerNode = new Node();
         guiNode.attachChild(currentPlayerNode);
 
@@ -118,6 +127,86 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
         containerGameOver.addChild(btnBackToMenu);
 
         mainApplication.getGuiNode().attachChild(guiNode);
+    }
+
+    private void createContainersNextPlayers() {
+        int containerWidth = 220;
+        int containerHeight = 50;
+        int containerPadding = 2;
+        int iconAndNameGap = 7;
+        int arrowIconWidth = 15;
+        int arrowIconHeight = 10;
+        int arrowIconMargin = 2;
+        nextPlayersInnerHeight = (containerHeight - (2 * containerPadding));
+        int containerX = (totalWidth - topElementsMargin - containerWidth);
+        int containerY = (totalHeight - topElementsMargin);
+        int playerIconX = (containerX + containerPadding);
+        int playerNameX = (playerIconX + nextPlayersInnerHeight + iconAndNameGap);
+        int playerNameWidth = (containerWidth - containerPadding - nextPlayersInnerHeight - iconAndNameGap - containerPadding);
+        int arrowIconX = (containerX + (containerWidth / 2) - (arrowIconWidth / 2));
+        pansNextPlayerIcon = new Panel[DISPLAYED_NEXT_PLAYERS];
+        lblsNextPlayerName = new Label[DISPLAYED_NEXT_PLAYERS];
+        for (int i = 0; i < DISPLAYED_NEXT_PLAYERS; i++) {
+            int innerY = (containerY - containerPadding);
+            int arrowIconY = (containerY - containerHeight - arrowIconMargin);
+
+            Container containerNextPlayer = new Container();
+            containerNextPlayer.setLayout(new SpringGridLayout(Axis.X, Axis.Y));
+            containerNextPlayer.setLocalTranslation(containerX, containerY, 0);
+            containerNextPlayer.setPreferredSize(new Vector3f(containerWidth, containerHeight, 0));
+            if (i == 0) {
+                TbtQuadBackgroundComponent containerBackground = (TbtQuadBackgroundComponent) containerNextPlayer.getBackground();
+                containerBackground.setColor(new ColorRGBA(0.75f, 0.75f, 0, 0.5f));
+            }
+            guiNode.attachChild(containerNextPlayer);
+
+            Panel panPlayerIcon = new Panel();
+            panPlayerIcon.setLocalTranslation(playerIconX, innerY, 1);
+            guiNode.attachChild(panPlayerIcon);
+            pansNextPlayerIcon[i] = panPlayerIcon;
+
+            Label lblPlayerName = new Label("");
+            lblPlayerName.setLocalTranslation(playerNameX, innerY, 1);
+            lblPlayerName.setPreferredSize(new Vector3f(playerNameWidth, nextPlayersInnerHeight, 0));
+            lblPlayerName.setTextVAlignment(VAlignment.Center);
+            lblPlayerName.setFontSize(16);
+            lblPlayerName.setColor(ColorRGBA.White);
+            guiNode.attachChild(lblPlayerName);
+            lblsNextPlayerName[i] = lblPlayerName;
+
+            Panel panArrowIcon = new Panel();
+            panArrowIcon.setLocalTranslation(arrowIconX, arrowIconY, 1);
+            IconComponent arrowIcon = new IconComponent("textures/arrow_down.png");
+            arrowIcon.setIconSize(new Vector2f(arrowIconWidth, arrowIconHeight));
+            panArrowIcon.setBackground(arrowIcon);
+            guiNode.attachChild(panArrowIcon);
+
+            containerY -= (containerHeight + arrowIconMargin + arrowIconHeight + arrowIconMargin);
+        }
+
+        Container containerRest = new Container();
+        containerRest.setLocalTranslation(containerX, containerY, 0);
+        containerRest.setPreferredSize(new Vector3f(containerWidth, 30, 0));
+
+        Label lblRest = new Label("...");
+        lblRest.setInsets(new Insets3f(-5, 0, 0, 0));
+        lblRest.setTextHAlignment(HAlignment.Center);
+        lblRest.setTextVAlignment(VAlignment.Center);
+        lblRest.setFontSize(16);
+        lblRest.setColor(ColorRGBA.White);
+        containerRest.addChild(lblRest);
+
+        guiNode.attachChild(containerRest);
+    }
+
+    public void setNextPlayers(GuiNextPlayer[] nextPlayers) {
+        for (int i = 0; i < nextPlayers.length; i++) {
+            IconComponent icon = new IconComponent("textures/characters/" + nextPlayers[i].getCharacterName() + ".png");
+            icon.setIconSize(new Vector2f(nextPlayersInnerHeight, nextPlayersInnerHeight));
+            icon.setVAlignment(VAlignment.Center);
+            pansNextPlayerIcon[i].setBackground(icon);
+            lblsNextPlayerName[i].setText(nextPlayers[i].getPlayerName());
+        }
     }
 
     public void removeAllCurrentPlayerElements() {

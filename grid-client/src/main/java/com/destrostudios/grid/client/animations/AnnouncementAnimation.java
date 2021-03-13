@@ -34,7 +34,7 @@ public class AnnouncementAnimation extends Animation {
         int bottomUsedSpaceHeight = 130;
         float containerY = (bottomUsedSpaceHeight + ((totalHeight - bottomUsedSpaceHeight) / 2f) + (containerHeight / 2f));
         container.setPreferredSize(new Vector3f(totalWidth, containerHeight, 0));
-        container.setLocalTranslation(new Vector3f(0, containerY, 0));
+        container.setLocalTranslation(new Vector3f(0, containerY, 999));
         Label label = new Label(message);
         label.setTextHAlignment(HAlignment.Center);
         label.setTextVAlignment(VAlignment.Center);
