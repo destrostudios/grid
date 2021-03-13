@@ -301,7 +301,7 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
         Consumer<K> onRemove
     ) {
         for (Map.Entry<K, Button> entry : buttons.entrySet()) {
-            if (objects.stream().noneMatch(object -> getKey.apply(object) == entry.getKey())) {
+            if (objects.stream().noneMatch(object -> getKey.apply(object).equals(entry.getKey()))) {
                 tmpButtonKeysToRemove.add(entry.getKey());
             }
         }
