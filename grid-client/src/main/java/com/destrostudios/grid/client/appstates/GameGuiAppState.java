@@ -1,6 +1,7 @@
 package com.destrostudios.grid.client.appstates;
 
 import com.destrostudios.grid.client.ClientApplication;
+import com.destrostudios.grid.client.gui.GuiColors;
 import com.destrostudios.grid.client.gui.GuiNextPlayer;
 import com.destrostudios.grid.client.gui.GuiSpell;
 import com.jme3.app.Application;
@@ -156,7 +157,7 @@ public class GameGuiAppState extends BaseAppState<ClientApplication> {
             containerNextPlayer.setPreferredSize(new Vector3f(containerWidth, containerHeight, 0));
             if (i == 0) {
                 TbtQuadBackgroundComponent containerBackground = (TbtQuadBackgroundComponent) containerNextPlayer.getBackground();
-                containerBackground.setColor(new ColorRGBA(0.75f, 0.75f, 0, 0.5f));
+                containerBackground.setColor(GuiColors.COLOR_ACTIVE);
             }
             guiNode.attachChild(containerNextPlayer);
 

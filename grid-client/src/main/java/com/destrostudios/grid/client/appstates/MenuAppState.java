@@ -3,6 +3,7 @@ package com.destrostudios.grid.client.appstates;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
+import com.destrostudios.grid.client.gui.GuiColors;
 import com.destrostudios.grid.shared.Characters;
 import com.destrostudios.grid.shared.Maps;
 import com.destrostudios.grid.shared.PlayerInfo;
@@ -35,6 +36,9 @@ import java.util.function.Supplier;
 
 public class MenuAppState extends BaseAppState<ClientApplication> {
 
+    private int buttonHeight = 40;
+
+    private LinkedList<JwtAuthenticationUser> lobbyPlayers;
     private StartGameInfo startGameInfo;
     private PlayerInfo ownPlayerInfo;
     private Node guiNode = new Node();
@@ -44,11 +48,12 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
     private HashMap<Long, Button> buttonsPlayers = new HashMap<>();
     private HashMap<UUID, Button> buttonsGames = new HashMap<>();
     private LinkedList<Object> tmpButtonKeysToRemove = new LinkedList<>();
+    private Button btnStartLobbyGame;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        initializeStartGameInfo();
+        initializeLobby();
 
         AppSettings appSettings = mainApplication.getContext().getSettings();
         int totalWidth = appSettings.getWidth();
@@ -75,6 +80,12 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
         addSectionContainer("Players", containerX1, containerY, containerWidth, containerHeight);
         addSectionContainer("Games", containerX2, containerY, containerWidth, containerHeight);
 
+        btnStartLobbyGame = createButton();
+        btnStartLobbyGame.setText("");
+        btnStartLobbyGame.setLocalTranslation(new Vector3f(containerX1 + 1, containerY - containerHeight + 1 + buttonHeight, 1));
+        btnStartLobbyGame.addCommands(Button.ButtonAction.Up, source -> startLobbyGame());
+        guiNode.attachChild(btnStartLobbyGame);
+
         int containerButtonY = (containerY - 40);
         buttonContainerPlayers = addSectionButtonContainer(containerX1, containerButtonY);
         buttonContainerGames = addSectionButtonContainer(containerX2, containerButtonY);
@@ -90,15 +101,17 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
         camera.setRotation(new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y));
     }
 
-    private void initializeStartGameInfo() {
+    private void initializeLobby() {
+        JwtAuthenticationUser ownJwtAuthenticationUser = mainApplication.getJwtAuthenticationUser();
+        lobbyPlayers = new LinkedList<>();
+        lobbyPlayers.add(ownJwtAuthenticationUser);
+
         startGameInfo = new StartGameInfo();
-        LinkedList<PlayerInfo> team1 = new LinkedList<>();
-        JwtAuthenticationUser jwtAuthenticationUser = mainApplication.getJwtAuthenticationUser();
-        ownPlayerInfo = new PlayerInfo(jwtAuthenticationUser.id, jwtAuthenticationUser.login, Characters.getRandomCharacterName());
-        team1.add(ownPlayerInfo);
-        startGameInfo.setTeam1(team1);
+        startGameInfo.setTeam1(new LinkedList<>());
         startGameInfo.setTeam2(new LinkedList<>());
         startGameInfo.setMapName(Maps.getRandomMapName());
+
+        ownPlayerInfo = new PlayerInfo(ownJwtAuthenticationUser.id, ownJwtAuthenticationUser.login, Characters.getRandomCharacterName());
     }
 
     private void addSectionContainer(String title, int containerX, int containerY, int containerWidth, int containerHeight) {
@@ -123,6 +136,7 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
     private Container addSectionButtonContainer(int containerX, int y) {
         Container buttonContainer = new Container();
         buttonContainer.setLocalTranslation(containerX + 1, y, 0);
+        buttonContainer.setBackground(null);
         guiNode.attachChild(buttonContainer);
         return buttonContainer;
     }
@@ -221,26 +235,60 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
         JwtClientModule jwtClientModule = mainApplication.getToolsClient().getModule(JwtClientModule.class);
         List<JwtAuthenticationUser> players = jwtClientModule.getOnlineUsers();
 
-        updateButtons(buttonContainerPlayers, buttonsPlayers, players, player -> player.id, player -> player.login, player -> {
-            PlayerInfo opponentPlayerInfo = new PlayerInfo(player.id, player.login, Characters.getRandomCharacterName());
-            startGameInfo.getTeam2().add(opponentPlayerInfo);
+        updateButtons(
+            buttonContainerPlayers,
+            buttonsPlayers,
+            players,
+            player -> player.id,
+            player -> player.login,
+            player -> lobbyPlayers.contains(player),
+            player -> {
+                if (player.id != ownPlayerInfo.getId()) {
+                    if (lobbyPlayers.contains(player)) {
+                        lobbyPlayers.remove(player);
+                    } else {
+                        lobbyPlayers.add(player);
+                    }
+                }
+            },
+            playerId -> lobbyPlayers.removeIf(lobbyPlayer -> lobbyPlayer.id == playerId)
+        );
 
-            GameStartClientModule gameStartModule = mainApplication.getToolsClient().getModule(GameStartClientModule.class);
-            gameStartModule.startNewGame(startGameInfo);
-        });
+        boolean isLobbyBigEnough = (lobbyPlayers.size() > 1);
+        btnStartLobbyGame.setEnabled(isLobbyBigEnough);
+        btnStartLobbyGame.setText(isLobbyBigEnough ? "Start Game" : "Select at least 2 players to start a game");
+        markButtonAsActive(btnStartLobbyGame, isLobbyBigEnough);
     }
 
     private void updateGamesContainer() {
         LobbyClientModule<StartGameInfo> lobbyClientModule = getLobbyClientModule();
         Set<UUID> games = lobbyClientModule.getListedGames().keySet();
 
-        updateButtons(buttonContainerGames, buttonsGames, games, Function.identity(), gameUUID -> {
-            StartGameInfo startGameInfo = lobbyClientModule.getListedGames().get(gameUUID);
-            return startGameInfo.getTeam1().get(0).getLogin() + " vs " + startGameInfo.getTeam2().get(0).getLogin();
-        }, gameUUID -> getGameClientModule().join(gameUUID));
+        updateButtons(
+            buttonContainerGames,
+            buttonsGames,
+            games,
+            Function.identity(),
+            gameUUID -> {
+                StartGameInfo startGameInfo = lobbyClientModule.getListedGames().get(gameUUID);
+                return startGameInfo.getTeam1().get(0).getLogin() + " vs " + startGameInfo.getTeam2().get(0).getLogin();
+            },
+            gameUUID -> false,
+            gameUUID -> getGameClientModule().join(gameUUID),
+            gameUUID -> {}
+        );
     }
 
-    private <K, O> void updateButtons(Container buttonContainer, HashMap<K, Button> buttons, Collection<O> objects, Function<O, K> getKey, Function<O, String> getText, Consumer<O> action) {
+    private <K, O> void updateButtons(
+        Container buttonContainer,
+        HashMap<K, Button> buttons,
+        Collection<O> objects,
+        Function<O, K> getKey,
+        Function<O, String> getText,
+        Function<O, Boolean> isActive,
+        Consumer<O> action,
+        Consumer<K> onRemove
+    ) {
         for (Map.Entry<K, Button> entry : buttons.entrySet()) {
             if (objects.stream().noneMatch(object -> getKey.apply(object) == entry.getKey())) {
                 tmpButtonKeysToRemove.add(entry.getKey());
@@ -249,12 +297,14 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
         for (Object key : tmpButtonKeysToRemove) {
             Button button = buttons.remove(key);
             buttonContainer.removeChild(button);
+            onRemove.accept((K) key);
         }
         tmpButtonKeysToRemove.clear();
         for (O object : objects) {
             K key = getKey.apply(object);
-            if (!buttons.containsKey(key)) {
-                Button button = createButton();
+            Button button = buttons.get(key);
+            if (button == null) {
+                button = createButton();
                 button.setText(getText.apply(object));
                 button.addCommands(Button.ButtonAction.Up, source -> {
                     action.accept(object);
@@ -262,17 +312,47 @@ public class MenuAppState extends BaseAppState<ClientApplication> {
                 buttonContainer.addChild(button);
                 buttons.put(key, button);
             }
+            markButtonAsActive(button, isActive.apply(object));
         }
     }
 
     private Button createButton() {
         Button button = new Button("");
-        button.setPreferredSize(new Vector3f(containerWidth - 4, 40, 0));
+        button.setPreferredSize(new Vector3f(containerWidth - 2, buttonHeight, 0));
         button.setTextHAlignment(HAlignment.Center);
         button.setTextVAlignment(VAlignment.Center);
         button.setFontSize(20);
         button.setColor(ColorRGBA.White);
         return button;
+    }
+
+    private void markButtonAsActive(Button button, boolean isActive) {
+        ColorRGBA backgroundColor = (isActive ? GuiColors.COLOR_ACTIVE : GuiColors.COLOR_DEFAULT);
+        TbtQuadBackgroundComponent buttonBackground = (TbtQuadBackgroundComponent) button.getBackground();
+        if (!buttonBackground.getColor().equals(backgroundColor)) {
+            buttonBackground.setColor(backgroundColor);
+        }
+    }
+
+    private void startLobbyGame() {
+        boolean isTeam1Or2 = true;
+        for (JwtAuthenticationUser lobbyPlayer : lobbyPlayers) {
+            PlayerInfo playerInfo;
+            if (lobbyPlayer == mainApplication.getJwtAuthenticationUser()) {
+                playerInfo = ownPlayerInfo;
+            } else {
+                playerInfo = new PlayerInfo(lobbyPlayer.id, lobbyPlayer.login, Characters.getRandomCharacterName());
+            }
+            if (isTeam1Or2) {
+                startGameInfo.getTeam1().add(playerInfo);
+            } else {
+                startGameInfo.getTeam2().add(playerInfo);
+            }
+            isTeam1Or2 = (!isTeam1Or2);
+        }
+
+        GameStartClientModule<StartGameInfo> gameStartModule = mainApplication.getToolsClient().getModule(GameStartClientModule.class);
+        gameStartModule.startNewGame(startGameInfo);
     }
 
     private void checkIfJoinedGame() {
