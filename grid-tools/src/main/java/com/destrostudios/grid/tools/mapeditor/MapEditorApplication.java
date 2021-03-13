@@ -31,7 +31,7 @@ import javax.swing.JOptionPane;
 public class MapEditorApplication extends BaseApplication implements ActionListener {
 
     private static final String MAP_NAME = "DestroMap";
-    private static final String[] VISUALS_GROUND = new String[]{"grass", "sand", "snow"};
+    private static final String[] VISUALS_GROUND = new String[]{"grass", "sand", "snow", "glass"};
     private static final String[] VISUALS_OBSTACLES = new String[]{"tree", "rock", "pillar", "pillar_script"};
 
     private int marginX = 100;
