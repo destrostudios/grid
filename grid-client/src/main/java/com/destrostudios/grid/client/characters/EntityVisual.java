@@ -12,16 +12,16 @@ import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.ProgressBar;
 import lombok.Getter;
 
-public class PlayerVisual {
+public class EntityVisual {
 
-    public PlayerVisual(Camera camera, AssetManager assetManager, CharacterModel characterModel, ColorRGBA nameColor) {
-        this.characterModel = characterModel;
-        modelObject = new ModelObject(assetManager, "models/" + characterModel.getModelName() + "/skin_default.xml");
-        modelObject.addControl(new PlayerVisualControl(this, camera));
+    public EntityVisual(Camera camera, AssetManager assetManager, ModelInfo modelInfo, ColorRGBA nameColor) {
+        this.modelInfo = modelInfo;
+        modelObject = new ModelObject(assetManager, "models/" + modelInfo.getModelName() + "/skin.xml");
+        modelObject.addControl(new EntityVisualControl(this, camera));
         modelObject.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        playIdleAnimation();
         // Calculate it here (in t-pose) before animations start changing the bounding box
         height = JMonkeyUtil.getWorldSize(modelObject).getY();
+        playIdleAnimation();
 
         lblName = new Label("");
         lblName.setFontSize(14);
@@ -32,7 +32,7 @@ public class PlayerVisual {
         healthBar.getLabel().setColor(ColorRGBA.White);
     }
     @Getter
-    private CharacterModel characterModel;
+    private ModelInfo modelInfo;
     @Getter
     private ModelObject modelObject;
     @Getter
@@ -41,21 +41,38 @@ public class PlayerVisual {
     private Label lblName;
     @Getter
     private ProgressBar healthBar;
-    private NextAnimation nextAnimation;
+    private boolean hasNextAnimationInfo;
+    private AnimationInfo nextAnimationInfo;
 
     public void updateAnimation() {
-        if (nextAnimation != null) {
-            modelObject.playAnimation(nextAnimation.getName(), nextAnimation.getLoopDuration(), false);
-            nextAnimation = null;
+        if (hasNextAnimationInfo) {
+            if (nextAnimationInfo != null) {
+                modelObject.playAnimation(nextAnimationInfo.getName(), nextAnimationInfo.getLoopDuration(), false);
+                nextAnimationInfo = null;
+            } else {
+                modelObject.stopAndRewindAnimation();
+            }
+            hasNextAnimationInfo = false;
         }
     }
 
     public void playIdleAnimation() {
-        nextAnimation = new NextAnimation(characterModel.getIdleAnimationName(), characterModel.getIdleAnimationLoopDuration());
+        setNextAnimationInfo(modelInfo.getIdleAnimation());
     }
 
     public void playWalkAnimation(float walkSpeed) {
-        nextAnimation = new NextAnimation(characterModel.getWalkAnimationName(), (characterModel.getWalkStepDistance() / walkSpeed));
+        AnimationInfo walkAnimation = modelInfo.getWalkAnimation();
+        if (walkAnimation != null) {
+            // walkAnimation.loopDuration = walkStepDistance
+            setNextAnimationInfo(new AnimationInfo(walkAnimation.getName(), (walkAnimation.getLoopDuration() / walkSpeed)));
+        } else {
+            setNextAnimationInfo(null);
+        }
+    }
+
+    private void setNextAnimationInfo(AnimationInfo animationInfo) {
+        nextAnimationInfo = animationInfo;
+        hasNextAnimationInfo = true;
     }
 
     public void updateGuiControlPositions(Camera camera) {

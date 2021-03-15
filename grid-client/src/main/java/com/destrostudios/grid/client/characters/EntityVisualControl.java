@@ -5,20 +5,20 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
 
-public class PlayerVisualControl extends AbstractControl {
+public class EntityVisualControl extends AbstractControl {
 
-    private PlayerVisual playerVisual;
+    private EntityVisual entityVisual;
     private Camera camera;
 
-    public PlayerVisualControl(PlayerVisual playerVisual, Camera camera) {
-        this.playerVisual = playerVisual;
+    public EntityVisualControl(EntityVisual entityVisual, Camera camera) {
+        this.entityVisual = entityVisual;
         this.camera = camera;
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        playerVisual.updateAnimation();
-        playerVisual.updateGuiControlPositions(camera);
+        entityVisual.updateAnimation();
+        entityVisual.updateGuiControlPositions(camera);
     }
 
     @Override

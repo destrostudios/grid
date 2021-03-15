@@ -1,23 +1,23 @@
 package com.destrostudios.grid.client.animations;
 
 import com.destrostudios.grid.client.characters.BlockingAnimation;
-import com.destrostudios.grid.client.models.ModelObject;
+import com.destrostudios.grid.client.characters.EntityVisual;
 
 public class ModelAnimation extends Animation {
 
-    private ModelObject modelObject;
+    private EntityVisual entityVisual;
     private BlockingAnimation blockingAnimation;
     private float passedTime;
 
-    public ModelAnimation(ModelObject modelObject, BlockingAnimation blockingAnimation) {
-        this.modelObject = modelObject;
+    public ModelAnimation(EntityVisual entityVisual, BlockingAnimation blockingAnimation) {
+        this.entityVisual = entityVisual;
         this.blockingAnimation = blockingAnimation;
     }
 
     @Override
     public void start() {
         super.start();
-        modelObject.playAnimation(blockingAnimation.getName(), blockingAnimation.getTotalDuration());
+        entityVisual.getModelObject().playAnimation(blockingAnimation.getName(), blockingAnimation.getTotalDuration());
     }
 
     @Override
@@ -37,6 +37,6 @@ public class ModelAnimation extends Animation {
     @Override
     public void end() {
         super.end();
-        modelObject.stopAndRewindAnimation();
+        entityVisual.playIdleAnimation();
     }
 }

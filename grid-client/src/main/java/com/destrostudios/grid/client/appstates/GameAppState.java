@@ -6,15 +6,10 @@ import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
-import com.destrostudios.grid.client.animations.Animation;
-import com.destrostudios.grid.client.animations.AnnouncementAnimation;
-import com.destrostudios.grid.client.animations.HealthAnimation;
-import com.destrostudios.grid.client.animations.MoveAnimation;
-import com.destrostudios.grid.client.animations.PlayerModelAnimation;
-import com.destrostudios.grid.client.animations.WalkAnimation;
+import com.destrostudios.grid.client.animations.*;
 import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.BlockingAnimation;
-import com.destrostudios.grid.client.characters.PlayerVisual;
+import com.destrostudios.grid.client.characters.EntityVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiNextPlayer;
 import com.destrostudios.grid.client.gui.GuiSpell;
@@ -77,12 +72,12 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         updateVisuals();
 
         gameProxy.addPreHandler(MoveEvent.class, (EventHandler<MoveEvent>) (event, entityDataSupplier) -> {
-            PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
+            EntityVisual entityVisual = getAppState(MapAppState.class).getEntityVisual(event.getEntity());
             PositionComponent positionComponent = event.getPositionComponent();
             if (event.getMoveType() == MoveType.WALK) {
-                playAnimation(new WalkAnimation(playerVisual, positionComponent.getX(), positionComponent.getY(), 8));
+                playAnimation(new WalkAnimation(entityVisual, positionComponent.getX(), positionComponent.getY(), 8));
             } else if (event.getMoveType() != MoveType.TELEPORT) {
-                playAnimation(new MoveAnimation(playerVisual, positionComponent.getX(), positionComponent.getY(), 30));
+                playAnimation(new MoveAnimation(entityVisual, positionComponent.getX(), positionComponent.getY(), 30));
             }
         });
         gameProxy.addPreHandler(HealthPointsChangedEvent.class, (EventHandler<HealthPointsChangedEvent>) (event, entityDataSupplier) -> {
@@ -90,20 +85,20 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             int currentHealth = entityData.getComponent(event.getEntity(), HealthPointsComponent.class).getHealth();
             int newHealth = event.getNewPoints();
             if (currentHealth != newHealth) {
-                PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getEntity());
-                playAnimation(new HealthAnimation(playerVisual, newHealth));
+                EntityVisual entityVisual = getAppState(MapAppState.class).getEntityVisual(event.getEntity());
+                playAnimation(new HealthAnimation(entityVisual, newHealth));
             } else {
                 System.err.println("HealthPointsChangedEvent, where health didn't change...");
             }
         });
         gameProxy.addPreHandler(SpellCastedEvent.class, (EventHandler<SpellCastedEvent>) (event, entityDataSupplier) -> {
             EntityData entityData = entityDataSupplier.get();
-            PlayerVisual playerVisual = getAppState(MapAppState.class).getPlayerVisual(event.getPlayerEntity());
+            EntityVisual entityVisual = getAppState(MapAppState.class).getEntityVisual(event.getPlayerEntity());
             String spellName = entityData.getComponent(event.getSpell(), NameComponent.class).getName();
             BlockingAnimation castAnimation = CastAnimations.get(spellName);
             if (castAnimation != null) {
-                lookAt(entityData, event.getPlayerEntity(), playerVisual.getModelObject(), event.getX(), event.getY());
-                playAnimation(new PlayerModelAnimation(playerVisual, castAnimation));
+                lookAt(entityData, event.getPlayerEntity(), entityVisual.getModelObject(), event.getX(), event.getY());
+                playAnimation(new ModelAnimation(entityVisual, castAnimation));
             }
         });
         gameProxy.addResolvedHandler(Event.class, (event, entityDataSupplier) -> updateVisuals());

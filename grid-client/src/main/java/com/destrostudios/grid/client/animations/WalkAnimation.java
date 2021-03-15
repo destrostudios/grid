@@ -1,22 +1,22 @@
 package com.destrostudios.grid.client.animations;
 
-import com.destrostudios.grid.client.characters.PlayerVisual;
+import com.destrostudios.grid.client.characters.EntityVisual;
 
 public class WalkAnimation extends MoveAnimation {
 
-    public WalkAnimation(PlayerVisual playerVisual, int targetX, int targetY, float speed) {
-        super(playerVisual, targetX, targetY, speed);
+    public WalkAnimation(EntityVisual entityVisual, int targetX, int targetY, float speed) {
+        super(entityVisual, targetX, targetY, speed);
     }
 
     @Override
     public void start() {
         super.start();
-        playerVisual.playWalkAnimation(speed);
+        entityVisual.playWalkAnimation(speed);
     }
 
     @Override
     public void end() {
         super.end();
-        playerVisual.playIdleAnimation();
+        entityVisual.playIdleAnimation();
     }
 }

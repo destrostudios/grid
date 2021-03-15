@@ -9,14 +9,12 @@ import com.destrostudios.grid.client.PositionUtil;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.blocks.GridBlock;
 import com.destrostudios.grid.client.blocks.GridBlocks;
-import com.destrostudios.grid.client.characters.CharacterModel;
-import com.destrostudios.grid.client.characters.CharacterModels;
-import com.destrostudios.grid.client.characters.PlayerVisual;
+import com.destrostudios.grid.client.characters.ModelInfo;
+import com.destrostudios.grid.client.characters.ModelInfos;
+import com.destrostudios.grid.client.characters.EntityVisual;
 import com.destrostudios.grid.client.maps.Map;
 import com.destrostudios.grid.client.maps.Maps;
 import com.destrostudios.grid.client.models.ModelObject;
-import com.destrostudios.grid.components.character.PlayerComponent;
-import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.VisualComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
@@ -31,13 +29,11 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
-import com.simsilica.lemur.Label;
 import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MapAppState extends BaseAppState<BaseApplication> {
 
@@ -50,8 +46,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private Node guiNode;
     private Node blockTerrainNode;
     private BlockTerrainControl blockTerrainControl;
-    private HashMap<Integer, PlayerVisual> playerVisuals = new HashMap<>();
-    private HashMap<Integer, ModelObject> obstacleModels = new HashMap<>();
+    private HashMap<Integer, EntityVisual> entityVisuals = new HashMap<>();
     private List<Integer> validGroundEntities = new LinkedList<>();
     private List<Integer> invalidGroundEntities = new LinkedList<>();
     private List<Integer> impactedGroundEntities = new LinkedList<>();
@@ -121,69 +116,61 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     public void updateVisuals() {
         updateTerrain();
 
-        // Obstacles
-        obstacleModels.forEach((obstacleEntity, modelObject) -> {
-            if (!entityData.hasEntity(obstacleEntity)) {
-                rootNode.detachChild(modelObject);
-                tmpRemovedEntities.add(obstacleEntity);
+        entityVisuals.forEach((entity, entityVisual) -> {
+            if (!entityData.hasEntity(entity)) {
+                rootNode.detachChild(entityVisual.getModelObject());
+                guiNode.detachChild(entityVisual.getLblName());
+                guiNode.detachChild(entityVisual.getHealthBar());
+                tmpRemovedEntities.add(entity);
             }
         });
         for (int entityToRemove : tmpRemovedEntities) {
-            obstacleModels.remove(entityToRemove);
+            entityVisuals.remove(entityToRemove);
         }
         tmpRemovedEntities.clear();
-        List<Integer> obstacleEntities = entityData.list(ObstacleComponent.class).stream()
-                .filter(entity -> !entityData.hasComponents(entity, PlayerComponent.class))
-                .collect(Collectors.toList());
-        for (int obstacleEntity : obstacleEntities) {
-            ModelObject obstacleModel = obstacleModels.computeIfAbsent(obstacleEntity, pe -> {
-                String modelName = entityData.getComponent(obstacleEntity, VisualComponent.class).getName();
-                ModelObject newObstacleModel = new ModelObject(mainApplication.getAssetManager(), "models/" + modelName + "/skin.xml");
-                newObstacleModel.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-                rootNode.attachChild(newObstacleModel);
-                return newObstacleModel;
-            });
+        for (int entity : entityData.list(VisualComponent.class)) {
+            EntityVisual entityVisual = entityVisuals.get(entity);
 
-            PositionComponent positionComponent = entityData.getComponent(obstacleEntity, PositionComponent.class);
-            obstacleModel.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), PositionUtil.CHARACTER_Y, PositionUtil.get3dCoordinate(positionComponent.getY()));
-        }
-
-        // Players
-        playerVisuals.forEach((playerEntity, playerVisual) -> {
-            if (!entityData.hasEntity(playerEntity)) {
-                rootNode.detachChild(playerVisual.getModelObject());
-                guiNode.detachChild(playerVisual.getLblName());
-                guiNode.detachChild(playerVisual.getHealthBar());
-                tmpRemovedEntities.add(playerEntity);
+            if (entityVisual == null) {
+                String visualName = entityData.getComponent(entity, VisualComponent.class).getName();
+                ModelInfo modelInfo = ModelInfos.get(visualName);
+                // Ground entities or other stuff without an implicit model
+                if (modelInfo == null) {
+                    continue;
+                }
+                entityVisual = new EntityVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), modelInfo, map.getPlayerNameColor());
+                rootNode.attachChild(entityVisual.getModelObject());
+                entityVisuals.put(entity, entityVisual);
             }
-        });
-        for (int entityToRemove : tmpRemovedEntities) {
-            playerVisuals.remove(entityToRemove);
-        }
-        tmpRemovedEntities.clear();
-        for (int playerEntity : entityData.list(PlayerComponent.class)) {
-            PlayerVisual playerVisual = playerVisuals.computeIfAbsent(playerEntity, pe -> {
-                String characterName = entityData.getComponent(playerEntity, VisualComponent.class).getName();
-                CharacterModel characterModel = CharacterModels.get(characterName);
-                PlayerVisual newPlayerVisual = new PlayerVisual(mainApplication.getCamera(), mainApplication.getAssetManager(), characterModel, map.getPlayerNameColor());
-                rootNode.attachChild(newPlayerVisual.getModelObject());
-                guiNode.attachChild(newPlayerVisual.getLblName());
-                guiNode.attachChild(newPlayerVisual.getHealthBar());
-                return newPlayerVisual;
-            });
 
-            ModelObject modelObject = playerVisual.getModelObject();
-            PositionComponent positionComponent = entityData.getComponent(playerEntity, PositionComponent.class);
-            HealthPointsComponent healthPointsComponent = entityData.getComponent(playerEntity, HealthPointsComponent.class);
-            MaxHealthComponent maxHealthComponent = entityData.getComponent(playerEntity, MaxHealthComponent.class);
+            // Position
+            PositionComponent positionComponent = entityData.getComponent(entity, PositionComponent.class);
+            ModelObject modelObject = entityVisual.getModelObject();
             modelObject.setLocalTranslation(PositionUtil.get3dCoordinate(positionComponent.getX()), 3, PositionUtil.get3dCoordinate(positionComponent.getY()));
 
-            Label lblName = playerVisual.getLblName();
-            String name = entityData.getComponent(playerEntity, NameComponent.class).getName();
-            lblName.setText(name);
+            // Name
+            NameComponent nameComponent = entityData.getComponent(entity, NameComponent.class);
+            if (nameComponent != null) {
+                entityVisual.getLblName().setText(nameComponent.getName());
+                guiNode.attachChild(entityVisual.getLblName());
+            } else {
+                guiNode.detachChild(entityVisual.getLblName());
+            }
 
-            playerVisual.setMaximumHealth(maxHealthComponent.getMaxHealth());
-            playerVisual.setCurrentHealth(healthPointsComponent.getHealth());
+            // Health
+            MaxHealthComponent maxHealthComponent = entityData.getComponent(entity, MaxHealthComponent.class);
+            if (maxHealthComponent != null) {
+                entityVisual.setMaximumHealth(maxHealthComponent.getMaxHealth());
+            }
+            HealthPointsComponent healthPointsComponent = entityData.getComponent(entity, HealthPointsComponent.class);
+            if (healthPointsComponent != null) {
+                entityVisual.setCurrentHealth(healthPointsComponent.getHealth());
+            }
+            if ((maxHealthComponent != null) && (healthPointsComponent != null)) {
+                guiNode.attachChild(entityVisual.getHealthBar());
+            } else {
+                guiNode.detachChild(entityVisual.getHealthBar());
+            }
         }
     }
 
@@ -230,8 +217,8 @@ public class MapAppState extends BaseAppState<BaseApplication> {
         mainApplication.getGuiNode().detachChild(guiNode);
     }
 
-    public PlayerVisual getPlayerVisual(int playerEntity) {
-        return playerVisuals.get(playerEntity);
+    public EntityVisual getEntityVisual(int playerEntity) {
+        return entityVisuals.get(playerEntity);
     }
 
     public Vector3Int getHoveredPosition(boolean getNeighborLocation) {

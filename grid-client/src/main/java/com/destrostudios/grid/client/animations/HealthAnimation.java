@@ -1,6 +1,6 @@
 package com.destrostudios.grid.client.animations;
 
-import com.destrostudios.grid.client.characters.PlayerVisual;
+import com.destrostudios.grid.client.characters.EntityVisual;
 import com.jme3.math.FastMath;
 import com.simsilica.lemur.RangedValueModel;
 
@@ -8,20 +8,20 @@ public class HealthAnimation extends Animation {
 
     private static final double DURATION = 0.5;
 
-    private PlayerVisual playerVisual;
+    private EntityVisual entityVisual;
     private int targetHealth;
     private float initialHealth;
     private float progress;
 
-    public HealthAnimation(PlayerVisual playerVisual, int targetHealth) {
-        this.playerVisual = playerVisual;
+    public HealthAnimation(EntityVisual entityVisual, int targetHealth) {
+        this.entityVisual = entityVisual;
         this.targetHealth = targetHealth;
     }
 
     @Override
     public void start() {
         super.start();
-        RangedValueModel healthBarModel = playerVisual.getHealthBar().getModel();
+        RangedValueModel healthBarModel = entityVisual.getHealthBar().getModel();
         initialHealth = (float) healthBarModel.getValue();
     }
 
@@ -30,7 +30,7 @@ public class HealthAnimation extends Animation {
         super.update(tpf);
         progress += (tpf / DURATION);
         float health = FastMath.interpolateLinear(progress, initialHealth, targetHealth);
-        playerVisual.setCurrentHealth(health);
+        entityVisual.setCurrentHealth(health);
         if (progress >= 1) {
             finish();
         }
