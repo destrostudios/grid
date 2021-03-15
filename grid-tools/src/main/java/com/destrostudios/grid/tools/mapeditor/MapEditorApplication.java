@@ -146,7 +146,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
             MapContainer mapContainer = ComponentsContainerSerializer.readSeriazableFromRessources(mapName, MapContainer.class);
             EntityWorld entityWorld = new EntityWorld();
             entityWorld.getWorld().putAll(mapContainer.getComponents());
-            stateManager.attach(new MapAppState(mapName, entityWorld));
+            stateManager.attach(new MapAppState(mapName, entityWorld, null));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

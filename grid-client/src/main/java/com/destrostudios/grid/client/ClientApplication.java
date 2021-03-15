@@ -29,7 +29,7 @@ public class ClientApplication extends BaseApplication {
 
     public void startGame(GameProxy gameProxy) {
         stateManager.detach(stateManager.getState(MenuAppState.class));
-        stateManager.attach(new MapAppState(gameProxy.getStartGameInfo().getMapName(), gameProxy.getGame().getData()));
+        stateManager.attach(new MapAppState(gameProxy.getStartGameInfo().getMapName(), gameProxy.getGame().getData(), gameProxy.getPlayerEntity()));
         stateManager.attach(new GameGuiAppState());
         stateManager.attach(new GameAppState(gameProxy));
     }

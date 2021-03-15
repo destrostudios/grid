@@ -12,9 +12,11 @@ import com.destrostudios.grid.client.blocks.GridBlocks;
 import com.destrostudios.grid.client.characters.ModelInfo;
 import com.destrostudios.grid.client.characters.ModelInfos;
 import com.destrostudios.grid.client.characters.EntityVisual;
+import com.destrostudios.grid.client.gui.GuiColors;
 import com.destrostudios.grid.client.maps.Map;
 import com.destrostudios.grid.client.maps.Maps;
 import com.destrostudios.grid.client.models.ModelObject;
+import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.VisualComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
@@ -25,10 +27,13 @@ import com.destrostudios.grid.entities.EntityData;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResults;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
+import com.simsilica.lemur.ProgressBar;
+import com.simsilica.lemur.component.QuadBackgroundComponent;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -40,6 +45,7 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private Map map;
     @Getter
     private EntityData entityData;
+    private Integer ownPlayerEntity;
     private int mapSizeX;
     private int mapSizeY;
     private Node rootNode;
@@ -53,9 +59,10 @@ public class MapAppState extends BaseAppState<BaseApplication> {
     private List<Integer> reachableGroundEntities = new LinkedList<>();
     private List<Integer> tmpRemovedEntities = new LinkedList<>();
 
-    public MapAppState(String mapName, EntityData entityData) {
+    public MapAppState(String mapName, EntityData entityData, Integer ownPlayerEntity) {
         this.map = Maps.get(mapName);
         this.entityData = entityData;
+        this.ownPlayerEntity = ownPlayerEntity;
     }
 
     @Override
@@ -166,12 +173,34 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             if (healthPointsComponent != null) {
                 entityVisual.setCurrentHealth(healthPointsComponent.getHealth());
             }
+            ProgressBar healthBar = entityVisual.getHealthBar();
             if ((maxHealthComponent != null) && (healthPointsComponent != null)) {
-                guiNode.attachChild(entityVisual.getHealthBar());
+                ColorRGBA healthBarColor = getHealthBarColor(entityData, entity);
+                QuadBackgroundComponent healthBarValueIndicatorBackground = (QuadBackgroundComponent) healthBar.getValueIndicator().getBackground();
+                if (healthBarValueIndicatorBackground.getColor() != healthBarColor) {
+                    healthBarValueIndicatorBackground.setColor(healthBarColor);
+                }
+                guiNode.attachChild(healthBar);
             } else {
-                guiNode.detachChild(entityVisual.getHealthBar());
+                guiNode.detachChild(healthBar);
             }
         }
+    }
+
+    private ColorRGBA getHealthBarColor(EntityData entityData, int entity) {
+        if ((ownPlayerEntity != null) && (entity == ownPlayerEntity)) {
+            return GuiColors.COLOR_HEALTHBAR_SELF;
+        }
+        return (isAllied(entityData, entity) ? GuiColors.COLOR_HEALTHBAR_ALLIED : GuiColors.COLOR_HEALTHBAR_ENEMY);
+    }
+
+    private boolean isAllied(EntityData entityData, int entity) {
+        if (ownPlayerEntity != null) {
+            TeamComponent ownTeamComponent = entityData.getComponent(ownPlayerEntity, TeamComponent.class);
+            TeamComponent teamComponent = entityData.getComponent(entity, TeamComponent.class);
+            return ((teamComponent != null) && (teamComponent.getTeam() == ownTeamComponent.getTeam()));
+        }
+        return false;
     }
 
     public void setValidGroundEntities(List<Integer> validGroundEntities, List<Integer> invalidGroundEntities) {
