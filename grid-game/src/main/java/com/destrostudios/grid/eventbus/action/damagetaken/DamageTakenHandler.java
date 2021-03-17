@@ -20,12 +20,15 @@ public class DamageTakenHandler implements EventHandler<DamageTakenEvent> {
     public void onEvent(DamageTakenEvent event, Supplier<EntityData> entityDataSupplier) {
         EntityData entityData = entityDataSupplier.get();
         HealthPointsComponent component = entityData.getComponent(event.getTargetEntity(), HealthPointsComponent.class);
+        float factor = event.isReflected() ? 0.5f : 1;
         int reflectionAmount = getReflectionAmount(event.getTargetEntity(), entityData);
 
-        eventbus.registerSubEvents(new HealthPointsChangedEvent(event.getTargetEntity(), Math.max(0, component.getHealth() - (event.getDamage() - reflectionAmount))));
-
-        if (reflectionAmount > 0 && event.getTargetEntity() != event.getSourceEntity()) {
-            eventbus.registerSubEvents(new DamageTakenEvent(reflectionAmount, event.getTargetEntity(), event.getSourceEntity()));
+        int dmg = Math.max(0, component.getHealth() - (event.getDamage() - reflectionAmount));
+        if (dmg > 0) {
+            eventbus.registerSubEvents(new HealthPointsChangedEvent(event.getTargetEntity(), dmg));
+        }
+        if (reflectionAmount > 0 && !event.isReflected() && event.getTargetEntity() != event.getSourceEntity()) {
+            eventbus.registerSubEvents(new DamageTakenEvent(reflectionAmount, event.getTargetEntity(), event.getSourceEntity(), true));
         }
     }
 

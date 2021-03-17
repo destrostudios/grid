@@ -98,7 +98,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             for (Integer affectedEntity : affectedEntities) {
                 TeamComponent teamAffectedEntity = entityData.getComponent(affectedEntity, TeamComponent.class);
                 if (damage.isTargetingAllies() || teamAffectedEntity.getTeam() != team.getTeam()) {
-                    followUpEvents.add(new DamageTakenEvent(damageAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), playerEntity, affectedEntity));
+                    followUpEvents.add(new DamageTakenEvent(damageAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), playerEntity, affectedEntity, false));
                 }
             }
         }

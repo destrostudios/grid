@@ -10,4 +10,5 @@ public class DamageTakenEvent implements Event {
     private final int damage;
     private final int sourceEntity;
     private final int targetEntity;
+    private final boolean isReflected;
 }
