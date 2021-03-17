@@ -273,7 +273,7 @@
       {
         "component": "RangeComponent",
         "castAreaShape": "PLUS",
-        "minRange": 1,
+        "minRange": 0,
         "maxRange": 5
       },
       {
