@@ -24,6 +24,20 @@ public class CastAnimations {
                     return new BlockingAnimation("slash1", 0.5f, 1);
                 case "Pressure":
                     return new BlockingAnimation("slash3", 0.5f, 1);
+                // Alice
+                case "AP Buff":
+                case "Regen Buff":
+                    return new BlockingAnimation("spell1", 0.6f, 1.15f);
+                case "Reflection Buff":
+                    return new BlockingAnimation("spell10", 0.865f, 1.815f);
+                case "Alice AOE":
+                    return new BlockingAnimation("spell4", 0.85f, 1.7f);
+                case "Alice Push":
+                    return new BlockingAnimation("spell6", 0.8f, 1.01f);
+                case "Nothing":
+                    return new BlockingAnimation("spell5", 0.935f, 1.635f);
+                case "Alice Comet":
+                    return new BlockingAnimation("spell5", 0.385f, 1.1f);
             }
             return null;
         });

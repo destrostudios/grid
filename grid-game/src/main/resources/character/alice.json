@@ -56,7 +56,7 @@
     "2": [
       {
         "component": "NameComponent",
-        "name": "Buff"
+        "name": "AP Buff"
       },
       {
         "component": "TooltipComponent",
@@ -94,7 +94,7 @@
     "3": [
       {
         "component": "NameComponent",
-        "name": "Blblbl"
+        "name": "Regen Buff"
       },
       {
         "component": "TooltipComponent",
@@ -132,7 +132,7 @@
     "4": [
       {
         "component": "NameComponent",
-        "name": "Wound"
+        "name": "Reflection Buff"
       },
       {
         "component": "TooltipComponent",
@@ -170,7 +170,7 @@
     "5": [
       {
         "component": "NameComponent",
-        "name": "Hit"
+        "name": "Alice AOE"
       },
       {
         "component": "TooltipComponent",
@@ -218,7 +218,7 @@
     "6": [
       {
         "component": "NameComponent",
-        "name": "Intimidation"
+        "name": "Alice Push"
       },
       {
         "component": "TooltipComponent",
@@ -299,7 +299,7 @@
     "8": [
       {
         "component": "NameComponent",
-        "name": "Hit"
+        "name": "Alice Comet"
       },
       {
         "component": "TooltipComponent",
