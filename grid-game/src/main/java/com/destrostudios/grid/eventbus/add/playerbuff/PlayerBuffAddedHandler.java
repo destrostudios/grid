@@ -10,6 +10,7 @@ import com.destrostudios.grid.components.properties.MovementPointsComponent;
 import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.ReflectionBuffComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -73,7 +74,13 @@ public class PlayerBuffAddedHandler implements EventHandler<PlayerBuffAddedEvent
             subevents.add(new HealthPointsChangedEvent(event.getTargetEntity(), healthPointsComponent.getHealth() + hpBuff.getBuffAmount()));
             subevents.add(new MaxHealthPointsChangedEvent(event.getTargetEntity(), maxHpComponent.getMaxHealth() + hpBuff.getBuffAmount()));
         }
+        if (entityData.hasComponents(event.getSpellEntity(), ReflectionBuffComponent.class)) {
+            int buffEntity = entityData.createEntity();
+            buffs.add(buffEntity);
 
+            ReflectionBuffComponent reflectionBuff = entityData.getComponent(event.getSpellEntity(), ReflectionBuffComponent.class);
+            entityData.addComponent(buffEntity, new ReflectionBuffComponent(reflectionBuff.getBuffAmount(), reflectionBuff.getBuffDuration(), false));
+        }
         entityData.addComponent(event.getTargetEntity(), new BuffsComponent(buffs));
         eventbus.registerSubEvents(subevents);
     }

@@ -13,5 +13,4 @@ public class HealPerTurnComponent implements Component {
     private int healMinValue;
     private int healMaxValue;
     private int duration;
-    private int sourceEntity;
 }

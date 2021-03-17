@@ -12,4 +12,5 @@ import lombok.Value;
 public class DamageComponent implements Component {
     int minDmg;
     int maxDmg;
+    boolean targetingAllies;
 }

@@ -1,5 +1,6 @@
 package com.destrostudios.grid.eventbus.action.spellcasted;
 
+import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.AttackPointsComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
@@ -12,14 +13,8 @@ import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
-import com.destrostudios.grid.components.spells.movements.DashComponent;
-import com.destrostudios.grid.components.spells.movements.PullComponent;
-import com.destrostudios.grid.components.spells.movements.PushComponent;
-import com.destrostudios.grid.components.spells.movements.TeleportComponent;
-import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
-import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
-import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.movements.*;
+import com.destrostudios.grid.components.spells.perturn.*;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -29,6 +24,7 @@ import com.destrostudios.grid.eventbus.action.displace.PushEvent;
 import com.destrostudios.grid.eventbus.action.healreceived.HealReceivedEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveType;
+import com.destrostudios.grid.eventbus.action.swap.SwapEvent;
 import com.destrostudios.grid.eventbus.add.playerbuff.PlayerBuffAddedEvent;
 import com.destrostudios.grid.eventbus.add.poison.StatsPerTurnEvent;
 import com.destrostudios.grid.eventbus.add.spellbuff.SpellBuffAddedEvent;
@@ -53,6 +49,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         EntityData entityData = entityDataSupplier.get();
         int spell = event.getSpell();
         int playerEntity = event.getPlayerEntity();
+        TeamComponent team = entityData.getComponent(playerEntity, TeamComponent.class);
 
         if (entityData.hasComponents(spell, CooldownComponent.class)) {
             entityData.addComponent(spell, new OnCooldownComponent(entityData.getComponent(spell, CooldownComponent.class).getCooldown()));
@@ -77,7 +74,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
                 followUpEvents.add(new HealthPointsChangedEvent(event.getPlayerEntity(), hp.getHealth() - costComponent.getHpCost()));
             }
         }
-        List<Integer> affectedEntities = SpellUtils.getAffectedPlayerEntities(spell, entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
+        List<Integer> affectedEntities = SpellUtils.getAffectedPlayerEntities(spell, event.getPlayerEntity(), entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
                 new PositionComponent(event.getX(), event.getY()), entityData);
 
         // 2. Heals
@@ -86,7 +83,10 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             int healAmount = randomProxy.nextInt(heal.getMinHeal(), heal.getMaxHeal());
 
             for (Integer affectedEntity : affectedEntities) {
-                followUpEvents.add(new HealReceivedEvent(healAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), affectedEntity));
+                TeamComponent teamAffectedEntity = entityData.getComponent(affectedEntity, TeamComponent.class);
+                if (heal.isTargetingEnemies() || teamAffectedEntity.getTeam() == team.getTeam()) {
+                    followUpEvents.add(new HealReceivedEvent(healAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, HealBuffComponent.class), affectedEntity));
+                }
             }
         }
 
@@ -96,7 +96,10 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             int damageAmount = randomProxy.nextInt(damage.getMinDmg(), damage.getMaxDmg());
 
             for (Integer affectedEntity : affectedEntities) {
-                followUpEvents.add(new DamageTakenEvent(damageAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), affectedEntity));
+                TeamComponent teamAffectedEntity = entityData.getComponent(affectedEntity, TeamComponent.class);
+                if (damage.isTargetingAllies() || teamAffectedEntity.getTeam() != team.getTeam()) {
+                    followUpEvents.add(new DamageTakenEvent(damageAmount + SpellUtils.getBuffAmount(spell, playerEntity, entityData, DamageBuffComponent.class), playerEntity, affectedEntity));
+                }
             }
         }
 
@@ -139,6 +142,10 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
         if (entityData.hasComponents(spell, TeleportComponent.class)) {
             followUpEvents.add(new MoveEvent(playerEntity, new PositionComponent(event.getX(), event.getY()), MoveType.TELEPORT));
         }
+        if (entityData.hasComponents(spell, SwapComponent.class)) {
+            int targetEntity = SpellUtils.calculateTargetEntity(event.getX(), event.getY(), entityData);
+            followUpEvents.add(new SwapEvent(playerEntity, targetEntity));
+        }
 
         // 5. buffs
         List<Event> buffEvents = getBuffEvents(event, entityData, spell, playerEntity);
@@ -148,7 +155,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
 
         // 6. Stats per turn
         if (entityData.hasComponents(spell, AttackPointsPerTurnComponent.class) || entityData.hasComponents(spell, MovementPointsPerTurnComponent.class)
-                || entityData.hasComponents(spell, DamagePerTurnComponent.class)) {
+                || entityData.hasComponents(spell, DamagePerTurnComponent.class) || entityData.hasComponents(spell, HealPerTurnComponent.class)) {
             for (Integer affectedEntity : affectedEntities) {
                 followUpEvents.add(new StatsPerTurnEvent(playerEntity, affectedEntity, spell));
             }

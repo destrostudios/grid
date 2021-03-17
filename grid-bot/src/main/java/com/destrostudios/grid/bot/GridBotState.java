@@ -16,7 +16,7 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
-import com.destrostudios.grid.util.GameOverUtils;
+import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.grid.util.SpellUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.BotGameState;
@@ -123,7 +123,7 @@ public class GridBotState implements BotGameState<Action, Team> {
 
     @Override
     public boolean isGameOver() {
-        return GameOverUtils.getGameOverInfo(game.getData()).isGameIsOver();
+        return game.getGameOverInfo().isGameIsOver();
     }
 
     @Override

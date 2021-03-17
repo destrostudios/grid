@@ -4,17 +4,35 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.entities.EntityData;
+import com.destrostudios.grid.eventbus.Eventbus;
+import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-public class GameOverUtils {
+@Getter
+public class GameOverInfo {
 
-    public static GameOverInfo getGameOverInfo(EntityData entityData) {
+    private final EntityData entityData;
+    private final Eventbus eventbus;
+    private boolean gameIsOver;
+    private int winningTeamEntity;
+
+    public GameOverInfo(EntityData entityData, Eventbus eventbus) {
+        this.entityData = entityData;
+        this.gameIsOver = false;
+        this.winningTeamEntity = -1;
+        this.eventbus = eventbus;
+    }
+
+    public void checkGameOverStatus() {
+        if (gameIsOver) {
+            return;
+        }
         List<Integer> playerEntities = entityData.list(PlayerComponent.class);
         Map<Integer, List<Integer>> playersByTeam = new LinkedHashMap<>();
 
@@ -35,14 +53,11 @@ public class GameOverUtils {
                 .findFirst()
                 .orElse(-1);
 
-        return new GameOverInfo(winningTeam != -1, winningTeam);
-    }
+        this.gameIsOver = winningTeam != -1;
+        this.winningTeamEntity = winningTeam;
 
-    @Getter
-    @AllArgsConstructor
-    public static class GameOverInfo {
-        private final boolean gameIsOver;
-        private final int winningTeamEntity;
+        if (gameIsOver) {
+            eventbus.registerSubEvents(new GameOverEvent(winningTeam));
+        }
     }
-
 }

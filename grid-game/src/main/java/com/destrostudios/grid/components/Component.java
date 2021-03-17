@@ -9,39 +9,19 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.VisualComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
-import com.destrostudios.grid.components.properties.BuffsComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
-import com.destrostudios.grid.components.properties.MaxHealthComponent;
-import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
-import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
-import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.properties.resistance.AttackPointResistanceComponent;
 import com.destrostudios.grid.components.properties.resistance.MovementPointResistanceComponent;
 import com.destrostudios.grid.components.spells.base.DamageComponent;
 import com.destrostudios.grid.components.spells.base.HealComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
-import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.DamageBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.*;
 import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.RequiresTargetComponent;
-import com.destrostudios.grid.components.spells.movements.DashComponent;
-import com.destrostudios.grid.components.spells.movements.PullComponent;
-import com.destrostudios.grid.components.spells.movements.PushComponent;
-import com.destrostudios.grid.components.spells.movements.TeleportComponent;
-import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
-import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
-import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
-import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
-import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
+import com.destrostudios.grid.components.spells.movements.*;
+import com.destrostudios.grid.components.spells.perturn.*;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
@@ -70,6 +50,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = LineOfSightComponent.class, name = "LineOfSightComponent"),
         @JsonSubTypes.Type(value = RequiresTargetComponent.class, name = "RequiresTargetComponent"),
         @JsonSubTypes.Type(value = TeamComponent.class, name = "TeamComponent"),
+        @JsonSubTypes.Type(value = SwapComponent.class, name = "SwapComponent"),
+        @JsonSubTypes.Type(value = IsAliveComponent.class, name = "IsAliveComponent"),
         @JsonSubTypes.Type(value = VisualComponent.class, name = "VisualComponent"),
         @JsonSubTypes.Type(value = WalkableComponent.class, name = "WalkableComponent"),
         @JsonSubTypes.Type(value = ObstacleComponent.class, name = "ObstacleComponent"),
@@ -78,11 +60,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = TooltipComponent.class, name = "TooltipComponent"),
         @JsonSubTypes.Type(value = RangeComponent.class, name = "RangeComponent"),
         @JsonSubTypes.Type(value = AttackPointsBuffComponent.class, name = "AttackPointsBuffComponent"),
+        @JsonSubTypes.Type(value = ReflectionBuffComponent.class, name = "ReflectionBuffComponent"),
         @JsonSubTypes.Type(value = MovementPointBuffComponent.class, name = "MovementPointBuffComponent"),
         @JsonSubTypes.Type(value = HealthPointBuffComponent.class, name = "HealthPointBuffComponent"),
         @JsonSubTypes.Type(value = AttackPointsPerTurnComponent.class, name = "AttackPointsPerTurnComponent"),
         @JsonSubTypes.Type(value = MovementPointsPerTurnComponent.class, name = "MovementPointsPerTurnComponent"),
         @JsonSubTypes.Type(value = DamagePerTurnComponent.class, name = "DamagePerTurnComponent"),
+        @JsonSubTypes.Type(value = SourceComponent.class, name = "SourceComponent"),
         @JsonSubTypes.Type(value = TeleportComponent.class, name = "TeleportComponent"),
         @JsonSubTypes.Type(value = OnCooldownComponent.class, name = "OnCooldownComponent"),
         @JsonSubTypes.Type(value = CooldownComponent.class, name = "CooldownComponent"),

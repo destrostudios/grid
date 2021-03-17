@@ -14,5 +14,4 @@ public class AttackPointsPerTurnComponent implements Component {
     private int poisonMinValue;
     private int poisonMaxValue;
     private int poisonDuration;
-    private int sourceEntity;
 }

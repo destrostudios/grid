@@ -17,7 +17,7 @@ public class StartGameInfo {
         StartGameInfo startGameInfo = new StartGameInfo();
 
         LinkedList<PlayerInfo> team1 = new LinkedList<>();
-        team1.add(new PlayerInfo(1, "destroflyer", "cra"));
+        team1.add(new PlayerInfo(1, "destroflyer", "alice"));
         startGameInfo.team1 = team1;
 
         LinkedList<PlayerInfo> team2 = new LinkedList<>();

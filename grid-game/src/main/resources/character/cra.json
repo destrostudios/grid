@@ -68,7 +68,7 @@
       },
       {
         "component": "RangeComponent",
-        "rangeShape": "DIAMOND",
+        "castAreaShape": "DIAMOND",
         "minRange": 6,
         "maxRange": 8
       },
@@ -89,7 +89,8 @@
       {
         "component": "DamageComponent",
         "minDmg": 38,
-        "maxDmg": 42
+        "maxDmg": 42,
+        "targetingAllies": true
       },
       {
         "component": "BuffsComponent",
@@ -113,7 +114,7 @@
       },
       {
         "component": "RangeComponent",
-        "rangeShape": "PLUS",
+        "castAreaShape": "PLUS",
         "minRange": 1,
         "maxRange": 5
       },
@@ -134,7 +135,8 @@
       {
         "component": "DamageComponent",
         "minDmg": 33,
-        "maxDmg": 35
+        "maxDmg": 35,
+        "targetingAllies": true
       },
       {
         "component": "PushComponent",
@@ -165,7 +167,7 @@
       },
       {
         "component": "RangeComponent",
-        "rangeShape": "DIAMOND",
+        "castAreaShape": "DIAMOND",
         "minRange": 3,
         "maxRange": 7
       },
@@ -186,7 +188,8 @@
       {
         "component": "DamageComponent",
         "minDmg": 18,
-        "maxDmg": 21
+        "maxDmg": 21,
+        "targetingAllies": true
       },
       {
         "component": "PullComponent",
@@ -218,7 +221,7 @@
       },
       {
         "component": "RangeComponent",
-        "rangeShape": "DIAMOND",
+        "castAreaShape": "DIAMOND",
         "minRange": 1,
         "maxRange": 8
       },
@@ -239,7 +242,8 @@
       {
         "component": "DamageComponent",
         "minDmg": 30,
-        "maxDmg": 34
+        "maxDmg": 34,
+        "targetingAllies": true
       },
       {
         "component": "BuffsComponent",
@@ -266,7 +270,7 @@
       },
       {
         "component": "RangeComponent",
-        "rangeShape": "PLUS",
+        "castAreaShape": "PLUS",
         "minRange": 1,
         "maxRange": 12
       },

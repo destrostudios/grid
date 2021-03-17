@@ -5,13 +5,14 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.grid.util.GameOverUtils;
+import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class Main {
 
@@ -26,7 +27,7 @@ public class Main {
 
         GridBotState botState = new GridBotState(game);
         MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot();
-        while (!GameOverUtils.getGameOverInfo(game.getData()).isGameIsOver()) {
+        while (!game.getGameOverInfo().isGameIsOver()) {
             log.info("calculating...");
             List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
             log.info("{}", actions);
@@ -53,7 +54,7 @@ public class Main {
     private static float[] eval(GridBotState s) {
         float[] scores = new float[s.getTeams().size()];
         if (s.isGameOver()) {
-            GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(s.game.getData());
+            GameOverInfo gameOverInfo = s.game.getGameOverInfo();
             int winningTeam = gameOverInfo.getWinningTeamEntity();
             int teamIndex = s.getTeams().indexOf(new Team(winningTeam));
             scores[teamIndex] = 1;

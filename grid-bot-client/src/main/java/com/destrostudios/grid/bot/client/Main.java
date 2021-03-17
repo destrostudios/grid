@@ -12,7 +12,7 @@ import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.grid.util.GameOverUtils;
+import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.ClientGameData;
@@ -47,7 +47,7 @@ public class Main {
                 for (ClientGameData<GridGame, Action> game : gameModule.getJoinedGames()) {
                     while (game.applyNextAction(gameModule.getGameService())) {
                     }
-                    if (GameOverUtils.getGameOverInfo(game.getState().getData()).isGameIsOver()) {
+                    if (game.getState().getGameOverInfo().isGameIsOver()) {
                         break;
                     }
                     boolean active = false;

@@ -4,7 +4,6 @@ import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.Eventbus;
-import com.destrostudios.grid.eventbus.update.buff.BuffsUpdateEvent;
 import com.destrostudios.grid.eventbus.update.playerenchantments.UpdatePlayerEnchantmentsEvent;
 import com.destrostudios.grid.eventbus.update.poison.UpdateStatsPerTurnEvent;
 import com.destrostudios.grid.eventbus.update.spells.UpdateSpellsEvent;
@@ -23,11 +22,11 @@ public class BeginTurnHandler implements EventHandler<BeginTurnEvent> {
 
         List<Event> followUpEvents = new ArrayList<>();
 
-        // update spells, buffs and poisoins at the beginning of
-        followUpEvents.add(new BuffsUpdateEvent(currentEntity));
-        followUpEvents.add(new UpdateStatsPerTurnEvent(currentEntity));
+        // update spells, buffs and poisons at the beginning of
         followUpEvents.add(new UpdateSpellsEvent(currentEntity));
         followUpEvents.add(new UpdatePlayerEnchantmentsEvent(currentEntity));
+//        followUpEvents.add(new UpdateStats(currentEntity));
+        followUpEvents.add(new UpdateStatsPerTurnEvent(currentEntity));
 
         eventbus.registerSubEvents(followUpEvents);
     }

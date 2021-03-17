@@ -18,10 +18,7 @@ import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnCompo
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
-import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
-import com.destrostudios.grid.components.spells.range.AreaShape;
-import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
-import com.destrostudios.grid.components.spells.range.RangeComponent;
+import com.destrostudios.grid.components.spells.range.*;
 import com.destrostudios.grid.entities.EntityData;
 import com.google.common.collect.Lists;
 
@@ -91,15 +88,15 @@ public class SampleDataGenarator {
 
         // dmg spells
         int spell = data.createEntity();
-        addDmgSpell(data, rand, attackPoints, spell, AreaShape.LINE);
+        addDmgSpell(data, rand, attackPoints, spell, SpellAreaShape.LINE);
         spells.add(spell);
 
         int spell2 = data.createEntity();
-        addDmgSpell(data, rand, attackPoints, spell2, AreaShape.SQUARE);
+        addDmgSpell(data, rand, attackPoints, spell2, SpellAreaShape.SQUARE);
         spells.add(spell2);
 
         int spell3 = data.createEntity();
-        addDmgSpell(data, rand, attackPoints, spell3, AreaShape.PLUS);
+        addDmgSpell(data, rand, attackPoints, spell3, SpellAreaShape.PLUS);
         spells.add(spell3);
 
 
@@ -146,19 +143,19 @@ public class SampleDataGenarator {
         data.addComponent(playerEntity, new SpellsComponent(spells));
     }
 
-    private static void addDmgSpell(EntityData data, Random rand, int attackPoints, int spell, AreaShape indicator) {
+    private static void addDmgSpell(EntityData data, Random rand, int attackPoints, int spell, SpellAreaShape indicator) {
 
         String spellName = getSpellName();
         int apCost = Math.max(2, rand.nextInt(attackPoints));
         data.addComponent(spell, new CostComponent(apCost, 0, 0));
         int dmg = Math.max(25, rand.nextInt(50));
         int range = 6;
-        data.addComponent(spell, new DamageComponent(dmg, dmg + 50));
+        data.addComponent(spell, new DamageComponent(dmg, dmg + 50, true));
         data.addComponent(spell, new NameComponent(spellName));
         data.addComponent(spell, new BuffsComponent(new ArrayList<>()));
         data.addComponent(spell, new TooltipComponent(String.format("OP spell doing %s damage for %s AP in %s", Math.abs(dmg), apCost, indicator)));
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
-        data.addComponent(spell, new RangeComponent(AreaShape.DIAMOND, 1, range));
+        data.addComponent(spell, new RangeComponent(CastAreaShape.DIAMOND, 1, range));
         data.addComponent(spell, new AffectedAreaComponent(indicator, 0, 4));
     }
 
@@ -170,10 +167,10 @@ public class SampleDataGenarator {
         String spellName = getSpellName();
         data.addComponent(dmgMpSpell, new CostComponent(apCost, 0, 0));
         data.addComponent(dmgMpSpell, new BuffsComponent(new ArrayList<>()));
-        data.addComponent(dmgMpSpell, new DamageComponent(dmg, dmg + 30));
+        data.addComponent(dmgMpSpell, new DamageComponent(dmg, dmg + 30, true));
         data.addComponent(dmgMpSpell, new NameComponent(spellName));
         data.addComponent(dmgMpSpell, new MovementPointBuffComponent(mpBuff, 1, false));
-        data.addComponent(dmgMpSpell, new RangeComponent(AreaShape.DIAMOND, 1, range));
+        data.addComponent(dmgMpSpell, new RangeComponent(CastAreaShape.DIAMOND, 1, range));
         data.addComponent(dmgMpSpell, new CastsPerTurnComponent(2, 0));
         data.addComponent(dmgMpSpell, new TooltipComponent(String.format("Dmg spell doing %s dmg for %s AP and buffing %s MP\nRange: %s", dmg, apCost, mpBuff, range)));
 
@@ -187,7 +184,7 @@ public class SampleDataGenarator {
         data.addComponent(spellApBuff, new AttackPointsBuffComponent(apBuff, 2, false));
         data.addComponent(spellApBuff, new NameComponent("Buff"));
         data.addComponent(spellApBuff, new BuffsComponent(new ArrayList<>()));
-        data.addComponent(spellApBuff, new RangeComponent(AreaShape.DIAMOND, 0, 0));
+        data.addComponent(spellApBuff, new RangeComponent(CastAreaShape.DIAMOND, 0, 0));
         data.addComponent(spellApBuff, new CastsPerTurnComponent(1, 0));
         data.addComponent(spellApBuff, new TooltipComponent(String.format("Spell buffing %s AP for %s MP \nRange: %s", apBuff, mpCost, range)));
     }
@@ -198,7 +195,7 @@ public class SampleDataGenarator {
         data.addComponent(spellApBuff, new TeleportComponent());
         data.addComponent(spellApBuff, new CostComponent(apCost, 0, 0));
         data.addComponent(spellApBuff, new NameComponent("Jump"));
-        data.addComponent(spellApBuff, new RangeComponent(AreaShape.DIAMOND, 1, range));
+        data.addComponent(spellApBuff, new RangeComponent(CastAreaShape.DIAMOND, 1, range));
         data.addComponent(spellApBuff, new BuffsComponent(new ArrayList<>()));
         data.addComponent(spellApBuff, new TooltipComponent("Teleporting in a range of " + range));
         data.addComponent(spellApBuff, new CastsPerTurnComponent(2, 0));
@@ -209,12 +206,12 @@ public class SampleDataGenarator {
         int apCost = Math.max(2, rand.nextInt(attackPoints));
         range = Math.max(3, rand.nextInt(6));
         data.addComponent(spell, new CostComponent(apCost, 0, 0));
-        data.addComponent(spell, new AttackPointsPerTurnComponent(-1, -3, 2, playerEntity));
-        data.addComponent(spell, new DamagePerTurnComponent(-50, -100, 3, playerEntity));
+        data.addComponent(spell, new AttackPointsPerTurnComponent(-1, -3, 2));
+        data.addComponent(spell, new DamagePerTurnComponent(-50, -100, 3));
         data.addComponent(spell, new NameComponent("Wound"));
         data.addComponent(spell, new LineOfSightComponent());
         data.addComponent(spell, new BuffsComponent(new ArrayList<>()));
-        data.addComponent(spell, new RangeComponent(AreaShape.DIAMOND, 1, range));
+        data.addComponent(spell, new RangeComponent(CastAreaShape.DIAMOND, 1, range));
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
         data.addComponent(spell, new TooltipComponent("Spell adds 1-3 AP poison for 2 rounds and 50-100 HP poison for 3 rounds"));
     }
@@ -230,7 +227,7 @@ public class SampleDataGenarator {
         data.addComponent(spellMpHealthBuff, new HealthPointBuffComponent(hpBuff, hpBuffDuration, false));
         data.addComponent(spellMpHealthBuff, new NameComponent("Twist"));
         data.addComponent(spellMpHealthBuff, new BuffsComponent(new ArrayList<>()));
-        data.addComponent(spellMpHealthBuff, new RangeComponent(AreaShape.DIAMOND, 0, 0));
+        data.addComponent(spellMpHealthBuff, new RangeComponent(CastAreaShape.DIAMOND, 0, 0));
         data.addComponent(spellMpHealthBuff, new TooltipComponent(String.format("Spell buffing %s HP for %s AP. \nCD: %s, Range: 0 ", hpBuff, apCost, cooldown)));
         data.addComponent(spellMpHealthBuff, new CooldownComponent(cooldown));
         data.addComponent(spellMpHealthBuff, new CastsPerTurnComponent(1, 0));
@@ -239,9 +236,9 @@ public class SampleDataGenarator {
     private static void addHeal(EntityData data, int spell, int playerEntity) {
         int apCost = Math.max(2, 3);
         data.addComponent(spell, new CostComponent(apCost, 0, 0));
-        data.addComponent(spell, new HealPerTurnComponent(50, 100, 4, playerEntity));
+        data.addComponent(spell, new HealPerTurnComponent(50, 100, 4));
         data.addComponent(spell, new NameComponent("Blblbl"));
-        data.addComponent(spell, new RangeComponent(AreaShape.DIAMOND, 0, 3));
+        data.addComponent(spell, new RangeComponent(CastAreaShape.DIAMOND, 0, 3));
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
         data.addComponent(spell, new BuffsComponent(new ArrayList<>()));
         data.addComponent(spell, new TooltipComponent(String.format("Spell heals 50-100 hp for %s rounds", 4)));
@@ -253,7 +250,7 @@ public class SampleDataGenarator {
         data.addComponent(spell, new NameComponent(getSpellName()));
         data.addComponent(spell, new CastsPerTurnComponent(3, 0));
         data.addComponent(spell, new LineOfSightComponent());
-        data.addComponent(spell, new RangeComponent(AreaShape.DIAMOND, 1, 1));
+        data.addComponent(spell, new RangeComponent(CastAreaShape.DIAMOND, 1, 1));
         data.addComponent(spell, new BuffsComponent(new ArrayList<>()));
         data.addComponent(spell, new PushComponent(5, false));
         data.addComponent(spell, new TooltipComponent(String.format("Displaces player 5 positions for 4 AP")));

@@ -7,8 +7,8 @@ import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
 import com.destrostudios.grid.client.animations.*;
-import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.BlockingAnimation;
+import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.EntityVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiNextPlayer;
@@ -17,12 +17,7 @@ import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.AttackPointsComponent;
-import com.destrostudios.grid.components.properties.HealthPointsComponent;
-import com.destrostudios.grid.components.properties.MaxHealthComponent;
-import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.components.properties.SpellsComponent;
+import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.entities.EntityData;
@@ -47,11 +42,15 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.destrostudios.grid.util.RangeUtils.getAllEntitiesInRange;
+import static com.destrostudios.grid.util.RangeUtils.getAllTargetableEntitiesInRange;
 
 public class GameAppState extends BaseAppState<ClientApplication> implements ActionListener {
 
@@ -185,8 +184,8 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     private void updateValidAndInvalidGroundEntities() {
         List<Integer> invalidSpellTargetEntities;
         if (targetingSpellEntity != null) {
-            validSpellTargetEntities = SpellUtils.getAllTargetableEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
-            invalidSpellTargetEntities = SpellUtils.getAllEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            validSpellTargetEntities = getAllTargetableEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
+            invalidSpellTargetEntities = getAllEntitiesInRange(targetingSpellEntity, gameProxy.getPlayerEntity(), gameProxy.getGame().getData());
             invalidSpellTargetEntities.removeAll(validSpellTargetEntities);
         } else {
             validSpellTargetEntities = new LinkedList<>();

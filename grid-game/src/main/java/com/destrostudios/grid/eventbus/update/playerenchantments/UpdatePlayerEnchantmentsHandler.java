@@ -1,38 +1,62 @@
 package com.destrostudios.grid.eventbus.update.playerenchantments;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.components.properties.BuffsComponent;
-import com.destrostudios.grid.components.properties.StatsPerRoundComponent;
-import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.DamageBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.HealthPointBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.MovementPointBuffComponent;
+import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.spells.buffs.*;
 import com.destrostudios.grid.components.spells.perturn.AttackPointsPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.DamagePerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.HealPerTurnComponent;
 import com.destrostudios.grid.components.spells.perturn.MovementPointsPerTurnComponent;
 import com.destrostudios.grid.entities.EntityData;
+import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
+import com.destrostudios.grid.eventbus.Eventbus;
+import com.destrostudios.grid.eventbus.update.maxap.MaxAttackPointsChangedEvent;
+import com.destrostudios.grid.eventbus.update.maxhp.MaxHealthPointsChangedEvent;
+import com.destrostudios.grid.eventbus.update.maxmp.MaxMovementPointsChangedEvent;
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
 public class UpdatePlayerEnchantmentsHandler implements EventHandler<UpdatePlayerEnchantmentsEvent> {
+    private Eventbus eventbus;
 
     @Override
     public void onEvent(UpdatePlayerEnchantmentsEvent event, Supplier<EntityData> entityDataSupplier) {
         EntityData entityData = entityDataSupplier.get();
 
+        BuffChanges buffChanges = new BuffChanges(0, 0, 0);
         updatePoisons(event, entityData);
-        updateBuffs(event, entityData);
+        updateBuffs(event, entityData, buffChanges);
+
+        List<Event> events = new ArrayList<>();
+        if (buffChanges.deltaHP != 0) {
+            MaxHealthComponent maxHealth = entityData.getComponent(event.getTargetEntity(), MaxHealthComponent.class);
+            events.add(new MaxHealthPointsChangedEvent(event.getTargetEntity(), maxHealth.getMaxHealth() - buffChanges.deltaHP));
+        }
+        if (buffChanges.deltaAP != 0) {
+            MaxAttackPointsComponent maxAp = entityData.getComponent(event.getTargetEntity(), MaxAttackPointsComponent.class);
+            events.add(new MaxAttackPointsChangedEvent(event.getTargetEntity(), maxAp.getMaxAttackPoints() - buffChanges.deltaAP));
+        }
+        if (buffChanges.deltaMP != 0) {
+            MaxMovementPointsComponent maxMp = entityData.getComponent(event.getTargetEntity(), MaxMovementPointsComponent.class);
+            events.add(new MaxMovementPointsChangedEvent(event.getTargetEntity(), maxMp.getMaxMovementPoints() - buffChanges.deltaMP));
+        }
+        if (!events.isEmpty()) {
+            eventbus.registerSubEvents(events);
+        }
     }
 
     private void updatePoisons(UpdatePlayerEnchantmentsEvent event, EntityData entityData) {
         StatsPerRoundComponent poisons = entityData.getComponent(event.getTargetEntity(), StatsPerRoundComponent.class);
         List<Integer> newPoisons = new ArrayList<>(poisons.getStatsPerRoundEntites());
         for (Integer poisonsEntity : poisons.getStatsPerRoundEntites()) {
-            boolean removed = updateOrRemove(poisonsEntity, entityData);
+            boolean removed = updateOrRemove(poisonsEntity, entityData, null);
             if (removed) {
                 newPoisons.remove(poisonsEntity);
             }
@@ -41,19 +65,21 @@ public class UpdatePlayerEnchantmentsHandler implements EventHandler<UpdatePlaye
     }
 
 
-    private void updateBuffs(UpdatePlayerEnchantmentsEvent event, EntityData entityData) {
+    private void updateBuffs(UpdatePlayerEnchantmentsEvent event, EntityData entityData, BuffChanges buffChanges) {
         BuffsComponent buffs = entityData.getComponent(event.getTargetEntity(), BuffsComponent.class);
-        List<Integer> newBuffs = new ArrayList<>(buffs.getBuffEntities());
+        List<AtomicInteger> newBuffs = buffs.getBuffEntities().stream()
+                .map(AtomicInteger::new)
+                .collect(Collectors.toList());
         for (int buffEntity : buffs.getBuffEntities()) {
-            boolean removed = updateOrRemove(buffEntity, entityData);
+            boolean removed = updateOrRemove(buffEntity, entityData, buffChanges);
             if (removed) {
-                newBuffs.remove(buffEntity);
+                newBuffs.remove(new AtomicInteger(buffEntity));
             }
         }
-        entityData.addComponent(event.getTargetEntity(), new BuffsComponent(newBuffs));
+        entityData.addComponent(event.getTargetEntity(), new BuffsComponent(newBuffs.stream().map(AtomicInteger::get).collect(Collectors.toList())));
     }
 
-    private boolean updateOrRemove(int entity, EntityData entityData) {
+    private boolean updateOrRemove(int entity, EntityData entityData, BuffChanges buffChanges) {
         Component componentToUpdate = null;
         boolean remove = false;
         if (entityData.hasComponents(entity, AttackPointsBuffComponent.class)) {
@@ -85,33 +111,48 @@ public class UpdatePlayerEnchantmentsHandler implements EventHandler<UpdatePlaye
             AttackPointsPerTurnComponent apPoison = entityData.getComponent(entity, AttackPointsPerTurnComponent.class);
             remove = apPoison.getPoisonDuration() == 1;
             componentToUpdate = new AttackPointsPerTurnComponent(apPoison.getPoisonMinValue(), apPoison.getPoisonMaxValue(),
-                    apPoison.getPoisonDuration() - 1, apPoison.getSourceEntity());
+                    apPoison.getPoisonDuration() - 1);
 
         } else if (entityData.hasComponents(entity, MovementPointsPerTurnComponent.class)) {
             MovementPointsPerTurnComponent mpPoison = entityData.getComponent(entity, MovementPointsPerTurnComponent.class);
             remove = mpPoison.getPoisonDuration() == 1;
             componentToUpdate = new MovementPointsPerTurnComponent(mpPoison.getPoisonMinValue(), mpPoison.getPoisonMaxValue(),
-                    mpPoison.getPoisonDuration() - 1, mpPoison.getSourceEntity());
+                    mpPoison.getPoisonDuration() - 1);
 
         } else if (entityData.hasComponents(entity, DamagePerTurnComponent.class)) {
             DamagePerTurnComponent hpPoison = entityData.getComponent(entity, DamagePerTurnComponent.class);
             remove = hpPoison.getDuration() == 1;
             componentToUpdate = new DamagePerTurnComponent(hpPoison.getDamageMinValue(), hpPoison.getDamageMaxValue(),
-                    hpPoison.getDuration() - 1, hpPoison.getSourceEntity());
+                    hpPoison.getDuration() - 1);
 
         } else if (entityData.hasComponents(entity, HealPerTurnComponent.class)) {
             HealPerTurnComponent heal = entityData.getComponent(entity, HealPerTurnComponent.class);
             remove = heal.getDuration() == 1;
-            componentToUpdate = new DamagePerTurnComponent(heal.getHealMinValue(), heal.getHealMaxValue(),
-                    heal.getDuration() - 1, heal.getSourceEntity());
+            componentToUpdate = new HealPerTurnComponent(heal.getHealMinValue(), heal.getHealMaxValue(),
+                    heal.getDuration() - 1);
         }
         if (componentToUpdate != null) {
             if (remove) {
                 entityData.remove(entity, componentToUpdate.getClass());
+
+                if (buffChanges != null && componentToUpdate.getClass().equals(AttackPointsBuffComponent.class)) {
+                    buffChanges.deltaAP += ((AttackPointsBuffComponent) componentToUpdate).getBuffAmount();
+                } else if (buffChanges != null && componentToUpdate.getClass().equals(MovementPointBuffComponent.class)) {
+                    buffChanges.deltaMP += ((MovementPointBuffComponent) componentToUpdate).getBuffAmount();
+                } else if (buffChanges != null && componentToUpdate.getClass().equals(HealthPointBuffComponent.class)) {
+                    buffChanges.deltaHP += ((HealthPointBuffComponent) componentToUpdate).getBuffAmount();
+                }
             } else {
                 entityData.addComponent(entity, componentToUpdate);
             }
         }
         return remove;
+    }
+
+    @AllArgsConstructor
+    private static class BuffChanges {
+        int deltaAP;
+        int deltaMP;
+        int deltaHP;
     }
 }

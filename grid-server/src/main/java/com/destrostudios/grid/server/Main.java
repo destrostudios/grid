@@ -9,7 +9,7 @@ import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.random.MutableRandomProxy;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.grid.util.GameOverUtils;
+import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.turnbasedgametools.network.server.ToolsServer;
 import com.destrostudios.turnbasedgametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.turnbasedgametools.network.server.modules.game.GameStartServerModule;
@@ -69,7 +69,8 @@ public class Main {
                 if (object instanceof GameActionRequest) {
                     GameActionRequest message = (GameActionRequest) object;
                     ServerGameData<GridGame> game = gameModule.getGame(message.game);
-                    GameOverUtils.GameOverInfo gameOverInfo = GameOverUtils.getGameOverInfo(game.state.getData());
+
+                    GameOverInfo gameOverInfo = game.state.getGameOverInfo();
                     if (gameOverInfo.isGameIsOver()) {
                         lobbyModule.unlistGame(game.id);
                         gameModule.unregisterGame(game.id);

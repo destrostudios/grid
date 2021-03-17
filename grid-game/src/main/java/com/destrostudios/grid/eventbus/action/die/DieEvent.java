@@ -1,11 +1,11 @@
-package com.destrostudios.grid.eventbus.update.buff;
+package com.destrostudios.grid.eventbus.action.die;
 
 import com.destrostudios.grid.eventbus.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
-public class BuffsUpdateEvent implements Event {
+@Getter
+public class DieEvent implements Event {
     private final int entity;
 }

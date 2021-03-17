@@ -23,17 +23,26 @@ import com.destrostudios.grid.eventbus.action.beginturn.BeginTurnHandler;
 import com.destrostudios.grid.eventbus.action.damagetaken.DamageTakenEvent;
 import com.destrostudios.grid.eventbus.action.damagetaken.DamageTakenHandler;
 import com.destrostudios.grid.eventbus.action.damagetaken.DamageTakenValidator;
+import com.destrostudios.grid.eventbus.action.die.DieEvent;
+import com.destrostudios.grid.eventbus.action.die.DieEventHandler;
+import com.destrostudios.grid.eventbus.action.die.DieEventValidator;
 import com.destrostudios.grid.eventbus.action.displace.PushEvent;
 import com.destrostudios.grid.eventbus.action.displace.PushHandler;
 import com.destrostudios.grid.eventbus.action.displace.PushValidator;
 import com.destrostudios.grid.eventbus.action.endturn.EndTurnEvent;
 import com.destrostudios.grid.eventbus.action.endturn.EndTurnHandler;
+import com.destrostudios.grid.eventbus.action.healreceived.HealReceivedEvent;
+import com.destrostudios.grid.eventbus.action.healreceived.HealReceivedHandler;
+import com.destrostudios.grid.eventbus.action.healreceived.HealReceivedValidator;
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveHandler;
 import com.destrostudios.grid.eventbus.action.move.MoveValidator;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEventHandler;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
+import com.destrostudios.grid.eventbus.action.swap.SwapEvent;
+import com.destrostudios.grid.eventbus.action.swap.SwapEventHandler;
+import com.destrostudios.grid.eventbus.action.swap.SwapEventValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkHandler;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
@@ -45,8 +54,6 @@ import com.destrostudios.grid.eventbus.add.spellbuff.SpellBuffAddedEvent;
 import com.destrostudios.grid.eventbus.add.spellbuff.SpellBuffAddedHandler;
 import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.ap.AttackPointsChangedHandler;
-import com.destrostudios.grid.eventbus.update.buff.BuffsUpdateEvent;
-import com.destrostudios.grid.eventbus.update.buff.UpdateBuffsHandler;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedHandler;
 import com.destrostudios.grid.eventbus.update.maxap.MaxAttackPointsChangedEvent;
@@ -77,6 +84,7 @@ import com.destrostudios.grid.serialization.container.CharacterContainer;
 import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
+import com.destrostudios.grid.util.GameOverInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -101,6 +109,7 @@ public class GridGame {
     public final static int MAX_AP = 15;
     private final static Logger logger = Logger.getGlobal();
     private final GamePreferences gamePreferences;
+    private final GameOverInfo gameOverInfo;
     private final EntityWorld world;
     private final Eventbus eventBus;
     private final ActionDispatcher actionDispatcher;
@@ -120,6 +129,7 @@ public class GridGame {
         this.eventBus = new Eventbus(() -> world);
         this.actionDispatcher = new ActionDispatcher(() -> world);
         this.random = random;
+        this.gameOverInfo = new GameOverInfo(world, eventBus);
     }
 
     public EntityData getData() {
@@ -194,6 +204,7 @@ public class GridGame {
         world.addComponent(playerEntity, new AttackPointsComponent(apC.getMaxAttackPoints()));
         MaxMovementPointsComponent mpC = world.getComponent(playerEntity, MaxMovementPointsComponent.class);
         world.addComponent(playerEntity, new MovementPointsComponent(mpC.getMaxMovementPoints()));
+        world.addComponent(playerEntity, new IsAliveComponent());
     }
 
     public List<Component> getPlayerComponentsWithoutSpells(CharacterContainer characterContainer) {
@@ -241,22 +252,23 @@ public class GridGame {
         addInstantHandler(DamageTakenEvent.class, new DamageTakenHandler(eventBus));
         addInstantHandler(SpellCastedEvent.class, new SpellCastedEventHandler(eventBus, random));
         addInstantHandler(HealthPointsChangedEvent.class, new HealthPointsChangedHandler(eventBus));
+        addInstantHandler(HealReceivedEvent.class, new HealReceivedHandler(eventBus));
         addInstantHandler(MaxHealthPointsChangedEvent.class, new MaxHealthPointsChangedHandler());
         addInstantHandler(MaxAttackPointsChangedEvent.class, new MaxAttackPointsChangedHandler());
         addInstantHandler(MaxMovementPointsChangedEvent.class, new MaxMovementPointsChangedHandler());
         addInstantHandler(PlayerBuffAddedEvent.class, new PlayerBuffAddedHandler(eventBus));
-        addInstantHandler(BuffsUpdateEvent.class, new UpdateBuffsHandler(eventBus));
-        addInstantHandler(BuffsUpdateEvent.class, new UpdateBuffsHandler(eventBus));
         addInstantHandler(StatsPerTurnEvent.class, new StatsPerTurnHandler());
         addInstantHandler(PositionUpdateEvent.class, new PositionUpdateHandler());
         addInstantHandler(UpdateStatsPerTurnEvent.class, new UpdateStatsPerTurnHandler(eventBus, random));
-        addInstantHandler(UpdatePlayerEnchantmentsEvent.class, new UpdatePlayerEnchantmentsHandler());
+        addInstantHandler(UpdatePlayerEnchantmentsEvent.class, new UpdatePlayerEnchantmentsHandler(eventBus));
         addInstantHandler(MoveEvent.class, new MoveHandler(eventBus));
         addInstantHandler(EndTurnEvent.class, new EndTurnHandler(eventBus));
         addInstantHandler(BeginTurnEvent.class, new BeginTurnHandler(eventBus));
         addInstantHandler(PushEvent.class, new PushHandler(eventBus));
         addInstantHandler(UpdateSpellsEvent.class, new UpdateSpellsHandler());
         addInstantHandler(SpellBuffAddedEvent.class, new SpellBuffAddedHandler(eventBus));
+        addInstantHandler(SwapEvent.class, new SwapEventHandler());
+        addInstantHandler(DieEvent.class, new DieEventHandler(gameOverInfo));
 
         addValidator(WalkEvent.class, new WalkValidator());
         addValidator(SpellCastedEvent.class, new SpellCastedValidator());
@@ -265,6 +277,9 @@ public class GridGame {
         addValidator(UpdateStatsPerTurnEvent.class, new UpdateStatsPerTurnValidator());
         addValidator(MoveEvent.class, new MoveValidator());
         addValidator(PushEvent.class, new PushValidator());
+        addValidator(SwapEvent.class, new SwapEventValidator());
+        addValidator(DieEvent.class, new DieEventValidator());
+        addValidator(HealReceivedEvent.class, new HealReceivedValidator());
     }
 
     public void intializeGame(String gameState) {
@@ -320,6 +335,5 @@ public class GridGame {
         }
         return "";
     }
-
 
 }

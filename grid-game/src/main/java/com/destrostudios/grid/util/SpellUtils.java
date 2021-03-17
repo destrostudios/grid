@@ -1,6 +1,7 @@
 package com.destrostudios.grid.util;
 
 import com.destrostudios.grid.components.character.PlayerComponent;
+import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
@@ -12,17 +13,13 @@ import com.destrostudios.grid.components.spells.buffs.BuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
-import com.destrostudios.grid.components.spells.range.AreaShape;
-import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
-import com.destrostudios.grid.components.spells.range.RangeComponent;
+import com.destrostudios.grid.components.spells.range.SpellAreaShape;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.action.displace.Direction;
-import com.destrostudios.turnbasedgametools.grid.LineOfSight;
-import com.destrostudios.turnbasedgametools.grid.Position;
+import com.google.common.collect.Sets;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,61 +30,67 @@ public class SpellUtils {
     // todo 9.) position swap
 
 
-    public static List<Integer> getAllTargetableEntitiesInRange(int spellEntity, int casterEntity, EntityData entityData) {
-        List<Integer> targetableInRange = getAllEntitiesInRange(spellEntity, casterEntity, entityData);
-        PositionComponent posCaster = entityData.getComponent(casterEntity, PositionComponent.class);
-
-        List<Integer> result = new ArrayList<>();
-        LineOfSight lineOfSight = new LineOfSight();
-
-        if (!entityData.hasComponents(spellEntity, LineOfSightComponent.class)) {
-            return targetableInRange;
-        }
-
-        Predicate<Position> predicate = pos -> {
-            PositionComponent positionComponent = new PositionComponent(pos.x, pos.y);
-            List<Integer> obstacleEntities = entityData.list(ObstacleComponent.class);
-            return obstacleEntities.stream()
-                    .noneMatch(e -> entityData.getComponent(e, PositionComponent.class).equals(positionComponent));
-        };
-
-        for (Integer entity : targetableInRange) {
-            PositionComponent pos = entityData.getComponent(entity, PositionComponent.class);
-            if (lineOfSight.inLineOfSight(predicate, new Position(posCaster.getX(), posCaster.getY()), new Position(pos.getX(), pos.getY()))) {
-                result.add(entity);
-            }
-        }
-        return result;
-    }
-
-    public static List<Integer> getAllEntitiesInRange(int spellEntity, int casterEntity, EntityData entityData) {
-        List<Integer> targetableInRange = new ArrayList<>();
-        RangeComponent rangeComponentOpt = entityData.getComponent(spellEntity, RangeComponent.class);
-        PositionComponent casterPositionOpt = entityData.getComponent(casterEntity, PositionComponent.class);
-        int maxRange = rangeComponentOpt.getMaxRange();
-        int minRange = rangeComponentOpt.getMinRange();
-        AreaShape area = rangeComponentOpt.getRangeShape();
-
-        Set<PositionComponent> rangablePositions = calculateAffectedPositions(null, casterPositionOpt, new AffectedAreaComponent(area, minRange, maxRange));
-
-        List<Integer> walkableAndTargetablePos = entityData.list(PositionComponent.class, WalkableComponent.class);
-
-        for (int walkableAndTargetablePo : walkableAndTargetablePos) {
-            PositionComponent posC = entityData.getComponent(walkableAndTargetablePo, PositionComponent.class);
-            if (rangablePositions.contains(posC)) {
-                targetableInRange.add(walkableAndTargetablePo);
-            }
-        }
-        return targetableInRange;
-    }
-
-    public static List<Integer> getAffectedPlayerEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
+    public static List<Integer> getAffectedPlayerEntities(int spellEntity, int sourceEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
         Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
+        int teamSource = entityData.getComponent(sourceEntity, TeamComponent.class).getTeam();
         return entityData.list(PlayerComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
+                .sorted(entitiesToDamageSortComparator(clickedPos, entityData, teamSource))
                 .collect(Collectors.toList());
     }
 
+    private static Comparator<Integer> entitiesToDamageSortComparator(PositionComponent clickedPos, EntityData entityData, int teamSource) {
+        return (e1, e2) -> {
+            PositionComponent posE1 = entityData.getComponent(e1, PositionComponent.class);
+            PositionComponent posE2 = entityData.getComponent(e2, PositionComponent.class);
+
+            int deltaXE1 = Math.abs(clickedPos.getX() - posE1.getX());
+            int deltaYE1 = Math.abs(clickedPos.getY() - posE1.getY());
+            int distanceToE1 = deltaXE1 + deltaYE1;
+            int deltaXE2 = Math.abs(clickedPos.getX() - posE2.getX());
+            int deltaYE2 = Math.abs(clickedPos.getY() - posE2.getY());
+            int distanceToE2 = deltaXE2 + deltaYE2;
+
+            // 1. compare the distance to the clicked position
+            if (distanceToE1 < distanceToE2) {
+                return -1;
+            } else if (distanceToE2 < distanceToE1) {
+                return 1;
+            }
+
+            int teamE1 = entityData.getComponent(e1, TeamComponent.class).getTeam();
+            int teamE2 = entityData.getComponent(e2, TeamComponent.class).getTeam();
+
+            // 2. compare the team with the source team
+            if (teamE1 == teamSource && teamE2 != teamSource) {
+                return -1;
+            } else if (teamE2 == teamSource && teamE1 != teamSource) {
+                return -1;
+            }
+
+            // 3. compare delta X to clicked pos
+            if (deltaXE1 < deltaXE2) {
+                return -1;
+            } else if (deltaXE2 < deltaXE1) {
+                return 1;
+            }
+
+            // 4. compare delta y to clicked pos
+            if (deltaYE1 < deltaYE2) {
+                return -1;
+            } else if (deltaYE2 < deltaYE1) {
+                return 1;
+            }
+
+            // 5. compare entity
+            if (e1 < e2) {
+                return -1;
+            } else if (e2 < e1) {
+                return 1;
+            }
+            return 0;
+        };
+    }
 
 
     public static List<Integer> getAffectedWalkableEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
@@ -108,13 +111,13 @@ public class SpellUtils {
         int yPos = clickedPos.getY();
         int xPos = clickedPos.getX();
 
-        if (component.getShape() == AreaShape.SINGLE) {
+        if (component.getShape() == SpellAreaShape.SINGLE) {
             return Set.of(clickedPos);
 
-        } else if (component.getShape() == AreaShape.LINE) {
+        } else if (component.getShape() == SpellAreaShape.LINE) {
             return calculateAffectedPosEntitiesForLine(sourcePos, clickedPos, maxImpact, minImpact, yPos, xPos);
 
-        } else if (component.getShape() == AreaShape.DIAMON_SELFCAST && sourcePos.equals(clickedPos)) {
+        } else if (component.getShape() == SpellAreaShape.DIAMON_SELFCAST && sourcePos.equals(clickedPos)) {
             result.addAll(getBaseSquare(sourcePos, maxImpact));
             result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) + Math.abs(pos.getY() - sourcePos.getY()) > maxImpact);
             result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) <= minImpact || Math.abs(pos.getY() - sourcePos.getY()) <= minImpact);
@@ -122,21 +125,21 @@ public class SpellUtils {
         } else {
             result.addAll(getBaseSquare(clickedPos, maxImpact));
 
-            if (component.getShape() == AreaShape.PLUS) {
+            if (component.getShape() == SpellAreaShape.PLUS) {
                 result.removeIf(pos -> !(pos.getX() == xPos || pos.getY() == yPos));
                 result.removeAll(getBaseSquare(clickedPos, minImpact - 1));
 
-            } else if (component.getShape() == AreaShape.DIAMOND) {
+            } else if (component.getShape() == SpellAreaShape.DIAMOND) {
                 result.removeIf(pos -> Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) > maxImpact
                         || Math.abs(pos.getX() - xPos) + Math.abs(pos.getY() - yPos) < minImpact);
-            } else if (component.getShape() == AreaShape.SQUARE) {
+            } else if (component.getShape() == SpellAreaShape.SQUARE) {
                 result.removeAll(getBaseSquare(clickedPos, minImpact - 1));
             }
         }
         return result;
     }
 
-    private static List<PositionComponent> getBaseSquare(PositionComponent pos, int impact) {
+    public static List<PositionComponent> getBaseSquare(PositionComponent pos, int impact) {
         // add big square
         List<PositionComponent> resultTmp = new ArrayList<>();
 
@@ -149,6 +152,9 @@ public class SpellUtils {
     }
 
     private static Set<PositionComponent> calculateAffectedPosEntitiesForLine(PositionComponent sourcePos, PositionComponent clickedPos, int maxImpact, int minImpact, int yPos, int xPos) {
+        if (sourcePos == null) {
+            return Sets.newHashSet(clickedPos);
+        }
         Set<PositionComponent> result = new LinkedHashSet<>();
         int signumY = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
         Function<Integer, Boolean> testY = signumY < 0
@@ -205,11 +211,6 @@ public class SpellUtils {
         return buffPlayer + buffSpell;
     }
 
-    public static List<PositionComponent> getRangePosComponents(int spellEntity, int casterEntity, EntityData entityData) {
-        return getAllTargetableEntitiesInRange(spellEntity, casterEntity, entityData).stream()
-                .map(e -> entityData.getComponent(e, PositionComponent.class))
-                .collect(Collectors.toList());
-    }
 
     public static boolean isPositionIsFree(EntityData entityData, PositionComponent newPosition, int entity) {
         // TODO: do we really need entity here? it will only block itself if we try to move it to its own position.

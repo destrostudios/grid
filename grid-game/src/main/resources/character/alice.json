@@ -1,0 +1,337 @@
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "component": "MaxMovementPointsComponent",
+        "maxMovementPoints": 6
+      },
+      {
+        "component": "MaxAttackPointsComponent",
+        "maxAttackPoints": 10
+      },
+      {
+        "component": "AttackPointResistanceComponent",
+        "resistanceValue": 0
+      },
+      {
+        "component": "MovementPointResistanceComponent",
+        "resistanceValue": 0
+      },
+      {
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "ObstacleComponent"
+      },
+      {
+        "component": "PlayerComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "alice"
+      },
+      {
+        "component": "MaxHealthComponent",
+        "maxHealth": 500
+      },
+      {
+        "component": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      }
+    ],
+    "2": [
+      {
+        "component": "NameComponent",
+        "name": "Buff"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[1 AP, 1 BP] Buffs 2 AP in a cross."
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 1,
+        "mpCost": 1,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "PLUS",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "PLUS",
+        "minImpact": 0,
+        "maxImpact": 4
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 4
+      },
+      {
+        "component": "AttackPointsBuffComponent",
+        "buffAmount": 2,
+        "buffDuration": 3,
+        "spellBuff": false
+      }
+    ],
+    "3": [
+      {
+        "component": "NameComponent",
+        "name": "Blblbl"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Regenerates 20-30 life each turn."
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "SINGLE",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 4
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 1,
+        "maxImpact": 1
+      },
+      {
+        "component": "HealPerTurnComponent",
+        "healMinValue": 20,
+        "healMaxValue": 30,
+        "duration": 3
+      }
+    ],
+    "4": [
+      {
+        "component": "NameComponent",
+        "name": "Wound"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[7 AP] Reflecting 20 damage for 2 rounds."
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 7,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "SINGLE",
+        "minRange": 1,
+        "maxRange": 0
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 4
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 1
+      },
+      {
+        "component": "ReflectionBuffComponent",
+        "buffAmount": 20,
+        "buffDuration": 2,
+        "spellBuff": false
+      }
+    ],
+    "5": [
+      {
+        "component": "NameComponent",
+        "name": "Hit"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Deal 10-24 damage and heals for 5-25 in cross shaped AOE"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 4,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 5
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 30,
+        "maxDmg": 44,
+        "targetingAllies": false
+      },
+      {
+        "component": "HealComponent",
+        "minHeal": 5,
+        "maxHeal": 25,
+        "targetingEnemies": false
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "PLUS",
+        "minImpact": 0,
+        "maxImpact": 2
+      }
+    ],
+    "6": [
+      {
+        "component": "NameComponent",
+        "name": "Intimidation"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[1 AP] Push on field away"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 1,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "PushComponent",
+        "displacement": 1
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 1,
+        "maxImpact": 1
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "PLUS",
+        "minRange": 1,
+        "maxRange": 5
+      }
+    ],
+    "7": [
+      {
+        "component": "NameComponent",
+        "name": "Nothing"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[11 AP, 2 MP] Heals 100-300 damage."
+      },
+      {
+        "component": "RequiresTargetComponent"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 11,
+        "mpCost": 2,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "PLUS",
+        "minRange": 1,
+        "maxRange": 5
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "HealComponent",
+        "minHeal": 100,
+        "maxHeal": 300,
+        "targetingEnemies": true
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 4
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      }
+    ],
+    "8": [
+      {
+        "component": "NameComponent",
+        "name": "Hit"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[5 AP] Deal 46-59 damage."
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 3
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 46,
+        "maxDmg": 59,
+        "targetingAllies": true
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      }
+    ]
+  }
+}

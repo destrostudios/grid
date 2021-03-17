@@ -16,6 +16,7 @@ import com.destrostudios.grid.util.SpellUtils;
 
 import java.util.function.Supplier;
 
+import static com.destrostudios.grid.util.RangeUtils.getRangePosComponents;
 import static com.destrostudios.grid.util.SpellUtils.isPositionIsFree;
 
 public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
@@ -35,7 +36,7 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
         HealthPointsComponent healthPointsComponent = entityData.getComponent(event.getPlayerEntity(), HealthPointsComponent.class);
         CostComponent costComponent = entityData.getComponent(event.getSpell(), CostComponent.class);
 
-        boolean fieldIsReachable = SpellUtils.getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityData).contains(position);
+        boolean fieldIsReachable = getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityData).contains(position);
         boolean isOnCooldown = entityData.hasComponents(event.getSpell(), OnCooldownComponent.class);
         boolean teleportCanBeDone = !entityData.hasComponents(event.getSpell(), TeleportComponent.class) || isPositionIsFree(entityData, position, event.getPlayerEntity())
                 && entityData.hasComponents(event.getSpell(), TeleportComponent.class);

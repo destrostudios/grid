@@ -12,4 +12,5 @@ import lombok.Value;
 public class HealComponent implements Component {
     int minHeal;
     int maxHeal;
+    boolean targetingEnemies;
 }
