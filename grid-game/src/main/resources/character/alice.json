@@ -60,7 +60,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[1 AP, 1 BP] Buffs 2 AP in a cross."
+        "tooltip": "[1 AP, 1 BP] Buffs 2 AP in a cross for 2 rounds."
       },
       {
         "component": "CostComponent",
@@ -78,7 +78,7 @@
         "component": "AffectedAreaComponent",
         "shape": "PLUS",
         "minImpact": 0,
-        "maxImpact": 4
+        "maxImpact": 3
       },
       {
         "component": "CooldownComponent",
@@ -87,7 +87,7 @@
       {
         "component": "AttackPointsBuffComponent",
         "buffAmount": 2,
-        "buffDuration": 3,
+        "buffDuration": 2,
         "spellBuff": false
       }
     ],
@@ -98,11 +98,11 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[3 AP] Regenerates 20-30 life each turn."
+        "tooltip": "[4 AP] Regenerates 10-20 life each turn for 3 rounds."
       },
       {
         "component": "CostComponent",
-        "apCost": 3,
+        "apCost": 4,
         "mpCost": 0,
         "hpCost": 0
       },
@@ -136,7 +136,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[7 AP] Reflecting 20 damage for 2 rounds."
+        "tooltip": "[7 AP] Reflecting 10 damage for 2 rounds."
       },
       {
         "component": "CostComponent",
@@ -174,7 +174,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[3 AP] Deal 10-24 damage and heals for 5-25 in cross shaped AOE"
+        "tooltip": "[3 AP] Deal 5-10 damage and heals for 10-15 in cross shaped AOE"
       },
       {
         "component": "CostComponent",
@@ -184,28 +184,28 @@
       },
       {
         "component": "CastsPerTurnComponent",
-        "maxCastsPerTurn": 4,
+        "maxCastsPerTurn": 2,
         "castsThisTurn": 0
       },
       {
         "component": "RangeComponent",
         "castAreaShape": "PLUS",
         "minRange": 1,
-        "maxRange": 5
+        "maxRange": 3
       },
       {
         "component": "LineOfSightComponent"
       },
       {
         "component": "DamageComponent",
-        "minDmg": 30,
-        "maxDmg": 44,
+        "minDmg": 5,
+        "maxDmg": 10,
         "targetingAllies": false
       },
       {
         "component": "HealComponent",
-        "minHeal": 5,
-        "maxHeal": 25,
+        "minHeal": 10,
+        "maxHeal": 15,
         "targetingEnemies": false
       },
       {
@@ -259,7 +259,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[11 AP, 2 MP] Heals 100-300 damage."
+        "tooltip": "[11 AP, 6 MP] Heals 100-200 damage."
       },
       {
         "component": "RequiresTargetComponent"
@@ -267,7 +267,7 @@
       {
         "component": "CostComponent",
         "apCost": 11,
-        "mpCost": 2,
+        "mpCost": 6,
         "hpCost": 0
       },
       {
@@ -282,12 +282,12 @@
       {
         "component": "HealComponent",
         "minHeal": 100,
-        "maxHeal": 300,
+        "maxHeal": 200,
         "targetingEnemies": true
       },
       {
         "component": "CooldownComponent",
-        "cooldown": 4
+        "cooldown": 6
       },
       {
         "component": "AffectedAreaComponent",
@@ -303,7 +303,7 @@
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[5 AP] Deal 46-59 damage."
+        "tooltip": "[5 AP] Deal 26-39 damage."
       },
       {
         "component": "CostComponent",
@@ -322,8 +322,8 @@
       },
       {
         "component": "DamageComponent",
-        "minDmg": 46,
-        "maxDmg": 59,
+        "minDmg": 26,
+        "maxDmg": 39,
         "targetingAllies": true
       },
       {
