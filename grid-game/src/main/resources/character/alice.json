@@ -189,7 +189,7 @@
       },
       {
         "component": "RangeComponent",
-        "castAreaShape": "DIAMOND",
+        "castAreaShape": "PLUS",
         "minRange": 1,
         "maxRange": 5
       },
