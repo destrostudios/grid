@@ -1,7 +1,7 @@
 package com.destrostudios.grid.client.appstates;
 
 import com.jme3.math.*;
-import com.jme3.system.AppSettings;
+import com.jme3.system.JmeContext;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.HAlignment;
 import com.simsilica.lemur.Label;
@@ -29,12 +29,12 @@ public class SettingsMenuAppState extends MenuAppState {
         lblTitle.setColor(ColorRGBA.White);
         guiNode.attachChild(lblTitle);
 
-        AppSettings appSettings = mainApplication.getContext().getSettings();
+        JmeContext context = mainApplication.getContext();
 
         float buttonY = (totalHeight - 200);
         addButton_Boolean(buttonY, "Fullscreen", false, isFullscreen -> {
-            appSettings.setFullscreen(isFullscreen);
-            mainApplication.getContext().restart();
+            context.getSettings().setFullscreen(isFullscreen);
+            context.restart();
         });
         buttonY -= buttonHeight;
         addButton(
@@ -47,15 +47,15 @@ public class SettingsMenuAppState extends MenuAppState {
             values -> "Resolution: " + values[0] + " x " + values[1],
             1,
             values -> {
-                appSettings.setWidth(values[0]);
-                appSettings.setHeight(values[1]);
-                mainApplication.getContext().restart();
+                context.getSettings().setWidth(values[0]);
+                context.getSettings().setHeight(values[1]);
+                context.restart();
             }
         );
         buttonY -= buttonHeight;
         addButton_Boolean(buttonY, "VSync", true, vSync -> {
-            appSettings.setVSync(vSync);
-            mainApplication.getContext().restart();
+            context.getSettings().setVSync(vSync);
+            context.restart();
         });
 
         int backMargin = 20;
