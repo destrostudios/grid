@@ -59,7 +59,7 @@ public class UpdateSpellsHandler implements EventHandler<UpdateSpellsEvent> {
         if (component instanceof ReflectionBuffComponent) {
             ReflectionBuffComponent reflectionBuffComponent = (ReflectionBuffComponent) component;
             if (reflectionBuffComponent.getBuffDuration() == 1) {
-                entityData.remove(buffEntity, HealBuffComponent.class);
+                entityData.remove(buffEntity, ReflectionBuffComponent.class);
             } else {
                 entityData.addComponent(buffEntity, new ReflectionBuffComponent(reflectionBuffComponent.getBuffAmount(), reflectionBuffComponent.getBuffDuration() - 1, true));
             }
