@@ -5,7 +5,6 @@ import com.destrostudios.grid.components.properties.BuffsComponent;
 import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.spells.buffs.AttackPointsBuffComponent;
 import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
-import com.destrostudios.grid.components.spells.buffs.ReflectionBuffComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.entities.EntityData;
@@ -25,6 +24,7 @@ public class UpdateSpellsHandler implements EventHandler<UpdateSpellsEvent> {
             updateCastsPerTurn(entityData, spellEntity);
             updateBuffs(entityData, spellEntity);
         }
+
     }
 
     private void updateBuffs(EntityData entityData, Integer spellEntity) {
@@ -53,17 +53,10 @@ public class UpdateSpellsHandler implements EventHandler<UpdateSpellsEvent> {
             if (healBuff.getBuffDuration() == 1) {
                 entityData.remove(buffEntity, HealBuffComponent.class);
             } else {
-                entityData.addComponent(buffEntity, new AttackPointsBuffComponent(healBuff.getBuffAmount(), healBuff.getBuffDuration() - 1, true));
+                entityData.addComponent(buffEntity, new HealBuffComponent(healBuff.getBuffAmount(), healBuff.getBuffDuration() - 1, true));
             }
         }
-        if (component instanceof ReflectionBuffComponent) {
-            ReflectionBuffComponent reflectionBuffComponent = (ReflectionBuffComponent) component;
-            if (reflectionBuffComponent.getBuffDuration() == 1) {
-                entityData.remove(buffEntity, ReflectionBuffComponent.class);
-            } else {
-                entityData.addComponent(buffEntity, new ReflectionBuffComponent(reflectionBuffComponent.getBuffAmount(), reflectionBuffComponent.getBuffDuration() - 1, true));
-            }
-        }
+
     }
 
     private void updateCooldown(EntityData entityData, Integer spellEntity) {

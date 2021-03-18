@@ -92,6 +92,11 @@ public class UpdatePlayerEnchantmentsHandler implements EventHandler<UpdatePlaye
             remove = hpBuff.getBuffDuration() == 1;
             componentToUpdate = new HealthPointBuffComponent(hpBuff.getBuffAmount(), hpBuff.getBuffDuration() - 1, hpBuff.isSpellBuff());
 
+        } else if (entityData.hasComponents(entity, ReflectionBuffComponent.class)) {
+            ReflectionBuffComponent reflectionBuffComponent = entityData.getComponent(entity, ReflectionBuffComponent.class);
+            remove = reflectionBuffComponent.getBuffDuration() == 1;
+            componentToUpdate = new ReflectionBuffComponent(reflectionBuffComponent.getBuffAmount(), reflectionBuffComponent.getBuffDuration() - 1, reflectionBuffComponent.isSpellBuff());
+
         } else if (entityData.hasComponents(entity, MovementPointBuffComponent.class)) {
             MovementPointBuffComponent mpBuff = entityData.getComponent(entity, MovementPointBuffComponent.class);
             remove = mpBuff.getBuffDuration() == 1;
