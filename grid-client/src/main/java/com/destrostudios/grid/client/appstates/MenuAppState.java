@@ -22,13 +22,15 @@ abstract class MenuAppState extends BaseAppState<ClientApplication> {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        totalWidth = mainApplication.getContext().getSettings().getWidth();
-        totalHeight = mainApplication.getContext().getSettings().getHeight();
-        initMenu();
+        recreateMenu();
         setEnabled(autoEnabled);
     }
 
-    protected abstract void initMenu();
+    public void recreateMenu() {
+        totalWidth = mainApplication.getContext().getSettings().getWidth();
+        totalHeight = mainApplication.getContext().getSettings().getHeight();
+        guiNode.detachAllChildren();
+    }
 
     protected void addTitle(String title) {
         int titleMarginTop = 70;

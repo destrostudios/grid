@@ -1,5 +1,7 @@
 package com.destrostudios.grid.shared;
 
+import java.util.Arrays;
+
 public class Util {
 
     public static float[] parseToFloatArray(String[] array) {
@@ -17,5 +19,14 @@ public class Util {
             System.err.println("Error while creating object of class '" + className + "'.");
         }
         return null;
+    }
+
+    public static int getIndexOfEquals(int[][] array, int[] value) {
+        for (int i = 0; i < array.length; i++) {
+            if (Arrays.equals(array[i], value)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

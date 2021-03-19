@@ -1,10 +1,11 @@
 package com.destrostudios.grid.client.appstates;
 
+import com.destrostudios.grid.shared.Util;
 import com.jme3.math.*;
+import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.HAlignment;
-import com.simsilica.lemur.Label;
 import com.simsilica.lemur.VAlignment;
 import com.simsilica.lemur.component.IconComponent;
 
@@ -18,43 +19,38 @@ public class SettingsMenuAppState extends MenuAppState {
     private HashMap<Button, Integer> selectedIndices = new HashMap<>();
 
     @Override
-    protected void initMenu() {
-        int titleMarginTop = 70;
-        int titleWidth = 300;
-        Label lblTitle = new Label("Settings");
-        lblTitle.setFontSize(32);
-        lblTitle.setLocalTranslation(new Vector3f((totalWidth / 2f) - (titleWidth / 2f), totalHeight - titleMarginTop, 0));
-        lblTitle.setPreferredSize(new Vector3f(titleWidth, 0, 0));
-        lblTitle.setTextHAlignment(HAlignment.Center);
-        lblTitle.setColor(ColorRGBA.White);
-        guiNode.attachChild(lblTitle);
+    public void recreateMenu() {
+        super.recreateMenu();
+        addTitle("Settings");
 
         JmeContext context = mainApplication.getContext();
+        AppSettings settings = context.getSettings();
 
         float buttonY = (totalHeight - 200);
-        addButton_Boolean(buttonY, "Fullscreen", false, isFullscreen -> {
-            context.getSettings().setFullscreen(isFullscreen);
+        addButton_Boolean(buttonY, "Fullscreen", settings.isFullscreen(), isFullscreen -> {
+            settings.setFullscreen(isFullscreen);
             context.restart();
         });
         buttonY -= buttonHeight;
-        addButton(
+        addButton_IntArray(
             buttonY,
             new int[][] {
                 new int[] { 1280, 720 },
                 new int[] { 1600, 900 },
                 new int[] { 1920, 1080 }
             },
+            new int[] { settings.getWidth(), settings.getHeight() },
             values -> "Resolution: " + values[0] + " x " + values[1],
-            1,
             values -> {
-                context.getSettings().setWidth(values[0]);
-                context.getSettings().setHeight(values[1]);
+                settings.setWidth(values[0]);
+                settings.setHeight(values[1]);
                 context.restart();
+                recreateMenus();
             }
         );
         buttonY -= buttonHeight;
-        addButton_Boolean(buttonY, "VSync", true, vSync -> {
-            context.getSettings().setVSync(vSync);
+        addButton_Boolean(buttonY, "VSync", settings.isVSync(), vSync -> {
+            settings.setVSync(vSync);
             context.restart();
         });
 
@@ -71,10 +67,14 @@ public class SettingsMenuAppState extends MenuAppState {
     }
 
     private void addButton_Boolean(float buttonY, String text, boolean defaultValue, Consumer<Boolean> apply) {
-        addButton(buttonY, new Boolean[] { true, false }, value -> text + ": " + (value ? "Yes" : "No"), (defaultValue ? 0 : 1), apply);
+        addButton(buttonY, new Boolean[] { true, false }, (defaultValue ? 0 : 1), value -> text + ": " + (value ? "Yes" : "No"), apply);
     }
 
-    private <T> void addButton(float buttonY, T[] values, Function<T, String> getText, int defaultIndex, Consumer<T> apply) {
+    private void addButton_IntArray(float buttonY, int[][] values, int[] defaultValue, Function<int[], String> getText, Consumer<int[]> apply) {
+        addButton(buttonY, values, Util.getIndexOfEquals(values, defaultValue), getText, apply);
+    }
+
+    private <T> void addButton(float buttonY, T[] values, int defaultIndex, Function<T, String> getText, Consumer<T> apply) {
         int buttonWidth = 400;
         int buttonX = ((totalWidth / 2) - (buttonWidth / 2));
         Button button = new Button(getText.apply(values[defaultIndex]));
@@ -93,5 +93,10 @@ public class SettingsMenuAppState extends MenuAppState {
         });
         selectedIndices.put(button, defaultIndex);
         guiNode.attachChild(button);
+    }
+
+    private void recreateMenus() {
+        getAppState(MainMenuAppState.class).recreateMenu();
+        recreateMenu();
     }
 }

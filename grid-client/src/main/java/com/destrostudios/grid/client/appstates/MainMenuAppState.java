@@ -49,18 +49,11 @@ public class MainMenuAppState extends MenuAppState {
     }
 
     @Override
-    protected void initMenu() {
+    public void recreateMenu() {
+        super.recreateMenu();
         initializeLobby();
 
-        int titleMarginTop = 70;
-        int titleWidth = 300;
-        Label lblTitle = new Label("Grid");
-        lblTitle.setFontSize(32);
-        lblTitle.setLocalTranslation(new Vector3f((totalWidth / 2f) - (titleWidth / 2f), totalHeight - titleMarginTop, 0));
-        lblTitle.setPreferredSize(new Vector3f(titleWidth, 0, 0));
-        lblTitle.setTextHAlignment(HAlignment.Center);
-        lblTitle.setColor(ColorRGBA.White);
-        guiNode.attachChild(lblTitle);
+        addTitle("Grid");
 
         int containerMarginOutside = 200;
         int containerMarginBetween = 100;
@@ -70,6 +63,8 @@ public class MainMenuAppState extends MenuAppState {
         int containerX1 = containerMarginOutside;
         int containerX2 = (containerMarginOutside + containerWidth + containerMarginBetween);
 
+        buttonsPlayers.clear();
+        buttonsGames.clear();
         addSectionContainer("Players", containerX1, containerY, containerWidth, containerHeight);
         addSectionContainer("Games", containerX2, containerY, containerWidth, containerHeight);
 
