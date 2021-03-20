@@ -21,28 +21,28 @@ public class StatsPerTurnHandler implements EventHandler<StatsPerTurnEvent> {
         if (entityData.hasComponents(spell, AttackPointsPerTurnComponent.class)) {
             int activePoison = entityData.createEntity();
             AttackPointsPerTurnComponent apPoison = entityData.getComponent(event.getSpellEntity(), AttackPointsPerTurnComponent.class);
-            entityData.addComponent(activePoison, new AttackPointsPerTurnComponent(apPoison.getPoisonMinValue(), apPoison.getPoisonMaxValue(),
-                    apPoison.getPoisonDuration()));
+            entityData.addComponent(activePoison, new AttackPointsPerTurnComponent(apPoison.getMinValue(), apPoison.getMaxValue(),
+                    apPoison.getDuration()));
             poisons.add(activePoison);
         }
         if (entityData.hasComponents(spell, MovementPointsPerTurnComponent.class)) {
             int activePoison = entityData.createEntity();
             MovementPointsPerTurnComponent mpPoison = entityData.getComponent(event.getSpellEntity(), MovementPointsPerTurnComponent.class);
-            entityData.addComponent(activePoison, new MovementPointsPerTurnComponent(mpPoison.getPoisonMinValue(), mpPoison.getPoisonMaxValue(),
-                    mpPoison.getPoisonDuration()));
+            entityData.addComponent(activePoison, new MovementPointsPerTurnComponent(mpPoison.getMinValue(), mpPoison.getMaxValue(),
+                    mpPoison.getDuration()));
             poisons.add(activePoison);
         }
         if (entityData.hasComponents(spell, DamagePerTurnComponent.class)) {
             int activePoison = entityData.createEntity();
             DamagePerTurnComponent hpPoison = entityData.getComponent(event.getSpellEntity(), DamagePerTurnComponent.class);
-            entityData.addComponent(activePoison, new DamagePerTurnComponent(hpPoison.getDamageMinValue(), hpPoison.getDamageMaxValue(),
+            entityData.addComponent(activePoison, new DamagePerTurnComponent(hpPoison.getMinValue(), hpPoison.getMaxValue(),
                     hpPoison.getDuration()));
             poisons.add(activePoison);
         }
         if (entityData.hasComponents(spell, HealPerTurnComponent.class)) {
             int activePoison = entityData.createEntity();
             HealPerTurnComponent healPerTurn = entityData.getComponent(event.getSpellEntity(), HealPerTurnComponent.class);
-            entityData.addComponent(activePoison, new DamagePerTurnComponent(healPerTurn.getHealMinValue(), healPerTurn.getHealMaxValue(),
+            entityData.addComponent(activePoison, new DamagePerTurnComponent(healPerTurn.getMinValue(), healPerTurn.getMaxValue(),
                     healPerTurn.getDuration()));
             poisons.add(activePoison);
         }

@@ -13,4 +13,11 @@ public class AffectedAreaComponent implements Component {
     SpellAreaShape shape;
     int minImpact;
     int maxImpact;
+
+
+    public String toTooltipString() {
+        return shape == SpellAreaShape.SINGLE
+                ? "to a single field"
+                : String.format("in a %s-%s %s shape", minImpact, maxImpact, shape.toTooltipString());
+    }
 }

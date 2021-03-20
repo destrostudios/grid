@@ -10,6 +10,7 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
+import com.destrostudios.grid.components.map.TargetableComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.entities.EntityData;
@@ -85,6 +86,7 @@ import com.destrostudios.grid.serialization.container.MapContainer;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverInfo;
+import com.destrostudios.grid.util.TooltipsGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -192,6 +194,7 @@ public class GridGame {
             int spell = world.createEntity();
             spellComponentEntry.getValue().forEach(c -> world.addComponent(spell, c));
             spells.add(spell);
+            world.addComponent(spell, TooltipsGenerator.generateTooltip(world, spell));
         }
         world.addComponent(playerEntity, new SpellsComponent(spells));
         for (Component playerComponent : getPlayerComponentsWithoutSpells(characterContainer)) {
@@ -205,6 +208,7 @@ public class GridGame {
         MaxMovementPointsComponent mpC = world.getComponent(playerEntity, MaxMovementPointsComponent.class);
         world.addComponent(playerEntity, new MovementPointsComponent(mpC.getMaxMovementPoints()));
         world.addComponent(playerEntity, new IsAliveComponent());
+        world.addComponent(playerEntity, new TargetableComponent());
     }
 
     public List<Component> getPlayerComponentsWithoutSpells(CharacterContainer characterContainer) {

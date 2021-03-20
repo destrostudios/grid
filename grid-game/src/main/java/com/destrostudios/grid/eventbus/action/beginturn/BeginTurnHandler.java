@@ -25,7 +25,6 @@ public class BeginTurnHandler implements EventHandler<BeginTurnEvent> {
         // update spells, buffs and poisons at the beginning of
         followUpEvents.add(new UpdateSpellsEvent(currentEntity));
         followUpEvents.add(new UpdatePlayerEnchantmentsEvent(currentEntity));
-//        followUpEvents.add(new UpdateStats(currentEntity));
         followUpEvents.add(new UpdateStatsPerTurnEvent(currentEntity));
 
         eventbus.registerSubEvents(followUpEvents);

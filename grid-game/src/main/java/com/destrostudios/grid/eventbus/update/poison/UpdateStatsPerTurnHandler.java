@@ -46,7 +46,7 @@ public class UpdateStatsPerTurnHandler implements EventHandler<UpdateStatsPerTur
                 AttackPointsPerTurnComponent apPoison = entityData.getComponent(statsPerTurn, AttackPointsPerTurnComponent.class);
                 AttackPointResistanceComponent apResSource = entityData.getComponent(source.getSourceEntity(), AttackPointResistanceComponent.class);
                 AttackPointResistanceComponent apResTarget = entityData.getComponent(playerEntity, AttackPointResistanceComponent.class);
-                apPoisonSum += getResultingValue(apPoison.getPoisonMaxValue() - apPoison.getPoisonMinValue(),
+                apPoisonSum += getResultingValue(apPoison.getMaxValue() - apPoison.getMinValue(),
                         apResSource.getResistanceValue(), apResTarget.getResistanceValue());
 
             } else if (entityData.hasComponents(statsPerTurn, MovementPointsPerTurnComponent.class)) {
@@ -54,16 +54,16 @@ public class UpdateStatsPerTurnHandler implements EventHandler<UpdateStatsPerTur
                 MovementPointResistanceComponent mpResSource = entityData.getComponent(source.getSourceEntity(),
                         MovementPointResistanceComponent.class);
                 MovementPointResistanceComponent mpResTarget = entityData.getComponent(playerEntity, MovementPointResistanceComponent.class);
-                mpPoisonSum += getResultingValue(mpPerTurn.getPoisonMaxValue() - mpPerTurn.getPoisonMinValue(),
+                mpPoisonSum += getResultingValue(mpPerTurn.getMaxValue() - mpPerTurn.getMinValue(),
                         mpResSource.getResistanceValue(), mpResTarget.getResistanceValue());
 
             } else if (entityData.hasComponents(statsPerTurn, HealPerTurnComponent.class)) {
                 HealPerTurnComponent heal = entityData.getComponent(statsPerTurn, HealPerTurnComponent.class);
-                hpPoisonSum += random.nextInt(heal.getHealMinValue(), heal.getHealMaxValue());
+                hpPoisonSum += random.nextInt(heal.getMinValue(), heal.getMaxValue());
 
             } else if (entityData.hasComponents(statsPerTurn, DamagePerTurnComponent.class)) {
                 DamagePerTurnComponent damage = entityData.getComponent(statsPerTurn, DamagePerTurnComponent.class);
-                hpPoisonSum  += random.nextInt(damage.getDamageMinValue(), damage.getDamageMaxValue());
+                hpPoisonSum  += random.nextInt(damage.getMinValue(), damage.getMaxValue());
             }
         }
 

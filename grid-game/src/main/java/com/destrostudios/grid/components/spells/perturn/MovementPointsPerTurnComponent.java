@@ -11,7 +11,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class MovementPointsPerTurnComponent implements Component {
-    private int poisonMinValue;
-    private int poisonMaxValue;
-    private int poisonDuration;
+    private int minValue;
+    private int maxValue;
+    private int duration;
 }

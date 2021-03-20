@@ -124,8 +124,8 @@
       },
       {
         "component": "HealPerTurnComponent",
-        "healMinValue": 20,
-        "healMaxValue": 30,
+        "minValue": 20,
+        "maxValue": 30,
         "duration": 3
       }
     ],
@@ -147,7 +147,7 @@
       {
         "component": "RangeComponent",
         "castAreaShape": "SINGLE",
-        "minRange": 1,
+        "minRange": 0,
         "maxRange": 0
       },
       {

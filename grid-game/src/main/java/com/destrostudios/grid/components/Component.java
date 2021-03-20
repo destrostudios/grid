@@ -4,11 +4,7 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.character.NextTurnComponent;
-import com.destrostudios.grid.components.map.ObstacleComponent;
-import com.destrostudios.grid.components.map.PositionComponent;
-import com.destrostudios.grid.components.map.StartingFieldComponent;
-import com.destrostudios.grid.components.map.VisualComponent;
-import com.destrostudios.grid.components.map.WalkableComponent;
+import com.destrostudios.grid.components.map.*;
 import com.destrostudios.grid.components.properties.*;
 import com.destrostudios.grid.components.properties.resistance.AttackPointResistanceComponent;
 import com.destrostudios.grid.components.properties.resistance.MovementPointResistanceComponent;
@@ -34,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CastsPerTurnComponent.class, name = "CastsPerTurnComponent"),
         @JsonSubTypes.Type(value = CostComponent.class, name = "CostComponent"),
+        @JsonSubTypes.Type(value = TargetableComponent.class, name = "TargetableComponent"),
         @JsonSubTypes.Type(value = HealPerTurnComponent.class, name = "HealPerTurnComponent"),
         @JsonSubTypes.Type(value = DamageComponent.class, name = "DamageComponent"),
         @JsonSubTypes.Type(value = HealComponent.class, name = "HealComponent"),

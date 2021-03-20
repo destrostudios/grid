@@ -5,6 +5,8 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventValidator;
 import java.util.function.Supplier;
+
+import com.destrostudios.grid.util.Direction;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

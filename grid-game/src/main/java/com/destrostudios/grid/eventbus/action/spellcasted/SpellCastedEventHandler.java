@@ -74,7 +74,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
                 followUpEvents.add(new HealthPointsChangedEvent(event.getPlayerEntity(), hp.getHealth() - costComponent.getHpCost()));
             }
         }
-        List<Integer> affectedEntities = SpellUtils.getAffectedPlayerEntities(spell, event.getPlayerEntity(), entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
+        List<Integer> affectedEntities = SpellUtils.getAffectedTargetableEntities(spell, event.getPlayerEntity(), entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
                 new PositionComponent(event.getX(), event.getY()), entityData);
 
         // 2. Heals

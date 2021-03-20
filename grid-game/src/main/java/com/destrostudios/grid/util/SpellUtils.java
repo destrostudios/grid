@@ -4,6 +4,7 @@ import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
+import com.destrostudios.grid.components.map.TargetableComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.AttackPointsComponent;
 import com.destrostudios.grid.components.properties.BuffsComponent;
@@ -15,25 +16,22 @@ import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.SpellAreaShape;
 import com.destrostudios.grid.entities.EntityData;
-import com.destrostudios.grid.eventbus.action.displace.Direction;
 import com.google.common.collect.Sets;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SpellUtils {
-    // todo 3.) targetable component
     // todo 5.) Tooltips automatisch generieren
     // todo 6.) AP/MP steal components
-    // todo 9.) position swap
 
+    public static List<Integer> getAffectedTargetableEntities(int spellEntity, int sourceEntity, PositionComponent sourcePos,
+            PositionComponent clickedPos, EntityData entityData) {
 
-    public static List<Integer> getAffectedPlayerEntities(int spellEntity, int sourceEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
         Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         int teamSource = entityData.getComponent(sourceEntity, TeamComponent.class).getTeam();
-        return entityData.list(PlayerComponent.class).stream()
+        return entityData.list(TargetableComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .sorted(entitiesToDamageSortComparator(clickedPos, entityData, teamSource))
                 .collect(Collectors.toList());
@@ -117,11 +115,6 @@ public class SpellUtils {
         } else if (component.getShape() == SpellAreaShape.LINE) {
             return calculateAffectedPosEntitiesForLine(sourcePos, clickedPos, maxImpact, minImpact, yPos, xPos);
 
-        } else if (component.getShape() == SpellAreaShape.DIAMON_SELFCAST && sourcePos.equals(clickedPos)) {
-            result.addAll(getBaseSquare(sourcePos, maxImpact));
-            result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) + Math.abs(pos.getY() - sourcePos.getY()) > maxImpact);
-            result.removeIf(pos -> Math.abs(pos.getX() - sourcePos.getX()) <= minImpact || Math.abs(pos.getY() - sourcePos.getY()) <= minImpact);
-
         } else {
             result.addAll(getBaseSquare(clickedPos, maxImpact));
 
@@ -155,15 +148,18 @@ public class SpellUtils {
         if (sourcePos == null) {
             return Sets.newHashSet(clickedPos);
         }
-        Set<PositionComponent> result = new LinkedHashSet<>();
+
         int signumY = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
         Function<Integer, Boolean> testY = signumY < 0
                 ? y -> y >= yPos - maxImpact
                 : y -> y <= yPos + maxImpact;
+
         int signumX = (int) Math.signum(clickedPos.getX() - sourcePos.getX());
         Function<Integer, Boolean> testX = signumX < 0
                 ? x -> x >= xPos - maxImpact
                 : x -> x <= xPos + maxImpact;
+
+        Set<PositionComponent> result = new LinkedHashSet<>();
 
         if (Math.abs(sourcePos.getX() - clickedPos.getX()) < Math.abs(sourcePos.getY() - clickedPos.getY())) {
             int signum = (int) Math.signum(clickedPos.getY() - sourcePos.getY());
@@ -191,7 +187,7 @@ public class SpellUtils {
         Optional<Integer> targetEntity = data.list(PositionComponent.class).stream()
                 .filter(e -> data.getComponent(e, PositionComponent.class).getX() == x
                         && data.getComponent(e, PositionComponent.class).getY() == y)
-                .min((e1, e2) -> Boolean.compare(data.hasComponents(e2, PlayerComponent.class), data.hasComponents(e1, PlayerComponent.class)));
+                .min((e1, e2) -> Boolean.compare(data.hasComponents(e2, TargetableComponent.class), data.hasComponents(e1, TargetableComponent.class)));
         return targetEntity.orElse(-1);
     }
 
@@ -214,16 +210,15 @@ public class SpellUtils {
 
     public static boolean isPositionIsFree(EntityData entityData, PositionComponent newPosition, int entity) {
         // TODO: do we really need entity here? it will only block itself if we try to move it to its own position.
-        Stream<Integer> allPlayersEntites = entityData.list(PositionComponent.class, PlayerComponent.class).stream()
-                .filter(e -> e != entity);
-        Stream<Integer> allObstacleEntites = entityData.list(PositionComponent.class, ObstacleComponent.class).stream()
-                .filter(e -> e != entity);
-        Stream<Integer> allWalkableEntities = entityData.list(PositionComponent.class, WalkableComponent.class).stream()
-                .filter(e -> e != entity);
-
-        boolean collidesWithOtherPlayer = allPlayersEntites.anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
-        boolean collidesWithObstacle = allObstacleEntites.anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
-        boolean isWalkableField = allWalkableEntities.anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithOtherPlayer = entityData.list(PositionComponent.class, PlayerComponent.class).stream()
+                .filter(e -> e != entity)
+                .anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean collidesWithObstacle = entityData.list(PositionComponent.class, ObstacleComponent.class).stream()
+                .filter(e -> e != entity)
+                .anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        boolean isWalkableField = entityData.list(PositionComponent.class, WalkableComponent.class).stream()
+                .filter(e -> e != entity)
+                .anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
 
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }

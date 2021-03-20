@@ -11,7 +11,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class DamagePerTurnComponent implements Component {
-    private int damageMinValue;
-    private int damageMaxValue;
+    private int minValue;
+    private int maxValue;
     private int duration;
 }

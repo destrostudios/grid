@@ -1,4 +1,4 @@
-package com.destrostudios.grid.eventbus.action.displace;
+package com.destrostudios.grid.util;
 
 import lombok.Getter;
 

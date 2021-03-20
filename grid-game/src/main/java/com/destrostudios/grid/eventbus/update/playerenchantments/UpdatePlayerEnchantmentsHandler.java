@@ -114,26 +114,26 @@ public class UpdatePlayerEnchantmentsHandler implements EventHandler<UpdatePlaye
 
         } else if (entityData.hasComponents(entity, AttackPointsPerTurnComponent.class)) {
             AttackPointsPerTurnComponent apPoison = entityData.getComponent(entity, AttackPointsPerTurnComponent.class);
-            remove = apPoison.getPoisonDuration() == 1;
-            componentToUpdate = new AttackPointsPerTurnComponent(apPoison.getPoisonMinValue(), apPoison.getPoisonMaxValue(),
-                    apPoison.getPoisonDuration() - 1);
+            remove = apPoison.getDuration() == 1;
+            componentToUpdate = new AttackPointsPerTurnComponent(apPoison.getMinValue(), apPoison.getMaxValue(),
+                    apPoison.getDuration() - 1);
 
         } else if (entityData.hasComponents(entity, MovementPointsPerTurnComponent.class)) {
             MovementPointsPerTurnComponent mpPoison = entityData.getComponent(entity, MovementPointsPerTurnComponent.class);
-            remove = mpPoison.getPoisonDuration() == 1;
-            componentToUpdate = new MovementPointsPerTurnComponent(mpPoison.getPoisonMinValue(), mpPoison.getPoisonMaxValue(),
-                    mpPoison.getPoisonDuration() - 1);
+            remove = mpPoison.getDuration() == 1;
+            componentToUpdate = new MovementPointsPerTurnComponent(mpPoison.getMinValue(), mpPoison.getMaxValue(),
+                    mpPoison.getDuration() - 1);
 
         } else if (entityData.hasComponents(entity, DamagePerTurnComponent.class)) {
             DamagePerTurnComponent hpPoison = entityData.getComponent(entity, DamagePerTurnComponent.class);
             remove = hpPoison.getDuration() == 1;
-            componentToUpdate = new DamagePerTurnComponent(hpPoison.getDamageMinValue(), hpPoison.getDamageMaxValue(),
+            componentToUpdate = new DamagePerTurnComponent(hpPoison.getMinValue(), hpPoison.getMaxValue(),
                     hpPoison.getDuration() - 1);
 
         } else if (entityData.hasComponents(entity, HealPerTurnComponent.class)) {
             HealPerTurnComponent heal = entityData.getComponent(entity, HealPerTurnComponent.class);
             remove = heal.getDuration() == 1;
-            componentToUpdate = new HealPerTurnComponent(heal.getHealMinValue(), heal.getHealMaxValue(),
+            componentToUpdate = new HealPerTurnComponent(heal.getMinValue(), heal.getMaxValue(),
                     heal.getDuration() - 1);
         }
         if (componentToUpdate != null) {
