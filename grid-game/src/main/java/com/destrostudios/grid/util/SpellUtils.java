@@ -23,7 +23,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SpellUtils {
-    // todo 5.) Tooltips automatisch generieren
     // todo 6.) AP/MP steal components
 
     public static List<Integer> getAffectedTargetableEntities(int spellEntity, int sourceEntity, PositionComponent sourcePos,
@@ -31,6 +30,7 @@ public class SpellUtils {
 
         Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         int teamSource = entityData.getComponent(sourceEntity, TeamComponent.class).getTeam();
+
         return entityData.list(TargetableComponent.class).stream()
                 .filter(e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
                 .sorted(entitiesToDamageSortComparator(clickedPos, entityData, teamSource))
@@ -38,58 +38,29 @@ public class SpellUtils {
     }
 
     private static Comparator<Integer> entitiesToDamageSortComparator(PositionComponent clickedPos, EntityData entityData, int teamSource) {
-        return (e1, e2) -> {
-            PositionComponent posE1 = entityData.getComponent(e1, PositionComponent.class);
-            PositionComponent posE2 = entityData.getComponent(e2, PositionComponent.class);
-
-            int deltaXE1 = Math.abs(clickedPos.getX() - posE1.getX());
-            int deltaYE1 = Math.abs(clickedPos.getY() - posE1.getY());
-            int distanceToE1 = deltaXE1 + deltaYE1;
-            int deltaXE2 = Math.abs(clickedPos.getX() - posE2.getX());
-            int deltaYE2 = Math.abs(clickedPos.getY() - posE2.getY());
-            int distanceToE2 = deltaXE2 + deltaYE2;
-
+        return Comparator.comparingInt((Integer entity) -> {
             // 1. compare the distance to the clicked position
-            if (distanceToE1 < distanceToE2) {
-                return -1;
-            } else if (distanceToE2 < distanceToE1) {
-                return 1;
-            }
+            PositionComponent posE = entityData.getComponent(entity, PositionComponent.class);
+            int deltaXE1 = Math.abs(clickedPos.getX() - posE.getX());
+            int deltaYE1 = Math.abs(clickedPos.getY() - posE.getY());
+            return deltaXE1 + deltaYE1;
 
-            int teamE1 = entityData.getComponent(e1, TeamComponent.class).getTeam();
-            int teamE2 = entityData.getComponent(e2, TeamComponent.class).getTeam();
-
+        }).thenComparingInt((Integer entity) -> {
             // 2. compare the team with the source team
-            if (teamE1 == teamSource && teamE2 != teamSource) {
-                return -1;
-            } else if (teamE2 == teamSource && teamE1 != teamSource) {
-                return -1;
-            }
+            return -Math.abs(teamSource - entityData.getComponent(entity, TeamComponent.class).getTeam());
 
-            // 3. compare delta X to clicked pos
-            if (deltaXE1 < deltaXE2) {
-                return -1;
-            } else if (deltaXE2 < deltaXE1) {
-                return 1;
-            }
+        }).thenComparingInt((Integer entity) -> {
+            // 3. compare delta x to clicked pos
+            PositionComponent posE = entityData.getComponent(entity, PositionComponent.class);
+            return Math.abs(clickedPos.getX() - posE.getX());
 
+        }).thenComparingInt((Integer entity) -> {
             // 4. compare delta y to clicked pos
-            if (deltaYE1 < deltaYE2) {
-                return -1;
-            } else if (deltaYE2 < deltaYE1) {
-                return 1;
-            }
+            PositionComponent posE = entityData.getComponent(entity, PositionComponent.class);
+            return Math.abs(clickedPos.getY() - posE.getY());
 
-            // 5. compare entity
-            if (e1 < e2) {
-                return -1;
-            } else if (e2 < e1) {
-                return 1;
-            }
-            return 0;
-        };
+        }).thenComparingInt(Integer::intValue);
     }
-
 
     public static List<Integer> getAffectedWalkableEntities(int spellEntity, PositionComponent sourcePos, PositionComponent clickedPos, EntityData entityData) {
         Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));

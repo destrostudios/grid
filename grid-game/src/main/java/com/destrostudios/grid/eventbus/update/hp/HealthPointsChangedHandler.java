@@ -6,7 +6,6 @@ import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.eventbus.Eventbus;
 import com.destrostudios.grid.eventbus.action.die.DieEvent;
-import com.destrostudios.grid.util.GameOverInfo;
 import lombok.AllArgsConstructor;
 
 import java.util.function.Supplier;

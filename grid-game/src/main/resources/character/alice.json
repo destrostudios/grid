@@ -8,7 +8,7 @@
       },
       {
         "component": "MaxAttackPointsComponent",
-        "maxAttackPoints": 10
+        "maxAttackPoints": 9
       },
       {
         "component": "AttackPointResistanceComponent",

@@ -272,7 +272,7 @@ public class GridGame {
         addInstantHandler(UpdateSpellsEvent.class, new UpdateSpellsHandler());
         addInstantHandler(SpellBuffAddedEvent.class, new SpellBuffAddedHandler(eventBus));
         addInstantHandler(SwapEvent.class, new SwapEventHandler());
-        addInstantHandler(DieEvent.class, new DieEventHandler(gameOverInfo));
+        addInstantHandler(DieEvent.class, new DieEventHandler(gameOverInfo, eventBus));
 
         addValidator(WalkEvent.class, new WalkValidator());
         addValidator(SpellCastedEvent.class, new SpellCastedValidator());
