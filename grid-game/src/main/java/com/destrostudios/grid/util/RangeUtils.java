@@ -9,8 +9,6 @@ import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.turnbasedgametools.grid.LineOfSight;
 import com.destrostudios.turnbasedgametools.grid.Position;
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -81,7 +79,7 @@ public class RangeUtils {
         int xPos = sourcePos.getX();
 
         if (castAreaShape == CastAreaShape.SINGLE) {
-            return Sets.newHashSet(sourcePos);
+            return Set.of(sourcePos);
         } else {
             Set<PositionComponent> result = new LinkedHashSet<>(getBaseSquare(sourcePos, maxRange));
 
