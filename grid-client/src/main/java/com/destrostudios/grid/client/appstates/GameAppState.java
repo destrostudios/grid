@@ -7,7 +7,7 @@ import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
 import com.destrostudios.grid.client.animations.*;
-import com.destrostudios.grid.client.characters.BlockingAnimation;
+import com.destrostudios.grid.client.characters.CustomBlockingAnimationInfo;
 import com.destrostudios.grid.client.characters.CastAnimations;
 import com.destrostudios.grid.client.characters.EntityVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
@@ -23,6 +23,7 @@ import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
+import com.destrostudios.grid.eventbus.action.die.DieEvent;
 import com.destrostudios.grid.eventbus.action.gameover.GameOverEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveType;
@@ -94,10 +95,10 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             EntityData entityData = entityDataSupplier.get();
             EntityVisual entityVisual = getAppState(MapAppState.class).getEntityVisual(event.getPlayerEntity());
             String spellName = entityData.getComponent(event.getSpell(), NameComponent.class).getName();
-            BlockingAnimation castAnimation = CastAnimations.get(spellName);
+            CustomBlockingAnimationInfo castAnimation = CastAnimations.get(spellName);
             if (castAnimation != null) {
                 lookAt(entityData, event.getPlayerEntity(), entityVisual.getModelObject(), event.getX(), event.getY());
-                playAnimation(new ModelAnimation(entityVisual, castAnimation));
+                playAnimation(new CustomBlockingModelAnimation(entityVisual, castAnimation));
             }
         });
         gameProxy.addResolvedHandler(Event.class, (event, entityDataSupplier) -> updateVisuals());
@@ -106,6 +107,10 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             int activePlayerEntity = entityData.list(ActiveTurnComponent.class).get(0);
             String activePlayerName = entityData.getComponent(activePlayerEntity, NameComponent.class).getName();
             playAnimation(new AnnouncementAnimation(mainApplication, activePlayerName + "s turn"));
+        });
+        gameProxy.addResolvedHandler(DieEvent.class, (EventHandler<DieEvent>) (event, entityDataSupplier) -> {
+            EntityVisual entityVisual = getAppState(MapAppState.class).getEntityVisual(event.getEntity());
+            entityVisual.playDeathAnimation();
         });
         gameProxy.addResolvedHandler(GameOverEvent.class, (EventHandler<GameOverEvent>) (event, entityDataSupplier) -> {
             getAppState(GameGuiAppState.class).onGameOver("Team #" + event.getWinnerTeam());

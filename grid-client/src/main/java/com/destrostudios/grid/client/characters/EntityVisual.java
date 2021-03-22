@@ -47,7 +47,7 @@ public class EntityVisual {
     public void updateAnimation() {
         if (hasNextAnimationInfo) {
             if (nextAnimationInfo != null) {
-                modelObject.playAnimation(nextAnimationInfo.getName(), nextAnimationInfo.getLoopDuration(), false);
+                modelObject.playAnimation(nextAnimationInfo.getName(), nextAnimationInfo.getLoopDuration(), nextAnimationInfo.isLoop(), false);
                 nextAnimationInfo = null;
             } else {
                 modelObject.stopAndRewindAnimation();
@@ -68,6 +68,10 @@ public class EntityVisual {
         } else {
             setNextAnimationInfo(null);
         }
+    }
+
+    public void playDeathAnimation() {
+        setNextAnimationInfo(modelInfo.getDeathAnimation());
     }
 
     private void setNextAnimationInfo(AnimationInfo animationInfo) {

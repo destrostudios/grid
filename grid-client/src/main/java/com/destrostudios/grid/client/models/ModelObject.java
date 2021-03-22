@@ -43,15 +43,7 @@ public class ModelObject extends Node {
         }
     }
 
-    public void playAnimation(String animationName, float loopDuration) {
-        playAnimation(animationName, loopDuration, true);
-    }
-
-    public void playAnimation(String animationName, float loopDuration, boolean restartIfAlreadySet) {
-        playAnimation(animationName, loopDuration, restartIfAlreadySet, true);
-    }
-
-    public void playAnimation(String animationName, float loopDuration, boolean restartIfAlreadySet, boolean isLoop) {
+    public void playAnimation(String animationName, float loopDuration, boolean isLoop, boolean restartIfAlreadySet) {
         setAnimationName(animationName, restartIfAlreadySet);
         setAnimationProperties(loopDuration, isLoop);
     }
