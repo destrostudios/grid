@@ -43,6 +43,9 @@ public class ClientGameProxy implements GameProxy {
 
     @Override
     public boolean applyNextAction() {
+        if (triggeredHandlersInQueue()) {
+            return false;
+        }
         GridGame gridGame = getGame();
         // Ensure that the listeners are on the (potentially new) game instance
         for (Map.Entry<Class<? extends Event>, EventHandler<?>> entry : preListeners.entrySet()) {

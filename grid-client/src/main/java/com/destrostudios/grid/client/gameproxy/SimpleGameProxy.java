@@ -27,6 +27,9 @@ public class SimpleGameProxy implements GameProxy {
 
     @Override
     public boolean applyNextAction() {
+        if (triggeredHandlersInQueue()) {
+            return false;
+        }
         Action action = actions.poll();
         if (action != null) {
             gridGame.registerAction(action);
