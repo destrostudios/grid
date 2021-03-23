@@ -3,8 +3,8 @@ package com.destrostudios.grid.client.gameproxy;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
-import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.NextTurnComponent;
+import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
@@ -53,7 +53,12 @@ public class ClientGameProxy implements GameProxy {
             gridGame.removeResolvedHandler(entry.getKey(), entry.getValue());
             gridGame.addResolvedHandler(entry.getKey(), entry.getValue());
         }
-        return gameClientModule.applyNextAction(gameId);
+        int hash = gridGame.getState().hashCode();
+        boolean actionWasApplied = gameClientModule.applyNextAction(gameId);
+        if (actionWasApplied) {
+            System.out.println("Game state hash before action: " + Integer.toHexString(hash));
+        }
+        return actionWasApplied;
     }
 
     @Override

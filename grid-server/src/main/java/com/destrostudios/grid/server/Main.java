@@ -96,8 +96,17 @@ public class Main {
                 }
             }
         };
+        NetworkModule logStateHashModule = new NetworkModule() {
+            @Override
+            public void received(Connection connection, Object object) {
+                if (object instanceof GameActionRequest) {
+                    GameActionRequest message = (GameActionRequest) object;
+                    System.out.println("Game state hash after action: " + Integer.toHexString(gameModule.getGame(message.game).state.getState().hashCode()));
+                }
+            }
+        };
 
-        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, lobbyModule, gameStartModule, gameOverModule, autoRejoinModule);
+        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, lobbyModule, gameStartModule, gameOverModule, autoRejoinModule, logStateHashModule);
         server.start(NetworkUtil.PORT);
 
         System.out.println("Server started.");
