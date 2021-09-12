@@ -103,4 +103,8 @@ public class EntityVisual {
     private void updateHealthBarLabel() {
         healthBar.setMessage(String.format("%s / %s", (int) healthBar.getProgressValue(), (int) healthBar.getModel().getMaximum()));
     }
+
+    public void setColor(ColorRGBA color) {
+        ModelColorizer.setColor(modelObject.getOriginalRegisteredModel().getNode(), color);
+    }
 }

@@ -11,6 +11,7 @@ import com.jme3.texture.Texture;
 public class MaterialFactory {
 
     public static final String DEFINITION_NAME_LIGHTING = "Common/MatDefs/Light/Lighting.j3md";
+    public static final String DEFINITION_NAME_UNSHADED = "Common/MatDefs/Misc/Unshaded.j3md";
 
     public static Material generateLightingMaterial(AssetManager assetManager, ColorRGBA color) {
         Material material = new Material(assetManager, DEFINITION_NAME_LIGHTING);

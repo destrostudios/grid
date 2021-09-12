@@ -182,14 +182,14 @@ public class ModelSkin {
             }
         }
     }
-   
+
     private void tryLoadTexture(AssetManager assetManager, Material material, String materialParameter, String textureName, String sourceName) {
         if (textureName != null) {
             Texture texture = MaterialFactory.loadTexture(assetManager, getResourcesFilePath(sourceName) + textureName);
             material.setTexture(materialParameter, texture);
         }
     }
-   
+
     private String getResourcesFilePath(String sourceName) {
         return "models/" + sourceName + "/resources/";
     }
@@ -237,7 +237,6 @@ public class ModelSkin {
             Material material = geometry.getMaterial();
             MaterialFactory.generateAmbientColor(material, materialAmbient);
             material.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
-            geometry.setUserData("layer", 6);
         }
     }
 

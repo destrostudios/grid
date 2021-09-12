@@ -41,6 +41,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
@@ -111,6 +112,7 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         gameProxy.addResolvedHandler(DieEvent.class, (EventHandler<DieEvent>) (event, entityDataSupplier) -> {
             EntityVisual entityVisual = getAppState(MapAppState.class).getEntityVisual(event.getEntity());
             entityVisual.playDeathAnimation();
+            entityVisual.setColor(new ColorRGBA(1, 1, 1, 0.25f));
         });
         gameProxy.addResolvedHandler(GameOverEvent.class, (EventHandler<GameOverEvent>) (event, entityDataSupplier) -> {
             getAppState(GameGuiAppState.class).onGameOver("Team #" + event.getWinnerTeam());
