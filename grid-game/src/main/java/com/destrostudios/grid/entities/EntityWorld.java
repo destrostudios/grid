@@ -44,7 +44,7 @@ public class EntityWorld implements EntityData {
     }
 
     /**
-     * Creates an entitys with the highest integer which is not used
+     * Creates an entity with the highest integer which is not used
      *
      * @return entity
      */
