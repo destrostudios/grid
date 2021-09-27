@@ -12,7 +12,6 @@ import com.destrostudios.grid.components.properties.NameComponent;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import com.destrostudios.turnbasedgametools.network.client.modules.game.ClientGameData;
@@ -61,7 +60,7 @@ public class Main {
                     if (active) {
                         log.info("calculating...");
                         GridBotState botState = new GridBotState(game.getState());
-                        MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot();
+                        MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot(100);
                         List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
                         bot.clearRoot();
                         gameModule.sendAction(game.getId(), actions.get(0));
