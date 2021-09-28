@@ -12,7 +12,15 @@ import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.StartingFieldComponent;
 import com.destrostudios.grid.components.map.TargetableComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.IsAliveComponent;
+import com.destrostudios.grid.components.properties.MaxAttackPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MaxMovementPointsComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.entities.EntityWorld;
 import com.destrostudios.grid.eventbus.Event;
@@ -88,9 +96,6 @@ import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.grid.util.TooltipsGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.Getter;
-import lombok.SneakyThrows;
-
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +104,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.SneakyThrows;
 
 @Getter
 public class GridGame {
@@ -139,7 +146,13 @@ public class GridGame {
     }
 
     public void initGame(StartGameInfo startGameInfo) {
-        world.getWorld().putAll(initMap(startGameInfo.getMapName()).getComponents());
+        Map<Integer, List<Component>> components = initMap(startGameInfo.getMapName()).getComponents();
+        for (Map.Entry<Integer, List<Component>> entry : components.entrySet()) {
+            for (Component component : entry.getValue()) {
+                world.addComponent(entry.getKey(), component);
+            }
+        }
+        world.setNextEntity(components.keySet().stream().mapToInt(x -> x).max().orElse(0) + 1);
 
         List<PositionComponent> startPositions = world.list(WalkableComponent.class, StartingFieldComponent.class).stream()
                 .map(e -> world.getComponent(e, PositionComponent.class))

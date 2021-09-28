@@ -3,6 +3,7 @@ package com.destrostudios.grid.tools.mapeditor;
 import com.destroflyer.jme3.cubes.Vector3Int;
 import com.destrostudios.grid.client.BaseApplication;
 import com.destrostudios.grid.client.appstates.MapAppState;
+import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.VisualComponent;
@@ -26,6 +27,8 @@ import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Label;
 import com.simsilica.lemur.VAlignment;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 public class MapEditorApplication extends BaseApplication implements ActionListener {
@@ -145,7 +148,12 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
         try {
             MapContainer mapContainer = ComponentsContainerSerializer.readSeriazableFromRessources(mapName, MapContainer.class);
             EntityWorld entityWorld = new EntityWorld();
-            entityWorld.getWorld().putAll(mapContainer.getComponents());
+            for (Map.Entry<Integer, List<Component>> entry : mapContainer.getComponents().entrySet()) {
+                for (Component component : entry.getValue()) {
+                    entityWorld.addComponent(entry.getKey(), component);
+                }
+            }
+            entityWorld.setNextEntity(entityWorld.list().stream().mapToInt(x -> x).max().orElse(0) + 1);
             stateManager.attach(new MapAppState(mapName, entityWorld, null));
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -58,7 +58,7 @@ public class ComponentsContainerSerializer {
     public static String getContainerAsJson(EntityWorld world) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter();
-        GameStateContainer gameStateContainer = new GameStateContainer(world.getWorld());
+        GameStateContainer gameStateContainer = new GameStateContainer(world.getWorld(), world.getNextEntity());
         return mapper.writeValueAsString(gameStateContainer);
     }
 

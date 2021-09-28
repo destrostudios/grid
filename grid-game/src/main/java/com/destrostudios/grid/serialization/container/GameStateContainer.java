@@ -1,14 +1,12 @@
 package com.destrostudios.grid.serialization.container;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.serialization.container.ComponentsContainer;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -20,4 +18,7 @@ public class GameStateContainer implements ComponentsContainer {
     @Setter
     private Map<Integer, List<Component>> components;
 
+    @Getter
+    @Setter
+    private int nextEntity;
 }
