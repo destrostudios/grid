@@ -19,15 +19,22 @@ public class ComponentTable<T extends Component> {
     }
 
     public void add(int entity, T value) {
-        table.put(entity, value);
+        T removed = table.put(entity, value);
         if (index != null) {
+            applyRemove(entity, removed);
             index.computeIfAbsent(value, x -> new HashSet<>()).add(entity);
         }
     }
 
     public void remove(int entity) {
         T removed = table.remove(entity);
-        if (index != null && removed != null) {
+        if (index != null) {
+            applyRemove(entity, removed);
+        }
+    }
+
+    private void applyRemove(int entity, T removed) {
+        if (removed != null) {
             Set<Integer> entities = index.get(removed);
             entities.remove(entity);
             if (entities.isEmpty()) {
