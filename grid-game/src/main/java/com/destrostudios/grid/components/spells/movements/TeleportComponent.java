@@ -6,5 +6,4 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class TeleportComponent implements Component {
-}
+public class TeleportComponent implements Component {}

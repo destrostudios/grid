@@ -8,14 +8,14 @@ import static org.junit.Assert.assertEquals;
 
 public class SerializationTest {
 
-    @Test
-    public void testGameSerialization() {
-        GridGame game = new GridGame();
-        game.initGame(StartGameInfo.getTestGameInfo());
-        String serialized = game.getState();
-        GridGame deserialized = new GridGame();
-        deserialized.intializeGame(serialized);
+  @Test
+  public void testGameSerialization() {
+    GridGame game = new GridGame();
+    game.initGame(StartGameInfo.getTestGameInfo());
+    String serialized = game.getState();
+    GridGame deserialized = new GridGame();
+    deserialized.initializeGame(serialized);
 
-        assertEquals(game.getData(), deserialized.getData());
-    }
+    assertEquals(game.getData(), deserialized.getData());
+  }
 }

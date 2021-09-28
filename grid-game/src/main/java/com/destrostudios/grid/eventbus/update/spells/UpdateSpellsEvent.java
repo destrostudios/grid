@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UpdateSpellsEvent implements Event {
-    private final int entity;
+  private final int entity;
 }

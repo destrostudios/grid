@@ -10,7 +10,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class CostComponent implements Component {
-    int apCost;
-    int mpCost;
-    int hpCost;
+  int apCost;
+  int mpCost;
+  int hpCost;
 }

@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class SpellBuffAddedEvent implements Event {
-    private final int spellEntity;
+  private final int spellEntity;
 }

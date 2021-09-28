@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class EndTurnEvent implements Event {
-    private final int endTurnEntity;
+  private final int endTurnEntity;
 }

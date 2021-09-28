@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PushEvent implements Event {
-    private final int entityToDisplace;
-    private final int strength;
-    private final Direction direction;
+  private final int entityToDisplace;
+  private final int strength;
+  private final Direction direction;
 }

@@ -6,5 +6,4 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class LineOfSightComponent implements Component {
-}
+public class LineOfSightComponent implements Component {}

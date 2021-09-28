@@ -10,6 +10,6 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class SwapComponent implements Component {
-    int sourceEntity;
-    int targetEntity;
+  int sourceEntity;
+  int targetEntity;
 }

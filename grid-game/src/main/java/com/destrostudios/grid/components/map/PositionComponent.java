@@ -10,7 +10,6 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class PositionComponent implements Component {
-    private int x;
-    private int y;
-
+  private int x;
+  private int y;
 }

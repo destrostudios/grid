@@ -10,7 +10,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class HealComponent implements Component {
-    int minHeal;
-    int maxHeal;
-    boolean targetingEnemies;
+  int minHeal;
+  int maxHeal;
+  boolean targetingEnemies;
 }

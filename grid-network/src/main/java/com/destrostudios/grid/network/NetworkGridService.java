@@ -32,7 +32,7 @@ public class NetworkGridService implements GameService<GridGame, Action> {
             @Override
             public GridGame read(Kryo kryo, Input input, Class type) {
                 GridGame gridGame = new GridGame(new MutableRandomProxy());
-                gridGame.intializeGame(input.readString());
+                gridGame.initializeGame(input.readString());
                 return gridGame;
             }
         });

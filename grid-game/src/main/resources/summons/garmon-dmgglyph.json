@@ -1,0 +1,47 @@
+{
+  "SeriazableComponent": "summon",
+  "properties":
+    [
+      {
+        "component": "LifeSpanComponent",
+        "remainingLifeSpan": 3
+      },
+      {
+        "component": "SpellOnTouchComponent",
+        "_spell": 1
+      }
+    ]
+  ,
+  "spells": {
+    "1": [
+      {
+        "component": "NameComponent",
+        "name": "asd"
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 38,
+        "maxDmg": 42,
+        "targetingAllies": false
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 40
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 0,
+        "mpCost": 0,
+        "hpCost": 0
+      }
+    ]
+  }
+}

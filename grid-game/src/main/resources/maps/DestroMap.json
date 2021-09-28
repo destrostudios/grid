@@ -2816,6 +2816,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "199": [
@@ -2830,6 +2834,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "200": [
@@ -2844,6 +2852,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "201": [
@@ -2858,6 +2870,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "202": [
@@ -2872,6 +2888,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "203": [
@@ -2886,6 +2906,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "204": [
@@ -2900,6 +2924,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "205": [
@@ -2914,6 +2942,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "206": [
@@ -2928,6 +2960,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "207": [
@@ -2942,6 +2978,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "208": [
@@ -2956,6 +2996,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "209": [
@@ -2970,6 +3014,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "210": [
@@ -2984,6 +3032,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "211": [
@@ -2998,6 +3050,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "212": [
@@ -3012,6 +3068,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "213": [
@@ -3026,6 +3086,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "214": [
@@ -3040,6 +3104,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "215": [
@@ -3054,6 +3122,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "216": [
@@ -3068,6 +3140,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "217": [
@@ -3082,6 +3158,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "218": [
@@ -3096,6 +3176,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "219": [
@@ -3110,6 +3194,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "220": [
@@ -3124,6 +3212,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "221": [
@@ -3138,6 +3230,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "222": [
@@ -3152,6 +3248,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "223": [
@@ -3166,6 +3266,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "224": [
@@ -3180,6 +3284,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "225": [
@@ -3194,6 +3302,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "226": [
@@ -3208,6 +3320,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "227": [
@@ -3222,6 +3338,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "228": [
@@ -3236,6 +3356,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "229": [
@@ -3250,6 +3374,10 @@
       },
       {
         "component": "ObstacleComponent"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       }
     ],
     "230": [

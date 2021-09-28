@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class SpellCastedEvent implements Event {
-    private final int spell;
-    private final int playerEntity;
-    private final int x;
-    private final int y;
+  private final int spell;
+  private final int playerEntity;
+  private final int x;
+  private final int y;
 }

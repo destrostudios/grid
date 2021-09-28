@@ -10,6 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class MovementPointsComponent implements Component {
-    private int movementPoints;
-
+  private int movementPoints;
 }

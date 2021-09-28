@@ -10,7 +10,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class DamageComponent implements Component {
-    int minDmg;
-    int maxDmg;
-    boolean targetingAllies;
+  int minDmg;
+  int maxDmg;
+  boolean targetingAllies;
 }

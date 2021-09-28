@@ -9,9 +9,9 @@ import com.destrostudios.grid.client.PositionUtil;
 import com.destrostudios.grid.client.blocks.BlockAssets;
 import com.destrostudios.grid.client.blocks.GridBlock;
 import com.destrostudios.grid.client.blocks.GridBlocks;
+import com.destrostudios.grid.client.characters.EntityVisual;
 import com.destrostudios.grid.client.characters.ModelInfo;
 import com.destrostudios.grid.client.characters.ModelInfos;
-import com.destrostudios.grid.client.characters.EntityVisual;
 import com.destrostudios.grid.client.gui.GuiColors;
 import com.destrostudios.grid.client.maps.Map;
 import com.destrostudios.grid.client.maps.Maps;
@@ -39,6 +39,7 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MapAppState extends BaseAppState<BaseApplication> {
 
@@ -135,7 +136,11 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             entityVisuals.remove(entityToRemove);
         }
         tmpRemovedEntities.clear();
-        for (int entity : entityData.list(VisualComponent.class)) {
+        List<Integer> visuals = entityData.list(VisualComponent.class).stream()
+                .filter(e -> entityData.hasComponents(e, PositionComponent.class))
+                .collect(Collectors.toList());
+
+        for (int entity : visuals) {
             EntityVisual entityVisual = entityVisuals.get(entity);
 
             if (entityVisual == null) {

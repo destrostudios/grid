@@ -6,5 +6,4 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class WalkableComponent implements Component {
-}
+public class WalkableComponent implements Component {}

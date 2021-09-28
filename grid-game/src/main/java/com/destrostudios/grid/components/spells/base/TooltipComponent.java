@@ -10,5 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class TooltipComponent implements Component {
-    private String tooltip;
+  private String tooltip;
 }

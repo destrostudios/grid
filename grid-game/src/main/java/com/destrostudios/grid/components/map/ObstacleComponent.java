@@ -6,5 +6,4 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class ObstacleComponent implements Component {
-}
+public class ObstacleComponent implements Component {}

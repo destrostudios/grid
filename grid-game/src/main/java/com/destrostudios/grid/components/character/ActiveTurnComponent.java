@@ -6,5 +6,4 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class ActiveTurnComponent implements Component {
-}
+public class ActiveTurnComponent implements Component {}

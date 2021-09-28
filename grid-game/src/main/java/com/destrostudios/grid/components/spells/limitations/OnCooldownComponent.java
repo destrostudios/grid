@@ -10,5 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class OnCooldownComponent implements Component {
-    private int remainingRounds;
+  private int remainingRounds;
 }

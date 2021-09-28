@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UpdatePlayerEnchantmentsEvent implements Event {
-    private final int targetEntity;
+  private final int targetEntity;
 }

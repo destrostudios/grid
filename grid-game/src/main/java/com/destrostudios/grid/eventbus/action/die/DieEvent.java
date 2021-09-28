@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class DieEvent implements Event {
-    private final int entity;
+  private final int entity;
 }

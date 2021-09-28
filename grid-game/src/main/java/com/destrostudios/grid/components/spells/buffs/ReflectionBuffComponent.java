@@ -9,7 +9,7 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
 public class ReflectionBuffComponent extends BuffComponent {
-    public ReflectionBuffComponent(int buffAmount, int buffDuration, boolean isSpellBuff) {
-        super(buffAmount, buffDuration, isSpellBuff);
-    }
+  public ReflectionBuffComponent(int buffAmount, int buffDuration, BuffType buffType) {
+    super(buffAmount, buffDuration, buffType);
+  }
 }

@@ -3034,9 +3034,13 @@
         "x": 0,
         "y": 5
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3104,9 +3108,13 @@
         "x": 3,
         "y": 0
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3118,9 +3126,13 @@
         "x": 4,
         "y": 2
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3146,9 +3158,13 @@
         "x": 5,
         "y": 3
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3188,9 +3204,13 @@
         "x": 5,
         "y": 11
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3216,9 +3236,13 @@
         "x": 6,
         "y": 11
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3230,9 +3254,13 @@
         "x": 6,
         "y": 12
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3244,9 +3272,13 @@
         "x": 7,
         "y": 6
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3258,9 +3290,13 @@
         "x": 8,
         "y": 7
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3356,9 +3392,13 @@
         "x": 13,
         "y": 4
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3384,9 +3424,13 @@
         "x": 13,
         "y": 11
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3398,9 +3442,13 @@
         "x": 13,
         "y": 12
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3412,9 +3460,13 @@
         "x": 14,
         "y": 4
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3454,9 +3506,13 @@
         "x": 14,
         "y": 14
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"
@@ -3468,9 +3524,13 @@
         "x": 15,
         "y": 3
       },
-      {
+     {
         "component": "VisualComponent",
         "name": "tree"
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
       },
       {
         "component": "ObstacleComponent"

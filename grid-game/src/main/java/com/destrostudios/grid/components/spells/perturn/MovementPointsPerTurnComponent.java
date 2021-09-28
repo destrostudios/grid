@@ -6,12 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class MovementPointsPerTurnComponent implements Component {
-    private int minValue;
-    private int maxValue;
-    private int duration;
+  private int minValue;
+  private int maxValue;
+  private int duration;
 }

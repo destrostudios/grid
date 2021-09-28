@@ -6,5 +6,4 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class StartingFieldComponent implements Component {
-}
+public class StartingFieldComponent implements Component {}

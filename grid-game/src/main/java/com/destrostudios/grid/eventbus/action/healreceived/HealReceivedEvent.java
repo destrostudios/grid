@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class HealReceivedEvent implements Event {
-    private final int heal;
-    private final int targetEntity;
+  private final int heal;
+  private final int targetEntity;
 }

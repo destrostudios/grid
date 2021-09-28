@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class StatsPerTurnEvent implements Event {
-    private final int sourceEntity;
-    private final int targetEntity;
-    private final int spellEntity;
+  private final int sourceEntity;
+  private final int targetEntity;
+  private final int spellEntity;
 }

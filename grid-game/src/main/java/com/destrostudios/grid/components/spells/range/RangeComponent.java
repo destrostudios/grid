@@ -10,7 +10,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class RangeComponent implements Component {
-    CastAreaShape castAreaShape;
-    int minRange;
-    int maxRange;
+  CastAreaShape castAreaShape;
+  int minRange;
+  int maxRange;
 }
