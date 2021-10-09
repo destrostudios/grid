@@ -4,8 +4,8 @@ import com.destrostudios.grid.components.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,27 +18,27 @@ public class ComponentTable<T extends Component> {
         return table.get(entity);
     }
 
-    public void add(int entity, T value) {
+    public void set(int entity, T value) {
         T removed = table.put(entity, value);
         if (index != null) {
-            applyRemove(entity, removed);
-            index.computeIfAbsent(value, x -> new HashSet<>()).add(entity);
+            removeFromIndex(entity, removed);
+            index.computeIfAbsent(value, x -> new LinkedHashSet<>()).add(entity);
         }
     }
 
     public void remove(int entity) {
         T removed = table.remove(entity);
         if (index != null) {
-            applyRemove(entity, removed);
+            removeFromIndex(entity, removed);
         }
     }
 
-    private void applyRemove(int entity, T removed) {
-        if (removed != null) {
-            Set<Integer> entities = index.get(removed);
+    private void removeFromIndex(int entity, T value) {
+        if (value != null) {
+            Set<Integer> entities = index.get(value);
             entities.remove(entity);
             if (entities.isEmpty()) {
-                index.remove(removed);
+                index.remove(value);
             }
         }
     }
@@ -51,16 +51,10 @@ public class ComponentTable<T extends Component> {
         if (index == null) {
             index = new HashMap<>();
             for (Map.Entry<Integer, T> entry : table.entrySet()) {
-                index.computeIfAbsent(entry.getValue(), x -> new HashSet<>()).add(entry.getKey());
+                index.computeIfAbsent(entry.getValue(), x -> new LinkedHashSet<>()).add(entry.getKey());
             }
         }
-        Set<Integer> rawEntities = index.get(component);
-        if (rawEntities == null) {
-            return Collections.emptyList();
-        }
-        ArrayList<Integer> entities = new ArrayList<>(rawEntities);
-        Collections.sort(entities);// sort to make result deterministic
-        return entities;
+        return new ArrayList<>(index.getOrDefault(component, Collections.emptySet()));
     }
 
     public boolean hasEntity(int entity) {
