@@ -60,4 +60,22 @@ public class ComponentTable<T extends Component> {
     public boolean hasEntity(int entity) {
         return table.containsKey(entity);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ComponentTable)) {
+            return false;
+        }
+
+        ComponentTable<?> that = (ComponentTable<?>) o;
+        return table.equals(that.table);
+    }
+
+    @Override
+    public int hashCode() {
+        return table.hashCode();
+    }
 }
