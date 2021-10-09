@@ -10,17 +10,12 @@ public class SerializationTest {
 
     @Test
     public void testGameSerialization() {
-        try {
-            GridGame game = new GridGame();
-            game.initGame(StartGameInfo.getTestGameInfo());
-            String serialized = game.getState();
-            GridGame deserialized = new GridGame();
-            deserialized.intializeGame(serialized);
+        GridGame game = new GridGame();
+        game.initGame(StartGameInfo.getTestGameInfo());
+        String serialized = game.getState();
+        GridGame deserialized = new GridGame();
+        deserialized.intializeGame(serialized);
 
-            assertEquals(game.getData(), deserialized.getData());
-        } catch (Throwable t) {
-            t.printStackTrace(System.out);
-            throw t;
-        }
+        assertEquals(game.getData(), deserialized.getData());
     }
 }
