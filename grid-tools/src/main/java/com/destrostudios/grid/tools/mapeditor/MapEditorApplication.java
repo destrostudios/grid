@@ -236,7 +236,7 @@ public class MapEditorApplication extends BaseApplication implements ActionListe
     }
 
     // TODO: Use util from game logic (interface TBD)
-    private Integer getEntity(EntityData entityData, Class<?>[] components, int x, int y) {
+    private Integer getEntity(EntityData entityData, Class<? extends Component>[] components, int x, int y) {
         return entityData.list(components).stream()
                 .filter(entity -> {
                     PositionComponent positionComponent = entityData.getComponent(entity, PositionComponent.class);

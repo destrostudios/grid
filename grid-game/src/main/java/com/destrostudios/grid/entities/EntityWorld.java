@@ -20,7 +20,7 @@ import lombok.Setter;
 public class EntityWorld implements EntityData {
     private final static Logger logger = Logger.getGlobal();
 
-    private final Map<Class<? extends Component>, Map<Integer, ? extends Component>> world;
+    private final Map<Class<? extends Component>, ComponentTable<?>> world;
 
     // getter & setter for serialization
     @Getter
@@ -75,12 +75,12 @@ public class EntityWorld implements EntityData {
      * @return
      */
     @Override
-    public <T> T getComponent(int entity, Class<T> component) {
-        Map<Integer, ? extends Component> components = world.get(component);
-        if (components == null) {
+    public <T extends Component> T getComponent(int entity, Class<T> component) {
+        ComponentTable<T> table = (ComponentTable<T>) world.get(component);
+        if (table == null) {
             return null;
         }
-        return (T) components.get(entity);
+        return table.get(entity);
     }
 
     /**
@@ -91,11 +91,10 @@ public class EntityWorld implements EntityData {
      */
     @Override
     public void remove(int entity, Class<?> component) {
-        Map<Integer, ? extends Component> components = world.get(component);
-        if (components == null) {
-            return;
+        ComponentTable<?> table = world.get(component);
+        if (table != null) {
+            table.remove(entity);
         }
-        components.remove(entity);
     }
 
     @Override
@@ -105,16 +104,25 @@ public class EntityWorld implements EntityData {
 
     @Override
     public List<Integer> list(Class<?> component) {
-        Map<Integer, ? extends Component> components = world.get(component);
-        if (components == null) {
+        ComponentTable<?> table = world.get(component);
+        if (table == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(components.keySet());
+        return table.list();
+    }
+
+    @Override
+    public List<Integer> findEntitiesByComponent(Component component) {
+        ComponentTable table = world.get(component.getClass());
+        if (table == null) {
+            return Collections.emptyList();
+        }
+        return table.findEntitiesByValue(component);
     }
 
     @Override
     public boolean hasEntity(int entity) {
-        return world.values().stream().anyMatch(components -> components.containsKey(entity));
+        return world.values().stream().anyMatch(components -> components.hasEntity(entity));
     }
 
     /**
@@ -126,17 +134,17 @@ public class EntityWorld implements EntityData {
     @Override
     public void addComponent(int entity, Component component) {
         if (component != null) {
-            Map components = world.computeIfAbsent(component.getClass(), x -> new LinkedHashMap<>());
-            components.put(entity, component);
+            ComponentTable components = world.computeIfAbsent(component.getClass(), x -> new ComponentTable<>());
+            components.set(entity, component);
         }
     }
 
     // for serialization
     public Map<Integer, List<Component>> getWorld() {
         Map<Integer, List<Component>> result = new LinkedHashMap<>();
-        for (Map<Integer, ? extends Component> components : world.values()) {
-            for (Map.Entry<Integer, ? extends Component> entry : components.entrySet()) {
-                result.computeIfAbsent(entry.getKey(), x -> new ArrayList<>()).add(entry.getValue());
+        for (ComponentTable<?> table : world.values()) {
+            for (Integer entity : table.list()) {
+                result.computeIfAbsent(entity, x -> new ArrayList<>()).add(table.get(entity));
             }
         }
         return Collections.unmodifiableMap(result);
