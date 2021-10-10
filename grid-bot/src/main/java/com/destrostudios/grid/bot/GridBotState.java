@@ -5,8 +5,8 @@ import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
-import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.character.ActiveTurnComponent;
+import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
@@ -16,7 +16,6 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
-import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.grid.util.SpellUtils;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.BotGameState;
@@ -95,6 +94,7 @@ public class GridBotState implements BotGameState<Action, Team> {
 //                        }
 
                         // simplified targeting, good enough for this early version
+                        // Note: this prevents the AI from using skills like Jump
                         List<Integer> healthEntities = data.list(HealthPointsComponent.class);
                         for (int healthEntity : healthEntities) {
                             PositionComponent target = data.getComponent(healthEntity, PositionComponent.class);

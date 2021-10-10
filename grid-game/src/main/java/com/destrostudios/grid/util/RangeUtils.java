@@ -60,7 +60,7 @@ public class RangeUtils {
 
         Set<PositionComponent> rangablePositions = calculatePositionsInRange(casterPosition, rangeComponentOpt);
         for (PositionComponent rangablePosition : rangablePositions) {
-            List<Integer> entities = entityData.findEntitiesByComponent(rangablePosition);
+            List<Integer> entities = entityData.findEntitiesByComponentValue(rangablePosition);
             for (Integer entity : entities) {
                 if (entityData.hasComponents(entity, WalkableComponent.class)) {
                     targetableInRange.add(entity);

@@ -40,6 +40,7 @@ public class Main {
         String hostUrl = "destrostudios.com";
         String login = "Bot";
         ToolsClient client = getToolsClient(hostUrl, fakeJwt(-1, login));
+        int strength = 1000;
         try {
             while (true) {
                 GameClientModule<GridGame, Action> gameModule = client.getModule(GameClientModule.class);
@@ -60,14 +61,14 @@ public class Main {
                     if (active) {
                         log.info("calculating...");
                         GridBotState botState = new GridBotState(game.getState());
-                        MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot(100);
+                        MctsBot<GridBotState, Action, Team, SerializedGame> bot = com.destrostudios.grid.bot.Main.createBot(strength);
                         List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
                         bot.clearRoot();
                         gameModule.sendAction(game.getId(), actions.get(0));
                     }
                 }
 
-                Thread.sleep(1000);
+                Thread.sleep(100);
             }
         } finally {
             client.stop();

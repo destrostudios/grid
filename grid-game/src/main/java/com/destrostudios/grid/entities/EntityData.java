@@ -18,7 +18,7 @@ public interface EntityData {
 
     List<Integer> list(Class<?> component); // all entities which have the specified component
 
-    List<Integer> findEntitiesByComponent(Component component);
+    List<Integer> findEntitiesByComponentValue(Component component);
 
     List<Component> getComponents(int entity);
 

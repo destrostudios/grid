@@ -112,7 +112,7 @@ public class EntityWorld implements EntityData {
     }
 
     @Override
-    public List<Integer> findEntitiesByComponent(Component component) {
+    public List<Integer> findEntitiesByComponentValue(Component component) {
         ComponentTable table = world.get(component.getClass());
         if (table == null) {
             return Collections.emptyList();

@@ -184,7 +184,7 @@ public class SpellUtils {
 
 
     public static boolean isPositionIsFree(EntityData entityData, PositionComponent newPosition, int entity) {
-        List<Integer> newPositionEntities = new ArrayList<>(entityData.findEntitiesByComponent(newPosition));
+        List<Integer> newPositionEntities = new ArrayList<>(entityData.findEntitiesByComponentValue(newPosition));
         // TODO: do we really need to explicitly remove entity here? it will only block itself if we try to move it to its own position.
         newPositionEntities.remove((Integer) entity);
         boolean collidesWithOtherPlayer = newPositionEntities.stream()
