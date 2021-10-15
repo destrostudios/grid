@@ -17,8 +17,12 @@ import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.SpellAreaShape;
 import com.destrostudios.grid.entities.EntityData;
 import com.google.common.collect.Sets;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -26,7 +30,7 @@ public class SpellUtils {
     // todo 6.) AP/MP steal components
 
     public static List<Integer> getAffectedTargetableEntities(int spellEntity, int sourceEntity, PositionComponent sourcePos,
-            PositionComponent clickedPos, EntityData entityData) {
+                                                              PositionComponent clickedPos, EntityData entityData) {
 
         Set<PositionComponent> positionComponents = calculateAffectedPositions(sourcePos, clickedPos, entityData.getComponent(spellEntity, AffectedAreaComponent.class));
         int teamSource = entityData.getComponent(sourceEntity, TeamComponent.class).getTeam();
@@ -180,16 +184,15 @@ public class SpellUtils {
 
 
     public static boolean isPositionIsFree(EntityData entityData, PositionComponent newPosition, int entity) {
-        // TODO: do we really need entity here? it will only block itself if we try to move it to its own position.
-        boolean collidesWithOtherPlayer = entityData.list(PositionComponent.class, PlayerComponent.class).stream()
-                .filter(e -> e != entity)
-                .anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
-        boolean collidesWithObstacle = entityData.list(PositionComponent.class, ObstacleComponent.class).stream()
-                .filter(e -> e != entity)
-                .anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
-        boolean isWalkableField = entityData.list(PositionComponent.class, WalkableComponent.class).stream()
-                .filter(e -> e != entity)
-                .anyMatch(pE -> newPosition.equals(entityData.getComponent(pE, PositionComponent.class)));
+        List<Integer> newPositionEntities = new ArrayList<>(entityData.findEntitiesByComponentValue(newPosition));
+        // TODO: do we really need to explicitly remove entity here? it will only block itself if we try to move it to its own position.
+        newPositionEntities.remove((Integer) entity);
+        boolean collidesWithOtherPlayer = newPositionEntities.stream()
+                .anyMatch(e -> entityData.hasComponents(e, PlayerComponent.class));
+        boolean collidesWithObstacle = newPositionEntities.stream()
+                .anyMatch(e -> entityData.hasComponents(e, ObstacleComponent.class));
+        boolean isWalkableField = newPositionEntities.stream()
+                .anyMatch(e -> entityData.hasComponents(e, WalkableComponent.class));
 
         return isWalkableField && !collidesWithOtherPlayer && !collidesWithObstacle;
     }

@@ -6,9 +6,14 @@ import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.client.ClientApplication;
 import com.destrostudios.grid.client.JMonkeyUtil;
-import com.destrostudios.grid.client.animations.*;
-import com.destrostudios.grid.client.characters.CustomBlockingAnimationInfo;
+import com.destrostudios.grid.client.animations.Animation;
+import com.destrostudios.grid.client.animations.AnnouncementAnimation;
+import com.destrostudios.grid.client.animations.CustomBlockingModelAnimation;
+import com.destrostudios.grid.client.animations.HealthAnimation;
+import com.destrostudios.grid.client.animations.MoveAnimation;
+import com.destrostudios.grid.client.animations.WalkAnimation;
 import com.destrostudios.grid.client.characters.CastAnimations;
+import com.destrostudios.grid.client.characters.CustomBlockingAnimationInfo;
 import com.destrostudios.grid.client.characters.EntityVisual;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
 import com.destrostudios.grid.client.gui.GuiNextPlayer;
@@ -17,7 +22,12 @@ import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
-import com.destrostudios.grid.components.properties.*;
+import com.destrostudios.grid.components.properties.AttackPointsComponent;
+import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.components.properties.MovementPointsComponent;
+import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.properties.SpellsComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.entities.EntityData;
@@ -44,7 +54,6 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -209,10 +218,10 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
             // Impacted
             if (targetingSpellEntity != null) {
                 List<Integer> affectedWalkableEntities = SpellUtils.getAffectedWalkableEntities(
-                    targetingSpellEntity,
-                    data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class),
-                    new PositionComponent(hoveredPosition.getX(), hoveredPosition.getZ()),
-                    data
+                        targetingSpellEntity,
+                        data.getComponent(gameProxy.getPlayerEntity(), PositionComponent.class),
+                        new PositionComponent(hoveredPosition.getX(), hoveredPosition.getZ()),
+                        data
                 );
                 impactedGroundEntities.addAll(affectedWalkableEntities);
             } else {
@@ -221,11 +230,11 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                     Optional<List<Position>> path = findPathToHoveredPosition();
                     if (path.isPresent()) {
                         reachableGroundEntities.addAll(data.list(WalkableComponent.class).stream()
-                            .filter(groundEntity -> {
-                                PositionComponent positionComponent = data.getComponent(groundEntity, PositionComponent.class);
-                                return path.get().contains(new Position(positionComponent.getX(), positionComponent.getY()));
-                            })
-                            .collect(Collectors.toSet()));
+                                .filter(groundEntity -> {
+                                    PositionComponent positionComponent = data.getComponent(groundEntity, PositionComponent.class);
+                                    return path.get().contains(new Position(positionComponent.getX(), positionComponent.getY()));
+                                })
+                                .collect(Collectors.toSet()));
                     }
                 }
             }
@@ -235,12 +244,6 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
     }
 
     private void updateGui() {
-        Integer playerEntity = gameProxy.getPlayerEntity();
-        if (playerEntity == null) {
-            // Spectating only
-            return;
-        }
-
         GameGuiAppState gameGuiAppState = getAppState(GameGuiAppState.class);
         EntityData entityData = gameProxy.getGame().getData();
 
@@ -257,16 +260,23 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
         for (int i = 0; i < guiNextPlayers.length; i++) {
             String playerName = entityData.getComponent(nextPlayerEntity, NameComponent.class).getName();
             PlayerInfo playerInfo = gameProxy.getStartGameInfo().getTeam1().stream()
-                .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
-                .findFirst()
-                .orElse(gameProxy.getStartGameInfo().getTeam2().stream()
-                        .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
-                        .findFirst()
-                        .orElse(null));
+                    .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
+                    .findFirst()
+                    .orElse(gameProxy.getStartGameInfo().getTeam2().stream()
+                            .filter(currentPlayerInfo -> currentPlayerInfo.getLogin().equals(playerName))
+                            .findFirst()
+                            .orElse(null));
             guiNextPlayers[i] = new GuiNextPlayer(playerName, playerInfo.getCharacterName());
             nextPlayerEntity = entityData.getComponent(nextPlayerEntity, NextTurnComponent.class).getNextPlayer();
         }
         gameGuiAppState.setNextPlayers(guiNextPlayers);
+
+
+        Integer playerEntity = gameProxy.getPlayerEntity();
+        if (playerEntity == null) {
+            // Spectating only
+            return;
+        }
 
         gameGuiAppState.removeAllCurrentPlayerElements();
 
@@ -325,9 +335,9 @@ public class GameAppState extends BaseAppState<ClientApplication> implements Act
                         if (targetingSpellEntity != null) {
                             if (containsEntity(entityData, validSpellTargetEntities, hoveredPosition.getX(), hoveredPosition.getZ())) {
                                 gameProxy.requestAction(new CastSpellAction(
-                                    hoveredPosition.getX(),
-                                    hoveredPosition.getZ(),
-                                    gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
+                                        hoveredPosition.getX(),
+                                        hoveredPosition.getZ(),
+                                        gameProxy.getPlayerEntity().toString(), targetingSpellEntity)
                                 );
                             }
                             setTargetingSpell(null);

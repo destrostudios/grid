@@ -10,7 +10,7 @@ public interface EntityData {
 
     void removeEntity(int entity);
 
-    <T> T getComponent(int entity, Class<T> component);
+    <T extends Component> T getComponent(int entity, Class<T> component);
 
     void addComponent(int entity, Component value); // component type is value.getClass()
 
@@ -18,9 +18,11 @@ public interface EntityData {
 
     List<Integer> list(Class<?> component); // all entities which have the specified component
 
+    List<Integer> findEntitiesByComponentValue(Component component);
+
     List<Component> getComponents(int entity);
 
-    default List<Integer> list(Class<?>... components) {
+    default List<Integer> list(Class<? extends Component>... components) {
         return Arrays.stream(components)
                 .flatMap(c -> list(c).stream())
                 .filter(e -> hasComponents(e, components))
@@ -28,8 +30,8 @@ public interface EntityData {
                 .collect(Collectors.toList());
     }
 
-    default boolean hasComponents(int entity, Class<?>... classz) {
-        for (Class<?> aClass : classz) {
+    default boolean hasComponents(int entity, Class<? extends Component>... classz) {
+        for (Class<? extends Component> aClass : classz) {
             if (getComponent(entity, aClass) == null) {
                 return false;
             }

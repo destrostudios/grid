@@ -59,13 +59,12 @@ public class RangeUtils {
         PositionComponent casterPosition = entityData.getComponent(casterEntity, PositionComponent.class);
 
         Set<PositionComponent> rangablePositions = calculatePositionsInRange(casterPosition, rangeComponentOpt);
-
-        List<Integer> walkableAndTargetablePos = entityData.list(PositionComponent.class, WalkableComponent.class);
-
-        for (int walkableAndTargetablePo : walkableAndTargetablePos) {
-            PositionComponent posC = entityData.getComponent(walkableAndTargetablePo, PositionComponent.class);
-            if (rangablePositions.contains(posC)) {
-                targetableInRange.add(walkableAndTargetablePo);
+        for (PositionComponent rangablePosition : rangablePositions) {
+            List<Integer> entities = entityData.findEntitiesByComponentValue(rangablePosition);
+            for (Integer entity : entities) {
+                if (entityData.hasComponents(entity, WalkableComponent.class)) {
+                    targetableInRange.add(entity);
+                }
             }
         }
         return targetableInRange;

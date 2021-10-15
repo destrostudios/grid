@@ -4,11 +4,15 @@ import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
+import com.destrostudios.grid.components.properties.MaxHealthComponent;
+import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverInfo;
 import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
+import com.destrostudios.turnbasedgametools.bot.RolloutToEvaluation;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
+import java.security.SecureRandom;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +24,7 @@ public class Main {
         System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd HH:mm:ss.SSSZ");
         Logger log = LoggerFactory.getLogger(com.destrostudios.grid.bot.Main.class);
 
-        int strength = 100;
+        int strength = 1000;
 
         GridGame game = new GridGame();
         StartGameInfo gameInfo = StartGameInfo.getTestGameInfo();
@@ -34,7 +38,7 @@ public class Main {
             List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
             log.info("{}", actions);
             long durationNanos = System.nanoTime() - startNanos;
-            log.info("Finished after {} ({} / iteration).", humanReadableNanos(durationNanos), humanReadableNanos(durationNanos / strength));
+            log.info("Finished after {}.", humanReadableNanos(durationNanos));
 
             game.registerAction(actions.get(0));
             while (game.triggeredHandlersInQueue()) {
@@ -47,10 +51,9 @@ public class Main {
     public static MctsBot<GridBotState, Action, Team, SerializedGame> createBot(int strength) {
         MctsBotSettings<GridBotState, Action> botSettings = new MctsBotSettings<>();
         botSettings.verbose = true;
-        botSettings.maxThreads = 2;
+        botSettings.maxThreads = 3;
         botSettings.strength = strength;
-//        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 10, Main::eval)::evaluate;
-        botSettings.evaluation = Main::eval;
+        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 5, Main::eval)::evaluate;
 
         return new MctsBot<>(new GridBotService(), botSettings);
     }
@@ -64,16 +67,30 @@ public class Main {
             scores[teamIndex] = 1;
         } else {
             float sum = 0;
-            for (int entity : s.game.getData().list(TeamComponent.class)) {
-                Team team = new Team(s.game.getData().getComponent(entity, TeamComponent.class).getTeam());
+            EntityData data = s.game.getData();
+            for (int entity : data.list(TeamComponent.class)) {
+                Team team = new Team(data.getComponent(entity, TeamComponent.class).getTeam());
                 int teamIndex = s.getTeams().indexOf(team);
-                HealthPointsComponent health = s.game.getData().getComponent(entity, HealthPointsComponent.class);
+                HealthPointsComponent health = data.getComponent(entity, HealthPointsComponent.class);
+                float value = 0;
                 if (health != null) {
-                    float value = health.getHealth();
-                    scores[teamIndex] += value;
-                    sum += value;
+                    value += (float) health.getHealth() / data.getComponent(entity, MaxHealthComponent.class).getMaxHealth();
                 }
+//                if (data.hasComponents(entity, ActiveTurnComponent.class)) {
+//                    AttackPointsComponent attackPoints = data.getComponent(entity, AttackPointsComponent.class);
+//                    if (attackPoints != null) {
+//                        value += 6 * attackPoints.getAttackPoints();
+//                    }
+//                    MovementPointsComponent movementPoints = data.getComponent(entity, MovementPointsComponent.class);
+//                    if (movementPoints != null) {
+//                        value += 2 * movementPoints.getMovementPoints();
+//                    }
+//                }
+                scores[teamIndex] += value;
+                sum += value;
             }
+
+
             for (int i = 0; i < scores.length; i++) {
                 scores[i] /= sum;
             }

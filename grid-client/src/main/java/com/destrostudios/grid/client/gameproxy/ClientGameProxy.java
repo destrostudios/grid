@@ -94,9 +94,8 @@ public class ClientGameProxy implements GameProxy {
     @Override
     public Integer getPlayerEntity() {
         EntityData data = getGame().getData();
-        List<Integer> list = data.list(PlayerComponent.class);
-        Integer playerEntity = list.stream()
-                .filter(entity -> data.hasComponents(entity, PlayerComponent.class))
+        List<Integer> players = data.list(PlayerComponent.class);
+        Integer playerEntity = players.stream()
                 .filter(entity -> data.getComponent(entity, NameComponent.class).getName().equals(jwtAuthenticationUser.login)) // TODO: use Id instead
                 .sorted(Comparator.comparing(entity -> !data.hasComponents(entity, NextTurnComponent.class)))
                 .findFirst().orElse(null);
