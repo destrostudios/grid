@@ -38,7 +38,7 @@ public class ReplayGameProxy implements GameProxy {
         if (triggeredHandlersInQueue()) {
             return false;
         }
-        if (replay.getActions().size() < next) {
+        if (replay.getActions().size() <= next) {
             return false;
         }
         ActionReplay action = replay.getActions().get(next++);
