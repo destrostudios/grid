@@ -4,6 +4,7 @@ import com.destrostudios.authtoken.NoValidateJwtService;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.client.blocks.BlockAssets;
+import com.destrostudios.grid.client.replay.GameReplayModule;
 import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
@@ -58,8 +59,9 @@ public class Main {
         GameClientModule<GridGame, Action> gameModule = new GameClientModule<>(gameService, kryoClient);
         LobbyClientModule<StartGameInfo> lobbyModule = new LobbyClientModule<>(KryoStartGameInfo::initialize, kryoClient);
         GameStartClientModule<StartGameInfo> gameStartModule = new GameStartClientModule<>(KryoStartGameInfo::initialize, kryoClient);
+        GameReplayModule replayModule = new GameReplayModule();
 
-        ToolsClient client = new ToolsClient(kryoClient, jwtModule, gameModule, lobbyModule, gameStartModule);
+        ToolsClient client = new ToolsClient(kryoClient, jwtModule, gameModule, lobbyModule, gameStartModule, replayModule);
         client.start(10_000, hostUrl, NetworkUtil.PORT);
         jwtModule.login(jwt);
         lobbyModule.subscribeToGamesList();
