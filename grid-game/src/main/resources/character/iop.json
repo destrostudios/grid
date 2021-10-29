@@ -53,6 +53,20 @@
           9,
           10
         ]
+      },
+      {
+        "component": "AiHintOpponentManhattanDistanceScoresComponent",
+        "distanceScores": [
+          0,
+          0.02,
+          0.016,
+          0.013,
+          0.01,
+          0.007,
+          0.005,
+          0.003,
+          0.001
+        ]
       }
     ],
     "2": [

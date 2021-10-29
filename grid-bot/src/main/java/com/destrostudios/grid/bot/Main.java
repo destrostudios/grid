@@ -2,7 +2,10 @@ package com.destrostudios.grid.bot;
 
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
+import com.destrostudios.grid.components.ai.AiHintAllyManhattanDistanceScoresComponent;
+import com.destrostudios.grid.components.ai.AiHintOpponentManhattanDistanceScoresComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
+import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MaxHealthComponent;
 import com.destrostudios.grid.entities.EntityData;
@@ -12,12 +15,17 @@ import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
 import com.destrostudios.turnbasedgametools.bot.RolloutToEvaluation;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
 import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
+import com.destrostudios.turnbasedgametools.grid.Heuristic;
+import com.destrostudios.turnbasedgametools.grid.ManhattanHeuristic;
+import com.destrostudios.turnbasedgametools.grid.Position;
 import java.security.SecureRandom;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
+
+    private static final Heuristic MANHATTAN_HEURISTIC = new ManhattanHeuristic();
 
     public static void main(String... args) {
         System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
@@ -79,13 +87,47 @@ public class Main {
 //                if (data.hasComponents(entity, ActiveTurnComponent.class)) {
 //                    AttackPointsComponent attackPoints = data.getComponent(entity, AttackPointsComponent.class);
 //                    if (attackPoints != null) {
-//                        value += 6 * attackPoints.getAttackPoints();
+//                        value += 0.04 * attackPoints.getAttackPoints();
 //                    }
 //                    MovementPointsComponent movementPoints = data.getComponent(entity, MovementPointsComponent.class);
 //                    if (movementPoints != null) {
-//                        value += 2 * movementPoints.getMovementPoints();
+//                        value += 0.02 * movementPoints.getMovementPoints();
 //                    }
 //                }
+                PositionComponent positionComponent = data.getComponent(entity, PositionComponent.class);
+                if (positionComponent != null) {
+                    AiHintOpponentManhattanDistanceScoresComponent preferredOpponentDistance = data.getComponent(entity, AiHintOpponentManhattanDistanceScoresComponent.class);
+                    if (preferredOpponentDistance != null) {
+                        for (int other : data.list(TeamComponent.class)) {
+                            if (entity == other) {
+                                continue;
+                            }
+                            if (team.getTeam() != data.getComponent(other, TeamComponent.class).getTeam()) {
+                                PositionComponent otherPosition = data.getComponent(other, PositionComponent.class);
+                                int distance = MANHATTAN_HEURISTIC.estimateCost(new Position(positionComponent.getX(), positionComponent.getY()), new Position(otherPosition.getX(), otherPosition.getY()));
+                                if (distance < preferredOpponentDistance.getDistanceScores().length) {
+                                    value += preferredOpponentDistance.getDistanceScores()[distance];
+                                }
+                            }
+                        }
+                    }
+
+                    AiHintAllyManhattanDistanceScoresComponent preferredAllyDistance = data.getComponent(entity, AiHintAllyManhattanDistanceScoresComponent.class);
+                    if (preferredAllyDistance != null) {
+                        for (int other : data.list(TeamComponent.class)) {
+                            if (entity == other) {
+                                continue;
+                            }
+                            if (team.getTeam() == data.getComponent(other, TeamComponent.class).getTeam()) {
+                                PositionComponent otherPosition = data.getComponent(other, PositionComponent.class);
+                                int distance = MANHATTAN_HEURISTIC.estimateCost(new Position(positionComponent.getX(), positionComponent.getY()), new Position(otherPosition.getX(), otherPosition.getY()));
+                                if (distance < preferredAllyDistance.getDistanceScores().length) {
+                                    value += preferredAllyDistance.getDistanceScores()[distance];
+                                }
+                            }
+                        }
+                    }
+                }
                 scores[teamIndex] += value;
                 sum += value;
             }
