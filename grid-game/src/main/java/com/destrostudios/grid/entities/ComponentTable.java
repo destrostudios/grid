@@ -4,14 +4,14 @@ import com.destrostudios.grid.components.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class ComponentTable<T extends Component> {
-    private final Map<Integer, T> table = new LinkedHashMap<>();
+    private final Map<Integer, T> table = new TreeMap<>();
     private transient Map<T, Set<Integer>> index;
 
     public T get(int entity) {
