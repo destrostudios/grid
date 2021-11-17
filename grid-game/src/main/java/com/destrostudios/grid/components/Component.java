@@ -1,7 +1,6 @@
 package com.destrostudios.grid.components;
 
-import com.destrostudios.grid.components.ai.AiHintAllyManhattanDistanceScoresComponent;
-import com.destrostudios.grid.components.ai.AiHintOpponentManhattanDistanceScoresComponent;
+import com.destrostudios.grid.components.ai.AiHintCharacterComponent;
 import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.character.NextTurnComponent;
 import com.destrostudios.grid.components.character.PlayerComponent;
@@ -109,8 +108,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = HealBuffComponent.class, name = "HealBuffComponent"),
         @JsonSubTypes.Type(value = AffectedAreaComponent.class, name = "AffectedAreaComponent"),
         @JsonSubTypes.Type(value = StatsPerRoundComponent.class, name = "StatsPerRoundComponent"),
-        @JsonSubTypes.Type(value = AiHintOpponentManhattanDistanceScoresComponent.class, name = "AiHintOpponentManhattanDistanceScoresComponent"),
-        @JsonSubTypes.Type(value = AiHintAllyManhattanDistanceScoresComponent.class, name = "AiHintAllyManhattanDistanceScoresComponent")
+        @JsonSubTypes.Type(value = AiHintCharacterComponent.class, name = "AiHintCharacterComponent")
 })
 public interface Component {
 }

@@ -9,6 +9,6 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class AiHintOpponentManhattanDistanceScoresComponent implements Component {
-    float[] distanceScores;
+public class AiHintCharacterComponent implements Component {
+    String name;
 }
