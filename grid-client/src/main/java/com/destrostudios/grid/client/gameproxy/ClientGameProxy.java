@@ -1,6 +1,8 @@
 package com.destrostudios.grid.client.gameproxy;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
+import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.gametools.network.client.modules.game.LobbyClientModule;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.character.NextTurnComponent;
@@ -10,8 +12,6 @@ import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;

@@ -1,9 +1,13 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
-import com.destrostudios.grid.client.appstates.*;
+import com.destrostudios.gametools.network.client.ToolsClient;
+import com.destrostudios.grid.client.appstates.GameAppState;
+import com.destrostudios.grid.client.appstates.GameGuiAppState;
+import com.destrostudios.grid.client.appstates.MainMenuAppState;
+import com.destrostudios.grid.client.appstates.MapAppState;
+import com.destrostudios.grid.client.appstates.SettingsMenuAppState;
 import com.destrostudios.grid.client.gameproxy.GameProxy;
-import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import lombok.Getter;
 
 public class ClientApplication extends BaseApplication {

@@ -37,7 +37,7 @@
         <version.maven-jar-plugin>3.1.2</version.maven-jar-plugin>
         <version.mockito>1.9.5</version.mockito>
         <version.slf4j>2.0.0-alpha1</version.slf4j>
-        <version.turn-based-game-tools>18c378aa7c0f26fc0ba80e29ced53ef46d591ba8</version.turn-based-game-tools>
+        <version.game-tools>cc7c004c9dd590963ec25d58c7e2b2831c391b2c</version.game-tools>
         <version.jackson>2.12.1</version.jackson>
     </properties>
     <repositories>
@@ -83,31 +83,31 @@
                 <artifactId>grid-bot</artifactId>
                 <version>${version.grid}</version>
             </dependency>
-            <!--turn-based-game-tools-->
+            <!--game-tools-->
             <dependency>
-                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <groupId>com.github.destrostudios.game-tools</groupId>
                 <artifactId>network-shared</artifactId>
-                <version>${version.turn-based-game-tools}</version>
+                <version>${version.game-tools}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <groupId>com.github.destrostudios.game-tools</groupId>
                 <artifactId>network-server</artifactId>
-                <version>${version.turn-based-game-tools}</version>
+                <version>${version.game-tools}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <groupId>com.github.destrostudios.game-tools</groupId>
                 <artifactId>network-client</artifactId>
-                <version>${version.turn-based-game-tools}</version>
+                <version>${version.game-tools}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <groupId>com.github.destrostudios.game-tools</groupId>
                 <artifactId>bot</artifactId>
-                <version>${version.turn-based-game-tools}</version>
+                <version>${version.game-tools}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+                <groupId>com.github.destrostudios.game-tools</groupId>
                 <artifactId>grid</artifactId>
-                <version>${version.turn-based-game-tools}</version>
+                <version>${version.game-tools}</version>
             </dependency>
             <!--jMonkeyEngine-->
             <dependency>

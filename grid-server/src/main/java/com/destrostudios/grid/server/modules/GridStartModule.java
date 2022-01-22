@@ -1,16 +1,16 @@
 package com.destrostudios.grid.server.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
+import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
+import com.destrostudios.gametools.network.server.modules.game.GameStartServerModule;
+import com.destrostudios.gametools.network.server.modules.game.LobbyServerModule;
+import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
+import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.random.MutableRandomProxy;
 import com.destrostudios.grid.server.Util;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.server.modules.game.GameServerModule;
-import com.destrostudios.turnbasedgametools.network.server.modules.game.GameStartServerModule;
-import com.destrostudios.turnbasedgametools.network.server.modules.game.LobbyServerModule;
-import com.destrostudios.turnbasedgametools.network.server.modules.game.ServerGameData;
-import com.destrostudios.turnbasedgametools.network.server.modules.jwt.JwtServerModule;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;

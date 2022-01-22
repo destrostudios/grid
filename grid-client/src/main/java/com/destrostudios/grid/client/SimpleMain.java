@@ -2,11 +2,10 @@ package com.destrostudios.grid.client;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.destrostudios.gametools.network.client.ToolsClient;
 import com.destrostudios.grid.client.gameproxy.SimpleGameProxy;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
-
 import java.util.Date;
 import java.util.Map;
 

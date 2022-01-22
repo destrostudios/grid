@@ -1,5 +1,12 @@
 package com.destrostudios.grid.bot;
 
+import com.destrostudios.gametools.bot.BotActionReplay;
+import com.destrostudios.gametools.bot.RolloutToEvaluation;
+import com.destrostudios.gametools.bot.mcts.MctsBot;
+import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
+import com.destrostudios.gametools.grid.Heuristic;
+import com.destrostudios.gametools.grid.ManhattanHeuristic;
+import com.destrostudios.gametools.grid.Position;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.components.ai.AiHintCharacterComponent;
@@ -10,13 +17,6 @@ import com.destrostudios.grid.components.properties.MaxHealthComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverInfo;
-import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
-import com.destrostudios.turnbasedgametools.bot.RolloutToEvaluation;
-import com.destrostudios.turnbasedgametools.bot.mcts.MctsBot;
-import com.destrostudios.turnbasedgametools.bot.mcts.MctsBotSettings;
-import com.destrostudios.turnbasedgametools.grid.Heuristic;
-import com.destrostudios.turnbasedgametools.grid.ManhattanHeuristic;
-import com.destrostudios.turnbasedgametools.grid.Position;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
