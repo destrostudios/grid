@@ -1,5 +1,7 @@
 package com.destrostudios.grid.util;
 
+import com.destrostudios.gametools.grid.LineOfSight;
+import com.destrostudios.gametools.grid.Position;
 import com.destrostudios.grid.components.map.ObstacleComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.components.map.WalkableComponent;
@@ -7,8 +9,6 @@ import com.destrostudios.grid.components.spells.range.CastAreaShape;
 import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.entities.EntityData;
-import com.destrostudios.turnbasedgametools.grid.LineOfSight;
-import com.destrostudios.turnbasedgametools.grid.Position;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;

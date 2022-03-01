@@ -1,6 +1,12 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.authtoken.NoValidateJwtService;
+import com.destrostudios.gametools.network.client.ToolsClient;
+import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.gametools.network.client.modules.game.GameStartClientModule;
+import com.destrostudios.gametools.network.client.modules.game.LobbyClientModule;
+import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
+import com.destrostudios.gametools.network.shared.NetworkUtil;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.client.blocks.BlockAssets;
@@ -9,12 +15,6 @@ import com.destrostudios.grid.network.KryoStartGameInfo;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.MultipleOutputStream;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.GameStartClientModule;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
-import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
-import com.destrostudios.turnbasedgametools.network.shared.NetworkUtil;
 import com.esotericsoftware.kryonet.Client;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

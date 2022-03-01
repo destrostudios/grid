@@ -5,9 +5,11 @@ import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.GameStateContainer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -28,7 +30,9 @@ public class EntityWorld implements EntityData {
     private int nextEntity = 1;
 
     public EntityWorld() {
-        this.world = new LinkedHashMap<>();
+        Comparator<Class<? extends Component>> comparator = Comparator.comparing(x -> x.getSimpleName());
+        comparator = comparator.thenComparing(x -> x.getName());
+        this.world = new TreeMap<>(comparator);
     }
 
     public void initializeWorld(String worldState) {

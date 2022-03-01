@@ -1,15 +1,15 @@
 package com.destrostudios.grid.server.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
+import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
+import com.destrostudios.gametools.network.server.modules.game.LobbyServerModule;
+import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
+import com.destrostudios.gametools.network.shared.modules.NetworkModule;
+import com.destrostudios.gametools.network.shared.modules.jwt.messages.Login;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.server.Util;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.server.modules.game.GameServerModule;
-import com.destrostudios.turnbasedgametools.network.server.modules.game.LobbyServerModule;
-import com.destrostudios.turnbasedgametools.network.server.modules.jwt.JwtServerModule;
-import com.destrostudios.turnbasedgametools.network.shared.modules.NetworkModule;
-import com.destrostudios.turnbasedgametools.network.shared.modules.jwt.messages.Login;
 import com.esotericsoftware.kryonet.Connection;
 import java.util.Map;
 import java.util.UUID;

@@ -1,23 +1,36 @@
 package com.destrostudios.grid.client.appstates;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
+import com.destrostudios.gametools.network.client.modules.game.ClientGameData;
+import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.gametools.network.client.modules.game.GameStartClientModule;
+import com.destrostudios.gametools.network.client.modules.game.LobbyClientModule;
+import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
 import com.destrostudios.grid.client.gameproxy.ClientGameProxy;
 import com.destrostudios.grid.client.gui.GuiColors;
 import com.destrostudios.grid.shared.Characters;
 import com.destrostudios.grid.shared.Maps;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.ClientGameData;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.GameClientModule;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.GameStartClientModule;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.LobbyClientModule;
-import com.destrostudios.turnbasedgametools.network.client.modules.jwt.JwtClientModule;
-import com.jme3.math.*;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.texture.Texture;
-import com.simsilica.lemur.*;
-import com.simsilica.lemur.component.*;
-
+import com.simsilica.lemur.Axis;
+import com.simsilica.lemur.Button;
+import com.simsilica.lemur.Container;
+import com.simsilica.lemur.FillMode;
+import com.simsilica.lemur.HAlignment;
+import com.simsilica.lemur.Insets3f;
+import com.simsilica.lemur.Label;
+import com.simsilica.lemur.Panel;
+import com.simsilica.lemur.VAlignment;
+import com.simsilica.lemur.component.IconComponent;
+import com.simsilica.lemur.component.SpringGridLayout;
+import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -136,9 +149,9 @@ public class MainMenuAppState extends MenuAppState {
 
     public void addCharacterContainer(int containerX, int containerY) {
         Container characterContainer = addSelectionContainer(
-            "Character", HAlignment.Left, Characters.CHARACTER_NAMES,
-            characterName -> "textures/characters/" + characterName + ".png", false,
-            () -> ownPlayerInfo.getCharacterName(), characterName -> ownPlayerInfo.setCharacterName(characterName)
+                "Character", HAlignment.Left, Characters.CHARACTER_NAMES,
+                characterName -> "textures/characters/" + characterName + ".png", false,
+                () -> ownPlayerInfo.getCharacterName(), characterName -> ownPlayerInfo.setCharacterName(characterName)
         );
         characterContainer.setLocalTranslation(containerX, containerY, 0);
         guiNode.attachChild(characterContainer);
@@ -156,9 +169,9 @@ public class MainMenuAppState extends MenuAppState {
         mapContainerWrapper.addChild(placeholder);
 
         Container mapContainer = addSelectionContainer(
-            "Map", HAlignment.Right, Maps.MAP_NAMES,
-            mapName -> "textures/maps/" + mapName + ".png", true,
-            () -> startGameInfo.getMapName(), mapName -> startGameInfo.setMapName(mapName)
+                "Map", HAlignment.Right, Maps.MAP_NAMES,
+                mapName -> "textures/maps/" + mapName + ".png", true,
+                () -> startGameInfo.getMapName(), mapName -> startGameInfo.setMapName(mapName)
         );
         mapContainerWrapper.addChild(mapContainer);
 
@@ -239,22 +252,22 @@ public class MainMenuAppState extends MenuAppState {
         List<JwtAuthenticationUser> players = jwtClientModule.getOnlineUsers();
 
         updateButtons(
-            buttonContainerPlayers,
-            buttonsPlayers,
-            players,
-            player -> player.id,
-            player -> player.login,
-            player -> lobbyPlayers.contains(player),
-            player -> {
-                if (player.id != ownPlayerInfo.getId()) {
-                    if (lobbyPlayers.contains(player)) {
-                        lobbyPlayers.remove(player);
-                    } else {
-                        lobbyPlayers.add(player);
+                buttonContainerPlayers,
+                buttonsPlayers,
+                players,
+                player -> player.id,
+                player -> player.login,
+                player -> lobbyPlayers.contains(player),
+                player -> {
+                    if (player.id != ownPlayerInfo.getId()) {
+                        if (lobbyPlayers.contains(player)) {
+                            lobbyPlayers.remove(player);
+                        } else {
+                            lobbyPlayers.add(player);
+                        }
                     }
-                }
-            },
-            playerId -> lobbyPlayers.removeIf(lobbyPlayer -> lobbyPlayer.id == playerId)
+                },
+                playerId -> lobbyPlayers.removeIf(lobbyPlayer -> lobbyPlayer.id == playerId)
         );
 
         boolean isLobbyBigEnough = (lobbyPlayers.size() > 1);
@@ -268,17 +281,18 @@ public class MainMenuAppState extends MenuAppState {
         Set<UUID> games = lobbyClientModule.getListedGames().keySet();
 
         updateButtons(
-            buttonContainerGames,
-            buttonsGames,
-            games,
-            Function.identity(),
-            gameUUID -> {
-                StartGameInfo startGameInfo = lobbyClientModule.getListedGames().get(gameUUID);
-                return getTeamDescription(startGameInfo.getTeam1()) + " vs " + getTeamDescription(startGameInfo.getTeam2());
-            },
-            gameUUID -> false,
-            gameUUID -> getGameClientModule().join(gameUUID),
-            gameUUID -> {}
+                buttonContainerGames,
+                buttonsGames,
+                games,
+                Function.identity(),
+                gameUUID -> {
+                    StartGameInfo startGameInfo = lobbyClientModule.getListedGames().get(gameUUID);
+                    return getTeamDescription(startGameInfo.getTeam1()) + " vs " + getTeamDescription(startGameInfo.getTeam2());
+                },
+                gameUUID -> false,
+                gameUUID -> getGameClientModule().join(gameUUID),
+                gameUUID -> {
+                }
         );
     }
 
@@ -294,14 +308,14 @@ public class MainMenuAppState extends MenuAppState {
     }
 
     private <K, O> void updateButtons(
-        Container buttonContainer,
-        HashMap<K, Button> buttons,
-        Collection<O> objects,
-        Function<O, K> getKey,
-        Function<O, String> getText,
-        Function<O, Boolean> isActive,
-        Consumer<O> action,
-        Consumer<K> onRemove
+            Container buttonContainer,
+            HashMap<K, Button> buttons,
+            Collection<O> objects,
+            Function<O, K> getKey,
+            Function<O, String> getText,
+            Function<O, Boolean> isActive,
+            Consumer<O> action,
+            Consumer<K> onRemove
     ) {
         for (Map.Entry<K, Button> entry : buttons.entrySet()) {
             if (objects.stream().noneMatch(object -> getKey.apply(object).equals(entry.getKey()))) {

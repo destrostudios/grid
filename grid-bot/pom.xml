@@ -17,7 +17,7 @@
             <artifactId>grid-game</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+            <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>bot</artifactId>
         </dependency>
         <dependency>

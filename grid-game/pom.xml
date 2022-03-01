@@ -15,7 +15,7 @@
             <artifactId>grid-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+            <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>grid</artifactId>
         </dependency>
         <dependency>

@@ -1,5 +1,7 @@
 package com.destrostudios.grid.bot;
 
+import com.destrostudios.gametools.bot.BotActionReplay;
+import com.destrostudios.gametools.bot.BotGameState;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.CastSpellAction;
@@ -17,8 +19,6 @@ import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkValidator;
 import com.destrostudios.grid.util.SpellUtils;
-import com.destrostudios.turnbasedgametools.bot.BotActionReplay;
-import com.destrostudios.turnbasedgametools.bot.BotGameState;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

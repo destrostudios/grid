@@ -1,6 +1,8 @@
 package com.destrostudios.grid.client.appstates;
 
 import com.destroflyer.jme3.cubes.Vector3Int;
+import com.destrostudios.gametools.grid.Pathfinder;
+import com.destrostudios.gametools.grid.Position;
 import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
@@ -42,8 +44,6 @@ import com.destrostudios.grid.eventbus.update.hp.HealthPointsChangedEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.util.SpellUtils;
-import com.destrostudios.turnbasedgametools.grid.Pathfinder;
-import com.destrostudios.turnbasedgametools.grid.Position;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.KeyInput;

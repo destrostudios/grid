@@ -1,13 +1,13 @@
 package com.destrostudios.grid.network;
 
+import com.destrostudios.gametools.network.shared.modules.game.GameService;
+import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.actions.CastSpellAction;
 import com.destrostudios.grid.actions.PositionUpdateAction;
 import com.destrostudios.grid.actions.SkipRoundAction;
 import com.destrostudios.grid.random.MutableRandomProxy;
-import com.destrostudios.turnbasedgametools.network.shared.modules.game.GameService;
-import com.destrostudios.turnbasedgametools.network.shared.modules.game.NetworkRandom;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;

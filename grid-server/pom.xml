@@ -19,7 +19,7 @@
             <artifactId>grid-network</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.destrostudios.turn-based-game-tools</groupId>
+            <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>network-server</artifactId>
         </dependency>
 
