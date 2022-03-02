@@ -2,13 +2,13 @@ package com.destrostudios.grid.client;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.destrostudios.gametools.network.client.ToolsClient;
 import com.destrostudios.grid.client.gameproxy.ReplayGameProxy;
 import com.destrostudios.grid.client.replay.GameReplay;
 import com.destrostudios.grid.client.replay.ReplayIO;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.client.ToolsClient;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Date;

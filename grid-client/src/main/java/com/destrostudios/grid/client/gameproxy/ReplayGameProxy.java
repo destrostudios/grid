@@ -1,5 +1,6 @@
 package com.destrostudios.grid.client.gameproxy;
 
+import com.destrostudios.gametools.network.client.modules.game.SlaveRandom;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.client.replay.ActionReplay;
@@ -9,7 +10,6 @@ import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.network.NetworkGridService;
 import com.destrostudios.grid.random.MutableRandomProxy;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.client.modules.game.SlaveRandom;
 import lombok.Getter;
 
 public class ReplayGameProxy implements GameProxy {

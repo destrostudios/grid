@@ -1,12 +1,12 @@
 package com.destrostudios.grid.client.replay;
 
+import com.destrostudios.gametools.network.shared.modules.NetworkModule;
+import com.destrostudios.gametools.network.shared.modules.game.messages.GameAction;
+import com.destrostudios.gametools.network.shared.modules.game.messages.GameJoin;
+import com.destrostudios.gametools.network.shared.modules.game.messages.ListGame;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
 import com.destrostudios.grid.shared.StartGameInfo;
-import com.destrostudios.turnbasedgametools.network.shared.modules.NetworkModule;
-import com.destrostudios.turnbasedgametools.network.shared.modules.game.messages.GameAction;
-import com.destrostudios.turnbasedgametools.network.shared.modules.game.messages.GameJoin;
-import com.destrostudios.turnbasedgametools.network.shared.modules.game.messages.ListGame;
 import com.esotericsoftware.kryonet.Connection;
 import java.io.IOException;
 import java.nio.file.Paths;
