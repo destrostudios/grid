@@ -17,9 +17,8 @@ public class LogStateHashModule extends NetworkModule {
 
     @Override
     public void received(Connection connection, Object object) {
-        if (object instanceof GameActionRequest) {
-            GameActionRequest message = (GameActionRequest) object;
-            System.out.println("Game state hash before action: " + Integer.toHexString(gameModule.getGame(message.game).state.getState().hashCode()));
+        if (object instanceof GameActionRequest message) {
+            System.out.println("Game state hash before action: " + Integer.toHexString(gameModule.getGame(message.game()).state.getState().hashCode()));
         }
     }
 }
