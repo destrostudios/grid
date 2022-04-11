@@ -23,9 +23,8 @@ public class GameOverModule extends NetworkModule {
 
     @Override
     public void received(Connection connection, Object object) {
-        if (object instanceof GameActionRequest) {
-            GameActionRequest message = (GameActionRequest) object;
-            ServerGameData<GridGame> game = gameModule.getGame(message.game);
+        if (object instanceof GameActionRequest message) {
+            ServerGameData<GridGame> game = gameModule.getGame(message.game());
 
             GameOverInfo gameOverInfo = game.state.getGameOverInfo();
             if (gameOverInfo.isGameIsOver()) {

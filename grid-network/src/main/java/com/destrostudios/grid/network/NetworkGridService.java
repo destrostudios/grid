@@ -36,9 +36,44 @@ public class NetworkGridService implements GameService<GridGame, Action> {
                 return gridGame;
             }
         });
-        kryo.register(PositionUpdateAction.class);
-        kryo.register(SkipRoundAction.class);
-        kryo.register(CastSpellAction.class);
+        kryo.register(PositionUpdateAction.class, new Serializer<PositionUpdateAction>() {
+            @Override
+            public void write(Kryo kryo, Output output, PositionUpdateAction object) {
+                output.writeInt(object.getNewX());
+                output.writeInt(object.getNewY());
+                output.writeString(object.getPlayerIdentifier());
+            }
+
+            @Override
+            public PositionUpdateAction read(Kryo kryo, Input input, Class<PositionUpdateAction> type) {
+                return new PositionUpdateAction(input.readInt(), input.readInt(), input.readString());
+            }
+        });
+        kryo.register(SkipRoundAction.class, new Serializer<SkipRoundAction>() {
+            @Override
+            public void write(Kryo kryo, Output output, SkipRoundAction object) {
+                output.writeString(object.getPlayerIdentifier());
+            }
+
+            @Override
+            public SkipRoundAction read(Kryo kryo, Input input, Class<SkipRoundAction> type) {
+                return new SkipRoundAction(input.readString());
+            }
+        });
+        kryo.register(CastSpellAction.class, new Serializer<CastSpellAction>() {
+            @Override
+            public void write(Kryo kryo, Output output, CastSpellAction object) {
+                output.writeInt(object.getTargetX());
+                output.writeInt(object.getTargetY());
+                output.writeString(object.getPlayerIdentifier());
+                output.writeInt(object.getSpell());
+            }
+
+            @Override
+            public CastSpellAction read(Kryo kryo, Input input, Class<CastSpellAction> type) {
+                return new CastSpellAction(input.readInt(), input.readInt(), input.readString(), input.readInt());
+            }
+        });
     }
 
     @Override

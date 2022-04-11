@@ -22,13 +22,11 @@ public class GameReplayModule extends NetworkModule {
     public void received(Connection connection, Object object) {
         if (object instanceof ListGame) {
             ListGame<StartGameInfo> message = (ListGame<StartGameInfo>) object;
-            onGameListed(message.gameId, message.params);
-        } else if (object instanceof GameJoin) {
-            GameJoin message = (GameJoin) object;
-            onJoinGame(message.gameId, (GridGame) message.state);
-        } else if (object instanceof GameAction) {
-            GameAction message = (GameAction) object;
-            onAction(message.gameId, (Action) message.action, message.randomHistory);
+            onGameListed(message.gameId(), message.params());
+        } else if (object instanceof GameJoin message) {
+            onJoinGame(message.gameId(), (GridGame) message.state());
+        } else if (object instanceof GameAction message) {
+            onAction(message.gameId(), (Action) message.action(), message.randomHistory());
         }
     }
 
