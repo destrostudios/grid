@@ -7,7 +7,7 @@
     },
     {
       "component": "SpellOnTouchComponent",
-      "_spell": 1
+      "spell": 1
     },
     {
       "component": "VisualComponent",

@@ -9,9 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class SpellOnTouchComponent implements Component {
-  @Setter private int _spell;
+    @Setter
+    private int spell;
 
-  public int getSpell() {
-    return _spell;
-  }
+    public int getSpell() {
+        return spell;
+    }
 }
