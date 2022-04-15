@@ -6,8 +6,8 @@ import static org.junit.Assert.assertEquals;
 
 public class TestMyGridGame {
 
-    @Test
-    public void universeShouldBeStable() {
-        assertEquals(42, 42);
-    }
+  @Test
+  public void universeShouldBeStable() {
+    assertEquals(42, 42);
+  }
 }

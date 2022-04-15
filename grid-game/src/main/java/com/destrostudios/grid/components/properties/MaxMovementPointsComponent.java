@@ -10,5 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class MaxMovementPointsComponent implements Component {
-    private int maxMovementPoints;
+  private int maxMovementPoints;
 }

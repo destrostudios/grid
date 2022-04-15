@@ -1,5 +1,3 @@
 package com.destrostudios.grid.eventbus;
 
-public interface Event {
-
-}
+public interface Event {}

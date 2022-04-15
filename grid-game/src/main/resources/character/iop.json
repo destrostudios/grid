@@ -41,6 +41,10 @@
         "maxHealth": 500
       },
       {
+        "component": "VisionComponent",
+        "blockingVision": true
+      },
+      {
         "component": "SpellsComponent",
         "spells": [
           2,
@@ -278,6 +282,10 @@
         "component": "LineOfSightComponent"
       },
       {
+        "component": "VisionComponent",
+        "blockingVision": true
+      },
+      {
         "component": "DamageComponent",
         "minDmg": 81,
         "maxDmg": 100,
@@ -287,7 +295,7 @@
         "component": "DamageBuffComponent",
         "buffAmount": 110,
         "buffDuration": 4,
-        "spellBuff": true
+        "buffType": "SPELL"
       },
       {
         "component": "CooldownComponent",

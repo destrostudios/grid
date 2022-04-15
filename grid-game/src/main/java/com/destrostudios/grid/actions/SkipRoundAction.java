@@ -9,10 +9,10 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class SkipRoundAction implements Action {
-    private String playerIdentifier;
+  private String playerIdentifier;
 
-    @Override
-    public String getPlayerIdentifier() {
-        return playerIdentifier;
-    }
+  @Override
+  public String getPlayerIdentifier() {
+    return playerIdentifier;
+  }
 }

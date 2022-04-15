@@ -6,5 +6,4 @@ import lombok.Value;
 
 @NoArgsConstructor
 @Value
-public class RequiresTargetComponent implements Component {
-}
+public class RequiresTargetComponent implements Component {}

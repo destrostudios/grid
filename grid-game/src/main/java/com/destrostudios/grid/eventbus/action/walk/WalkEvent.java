@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class WalkEvent implements Event {
-    public final int entity;
-    public final PositionComponent positionComponent;
-
+  public final int entity;
+  public final PositionComponent positionComponent;
 }

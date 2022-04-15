@@ -15,6 +15,10 @@
         "resistanceValue": 0
       },
       {
+        "component": "VisionComponent",
+        "blockingVision": true
+      },
+      {
         "component": "MovementPointResistanceComponent",
         "resistanceValue": 0
       },

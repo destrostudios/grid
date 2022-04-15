@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class PlayerBuffAddedEvent implements Event {
-    private final int targetEntity;
-    private final int spellEntity;
+  private final int targetEntity;
+  private final int spellEntity;
 }

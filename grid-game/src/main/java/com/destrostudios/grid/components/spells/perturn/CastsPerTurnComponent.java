@@ -10,6 +10,6 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class CastsPerTurnComponent implements Component {
-    int maxCastsPerTurn;
-    int castsThisTurn;
+  int maxCastsPerTurn;
+  int castsThisTurn;
 }

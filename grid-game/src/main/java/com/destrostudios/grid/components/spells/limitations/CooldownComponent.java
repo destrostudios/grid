@@ -10,5 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class CooldownComponent implements Component {
-     int cooldown;
+  int cooldown;
 }

@@ -1,7 +1,6 @@
 package com.destrostudios.grid.serialization.container;
 
 import com.destrostudios.grid.components.Component;
-import com.destrostudios.grid.serialization.container.ComponentsContainer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +15,5 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MapContainer implements ComponentsContainer {
-    private Map<Integer, List<Component>> components = new LinkedHashMap<>();
+  private Map<Integer, List<Component>> components = new LinkedHashMap<>();
 }

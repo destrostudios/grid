@@ -10,6 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class MaxHealthComponent implements Component {
-    private int maxHealth;
-
+  private int maxHealth;
 }

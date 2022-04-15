@@ -13,22 +13,24 @@ import java.util.Map;
 
 public class CharacterSerializer extends StdSerializer<CharacterContainer> {
 
-    public CharacterSerializer() {
-        super(CharacterContainer.class);
-    }
+  public CharacterSerializer() {
+    super(CharacterContainer.class);
+  }
 
-    protected CharacterSerializer(Class<CharacterContainer> t) {
-        super(t);
-    }
+  protected CharacterSerializer(Class<CharacterContainer> t) {
+    super(t);
+  }
 
-    @Override
-    public void serialize(CharacterContainer container, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        Map<Integer, List<Component>> charComponents = new HashMap<>();
-        Map<Integer, List<Component>> spellComponents = new HashMap<>();
-        jgen.writeStartObject();
-        jgen.writeObjectField("character", charComponents);
-        jgen.writeObjectField("spells", spellComponents);
+  @Override
+  public void serialize(
+      CharacterContainer container, JsonGenerator jgen, SerializerProvider provider)
+      throws IOException {
+    Map<Integer, List<Component>> charComponents = new HashMap<>();
+    Map<Integer, List<Component>> spellComponents = new HashMap<>();
+    jgen.writeStartObject();
+    jgen.writeObjectField("character", charComponents);
+    jgen.writeObjectField("spells", spellComponents);
 
-        jgen.writeEndObject();
-    }
+    jgen.writeEndObject();
+  }
 }

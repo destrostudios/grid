@@ -8,6 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class PositionUpdateEvent implements Event {
-    private final int entity;
-    private final PositionComponent newPosition;
+  private final int entity;
+  private final PositionComponent newPosition;
 }

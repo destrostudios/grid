@@ -7,16 +7,15 @@ import lombok.Setter;
 @Setter
 public class GamePreferences {
 
-    private float fps;
-    private boolean gameRunning;
-    private final int mapSizeX;
-    private final int mapSizeY;
+  private float fps;
+  private boolean gameRunning;
+  private final int mapSizeX;
+  private final int mapSizeY;
 
-    public GamePreferences(int mapSizeX, int mapSizeY) {
-        this.mapSizeX = mapSizeX;
-        this.mapSizeY = mapSizeY;
-        this.fps = 30f;
-        this.gameRunning = true;
-    }
-
+  public GamePreferences(int mapSizeX, int mapSizeY) {
+    this.mapSizeX = mapSizeX;
+    this.mapSizeY = mapSizeY;
+    this.fps = 30f;
+    this.gameRunning = true;
+  }
 }

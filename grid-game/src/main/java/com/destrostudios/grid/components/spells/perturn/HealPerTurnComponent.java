@@ -10,7 +10,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class HealPerTurnComponent implements Component {
-    private int minValue;
-    private int maxValue;
-    private int duration;
+  private int minValue;
+  private int maxValue;
+  private int duration;
 }

@@ -79,6 +79,10 @@
         "maxRange": 0
       },
       {
+        "component": "VisionComponent",
+        "blockingVision": true
+      },
+      {
         "component": "AffectedAreaComponent",
         "shape": "PLUS",
         "minImpact": 0,
@@ -92,7 +96,7 @@
         "component": "AttackPointsBuffComponent",
         "buffAmount": 2,
         "buffDuration": 2,
-        "spellBuff": false
+        "buffType": "SPELL"
       }
     ],
     "3": [
@@ -168,7 +172,7 @@
         "component": "ReflectionBuffComponent",
         "buffAmount": 20,
         "buffDuration": 2,
-        "spellBuff": false
+        "buffType": "SPELL"
       }
     ],
     "5": [

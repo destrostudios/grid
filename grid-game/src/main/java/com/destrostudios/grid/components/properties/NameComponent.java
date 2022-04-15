@@ -10,6 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class NameComponent implements Component {
-    private String name;
-
+  private String name;
 }

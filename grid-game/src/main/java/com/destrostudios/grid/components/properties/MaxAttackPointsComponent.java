@@ -10,6 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class MaxAttackPointsComponent implements Component {
-    private int maxAttackPoints;
-
+  private int maxAttackPoints;
 }

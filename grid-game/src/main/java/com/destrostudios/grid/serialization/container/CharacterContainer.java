@@ -15,7 +15,5 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CharacterContainer implements ComponentsContainer {
-    private Map<Integer, List<Component>> components = new LinkedHashMap<>();
-
-
+  private Map<Integer, List<Component>> components = new LinkedHashMap<>();
 }

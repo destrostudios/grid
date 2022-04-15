@@ -3,154 +3,161 @@ package com.destrostudios.grid.entities;
 import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.GameStateContainer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 public class EntityWorld implements EntityData {
-    private final static Logger logger = Logger.getGlobal();
+  private static final Logger logger = Logger.getGlobal();
 
-    private final Map<Class<? extends Component>, ComponentTable<?>> world;
+  private final Map<Class<? extends Component>, ComponentTable<?>> world;
 
-    // getter & setter for serialization
-    @Getter
-    @Setter
-    private int nextEntity = 1;
+  // getter & setter for serialization
+  @Getter @Setter private int nextEntity = 1;
 
-    public EntityWorld() {
-        Comparator<Class<? extends Component>> comparator = Comparator.comparing(x -> x.getSimpleName());
-        comparator = comparator.thenComparing(x -> x.getName());
-        this.world = new TreeMap<>(comparator);
-    }
+  public EntityWorld() {
+    Comparator<Class<? extends Component>> comparator =
+        Comparator.comparing(x -> x.getSimpleName());
+    comparator = comparator.thenComparing(x -> x.getName());
+    this.world = new TreeMap<>(comparator);
+  }
 
-    public void initializeWorld(String worldState) {
-        this.world.clear();
-        try {
-            GameStateContainer state = ComponentsContainerSerializer.readContainerAsJson(worldState, GameStateContainer.class);
-            Map<Integer, List<Component>> components = state.getComponents();
-            for (Map.Entry<Integer, List<Component>> entry : components.entrySet()) {
-                for (Component component : entry.getValue()) {
-                    addComponent(entry.getKey(), component);
-                }
-            }
-            nextEntity = state.getNextEntity();
-        } catch (Exception e) {
-            logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
+  public void initializeWorld(String worldState) {
+    this.world.clear();
+    try {
+      GameStateContainer state =
+          ComponentsContainerSerializer.readContainerAsJson(worldState, GameStateContainer.class);
+      Map<Integer, List<Component>> components = state.getComponents();
+      for (Map.Entry<Integer, List<Component>> entry : components.entrySet()) {
+        for (Component component : entry.getValue()) {
+          addComponent(entry.getKey(), component);
         }
+      }
+      nextEntity = state.getNextEntity();
+    } catch (Exception e) {
+      logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
     }
+  }
 
-    @Override
-    public List<Component> getComponents(int entity) {
-        return world.values().stream()
-                .map(components -> components.get(entity))
-                .filter(x -> x != null)
-                .collect(Collectors.toList());
+  @Override
+  public List<Component> getComponents(int entity) {
+    return world.values().stream()
+        .map(components -> components.get(entity))
+        .filter(x -> x != null)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Creates an entity with the highest integer which is not used
+   *
+   * @return entity
+   */
+  @Override
+  public int createEntity() {
+    return nextEntity++;
+  }
+
+  /**
+   * Search a component, represented by the classz, for an entity
+   *
+   * @param <T>
+   * @param entity
+   * @param component
+   * @return
+   */
+  @Override
+  public <T extends Component> T getComponent(int entity, Class<T> component) {
+    ComponentTable<T> table = (ComponentTable<T>) world.get(component);
+    if (table == null) {
+      return null;
     }
+    return table.get(entity);
+  }
 
-    /**
-     * Creates an entity with the highest integer which is not used
-     *
-     * @return entity
-     */
-    @Override
-    public int createEntity() {
-        return nextEntity++;
+  /**
+   * removes component from entity
+   *
+   * @param entity
+   * @param component
+   */
+  @Override
+  public void remove(int entity, Class<?> component) {
+    ComponentTable<?> table = world.get(component);
+    if (table != null) {
+      table.remove(entity);
     }
+  }
 
-
-    /**
-     * Search a component, represented by the classz, for an entity
-     *
-     * @param <T>
-     * @param entity
-     * @param component
-     * @return
-     */
-    @Override
-    public <T extends Component> T getComponent(int entity, Class<T> component) {
-        ComponentTable<T> table = (ComponentTable<T>) world.get(component);
-        if (table == null) {
-            return null;
-        }
-        return table.get(entity);
+  /**
+   * removes components from entity
+   *
+   * @param entity
+   * @param componentsToRemove
+   */
+  @Override
+  public void remove(int entity, Class<?>... componentsToRemove) {
+    for (Class<?> component : componentsToRemove) {
+      remove(entity, component);
     }
+  }
 
-    /**
-     * removes component from entity
-     *
-     * @param entity
-     * @param component
-     */
-    @Override
-    public void remove(int entity, Class<?> component) {
-        ComponentTable<?> table = world.get(component);
-        if (table != null) {
-            table.remove(entity);
-        }
-    }
+  @Override
+  public void removeEntity(int entity) {
+    world.values().forEach(components -> components.remove(entity));
+  }
 
-    @Override
-    public void removeEntity(int entity) {
-        world.values().forEach(components -> components.remove(entity));
+  @Override
+  public List<Integer> list(Class<?> component) {
+    ComponentTable<?> table = world.get(component);
+    if (table == null) {
+      return Collections.emptyList();
     }
+    return table.list();
+  }
 
-    @Override
-    public List<Integer> list(Class<?> component) {
-        ComponentTable<?> table = world.get(component);
-        if (table == null) {
-            return Collections.emptyList();
-        }
-        return table.list();
+  @Override
+  public List<Integer> findEntitiesByComponentValue(Component component) {
+    ComponentTable table = world.get(component.getClass());
+    if (table == null) {
+      return Collections.emptyList();
     }
+    return table.findEntitiesByValue(component);
+  }
 
-    @Override
-    public List<Integer> findEntitiesByComponentValue(Component component) {
-        ComponentTable table = world.get(component.getClass());
-        if (table == null) {
-            return Collections.emptyList();
-        }
-        return table.findEntitiesByValue(component);
-    }
+  @Override
+  public boolean hasEntity(int entity) {
+    return world.values().stream().anyMatch(components -> components.hasEntity(entity));
+  }
 
-    @Override
-    public boolean hasEntity(int entity) {
-        return world.values().stream().anyMatch(components -> components.hasEntity(entity));
+  /**
+   * adds a component for that entity
+   *
+   * @param entity
+   * @param component
+   */
+  @Override
+  public void addComponent(int entity, Component component) {
+    if (component != null) {
+      ComponentTable components =
+          world.computeIfAbsent(component.getClass(), x -> new ComponentTable<>());
+      components.set(entity, component);
     }
+  }
 
-    /**
-     * adds a component for that entity
-     *
-     * @param entity
-     * @param component
-     */
-    @Override
-    public void addComponent(int entity, Component component) {
-        if (component != null) {
-            ComponentTable components = world.computeIfAbsent(component.getClass(), x -> new ComponentTable<>());
-            components.set(entity, component);
-        }
+  // for serialization
+  public Map<Integer, List<Component>> getWorld() {
+    Map<Integer, List<Component>> result = new LinkedHashMap<>();
+    for (ComponentTable<?> table : world.values()) {
+      for (Integer entity : table.list()) {
+        result.computeIfAbsent(entity, x -> new ArrayList<>()).add(table.get(entity));
+      }
     }
-
-    // for serialization
-    public Map<Integer, List<Component>> getWorld() {
-        Map<Integer, List<Component>> result = new LinkedHashMap<>();
-        for (ComponentTable<?> table : world.values()) {
-            for (Integer entity : table.list()) {
-                result.computeIfAbsent(entity, x -> new ArrayList<>()).add(table.get(entity));
-            }
-        }
-        return Collections.unmodifiableMap(result);
-    }
+    return Collections.unmodifiableMap(result);
+  }
 }

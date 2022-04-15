@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class SwapEvent implements Event {
-    private int sourceEntity;
-    private int targetEntity;
+  private int sourceEntity;
+  private int targetEntity;
 }

@@ -6,5 +6,4 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class TargetableComponent implements Component {
-}
+public class TargetableComponent implements Component {}

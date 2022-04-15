@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class BeginTurnEvent implements Event {
-    private final int beginTurnEntity;
+  private final int beginTurnEntity;
 }

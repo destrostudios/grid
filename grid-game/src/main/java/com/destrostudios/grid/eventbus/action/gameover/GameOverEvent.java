@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class GameOverEvent implements Event {
-    private final int winnerTeam;
+  private final int winnerTeam;
 }

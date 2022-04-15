@@ -10,5 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class AttackPointResistanceComponent implements Component {
-    private int resistanceValue;
+  private int resistanceValue;
 }

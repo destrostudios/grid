@@ -10,6 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class AttackPointsComponent implements Component {
-    private int attackPoints;
-
+  private int attackPoints;
 }

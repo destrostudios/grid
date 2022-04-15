@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public abstract class PropertiePointsChangedEvent implements Event {
-    private int entity;
-    private int newPoints;
-
+  private int entity;
+  private int newPoints;
 }

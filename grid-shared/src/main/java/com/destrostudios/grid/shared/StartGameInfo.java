@@ -21,7 +21,7 @@ public class StartGameInfo {
         startGameInfo.team1 = team1;
 
         LinkedList<PlayerInfo> team2 = new LinkedList<>();
-        team2.add(new PlayerInfo(2, "Etherblood", "iop"));
+        team2.add(new PlayerInfo(2, "Etherblood", "garmon"));
         startGameInfo.team2 = team2;
 
         startGameInfo.mapName = Maps.getRandomMapName();

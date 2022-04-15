@@ -10,5 +10,5 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class AiHintCharacterComponent implements Component {
-    String name;
+  String name;
 }
