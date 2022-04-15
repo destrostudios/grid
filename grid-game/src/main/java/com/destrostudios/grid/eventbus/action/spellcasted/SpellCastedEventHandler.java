@@ -242,12 +242,15 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
       }
 
       for (Integer affectedEntity : affectedEntities) {
-        PositionComponent target = entityData.getComponent(affectedEntity, PositionComponent.class);
-        followUpEvents.add(
-            new PushEvent(
-                affectedEntity,
-                push.getDisplacement(),
-                SpellUtils.directionForDelta(pushOrigin, target)));
+        if (!entityData.hasComponents(affectedEntity, AntiCCBuffComponent.class)) {
+          PositionComponent target =
+              entityData.getComponent(affectedEntity, PositionComponent.class);
+          followUpEvents.add(
+              new PushEvent(
+                  affectedEntity,
+                  push.getDisplacement(),
+                  SpellUtils.directionForDelta(pushOrigin, target)));
+        }
       }
     }
   }
