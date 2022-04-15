@@ -70,10 +70,8 @@ public class UpdateSpellsHandler implements EventHandler<UpdateSpellsEvent> {
       } else {
         entityData.addComponent(
             buffEntity,
-            new HealBuffComponent(
-                ccBuffComponent.getBuffAmount(),
-                ccBuffComponent.getBuffDuration() - 1,
-                ccBuffComponent.getBuffType()));
+            new AntiCCBuffComponent(
+                ccBuffComponent.getBuffDuration() - 1, ccBuffComponent.getBuffType()));
       }
     }
   }

@@ -61,10 +61,10 @@
         "activeSummons": []
       }
     ],
-    "8": [
+    "2": [
       {
         "component": "NameComponent",
-        "name": "Alice Comet"
+        "name": "Magic Pillar"
       },
       {
         "component": "TooltipComponent",
@@ -72,7 +72,7 @@
       },
       {
         "component": "SummonCastComponent",
-        "summonFile": "garmon-wall"
+        "summonFile": "Magic Pillar"
       },
       {
         "component": "CostComponent",
@@ -88,6 +88,41 @@
       },
       {
         "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 1
+      },
+      {
+        "component": "LineOfSightComponent"
+      }
+    ],
+    "3": [
+      {
+        "component": "NameComponent",
+        "name": "Magic Wall"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[5 AP] Spawn a small wall that can´t be passed but does not blocks vision"
+      },
+      {
+        "component": "SummonCastComponent",
+        "summonFile": "Magic Wall"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 3
+      },
+      {
+        "component": "AffectedAreaComponent",
         "shape": "ORTHOGONAL_LINE",
         "minImpact": 0,
         "maxImpact": 1
@@ -96,99 +131,19 @@
         "component": "LineOfSightComponent"
       }
     ],
-    "2": [
-      {
-        "component": "NameComponent",
-        "name": "AP Buff"
-      },
-      {
-        "component": "TooltipComponent",
-        "tooltip": "[1 AP, 1 BP] Buffs 2 AP in a cross for 2 rounds."
-      },
-      {
-        "component": "CostComponent",
-        "apCost": 1,
-        "mpCost": 1,
-        "hpCost": 0
-      },
-      {
-        "component": "RangeComponent",
-        "castAreaShape": "PLUS",
-        "minRange": 0,
-        "maxRange": 0
-      },
-      {
-        "component": "AffectedAreaComponent",
-        "shape": "PLUS",
-        "minImpact": 0,
-        "maxImpact": 3
-      },
-      {
-        "component": "CooldownComponent",
-        "cooldown": 4
-      },
-      {
-        "component": "AttackPointsBuffComponent",
-        "buffAmount": 2,
-        "buffDuration": 2,
-        "buffType": "SPELL"
-      }
-    ],
-    "3": [
-      {
-        "component": "NameComponent",
-        "name": "Regen Buff"
-      },
-      {
-        "component": "TooltipComponent",
-        "tooltip": "[4 AP] Regenerates 10-20 life each turn for 3 rounds."
-      },
-      {
-        "component": "CostComponent",
-        "apCost": 4,
-        "mpCost": 0,
-        "hpCost": 0
-      },
-      {
-        "component": "VisionComponent",
-        "blockingVision": true
-      },
-      {
-        "component": "RangeComponent",
-        "castAreaShape": "SINGLE",
-        "minRange": 0,
-        "maxRange": 0
-      },
-      {
-        "component": "CooldownComponent",
-        "cooldown": 4
-      },
-      {
-        "component": "AffectedAreaComponent",
-        "shape": "SINGLE",
-        "minImpact": 1,
-        "maxImpact": 1
-      },
-      {
-        "component": "HealPerTurnComponent",
-        "minValue": 20,
-        "maxValue": 30,
-        "duration": 3
-      }
-    ],
     "4": [
       {
         "component": "NameComponent",
-        "name": "Reflection Buff"
+        "name": "Fortify"
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[7 AP] Reflecting 10 damage for 2 rounds."
+        "tooltip": "[7 AP, 2 BP] Increase lifetime of a spawned obstacle by 3."
       },
       {
         "component": "CostComponent",
         "apCost": 7,
-        "mpCost": 0,
+        "mpCost": 2,
         "hpCost": 0
       },
       {
@@ -198,78 +153,29 @@
         "maxRange": 0
       },
       {
+        "component": "AffectedAreaComponent",
+        "shape": "MAP",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
         "component": "CooldownComponent",
         "cooldown": 4
       },
       {
-        "component": "AffectedAreaComponent",
-        "shape": "SINGLE",
-        "minImpact": 0,
-        "maxImpact": 1
-      },
-      {
-        "component": "ReflectionBuffComponent",
-        "buffAmount": 20,
-        "buffDuration": 2,
-        "buffType": "SPELL"
+        "component": "LifespanBuffComponent",
+        "lifespanBuff": 3,
+        "buffType": "SUMMON"
       }
     ],
     "5": [
       {
         "component": "NameComponent",
-        "name": "Alice AOE"
+        "name": "Cursed Ground"
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[3 AP] Deal 5-10 damage and heals for 10-15 in cross shaped AOE"
-      },
-      {
-        "component": "CostComponent",
-        "apCost": 3,
-        "mpCost": 0,
-        "hpCost": 0
-      },
-      {
-        "component": "CastsPerTurnComponent",
-        "maxCastsPerTurn": 2,
-        "castsThisTurn": 0
-      },
-      {
-        "component": "RangeComponent",
-        "castAreaShape": "PLUS",
-        "minRange": 1,
-        "maxRange": 3
-      },
-      {
-        "component": "LineOfSightComponent"
-      },
-      {
-        "component": "DamageComponent",
-        "minDmg": 5,
-        "maxDmg": 10,
-        "targetingAllies": false
-      },
-      {
-        "component": "HealComponent",
-        "minHeal": 10,
-        "maxHeal": 15,
-        "targetingEnemies": false
-      },
-      {
-        "component": "AffectedAreaComponent",
-        "shape": "PLUS",
-        "minImpact": 0,
-        "maxImpact": 2
-      }
-    ],
-    "6": [
-      {
-        "component": "NameComponent",
-        "name": "Alice Push"
-      },
-      {
-        "component": "TooltipComponent",
-        "tooltip": "[11 AP, 6 MP] Pfützen kasten"
+        "tooltip": "[5 AP] Spawn circular damage area which causes damage when passing."
       },
       {
         "component": "CostComponent",
@@ -298,41 +204,105 @@
       },
       {
         "component": "SummonCastComponent",
-        "summonFile": "garmon-dmgglyph"
+        "summonFile": "Cursed Ground"
       }
     ],
-    "7": [
+    "6": [
       {
         "component": "NameComponent",
-        "name": "Nothing"
+        "name": "Garmons Protection"
       },
       {
         "component": "TooltipComponent",
-        "tooltip": "[11 AP, 6 MP] Heals 100-200 damage."
-      },
-      {
-        "component": "RequiresTargetComponent"
+        "tooltip": "[3 AP] Targeting player gets an anti-cc buff for 3 rounds."
       },
       {
         "component": "CostComponent",
-        "apCost": 11,
-        "mpCost": 6,
+        "apCost": 3,
+        "mpCost": 0,
         "hpCost": 0
       },
       {
         "component": "RangeComponent",
         "castAreaShape": "PLUS",
         "minRange": 0,
-        "maxRange": 5
+        "maxRange": 10
       },
       {
-        "component": "LineOfSightComponent"
+        "component": "CooldownComponent",
+        "cooldown": 5
       },
       {
-        "component": "HealComponent",
-        "minHeal": 100,
-        "maxHeal": 200,
-        "targetingEnemies": true
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 1
+      },
+      {
+        "component": "AntiCCBuffComponent",
+        "buffDuration": 2,
+        "buffType": "PLAYER"
+      }
+    ],
+    "7": [
+      {
+        "component": "NameComponent",
+        "name": "Arcane Laser"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Casts an AOE Damage line of length 8 starting at the character"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "SQUARE",
+        "minRange": 1,
+        "maxRange": 1
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 10,
+        "maxDmg": 30,
+        "targetingAllies": false
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "LINE",
+        "minImpact": 0,
+        "maxImpact": 8
+      }
+    ],
+    "8": [
+      {
+        "component": "NameComponent",
+        "name": "Lunar Strike"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[7 AP] Casting a damage strike in a plus shape "
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 10
       },
       {
         "component": "CooldownComponent",
@@ -340,9 +310,20 @@
       },
       {
         "component": "AffectedAreaComponent",
-        "shape": "SINGLE",
+        "shape": "PLUS",
         "minImpact": 0,
-        "maxImpact": 0
+        "maxImpact": 1
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 40,
+        "maxDmg": 50,
+        "targetingAllies": true
       }
     ]
   }

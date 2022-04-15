@@ -1,17 +1,19 @@
 {
   "SeriazableComponent": "summon",
-  "properties":
-    [
-      {
-        "component": "LifeSpanComponent",
-        "remainingLifeSpan": 3
-      },
-      {
-        "component": "SpellOnTouchComponent",
-        "_spell": 1
-      }
-    ]
-  ,
+  "properties": [
+    {
+      "component": "LifeSpanComponent",
+      "remainingLifeSpan": 3
+    },
+    {
+      "component": "SpellOnTouchComponent",
+      "_spell": 1
+    },
+    {
+      "component": "VisualComponent",
+      "name": "pillar"
+    }
+  ],
   "spells": {
     "1": [
       {
@@ -20,15 +22,9 @@
       },
       {
         "component": "DamageComponent",
-        "minDmg": 38,
-        "maxDmg": 42,
+        "minDmg": 18,
+        "maxDmg": 22,
         "targetingAllies": false
-      },
-      {
-        "component": "RangeComponent",
-        "castAreaShape": "DIAMOND",
-        "minRange": 0,
-        "maxRange": 40
       },
       {
         "component": "AffectedAreaComponent",
@@ -41,6 +37,12 @@
         "apCost": 0,
         "mpCost": 0,
         "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 0
       }
     ]
   }

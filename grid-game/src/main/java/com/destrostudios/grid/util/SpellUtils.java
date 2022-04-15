@@ -44,7 +44,7 @@ public class SpellUtils {
         .filter(
             e -> positionComponents.contains(entityData.getComponent(e, PositionComponent.class)))
         .sorted(entitiesToDamageSortComparator(clickedPos, entityData, teamSource))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private static Comparator<Integer> entitiesToDamageSortComparator(

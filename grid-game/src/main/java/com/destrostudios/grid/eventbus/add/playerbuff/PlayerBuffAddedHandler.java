@@ -117,9 +117,7 @@ public class PlayerBuffAddedHandler implements EventHandler<PlayerBuffAddedEvent
       AntiCCBuffComponent antiCcBuff =
           entityData.getComponent(event.getSpellEntity(), AntiCCBuffComponent.class);
       entityData.addComponent(
-          buffEntity,
-          new AntiCCBuffComponent(
-              antiCcBuff.getBuffAmount(), antiCcBuff.getBuffDuration(), PLAYER));
+          buffEntity, new AntiCCBuffComponent(antiCcBuff.getBuffDuration(), PLAYER));
     }
     entityData.addComponent(event.getTargetEntity(), new BuffsComponent(buffs));
     eventbus.registerSubEvents(subevents);

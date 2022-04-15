@@ -147,8 +147,7 @@ public class UpdatePlayerEnchantmentsHandler
       AntiCCBuffComponent antiCc = entityData.getComponent(entity, AntiCCBuffComponent.class);
       remove = antiCc.getBuffDuration() == 1;
       componentToUpdate =
-          new HealBuffComponent(
-              antiCc.getBuffAmount(), antiCc.getBuffDuration() - 1, antiCc.getBuffType());
+          new AntiCCBuffComponent(antiCc.getBuffDuration() - 1, antiCc.getBuffType());
 
     } else if (entityData.hasComponents(entity, AttackPointsPerTurnComponent.class)) {
       AttackPointsPerTurnComponent apPoison =

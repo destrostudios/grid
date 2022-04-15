@@ -6,7 +6,7 @@
     },
     {
       "component": "VisionComponent",
-      "blockingVision": true
+      "blockingVision": false
     },
     {
       "component": "SummonComponent"
@@ -16,15 +16,15 @@
     },
     {
       "component": "VisualComponent",
-      "name": "tree"
+      "name": "rock"
     },
     {
       "component": "LifeSpanComponent",
-      "remainingLifeSpan": 7
+      "remainingLifeSpan": 5
     },
     {
       "component": "MaxHealthComponent",
-      "maxHealth": 1
+      "maxHealth": 200
     }
   ],
   "spells": {

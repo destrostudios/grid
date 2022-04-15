@@ -1,0 +1,32 @@
+{
+  "SeriazableComponent": "summon",
+  "properties": [
+    {
+      "component": "ObstacleComponent"
+    },
+    {
+      "component": "VisionComponent",
+      "blockingVision": true
+    },
+    {
+      "component": "SummonComponent"
+    },
+    {
+      "component": "TargetableComponent"
+    },
+    {
+      "component": "VisualComponent",
+      "name": "tree"
+    },
+    {
+      "component": "LifeSpanComponent",
+      "remainingLifeSpan": 7
+    },
+    {
+      "component": "MaxHealthComponent",
+      "maxHealth": 300
+    }
+  ],
+  "spells": {
+  }
+}

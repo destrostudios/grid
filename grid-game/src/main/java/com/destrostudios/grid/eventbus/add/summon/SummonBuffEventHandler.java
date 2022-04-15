@@ -1,6 +1,7 @@
 package com.destrostudios.grid.eventbus.add.summon;
 
 import com.destrostudios.grid.components.properties.LifeSpanComponent;
+import com.destrostudios.grid.components.spells.buffs.BuffType;
 import com.destrostudios.grid.components.spells.buffs.LifespanBuffComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventHandler;
@@ -25,7 +26,8 @@ public class SummonBuffEventHandler implements EventHandler<SummonBuffEvent> {
       entityData.addComponent(
           buffEntity,
           new LifespanBuffComponent(
-              lifespanBuffComponent.getLifespanBuff() + lifespanComp.getRemainingLifeSpan()));
+              lifespanBuffComponent.getLifespanBuff() + lifespanComp.getRemainingLifeSpan(),
+              BuffType.SUMMON));
     }
   }
 }

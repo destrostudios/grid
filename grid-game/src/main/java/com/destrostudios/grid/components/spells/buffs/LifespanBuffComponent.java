@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LifespanBuffComponent implements Component {
   int lifespanBuff;
+  private BuffType buffType;
 }
