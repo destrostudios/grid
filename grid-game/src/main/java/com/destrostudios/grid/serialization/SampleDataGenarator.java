@@ -44,7 +44,8 @@ public class SampleDataGenarator {
           data.addComponent(fieldComponent, new VisualComponent(terrain));
           data.addComponent(fieldComponent, new PositionComponent(x, y));
           if (Math.random() > 0.5 && startingFields > 0) {
-            data.addComponent(fieldComponent, new StartingFieldComponent());
+            int team = Math.random() > 0.5 ? 0 : 1;
+            data.addComponent(fieldComponent, new StartingFieldComponent(team));
             startingFields--;
           }
         }

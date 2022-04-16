@@ -154,8 +154,14 @@ public class GridGame {
     }
     world.setNextEntity(components.keySet().stream().mapToInt(x -> x).max().orElse(0) + 1);
 
-    List<PositionComponent> startPositions =
+    List<PositionComponent> startPositionsTeam1 =
         world.list(WalkableComponent.class, StartingFieldComponent.class).stream()
+            .filter(e -> world.getComponent(e, StartingFieldComponent.class).getTeam() == 0)
+            .map(e -> world.getComponent(e, PositionComponent.class))
+            .collect(Collectors.toList());
+    List<PositionComponent> startPositionsTeam2 =
+        world.list(WalkableComponent.class, StartingFieldComponent.class).stream()
+            .filter(e -> world.getComponent(e, StartingFieldComponent.class).getTeam() == 1)
             .map(e -> world.getComponent(e, PositionComponent.class))
             .collect(Collectors.toList());
 
@@ -165,13 +171,15 @@ public class GridGame {
 
     int firstPlayer =
         initPlayer(
-            startPositions.remove(random.nextInt(0, startPositions.size())), team1.get(0), 1);
+            startPositionsTeam1.remove(random.nextInt(0, startPositionsTeam1.size())),
+            team1.get(0),
+            1);
     int lastPlayer = firstPlayer;
     for (int i = 1; i < turnOrder.size(); i++) {
       PlayerInfo playerInfo = turnOrder.get(i);
       int playerEntity =
           initPlayer(
-              startPositions.remove(random.nextInt(0, startPositions.size())),
+              startPositionsTeam2.remove(random.nextInt(0, startPositionsTeam2.size())),
               playerInfo,
               team1.contains(playerInfo) ? 1 : 2);
 
