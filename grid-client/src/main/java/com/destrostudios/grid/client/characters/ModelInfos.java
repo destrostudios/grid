@@ -68,7 +68,8 @@ public class ModelInfos {
                 case "rock": return new ModelInfo("rock");
                 case "tree": return new ModelInfo("tree");
                 case "pillar": return new ModelInfo("pillar");
-                case "pillar_script":return new ModelInfo("pillar_script");
+                case "pillar_script": return new ModelInfo("pillar_script");
+                case "cursed_ground": return new ModelInfo("cursed_ground");
             }
             return null;
         });

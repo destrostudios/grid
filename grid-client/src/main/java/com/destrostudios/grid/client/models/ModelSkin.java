@@ -112,11 +112,14 @@ public class ModelSkin {
     }
 
     private Node loadModel(AssetManager assetManager) {
-        Node node;
+        Node node = null;
         if (name != null) {
             String modelPath = getModelFilePath(name, name);
-            node = (Node) assetManager.loadModel(modelPath);
-        } else {
+            if (modelPath != null) {
+                node = (Node) assetManager.loadModel(modelPath);
+            }
+        }
+        if (node == null) {
             node = new Node();
         }
         node.setLocalScale(modelScale.mult(modelNormScale));

@@ -1,0 +1,7 @@
+<skin name="cursed_ground">
+    <model scale="1">
+        <modifiers>
+            <modifier>com.destrostudios.grid.client.models.modifiers.ModelModifier_CursedGround</modifier>
+        </modifiers>
+    </model>
+</skin>

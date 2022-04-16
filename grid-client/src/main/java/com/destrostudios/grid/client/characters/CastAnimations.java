@@ -38,6 +38,21 @@ public class CastAnimations {
                     return new CustomBlockingAnimationInfo("spell5", 0.935f, 1.635f);
                 case "Alice Comet":
                     return new CustomBlockingAnimationInfo("spell5", 0.385f, 1.1f);
+                // Garmon
+                case "Arcane Laser":
+                    return new CustomBlockingAnimationInfo("spell11", 1.042f, 3.292f);
+                case "Cursed Ground":
+                    return new CustomBlockingAnimationInfo("spell2", 0.9f, 2.667f);
+                case "Fortify":
+                    return new CustomBlockingAnimationInfo("spell6", 1.042f, 2.292f);
+                case "Lunar Strike":
+                    return new CustomBlockingAnimationInfo("spell8", 1.333f, 2.917f);
+                case "Magic Pillar":
+                    return new CustomBlockingAnimationInfo("spell12", 2.167f, 3.542f);
+                case "Magic Wall":
+                    return new CustomBlockingAnimationInfo("spell9", 1.792f, 3.208f);
+                case "Garmons Protection":
+                    return new CustomBlockingAnimationInfo("spell4", 0.708f, 2.25f);
             }
             return null;
         });

@@ -1,0 +1,16 @@
+MaterialDef Unshaded {
+
+    MaterialParameters {
+        Texture2D ColorMap
+    }
+
+    Technique {
+        VertexShader GLSL100 GLSL150:   models/cursed_ground/resources/material.vert
+        FragmentShader GLSL100 GLSL150: models/cursed_ground/resources/material.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            Time
+        }
+    }
+}
