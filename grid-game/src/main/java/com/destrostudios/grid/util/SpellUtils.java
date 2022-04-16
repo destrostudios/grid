@@ -260,7 +260,21 @@ public class SpellUtils {
   }
 
   public static boolean isVisible(int playerEntity, EntityData data) {
-    return !data.hasComponents(playerEntity, StealthBuffComponent.class);
+    return hasStealth(playerEntity, data);
+  }
+  public static boolean isVisible(int playerEntity, int entity, EntityData data) {
+    TeamComponent teamComponentPlayer = data.getComponent(playerEntity, TeamComponent.class);
+    TeamComponent teamComponenEntity = data.getComponent(entity, TeamComponent.class);
+    if (teamComponentPlayer != null && teamComponenEntity != null) {
+      return teamComponentPlayer.getTeam() == teamComponenEntity.getTeam() || !hasStealth(entity, data);
+    }
+    return true;
+  }
+
+  public static boolean hasStealth(int playerEntity, EntityData data) {
+    BuffsComponent buffsComponent = data.getComponent(playerEntity, BuffsComponent.class);
+    return buffsComponent == null
+            || buffsComponent.getBuffEntities().stream().noneMatch(e -> data.hasComponents(e, StealthBuffComponent.class));
   }
 
   public static <E extends Component> int getDamageOrHealBuffAmount(
