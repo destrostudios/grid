@@ -1,15 +1,16 @@
 package com.destrostudios.grid.components.spells.buffs;
 
+import com.destrostudios.grid.components.Component;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = true)
-public class HealBuffComponent extends BuffComponent {
-  public HealBuffComponent(int buffAmount, int buffDuration, BuffType buffType) {
-    super(buffAmount, buffDuration, buffType);
-  }
+@AllArgsConstructor
+public class HealBuffComponent implements Component, BuffComponent {
+  int buffAmount;
+  int buffDuration;
+  BuffType buffType;
 }

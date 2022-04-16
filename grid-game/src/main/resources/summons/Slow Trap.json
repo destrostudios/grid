@@ -1,0 +1,44 @@
+{
+  "SeriazableComponent": "summon",
+  "properties": [
+    {
+      "component": "LifeSpanComponent",
+      "remainingLifeSpan": 3
+    },
+    {
+      "component": "SpellOnTouchComponent",
+      "spell": 1
+    },
+    {
+      "component": "RemoveOnTouchComponent"
+    }
+  ],
+  "spells": {
+    "1": [
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "MovementPointBuffComponent",
+        "buffType": "PLAYER",
+        "buffDuration": 1,
+        "buffAmount": -3
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 0,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 0
+      }
+    ]
+  }
+}

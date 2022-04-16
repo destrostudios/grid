@@ -7,7 +7,7 @@ import com.destrostudios.grid.components.map.VisionComponent;
 import com.destrostudios.grid.components.properties.ActiveSummonsComponent;
 import com.destrostudios.grid.components.properties.IsAliveComponent;
 import com.destrostudios.grid.components.properties.SummonComponent;
-import com.destrostudios.grid.components.spells.glyphs.SpellOnTouchComponent;
+import com.destrostudios.grid.components.spells.ontouch.SpellOnTouchComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;

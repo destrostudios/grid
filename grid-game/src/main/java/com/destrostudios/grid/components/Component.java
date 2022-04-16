@@ -13,12 +13,13 @@ import com.destrostudios.grid.components.spells.base.DamageComponent;
 import com.destrostudios.grid.components.spells.base.HealComponent;
 import com.destrostudios.grid.components.spells.base.TooltipComponent;
 import com.destrostudios.grid.components.spells.buffs.*;
-import com.destrostudios.grid.components.spells.glyphs.SpellOnTouchComponent;
 import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.limitations.OnCooldownComponent;
 import com.destrostudios.grid.components.spells.limitations.RequiresTargetComponent;
 import com.destrostudios.grid.components.spells.movements.*;
+import com.destrostudios.grid.components.spells.ontouch.RemoveOnTouchComponent;
+import com.destrostudios.grid.components.spells.ontouch.SpellOnTouchComponent;
 import com.destrostudios.grid.components.spells.perturn.*;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
 import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
@@ -95,6 +96,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = AntiCCBuffComponent.class, name = "AntiCCBuffComponent"),
   @JsonSubTypes.Type(value = SpellOnTouchComponent.class, name = "SpellOnTouchComponent"),
   @JsonSubTypes.Type(value = StatsPerRoundComponent.class, name = "StatsPerRoundComponent"),
+  @JsonSubTypes.Type(value = StealthBuffComponent.class, name = "StealthBuffComponent"),
+  @JsonSubTypes.Type(value = RemoveOnTouchComponent.class, name = "RemoveOnTouchComponent"),
   @JsonSubTypes.Type(value = AiHintCharacterComponent.class, name = "AiHintCharacterComponent")
 })
 public interface Component {}

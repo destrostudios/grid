@@ -9,7 +9,7 @@ import lombok.Value;
 @Value
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class AntiCCBuffComponent implements Component {
+public class AntiCCBuffComponent implements Component, BuffComponent {
   int buffDuration;
   BuffType buffType;
 }

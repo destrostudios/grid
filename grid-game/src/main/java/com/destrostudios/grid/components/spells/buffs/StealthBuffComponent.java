@@ -9,8 +9,7 @@ import lombok.Value;
 @Value
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class AttackPointsBuffComponent implements Component, BuffComponent {
-  int buffAmount;
+public class StealthBuffComponent implements Component, BuffComponent {
   int buffDuration;
   BuffType buffType;
 }

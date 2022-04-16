@@ -11,4 +11,5 @@ import lombok.Value;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class SummonComponent implements Component {
   int summoner;
+  String sourceId;
 }

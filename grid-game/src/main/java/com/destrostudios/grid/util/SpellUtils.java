@@ -1,5 +1,6 @@
 package com.destrostudios.grid.util;
 
+import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.PlayerComponent;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.map.ObstacleComponent;
@@ -10,7 +11,9 @@ import com.destrostudios.grid.components.properties.AttackPointsComponent;
 import com.destrostudios.grid.components.properties.BuffsComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MovementPointsComponent;
-import com.destrostudios.grid.components.spells.buffs.BuffComponent;
+import com.destrostudios.grid.components.spells.buffs.DamageBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.HealBuffComponent;
+import com.destrostudios.grid.components.spells.buffs.StealthBuffComponent;
 import com.destrostudios.grid.components.spells.limitations.CostComponent;
 import com.destrostudios.grid.components.spells.perturn.CastsPerTurnComponent;
 import com.destrostudios.grid.components.spells.range.AffectedAreaComponent;
@@ -256,11 +259,15 @@ public class SpellUtils {
     return targetEntity.orElse(-1);
   }
 
-  public static <E extends BuffComponent> int getBuffAmount(
+  public static boolean isVisible(int playerEntity, EntityData data) {
+    return !data.hasComponents(playerEntity, StealthBuffComponent.class);
+  }
+
+  public static <E extends Component> int getDamageOrHealBuffAmount(
       int spellEntity, int playerEntity, EntityData data, Class<E> classz) {
     int buffPlayer =
         data.hasComponents(playerEntity, classz)
-            ? data.getComponent(playerEntity, classz).getBuffAmount()
+            ? getDamageOrHealBuffAmount(data.getComponent(playerEntity, classz))
             : 0;
     List<Integer> spellBuffEntities =
         data.hasComponents(spellEntity, BuffsComponent.class)
@@ -270,10 +277,18 @@ public class SpellUtils {
         spellBuffEntities.stream()
             .flatMap(spellBuff -> data.getComponents(spellBuff).stream())
             .filter(classz::isInstance)
-            .map(spellBuff -> (BuffComponent) spellBuff)
-            .mapToInt(BuffComponent::getBuffAmount)
+            .mapToInt(SpellUtils::getDamageOrHealBuffAmount)
             .sum();
     return buffPlayer + buffSpell;
+  }
+
+  public static int getDamageOrHealBuffAmount(Component component) {
+    if (component instanceof HealBuffComponent healBuffComponent) {
+      return healBuffComponent.getBuffAmount();
+    } else if (component instanceof DamageBuffComponent damageBuffComponent) {
+      return damageBuffComponent.getBuffAmount();
+    }
+    return 0;
   }
 
   public static boolean isPositionIsFree(

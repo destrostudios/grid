@@ -23,7 +23,7 @@ import com.destrostudios.grid.eventbus.action.displace.PushEvent;
 import com.destrostudios.grid.eventbus.action.healreceived.HealReceivedEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveType;
-import com.destrostudios.grid.eventbus.action.spawn.SummonCastEvent;
+import com.destrostudios.grid.eventbus.action.summon.SummonCastEvent;
 import com.destrostudios.grid.eventbus.action.swap.SwapEvent;
 import com.destrostudios.grid.eventbus.add.playerbuff.PlayerBuffAddedEvent;
 import com.destrostudios.grid.eventbus.add.poison.StatsPerTurnEvent;
@@ -38,6 +38,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 @AllArgsConstructor
@@ -104,7 +105,10 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
             entityData.getComponent(spell, SummonCastComponent.class);
         followUpEvents.add(
             new SummonCastEvent(
-                component, event.getPlayerEntity(), summonCastComponent.getSummonFile()));
+                component,
+                event.getPlayerEntity(),
+                summonCastComponent.getSummonFile(),
+                UUID.randomUUID().toString()));
       }
     }
   }
@@ -273,7 +277,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
           followUpEvents.add(
               new DamageTakenEvent(
                   damageAmount
-                      + SpellUtils.getBuffAmount(
+                      + SpellUtils.getDamageOrHealBuffAmount(
                           spell, playerEntity, entityData, DamageBuffComponent.class),
                   playerEntity,
                   affectedEntity,
@@ -301,7 +305,7 @@ public class SpellCastedEventHandler implements EventHandler<SpellCastedEvent> {
           followUpEvents.add(
               new HealReceivedEvent(
                   healAmount
-                      + SpellUtils.getBuffAmount(
+                      + SpellUtils.getDamageOrHealBuffAmount(
                           spell, playerEntity, entityData, HealBuffComponent.class),
                   affectedEntity));
         }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LifespanBuffComponent implements Component {
+public class LifespanBuffComponent implements Component, BuffComponent {
   int lifespanBuff;
   private BuffType buffType;
 }

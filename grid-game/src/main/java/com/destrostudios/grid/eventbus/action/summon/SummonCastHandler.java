@@ -1,9 +1,9 @@
-package com.destrostudios.grid.eventbus.action.spawn;
+package com.destrostudios.grid.eventbus.action.summon;
 
 import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.components.character.TeamComponent;
 import com.destrostudios.grid.components.properties.*;
-import com.destrostudios.grid.components.spells.glyphs.SpellOnTouchComponent;
+import com.destrostudios.grid.components.spells.ontouch.SpellOnTouchComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
@@ -26,18 +26,17 @@ public class SummonCastHandler implements EventHandler<SummonCastEvent> {
             event.getSummonFile(), SummonContainer.class);
 
     for (Component component : summonContainer.getProperties()) {
-      if (component instanceof MaxHealthComponent) {
+      if (component instanceof MaxHealthComponent maxHealthComponent) {
         entityData.addComponent(
             castedSummon,
-            new HealthPointsComponent(((MaxHealthComponent) component).getMaxHealth()));
+            new HealthPointsComponent(maxHealthComponent.getMaxHealth()));
         entityData.addComponent(castedSummon, component);
-      } else if (component instanceof SpellOnTouchComponent) {
-        SpellOnTouchComponent spell = (SpellOnTouchComponent) component;
+      } else if (component instanceof SpellOnTouchComponent spellOnTouchComponent) {
         int spellEntity = entityData.createEntity();
         entityData.addComponent(castedSummon, new SpellOnTouchComponent(spellEntity));
         summonContainer
             .getComponents()
-            .get(spell.getSpell())
+            .get(spellOnTouchComponent.getSpell())
             .forEach(c -> entityData.addComponent(spellEntity, c));
 
       } else {
@@ -49,7 +48,7 @@ public class SummonCastHandler implements EventHandler<SummonCastEvent> {
     entityData.addComponent(castedSummon, event.getSpawnPosition());
     entityData.addComponent(castedSummon, new TeamComponent(team.getTeam()));
     entityData.addComponent(castedSummon, new BuffsComponent(Lists.newArrayList()));
-    entityData.addComponent(castedSummon, new SummonComponent(event.getSummonerEntity()));
+    entityData.addComponent(castedSummon, new SummonComponent(event.getSummonerEntity(), event.getSourceId()));
 
     ActiveSummonsComponent activeSummonsComponent =
         entityData.hasComponents(event.getSummonerEntity(), ActiveSummonsComponent.class)

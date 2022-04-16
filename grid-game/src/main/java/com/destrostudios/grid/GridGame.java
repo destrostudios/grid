@@ -38,11 +38,11 @@ import com.destrostudios.grid.eventbus.action.healreceived.HealReceivedValidator
 import com.destrostudios.grid.eventbus.action.move.MoveEvent;
 import com.destrostudios.grid.eventbus.action.move.MoveHandler;
 import com.destrostudios.grid.eventbus.action.move.MoveValidator;
-import com.destrostudios.grid.eventbus.action.spawn.SummonCastEvent;
-import com.destrostudios.grid.eventbus.action.spawn.SummonCastHandler;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEventHandler;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedValidator;
+import com.destrostudios.grid.eventbus.action.summon.SummonCastEvent;
+import com.destrostudios.grid.eventbus.action.summon.SummonCastHandler;
 import com.destrostudios.grid.eventbus.action.swap.SwapEvent;
 import com.destrostudios.grid.eventbus.action.swap.SwapEventHandler;
 import com.destrostudios.grid.eventbus.action.swap.SwapEventValidator;

@@ -119,6 +119,15 @@ public class PlayerBuffAddedHandler implements EventHandler<PlayerBuffAddedEvent
       entityData.addComponent(
           buffEntity, new AntiCCBuffComponent(antiCcBuff.getBuffDuration(), PLAYER));
     }
+    if (entityData.hasComponents(event.getSpellEntity(), StealthBuffComponent.class)) {
+      int buffEntity = entityData.createEntity();
+      buffs.add(buffEntity);
+
+      StealthBuffComponent stealthBuffComponent =
+          entityData.getComponent(event.getSpellEntity(), StealthBuffComponent.class);
+      entityData.addComponent(
+          buffEntity, new StealthBuffComponent(stealthBuffComponent.getBuffDuration(), PLAYER));
+    }
     entityData.addComponent(event.getTargetEntity(), new BuffsComponent(buffs));
     eventbus.registerSubEvents(subevents);
   }

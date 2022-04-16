@@ -1,0 +1,343 @@
+{
+  "SeriazableComponent": "character",
+  "components": {
+    "1": [
+      {
+        "component": "MaxMovementPointsComponent",
+        "maxMovementPoints": 6
+      },
+      {
+        "component": "MaxAttackPointsComponent",
+        "maxAttackPoints": 9
+      },
+      {
+        "component": "AttackPointResistanceComponent",
+        "resistanceValue": 0
+      },
+      {
+        "component": "MovementPointResistanceComponent",
+        "resistanceValue": 0
+      },
+      {
+        "component": "StatsPerRoundComponent",
+        "statsPerRoundEntites": []
+      },
+      {
+        "component": "BuffsComponent",
+        "buffEntities": []
+      },
+      {
+        "component": "ObstacleComponent"
+      },
+      {
+        "component": "PlayerComponent"
+      },
+      {
+        "component": "VisualComponent",
+        "name": "scarlet"
+      },
+      {
+        "component": "MaxHealthComponent",
+        "maxHealth": 500
+      },
+      {
+        "component": "VisionComponent",
+        "blockingVision": true
+      },
+      {
+        "component": "SpellsComponent",
+        "spells": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "component": "ActiveSummonsComponent",
+        "activeSummons": []
+      }
+    ],
+    "2": [
+      {
+        "component": "NameComponent",
+        "name": "Magic Pillar"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[5 AP] Gets an invisibility Buff for 4 rounds"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "SINGLE",
+        "minRange": 0,
+        "maxRange": 0
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "StealthBuffComponent",
+        "buffDuration": 4,
+        "buffType": "PLAYER"
+      },
+      {
+        "component": "MovementPointBuffComponent",
+        "buffAmount": 2,
+        "buffDuration": 4,
+        "buffType": "PLAYER"
+      }
+    ],
+    "3": [
+      {
+        "component": "NameComponent",
+        "name": "Magic Wall"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Pushes the target in front for 4 fields"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 1
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 2,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "PushComponent",
+        "displacement": 4
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      }
+    ],
+    "4": [
+      {
+        "component": "NameComponent",
+        "name": "Fortify"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Pulls the target in Line for 4 fields"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 1,
+        "maxRange": 7
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 1,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "PullComponent",
+        "distance": 4
+      }
+    ],
+    "5": [
+      {
+        "component": "NameComponent",
+        "name": "Cursed Ground"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[7 AP] Spawn a single death trap with high damage."
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 7,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "SQUARE",
+        "minRange": 0,
+        "maxRange": 10
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "SummonCastComponent",
+        "summonFile": "Death Trap"
+      }
+    ],
+    "6": [
+      {
+        "component": "NameComponent",
+        "name": "Garmons Protection"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[5 AP] Spawning a slowing trap."
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 5,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 10
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "DIAMOND",
+        "minImpact": 0,
+        "maxImpact": 3
+      },
+      {
+        "component": "SummonCastComponent",
+        "summonFile": "Slow Trap"
+      }
+    ],
+    "7": [
+      {
+        "component": "NameComponent",
+        "name": "Arcane Laser"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[4 AP] Casts an AOE Damage trap"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 4,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "SQUARE",
+        "minRange": 0,
+        "maxRange": 10
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "CooldownComponent",
+        "cooldown": 6
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "DIAMOND",
+        "minImpact": 0,
+        "maxImpact": 3
+      },
+      {
+        "component": "SummonCastComponent",
+        "summonFile": "Damage aoe Trap"
+      }
+    ],
+    "8": [
+      {
+        "component": "NameComponent",
+        "name": "Lunar Strike"
+      },
+      {
+        "component": "TooltipComponent",
+        "tooltip": "[3 AP] Doing damage over a long distance"
+      },
+      {
+        "component": "CostComponent",
+        "apCost": 3,
+        "mpCost": 0,
+        "hpCost": 0
+      },
+      {
+        "component": "LineOfSightComponent"
+      },
+      {
+        "component": "RangeComponent",
+        "castAreaShape": "DIAMOND",
+        "minRange": 0,
+        "maxRange": 10
+      },
+      {
+        "component": "AffectedAreaComponent",
+        "shape": "SINGLE",
+        "minImpact": 0,
+        "maxImpact": 0
+      },
+      {
+        "component": "CastsPerTurnComponent",
+        "maxCastsPerTurn": 3,
+        "castsThisTurn": 0
+      },
+      {
+        "component": "DamageComponent",
+        "minDmg": 10,
+        "maxDmg": 15,
+        "targetingAllies": true
+      }
+    ]
+  }
+}
