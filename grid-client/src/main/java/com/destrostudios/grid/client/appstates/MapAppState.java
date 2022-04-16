@@ -23,6 +23,7 @@ import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MaxHealthComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
+import com.destrostudios.grid.components.spells.buffs.StealthBuffComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -42,6 +43,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MapAppState extends BaseAppState<BaseApplication> {
+
+    private static final ColorRGBA COLOR_HALFTRANSPARENT = new ColorRGBA(1, 1, 1, 0.25f);
 
     private Map map;
     @Getter
@@ -189,6 +192,11 @@ public class MapAppState extends BaseAppState<BaseApplication> {
             } else {
                 guiNode.detachChild(healthBar);
             }
+
+            // Colorize
+            boolean isDead = ((healthPointsComponent != null) && (healthPointsComponent.getHealth() == 0));
+            boolean hasStealth = entityData.hasComponents(entity, StealthBuffComponent.class);
+            entityVisual.setColor((isDead || hasStealth) ? COLOR_HALFTRANSPARENT : null);
         }
     }
 

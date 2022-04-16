@@ -3,7 +3,7 @@ package com.destrostudios.grid.shared;
 public class Characters {
 
     public static String[] CHARACTER_NAMES = new String[]{
-        "garmon", "alice", "iop", "cra"
+        "garmon", "scarlet", "alice", "iop", "cra"
     };
 
     public static String getRandomCharacterName() {
