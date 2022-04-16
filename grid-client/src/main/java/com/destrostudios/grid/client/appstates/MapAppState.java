@@ -23,8 +23,8 @@ import com.destrostudios.grid.components.map.WalkableComponent;
 import com.destrostudios.grid.components.properties.HealthPointsComponent;
 import com.destrostudios.grid.components.properties.MaxHealthComponent;
 import com.destrostudios.grid.components.properties.NameComponent;
-import com.destrostudios.grid.components.spells.buffs.StealthBuffComponent;
 import com.destrostudios.grid.entities.EntityData;
+import com.destrostudios.grid.util.SpellUtils;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.collision.CollisionResults;
@@ -195,8 +195,8 @@ public class MapAppState extends BaseAppState<BaseApplication> {
 
             // Colorize
             boolean isDead = ((healthPointsComponent != null) && (healthPointsComponent.getHealth() == 0));
-            boolean hasStealth = entityData.hasComponents(entity, StealthBuffComponent.class);
-            entityVisual.setColor((isDead || hasStealth) ? COLOR_HALFTRANSPARENT : null);
+            boolean isVisible = SpellUtils.isVisible(entity, entityData);
+            entityVisual.setColor((isDead || !isVisible) ? COLOR_HALFTRANSPARENT : null);
         }
     }
 
