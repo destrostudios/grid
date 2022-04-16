@@ -46,7 +46,7 @@ public class RangeUtils {
           List<Integer> obstacleEntities =
               entityData.list(VisionComponent.class, PositionComponent.class).stream()
                   .filter(e -> entityData.getComponent(e, VisionComponent.class).isBlockingVision())
-                  .collect(Collectors.toList());
+                  .toList();
           return obstacleEntities.stream()
               .noneMatch(
                   e ->

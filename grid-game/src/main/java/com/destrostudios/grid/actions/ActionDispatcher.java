@@ -4,6 +4,7 @@ import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.components.map.PositionComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.eventbus.Event;
+import com.destrostudios.grid.eventbus.action.die.DieEvent;
 import com.destrostudios.grid.eventbus.action.spellcasted.SpellCastedEvent;
 import com.destrostudios.grid.eventbus.action.walk.WalkEvent;
 import com.destrostudios.grid.eventbus.update.turn.UpdatedTurnEvent;
@@ -16,8 +17,6 @@ import java.util.function.Supplier;
 @Getter
 public class ActionDispatcher {
   private final Supplier<EntityData> entityDataSupplier;
-
-  // todo generate all possible actions
 
   public Event dispatchAction(Action action) throws ActionNotAllowedException {
     int entity = Integer.parseInt(action.getPlayerIdentifier());
@@ -33,6 +32,8 @@ public class ActionDispatcher {
     } else if (action instanceof CastSpellAction actionCasted) {
       return new SpellCastedEvent(actionCasted.getSpell(), entity, ((CastSpellAction) action).getTargetX(),
               actionCasted.getTargetY());
+    } else if (action instanceof SurrenderAction surrenderAction) {
+      return new DieEvent(surrenderAction.getPlayer());
     }
     throw new ActionNotAllowedException("Unsupported Action");
   }
