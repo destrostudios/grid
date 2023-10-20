@@ -6,7 +6,6 @@
         <groupId>com.destrostudios.grid</groupId>
         <artifactId>grid</artifactId>
         <version>0.0.1</version>
-        <relativePath>../</relativePath>
     </parent>
     <artifactId>grid-tools</artifactId>
     <dependencies>

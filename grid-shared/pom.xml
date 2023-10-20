@@ -6,7 +6,6 @@
         <groupId>com.destrostudios.grid</groupId>
         <artifactId>grid</artifactId>
         <version>0.0.1</version>
-        <relativePath>../</relativePath>
     </parent>
     <artifactId>grid-shared</artifactId>
     <dependencies>
@@ -15,8 +14,8 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
         </dependency>
     </dependencies>
 </project>

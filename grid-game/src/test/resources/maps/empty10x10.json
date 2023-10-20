@@ -99,7 +99,8 @@
         "y": 7
       },
       {
-        "component": "StartingFieldComponent"
+        "component": "StartingFieldComponent",
+        "team": 0
       }
     ],
     "7": [
@@ -214,7 +215,8 @@
         "y": 5
       },
       {
-        "component": "StartingFieldComponent"
+        "component": "StartingFieldComponent",
+        "team": 1
       }
     ],
     "19": [
@@ -273,7 +275,8 @@
         "y": 2
       },
       {
-        "component": "StartingFieldComponent"
+        "component": "StartingFieldComponent",
+        "team": 0
       }
     ],
     "28": [
@@ -318,7 +321,8 @@
         "y": 5
       },
       {
-        "component": "StartingFieldComponent"
+        "component": "StartingFieldComponent",
+        "team": 1
       }
     ],
     "31": [
@@ -335,7 +339,8 @@
         "y": 6
       },
       {
-        "component": "StartingFieldComponent"
+        "component": "StartingFieldComponent",
+        "team": 0
       }
     ],
     "32": [
@@ -394,7 +399,8 @@
         "y": 3
       },
       {
-        "component": "StartingFieldComponent"
+        "component": "StartingFieldComponent",
+        "team": 1
       }
     ],
     "41": [
@@ -439,7 +445,8 @@
         "y": 7
       },
       {
-        "component": "StartingFieldComponent"
+        "component": "StartingFieldComponent",
+        "team": 0
       }
     ],
     "44": [

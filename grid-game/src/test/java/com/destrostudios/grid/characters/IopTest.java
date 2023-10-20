@@ -16,14 +16,14 @@ import com.destrostudios.grid.components.spells.limitations.CooldownComponent;
 import com.destrostudios.grid.random.RandomProxy;
 import com.destrostudios.grid.shared.PlayerInfo;
 import com.destrostudios.grid.shared.StartGameInfo;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IopTest {
 
@@ -32,7 +32,7 @@ public class IopTest {
   PlayerInfo player1;
   PlayerInfo player2;
 
-  @Before
+  @BeforeEach
   public void init() {
     // TODO: create utility methods to add/remove players/characters and start an empty game instead
 
@@ -47,7 +47,7 @@ public class IopTest {
     game.initGame(startInfo);
   }
 
-  @After
+  @AfterEach
   public void cleanup() {
     game = null;
     randomProxy = null;

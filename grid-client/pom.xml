@@ -6,7 +6,6 @@
         <groupId>com.destrostudios.grid</groupId>
         <artifactId>grid</artifactId>
         <version>0.0.1</version>
-        <relativePath>../</relativePath>
     </parent>
     <artifactId>grid-client</artifactId>
     <dependencies>
@@ -19,18 +18,20 @@
             <artifactId>grid-network</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.destrostudios.grid</groupId>
+            <artifactId>grid-game</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>network-client</artifactId>
         </dependency>
-
-
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-lwjgl</artifactId>
+            <artifactId>jme3-lwjgl3</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
@@ -38,11 +39,11 @@
         </dependency>
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-jogg</artifactId>
+            <artifactId>jme3-effects</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jmonkeyengine</groupId>
-            <artifactId>jme3-effects</artifactId>
+            <artifactId>jme3-jogg</artifactId>
         </dependency>
         <dependency>
             <groupId>com.simsilica</groupId>
@@ -55,6 +56,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
+            <version>${version.groovy}</version>
             <type>pom</type>
         </dependency>
         <dependency>
@@ -66,27 +68,20 @@
             <artifactId>jdom2</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.grid</groupId>
-            <artifactId>grid-game</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
         </dependency>
     </dependencies>
     <build>
@@ -94,6 +89,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>${version.maven-dependency-plugin}</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>

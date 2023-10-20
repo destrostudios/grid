@@ -25,4 +25,6 @@ curl https://destrostudios.com:8080/apps/6/updateFiles
 
 # Deploy (Server)
 mv grid-server/target/grid-server-0.0.1-jar-with-dependencies.jar "${SERVER}grid.jar"
-sh "${SERVER}control.sh" restart
+mv ecosystem.config.js "${SERVER}"
+cd "${SERVER}"
+pm2 restart ecosystem.config.js

@@ -18,33 +18,30 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.cubes>f57a9164812a16c628c7d9fd2988a45696b6bbe8</version.cubes>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <version.cubes>d930827cc0deca4747ca1b7cb7c1020205766e91</version.cubes>
         <version.grid>0.0.1</version.grid>
-        <version.guava>30.1-jre</version.guava>
-        <version.jdom>2.0.6</version.jdom>
-        <version.jme3>3.2.1-stable</version.jme3>
-        <version.junit>4.12</version.junit>
-        <version.junit5>5.7.1</version.junit5>
-        <version.junit.platform>1.7.1</version.junit.platform>
-        <version.groovy>3.0.10</version.groovy>
+        <version.guava>32.1.3-jre</version.guava>
+        <version.jdom>2.0.6.1</version.jdom>
+        <version.jme>3.6.1-stable</version.jme>
+        <version.junit>5.10.0</version.junit>
+        <version.groovy>3.0.19</version.groovy>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
-        <version.lombok>1.18.22</version.lombok>
-        <version.maven-assembly-plugin>3.1.1</version.maven-assembly-plugin>
-        <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
-        <version.maven-source-plugin>3.2.0</version.maven-source-plugin>
-        <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
-        <version.maven-jar-plugin>3.1.2</version.maven-jar-plugin>
-        <version.mockito>4.4.0</version.mockito>
-        <version.slf4j>2.0.0-alpha1</version.slf4j>
-        <version.game-tools>25efd6edda2ce75c27b112ed7855ac1ae9994071</version.game-tools>
-        <version.jackson>2.12.1</version.jackson>
+        <version.lombok>1.18.30</version.lombok>
+        <version.maven-assembly-plugin>3.6.0</version.maven-assembly-plugin>
+        <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+        <version.maven-dependency-plugin>3.6.0</version.maven-dependency-plugin>
+        <version.maven-source-plugin>3.3.0</version.maven-source-plugin>
+        <version.maven-surefire-plugin>3.1.2</version.maven-surefire-plugin>
+        <version.maven-jar-plugin>3.3.0</version.maven-jar-plugin>
+        <version.mockito>5.6.0</version.mockito>
+        <version.slf4j>2.0.9</version.slf4j>
+        <version.game-tools>76bd23e029824acdbf2596f2030a95a48beeefbb</version.game-tools>
+        <version.jackson>2.15.3</version.jackson>
     </properties>
     <repositories>
-        <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com</url>
-        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -113,58 +110,27 @@
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-core</artifactId>
-                <version>${version.jme3}</version>
+                <version>${version.jme}</version>
             </dependency>
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
-                <artifactId>jme3-lwjgl</artifactId>
-                <version>${version.jme3}</version>
+                <artifactId>jme3-lwjgl3</artifactId>
+                <version>${version.jme}</version>
             </dependency>
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-desktop</artifactId>
-                <version>${version.jme3}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jmonkeyengine</groupId>
-                <artifactId>jme3-jogg</artifactId>
-                <version>${version.jme3}</version>
+                <version>${version.jme}</version>
             </dependency>
             <dependency>
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-effects</artifactId>
-                <version>${version.jme3}</version>
-            </dependency>
-            <!-- JUnit5 -->
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-launcher</artifactId>
-                <version>${version.junit.platform}</version>
-                <scope>test</scope>
+                <version>${version.jme}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${version.junit5}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${version.junit5}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-params</artifactId>
-                <version>${version.junit5}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.vintage</groupId>
-                <artifactId>junit-vintage-engine</artifactId>
-                <version>${version.junit5}</version>
-                <scope>test</scope>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-jogg</artifactId>
+                <version>${version.jme}</version>
             </dependency>
             <!--Lemur-->
             <dependency>
@@ -176,12 +142,6 @@
                 <groupId>com.simsilica</groupId>
                 <artifactId>lemur-proto</artifactId>
                 <version>${version.lemur-proto}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
-                <version>${version.groovy}</version>
-                <type>pom</type>
             </dependency>
             <!--Cubes-->
             <dependency>
@@ -195,11 +155,28 @@
                 <artifactId>jdom2</artifactId>
                 <version>${version.jdom}</version>
             </dependency>
+            <!--Guava-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${version.guava}</version>
+            </dependency>
             <!-- Jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${version.jackson}</version>
+            </dependency>
+            <!--SLF4J-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${version.slf4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${version.slf4j}</version>
             </dependency>
             <!--Lombok-->
             <dependency>
@@ -208,10 +185,16 @@
                 <version>${version.lombok}</version>
                 <scope>provided</scope>
             </dependency>
-            <!--JUnit-->
+            <!-- JUnit-->
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
                 <version>${version.junit}</version>
                 <scope>test</scope>
             </dependency>
@@ -221,18 +204,6 @@
                 <artifactId>mockito-core</artifactId>
                 <version>${version.mockito}</version>
                 <scope>test</scope>
-            </dependency>
-            <!--other external frameworks-->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${version.guava}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${version.slf4j}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -254,19 +225,6 @@
                 <configuration>
                     <workingDirectory>${session.executionRootDirectory}/workspace</workingDirectory>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${version.maven-source-plugin}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

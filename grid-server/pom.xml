@@ -6,7 +6,6 @@
         <groupId>com.destrostudios.grid</groupId>
         <artifactId>grid</artifactId>
         <version>0.0.1</version>
-        <relativePath>../</relativePath>
     </parent>
     <artifactId>grid-server</artifactId>
     <dependencies>
@@ -22,20 +21,17 @@
             <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>network-server</artifactId>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
         </dependency>
     </dependencies>
     <build>
@@ -43,6 +39,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>${version.maven-assembly-plugin}</version>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

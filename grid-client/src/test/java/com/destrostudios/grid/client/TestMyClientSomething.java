@@ -1,21 +1,18 @@
 package com.destrostudios.grid.client;
 
 import com.destrostudios.grid.shared.MySharedSomething;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TestMyClientSomething {
 
     private MyClientSomething myClientSomething;
     private MySharedSomething mySharedSomethingMock = mock(MySharedSomething.class);
 
-    @Before
+    @BeforeEach
     public void setup() {
         myClientSomething = new MyClientSomething(mySharedSomethingMock);
     }
