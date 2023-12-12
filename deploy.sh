@@ -21,7 +21,7 @@ mv assets "${CLIENT}"
 mv grid-client/target/libs "${CLIENT}"
 mv grid-client/target/grid-client-0.0.1.jar "${CLIENT}Grid.jar"
 echo -n "./assets/" > "${CLIENT}assets.ini"
-curl https://destrostudios.com:8080/apps/6/updateFiles
+curl -X POST https://destrostudios.com:8080/apps/6/updateFiles
 
 # Deploy (Server)
 mv grid-server/target/grid-server-0.0.1-jar-with-dependencies.jar "${SERVER}grid.jar"
