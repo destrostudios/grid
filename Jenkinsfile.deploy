@@ -44,7 +44,7 @@ pipeline {
                 sh 'mv grid-client/target/libs "$CLIENT"'
                 sh 'mv grid-client/target/grid-client-0.0.1.jar "$CLIENT/Grid.jar"'
                 sh 'mv assets "$CLIENT"'
-                sh 'echo ./assets/ > "$CLIENT/assets.ini"'
+                sh 'echo -n ./assets/ > "$CLIENT/assets.ini"'
                 sh 'curl -X POST https://destrostudios.com:8080/apps/6/updateFiles'
             }
         }
