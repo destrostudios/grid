@@ -1,0 +1,8 @@
+name: grid
+services:
+  app:
+    build:
+      dockerfile: app.Dockerfile
+    ports:
+      - "52156:52156"
+    restart: always

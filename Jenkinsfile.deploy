@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        skipDefaultCheckout()
+        ansiColor('xterm')
+    }
+    parameters {
+        string(name: 'VERSION', defaultValue: 'master')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh 'git checkout $VERSION'
+            }
+        }
+        stage('Build') {
+            agent {
+                docker {
+                    image 'maven:3.9.6-eclipse-temurin-17-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Deploy') {
+            environment {
+                CLIENT = '/var/destrostudios/apps/Grid'
+            }
+            steps {
+                // Server
+                sh 'mv grid-server/target docker'
+                dir ('docker') {
+                    sh 'docker compose build --no-cache'
+                    sh 'docker compose up -d'
+                }
+
+                // Client
+                sh 'rm -rf "$CLIENT"'
+                sh 'mkdir "$CLIENT"'
+                sh 'mv grid-client/target/libs "$CLIENT"'
+                sh 'mv grid-client/target/grid-client-0.0.1.jar "$CLIENT/Grid.jar"'
+                sh 'mv assets "$CLIENT"'
+                sh 'echo -n ./assets/ > "$CLIENT/assets.ini"'
+                sh 'curl -X POST https://destrostudios.com:8080/apps/6/updateFiles'
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
