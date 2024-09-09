@@ -1,9 +1,11 @@
 package com.destrostudios.grid.bot;
 
-public class SerializedGame {
-    public final String value;
+import com.destrostudios.grid.entities.EntityWorld;
 
-    public SerializedGame(String value) {
-        this.value = value;
+public class SerializedGame {
+    public final EntityWorld world;
+
+    public SerializedGame(EntityWorld world) {
+        this.world = world;
     }
 }

@@ -30,9 +30,7 @@ public class PlayerBuffAddedHandler implements EventHandler<PlayerBuffAddedEvent
     List<Event> subevents = new ArrayList<>();
     List<Integer> buffs =
         entityData.hasComponents(event.getTargetEntity(), BuffsComponent.class)
-            ? entityData
-                .getComponent(event.getTargetEntity(), BuffsComponent.class)
-                .getBuffEntities()
+            ? new ArrayList(entityData.getComponent(event.getTargetEntity(), BuffsComponent.class).getBuffEntities())
             : new ArrayList<>();
 
     // create buff and add to buffs

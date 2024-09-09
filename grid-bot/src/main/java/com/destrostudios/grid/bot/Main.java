@@ -17,9 +17,11 @@ import com.destrostudios.grid.components.properties.MaxHealthComponent;
 import com.destrostudios.grid.entities.EntityData;
 import com.destrostudios.grid.shared.StartGameInfo;
 import com.destrostudios.grid.util.GameOverInfo;
-import java.security.SecureRandom;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +70,7 @@ public class Main {
 
         GridBotState botState = new GridBotState(game);
         MctsBot<GridBotState, Action, Team, SerializedGame> bot = createBot(strength);
+        long gameStartNanos = System.nanoTime();
         while (!game.getGameOverInfo().isGameIsOver()) {
             log.info("calculating...");
             long startNanos = System.nanoTime();
@@ -82,6 +85,8 @@ public class Main {
             }
             bot.stepRoot(new BotActionReplay<>(actions.get(0), new int[0]));
         }
+        long gameDurationNanos = System.nanoTime() - gameStartNanos;
+        log.info("Finished full game after {}.", humanReadableNanos(gameDurationNanos));
     }
 
     public static MctsBot<GridBotState, Action, Team, SerializedGame> createBot(int strength) {
@@ -89,7 +94,7 @@ public class Main {
         botSettings.verbose = true;
         botSettings.maxThreads = 3;
         botSettings.strength = strength;
-        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 5, Main::eval)::evaluate;
+        botSettings.evaluation = new RolloutToEvaluation<>(new Random(), 5, Main::eval)::evaluate;
 
         return new MctsBot<>(new GridBotService(), botSettings);
     }

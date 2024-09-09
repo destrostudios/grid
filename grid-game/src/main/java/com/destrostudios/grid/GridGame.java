@@ -98,7 +98,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -125,7 +124,7 @@ public class GridGame {
   private final RandomProxy random;
 
   public GridGame() {
-    this(new SecureRandom());
+    this(new Random());
   }
 
   public GridGame(Random random) {
@@ -328,8 +327,9 @@ public class GridGame {
     addInstantHandler();
   }
 
-  public Map<Integer, List<Component>> getComponents() {
-    return world.getWorld();
+  public void initializeGame(EntityWorld worldToCopy) {
+    world.initializeWorld(worldToCopy);
+    addInstantHandler();
   }
 
   public void addValidator(

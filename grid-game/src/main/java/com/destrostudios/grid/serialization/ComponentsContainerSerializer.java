@@ -13,11 +13,10 @@ import com.destrostudios.grid.serialization.container.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.destrostudios.grid.serialization.SampleDataGenarator.initTestCharacter;
 import static com.destrostudios.grid.serialization.SampleDataGenarator.initTestMap;
@@ -49,13 +48,10 @@ public class ComponentsContainerSerializer {
 
   public static <E extends ComponentsContainer> E readContainerAsJson(
       String gameState, Class<E> classz) throws JsonProcessingException {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.writerWithDefaultPrettyPrinter();
     return mapper.readValue(gameState, classz);
   }
 
   public static String getContainerAsJson(EntityWorld world) throws JsonProcessingException {
-    ObjectMapper mapper = new ObjectMapper();
     mapper.writerWithDefaultPrettyPrinter();
     GameStateContainer gameStateContainer =
         new GameStateContainer(world.getWorld(), world.getNextEntity());
@@ -103,19 +99,24 @@ public class ComponentsContainerSerializer {
     return "dwarf_warrior";
   }
 
+  private static HashMap<String, String> RESOURCE_CONTENT = new HashMap<>();
+  private static ObjectMapper mapper = new ObjectMapper();
+
   public static <E extends ComponentsContainer> E readSeriazableFromRessources(
       String seriazableName, Class<E> classz) throws IOException {
-    InputStream is =
-        ComponentsContainer.class.getResourceAsStream(getPath(classz) + seriazableName + JSON);
-    ObjectMapper mapper = new ObjectMapper();
-    return mapper.readValue(is, classz);
+
+    String text = RESOURCE_CONTENT.computeIfAbsent(seriazableName, (_) -> {
+      InputStream inputStream = ComponentsContainer.class.getResourceAsStream(getPath(classz) + seriazableName + JSON);
+      return new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
+    });
+
+    return mapper.readValue(text, classz);
   }
 
   public static <E extends ComponentsContainer> void writeSeriazableToResources(
       E seriazableComponents, String seriazableName) throws IOException {
     Path path = Path.of(BASE_PATH + getPath(seriazableComponents.getClass()));
     File file = new File(path.toFile(), seriazableName + JSON);
-    ObjectMapper mapper = new ObjectMapper();
     mapper.writeValue(file, seriazableComponents);
   }
 

@@ -6,6 +6,8 @@ import com.destrostudios.grid.components.character.ActiveTurnComponent;
 import com.destrostudios.grid.eventbus.Event;
 import com.destrostudios.grid.eventbus.EventHandler;
 import com.destrostudios.grid.shared.StartGameInfo;
+
+import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;

@@ -66,14 +66,14 @@ public class UpdatePlayerEnchantmentsHandler
   private void updatePoisons(UpdatePlayerEnchantmentsEvent event, EntityData entityData) {
     StatsPerRoundComponent poisons =
         entityData.getComponent(event.getTargetEntity(), StatsPerRoundComponent.class);
-    List<Integer> newPoisons = new ArrayList<>(poisons.getStatsPerRoundEntites());
+    List<Integer> newStatsPerRound = new ArrayList<>(poisons.getStatsPerRoundEntites());
     for (Integer poisonsEntity : poisons.getStatsPerRoundEntites()) {
       boolean removed = updateOrRemove(poisonsEntity, entityData, null);
       if (removed) {
-        newPoisons.remove(poisonsEntity);
+        newStatsPerRound.remove(poisonsEntity);
       }
     }
-    entityData.addComponent(event.getTargetEntity(), new StatsPerRoundComponent(newPoisons));
+    entityData.addComponent(event.getTargetEntity(), new StatsPerRoundComponent(newStatsPerRound));
   }
 
   private void updateBuffs(

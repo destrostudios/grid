@@ -17,7 +17,9 @@ public class StatsPerTurnHandler implements EventHandler<StatsPerTurnEvent> {
   public void onEvent(StatsPerTurnEvent event, Supplier<EntityData> entityDataSupplier) {
     EntityData entityData = entityDataSupplier.get();
     int spell = event.getSpellEntity();
-    List<Integer> poisons = getPoisons(event, entityData);
+    List<Integer> statsPerRound = entityData.hasComponents(event.getTargetEntity(), StatsPerRoundComponent.class)
+            ? new ArrayList(entityData.getComponent(event.getTargetEntity(), StatsPerRoundComponent.class).getStatsPerRoundEntites())
+            : new ArrayList<>();
 
     if (entityData.hasComponents(spell, AttackPointsPerTurnComponent.class)) {
       int activePoison = entityData.createEntity();
@@ -27,7 +29,7 @@ public class StatsPerTurnHandler implements EventHandler<StatsPerTurnEvent> {
           activePoison,
           new AttackPointsPerTurnComponent(
               apPoison.getMinValue(), apPoison.getMaxValue(), apPoison.getDuration()));
-      poisons.add(activePoison);
+      statsPerRound.add(activePoison);
     }
     if (entityData.hasComponents(spell, MovementPointsPerTurnComponent.class)) {
       int activePoison = entityData.createEntity();
@@ -37,7 +39,7 @@ public class StatsPerTurnHandler implements EventHandler<StatsPerTurnEvent> {
           activePoison,
           new MovementPointsPerTurnComponent(
               mpPoison.getMinValue(), mpPoison.getMaxValue(), mpPoison.getDuration()));
-      poisons.add(activePoison);
+      statsPerRound.add(activePoison);
     }
     if (entityData.hasComponents(spell, DamagePerTurnComponent.class)) {
       int activePoison = entityData.createEntity();
@@ -47,7 +49,7 @@ public class StatsPerTurnHandler implements EventHandler<StatsPerTurnEvent> {
           activePoison,
           new DamagePerTurnComponent(
               hpPoison.getMinValue(), hpPoison.getMaxValue(), hpPoison.getDuration()));
-      poisons.add(activePoison);
+      statsPerRound.add(activePoison);
     }
     if (entityData.hasComponents(spell, HealPerTurnComponent.class)) {
       int activePoison = entityData.createEntity();
@@ -57,18 +59,10 @@ public class StatsPerTurnHandler implements EventHandler<StatsPerTurnEvent> {
           activePoison,
           new HealPerTurnComponent(
               healPerTurn.getMinValue(), healPerTurn.getMaxValue(), healPerTurn.getDuration()));
-      poisons.add(activePoison);
+      statsPerRound.add(activePoison);
     }
 
-    entityData.addComponent(event.getTargetEntity(), new StatsPerRoundComponent(poisons));
+    entityData.addComponent(event.getTargetEntity(), new StatsPerRoundComponent(statsPerRound));
     entityData.addComponent(event.getTargetEntity(), new SourceComponent(event.getSourceEntity()));
-  }
-
-  private List<Integer> getPoisons(StatsPerTurnEvent event, EntityData entityData) {
-    return entityData.hasComponents(event.getTargetEntity(), StatsPerRoundComponent.class)
-        ? entityData
-            .getComponent(event.getTargetEntity(), StatsPerRoundComponent.class)
-            .getStatsPerRoundEntites()
-        : new ArrayList<>();
   }
 }

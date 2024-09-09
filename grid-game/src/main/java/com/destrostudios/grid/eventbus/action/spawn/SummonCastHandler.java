@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class SummonCastHandler implements EventHandler<SummonCastEvent> {
@@ -51,12 +52,12 @@ public class SummonCastHandler implements EventHandler<SummonCastEvent> {
     entityData.addComponent(castedSummon, new BuffsComponent(Lists.newArrayList()));
     entityData.addComponent(castedSummon, new SummonComponent(event.getSummonerEntity()));
 
-    ActiveSummonsComponent activeSummonsComponent =
+    Set<Integer> newActiveSummons =
         entityData.hasComponents(event.getSummonerEntity(), ActiveSummonsComponent.class)
-            ? entityData.getComponent(event.getSummonerEntity(), ActiveSummonsComponent.class)
-            : new ActiveSummonsComponent(new LinkedHashSet<>());
+            ? new LinkedHashSet<>(entityData.getComponent(event.getSummonerEntity(), ActiveSummonsComponent.class).getActiveSummons())
+            : new LinkedHashSet<>();
 
-    activeSummonsComponent.getActiveSummons().add(castedSummon);
-    entityData.addComponent(event.getSummonerEntity(), activeSummonsComponent);
+    newActiveSummons.add(castedSummon);
+    entityData.addComponent(event.getSummonerEntity(), new ActiveSummonsComponent(newActiveSummons));
   }
 }

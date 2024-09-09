@@ -10,52 +10,46 @@ import com.destrostudios.grid.components.spells.range.LineOfSightComponent;
 import com.destrostudios.grid.components.spells.range.RangeComponent;
 import com.destrostudios.grid.entities.EntityData;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static com.destrostudios.grid.util.SpellUtils.getBaseSquare;
 
 public class RangeUtils {
 
-  public static List<PositionComponent> getRangePosComponents(
-      int spellEntity, int casterEntity, EntityData entityData) {
-    return getAllTargetableEntitiesInRange(spellEntity, casterEntity, entityData).stream()
-        .map(e -> entityData.getComponent(e, PositionComponent.class))
-        .collect(Collectors.toList());
+  public static boolean isFieldTargetable(int spellEntity, int casterEntity, EntityData entityData, PositionComponent position) {
+    List<Integer> targetsAtPosition = entityData.findEntitiesByComponentValue(position);
+    return !filterTargetableEntities(spellEntity, casterEntity, entityData, targetsAtPosition).isEmpty();
   }
 
-  public static List<Integer> getAllTargetableEntitiesInRange(
-      int spellEntity, int casterEntity, EntityData entityData) {
+  public static List<Integer> getAllTargetableEntitiesInRange(int spellEntity, int casterEntity, EntityData entityData) {
     List<Integer> targetableInRange = getAllEntitiesInRange(spellEntity, casterEntity, entityData);
+    return filterTargetableEntities(spellEntity, casterEntity, entityData, targetableInRange);
+  }
+
+  private static List<Integer> filterTargetableEntities(int spellEntity, int casterEntity, EntityData entityData, List<Integer> entities) {
     PositionComponent posCaster = entityData.getComponent(casterEntity, PositionComponent.class);
 
     List<Integer> result = new ArrayList<>();
     LineOfSight lineOfSight = new LineOfSight();
 
     if (!entityData.hasComponents(spellEntity, LineOfSightComponent.class)) {
-      return targetableInRange;
+      return entities;
     }
 
+    HashMap<Position, Boolean> cachedIsSeeThrough = new HashMap<>();
     Predicate<Position> predicate =
-        pos -> {
+        pos -> cachedIsSeeThrough.computeIfAbsent(pos, (_) -> {
           PositionComponent positionComponent = new PositionComponent(pos.x, pos.y);
-          List<Integer> obstacleEntities =
-              entityData.list(VisionComponent.class, PositionComponent.class).stream()
-                  .filter(e -> entityData.getComponent(e, VisionComponent.class).isBlockingVision())
-                  .toList();
-          return obstacleEntities.stream()
-              .noneMatch(
-                  e ->
-                      entityData
-                          .getComponent(e, PositionComponent.class)
-                          .equals(positionComponent));
-        };
+          return entityData.findEntitiesByComponentValue(positionComponent)
+                  .stream()
+                  .noneMatch(e -> {
+                    VisionComponent visionComponent = entityData.getComponent(e, VisionComponent.class);
+                    return (visionComponent != null) && visionComponent.isBlockingVision();
+                  });
+        });
 
-    for (Integer entity : targetableInRange) {
+    for (Integer entity : entities) {
       PositionComponent pos = entityData.getComponent(entity, PositionComponent.class);
       if (lineOfSight.inLineOfSight(
           predicate,

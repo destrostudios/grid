@@ -5,8 +5,8 @@ MaterialDef Unshaded {
     }
 
     Technique {
-        VertexShader GLSL100 GLSL150:   models/cursed_ground/resources/material.vert
-        FragmentShader GLSL100 GLSL150: models/cursed_ground/resources/material.frag
+        VertexShader GLSL100: models/cursed_ground/resources/material.vert
+        FragmentShader GLSL100: models/cursed_ground/resources/material.frag
 
         WorldParameters {
             WorldViewProjectionMatrix

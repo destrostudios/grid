@@ -20,11 +20,10 @@ import com.destrostudios.grid.serialization.container.SummonContainer;
 import com.destrostudios.grid.util.SpellUtils;
 import lombok.SneakyThrows;
 
-import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.destrostudios.grid.util.RangeUtils.getRangePosComponents;
+import static com.destrostudios.grid.util.RangeUtils.isFieldTargetable;
 import static com.destrostudios.grid.util.SpellUtils.isPositionIsFree;
 
 public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
@@ -42,8 +41,7 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
     CostComponent costComponent = entityData.getComponent(event.getSpell(), CostComponent.class);
 
     boolean fieldIsReachable =
-        getRangePosComponents(event.getSpell(), event.getPlayerEntity(), entityData)
-            .contains(position);
+        isFieldTargetable(event.getSpell(), event.getPlayerEntity(), entityData, position);
     boolean isOnCooldown = entityData.hasComponents(event.getSpell(), OnCooldownComponent.class);
     boolean positionIsFree = isPositionIsFree(entityData, position, event.getPlayerEntity());
     boolean teleportCanBeDone =
@@ -89,7 +87,6 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
   private boolean summonCanBeCasted(
       SpellCastedEvent event, Supplier<EntityData> entityDataSupplier) {
     EntityData entityData = entityDataSupplier.get();
-    PositionComponent pos = new PositionComponent(event.getX(), event.getY());
     SummonCastComponent summonCastComponent =
         entityData.getComponent(event.getSpell(), SummonCastComponent.class);
 
@@ -98,26 +95,23 @@ public class SpellCastedValidator implements EventValidator<SpellCastedEvent> {
       SummonContainer summonContainer =
           ComponentsContainerSerializer.readSeriazableFromRessources(
               summonFile, SummonContainer.class);
-      List<PositionComponent> affectedWalkablePosition =
-          SpellUtils.getAffectedWalkableEntities(
-                  event.getSpell(),
-                  entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
-                  new PositionComponent(event.getX(), event.getY()),
-                  entityData)
-              .stream()
-              .map(e -> entityData.getComponent(e, PositionComponent.class))
-              .collect(Collectors.toList());
 
       boolean summonHasObstacleComp =
           summonContainer.getProperties().stream()
               .anyMatch(c -> c.getClass().equals(ObstacleComponent.class));
       if (summonHasObstacleComp) {
-        return entityData.list(PositionComponent.class).stream()
-            .filter(e -> !entityData.hasComponents(e, WalkableComponent.class))
-            .noneMatch(
-                e ->
-                    affectedWalkablePosition.contains(
-                        entityData.getComponent(e, PositionComponent.class)));
+        Stream<PositionComponent> affectedWalkablePositions =
+                SpellUtils.getAffectedWalkableEntities(
+                                event.getSpell(),
+                                entityData.getComponent(event.getPlayerEntity(), PositionComponent.class),
+                                new PositionComponent(event.getX(), event.getY()),
+                                entityData)
+                        .stream()
+                        .map(e -> entityData.getComponent(e, PositionComponent.class));
+
+        return affectedWalkablePositions
+                .noneMatch(walkablePosition -> entityData.findEntitiesByComponentValue(walkablePosition).stream()
+                        .anyMatch(e -> !entityData.hasComponents(e, WalkableComponent.class)));
       }
     }
     return true;

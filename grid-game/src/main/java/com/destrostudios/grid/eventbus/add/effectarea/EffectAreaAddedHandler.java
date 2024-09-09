@@ -30,7 +30,7 @@ public class EffectAreaAddedHandler implements EventHandler<EffectAreaAddedEvent
 
     List<Integer> spellBuffs =
         entityData.hasComponents(spellEntity, BuffsComponent.class)
-            ? entityData.getComponent(spellEntity, BuffsComponent.class).getBuffEntities()
+            ? new ArrayList(entityData.getComponent(spellEntity, BuffsComponent.class).getBuffEntities())
             : new ArrayList<>();
 
     // create buffs

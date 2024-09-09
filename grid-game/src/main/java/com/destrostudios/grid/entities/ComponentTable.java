@@ -5,7 +5,7 @@ import com.destrostudios.grid.components.Component;
 import java.util.*;
 
 public class ComponentTable<T extends Component> {
-  private final Map<Integer, T> table = new TreeMap<>();
+  protected final Map<Integer, T> table = new HashMap<>();
   private transient Map<T, Set<Integer>> index;
 
   public T get(int entity) {
@@ -38,7 +38,7 @@ public class ComponentTable<T extends Component> {
   }
 
   public List<Integer> list() {
-    return new ArrayList<>(table.keySet());
+    return sort(table.keySet());
   }
 
   public List<Integer> findEntitiesByValue(T component) {
@@ -48,28 +48,16 @@ public class ComponentTable<T extends Component> {
         index.computeIfAbsent(entry.getValue(), x -> new LinkedHashSet<>()).add(entry.getKey());
       }
     }
-    return new ArrayList<>(index.getOrDefault(component, Collections.emptySet()));
+    return sort(index.getOrDefault(component, Collections.emptySet()));
+  }
+
+  private List<Integer> sort(Set<Integer> entities) {
+    ArrayList<Integer> sortedEntities = new ArrayList<>(entities);
+    sortedEntities.sort(Comparator.naturalOrder());
+    return sortedEntities;
   }
 
   public boolean hasEntity(int entity) {
     return table.containsKey(entity);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof ComponentTable)) {
-      return false;
-    }
-
-    ComponentTable<?> that = (ComponentTable<?>) o;
-    return table.equals(that.table);
-  }
-
-  @Override
-  public int hashCode() {
-    return table.hashCode();
   }
 }

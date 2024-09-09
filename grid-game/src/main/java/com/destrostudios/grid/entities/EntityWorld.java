@@ -3,7 +3,6 @@ package com.destrostudios.grid.entities;
 import com.destrostudios.grid.components.Component;
 import com.destrostudios.grid.serialization.ComponentsContainerSerializer;
 import com.destrostudios.grid.serialization.container.GameStateContainer;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@EqualsAndHashCode
 public class EntityWorld implements EntityData {
   private static final Logger logger = Logger.getGlobal();
 
@@ -22,10 +20,7 @@ public class EntityWorld implements EntityData {
   @Getter @Setter private int nextEntity = 1;
 
   public EntityWorld() {
-    Comparator<Class<? extends Component>> comparator =
-        Comparator.comparing(x -> x.getSimpleName());
-    comparator = comparator.thenComparing(x -> x.getName());
-    this.world = new TreeMap<>(comparator);
+    this.world = new HashMap<>();
   }
 
   public void initializeWorld(String worldState) {
@@ -43,6 +38,14 @@ public class EntityWorld implements EntityData {
     } catch (Exception e) {
       logger.log(Level.WARNING, e, () -> "Couldn´t initialize game state!");
     }
+  }
+
+  public void initializeWorld(EntityWorld worldToCopy) {
+    world.clear();
+    worldToCopy.world.values().forEach((componentTable) -> {
+      componentTable.table.forEach(this::addComponent);
+    });
+    nextEntity = worldToCopy.nextEntity;
   }
 
   @Override

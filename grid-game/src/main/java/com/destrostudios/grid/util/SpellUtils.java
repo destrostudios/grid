@@ -242,12 +242,8 @@ public class SpellUtils {
   }
 
   public static int calculateTargetEntity(int x, int y, EntityData data) {
-    Optional<Integer> targetEntity =
-        data.list(PositionComponent.class).stream()
-            .filter(
-                e ->
-                    data.getComponent(e, PositionComponent.class).getX() == x
-                        && data.getComponent(e, PositionComponent.class).getY() == y)
+    Optional<Integer> targetEntity = data.findEntitiesByComponentValue(new PositionComponent(x, y))
+            .stream()
             .min(
                 (e1, e2) ->
                     Boolean.compare(
