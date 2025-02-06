@@ -18,26 +18,26 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.cubes>d930827cc0deca4747ca1b7cb7c1020205766e91</version.cubes>
+        <version.cubes>7fe07b7aa3d0d7569a381409e7073a36bc215e76</version.cubes>
         <version.grid>0.0.1</version.grid>
-        <version.guava>33.3.0-jre</version.guava>
+        <version.guava>33.4.0-jre</version.guava>
         <version.jdom>2.0.6.1</version.jdom>
         <version.jme>3.6.1-stable</version.jme>
-        <version.junit>5.11.0</version.junit>
-        <version.groovy>3.0.22</version.groovy>
+        <version.junit>5.11.4</version.junit>
+        <version.groovy>4.0.25</version.groovy>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
-        <version.lombok>1.18.34</version.lombok>
+        <version.lombok>1.18.36</version.lombok>
         <version.maven-assembly-plugin>3.7.1</version.maven-assembly-plugin>
         <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
-        <version.maven-dependency-plugin>3.8.0</version.maven-dependency-plugin>
-        <version.maven-source-plugin>3.3.1</version.maven-source-plugin>
-        <version.maven-surefire-plugin>3.5.0</version.maven-surefire-plugin>
+        <version.maven-dependency-plugin>3.8.1</version.maven-dependency-plugin>
         <version.maven-jar-plugin>3.4.2</version.maven-jar-plugin>
-        <version.mockito>5.13.0</version.mockito>
+        <version.maven-source-plugin>3.3.1</version.maven-source-plugin>
+        <version.maven-surefire-plugin>3.5.2</version.maven-surefire-plugin>
+        <version.mockito>5.15.2</version.mockito>
         <version.slf4j>2.0.16</version.slf4j>
-        <version.game-tools>cc02ca8ca6b2fddcde26ccb9ee10c2be724ec88a</version.game-tools>
-        <version.jackson>2.17.2</version.jackson>
+        <version.game-tools>c1ea3baf0fa29151e3ab72f902d4dea71bb82797</version.game-tools>
+        <version.jackson>2.18.2</version.jackson>
     </properties>
     <repositories>
         <repository>

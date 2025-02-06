@@ -4,8 +4,8 @@ import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.RolloutToEvaluation;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
-import com.destrostudios.gametools.grid.Heuristic;
-import com.destrostudios.gametools.grid.ManhattanHeuristic;
+import com.destrostudios.gametools.grid.DistanceMetric;
+import com.destrostudios.gametools.grid.ManhattanDistance;
 import com.destrostudios.gametools.grid.Position;
 import com.destrostudios.grid.GridGame;
 import com.destrostudios.grid.actions.Action;
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    private static final Heuristic MANHATTAN_HEURISTIC = new ManhattanHeuristic();
+    private static final DistanceMetric MANHATTAN_DISTANCE = new ManhattanDistance();
 
     // ideally we would calculate preferred distances from available skills instead of hardcoding them per character
     private static final Map<String, ManhattanDistanceScore> OPPONENT_DISTANCE_SCORES = Map.of(
@@ -140,7 +140,7 @@ public class Main {
                                 }
                                 if (team.getTeam() != data.getComponent(other, TeamComponent.class).getTeam()) {
                                     PositionComponent otherPosition = data.getComponent(other, PositionComponent.class);
-                                    int distance = MANHATTAN_HEURISTIC.estimateCost(new Position(positionComponent.getX(), positionComponent.getY()), new Position(otherPosition.getX(), otherPosition.getY()));
+                                    int distance = MANHATTAN_DISTANCE.distanceBetween(new Position(positionComponent.getX(), positionComponent.getY()), new Position(otherPosition.getX(), otherPosition.getY()));
                                     if (distance < preferredOpponentDistance.getDistanceScores().length) {
                                         value += preferredOpponentDistance.getDistanceScores()[distance];
                                     }
@@ -156,7 +156,7 @@ public class Main {
                                 }
                                 if (team.getTeam() == data.getComponent(other, TeamComponent.class).getTeam()) {
                                     PositionComponent otherPosition = data.getComponent(other, PositionComponent.class);
-                                    int distance = MANHATTAN_HEURISTIC.estimateCost(new Position(positionComponent.getX(), positionComponent.getY()), new Position(otherPosition.getX(), otherPosition.getY()));
+                                    int distance = MANHATTAN_DISTANCE.distanceBetween(new Position(positionComponent.getX(), positionComponent.getY()), new Position(otherPosition.getX(), otherPosition.getY()));
                                     if (distance < preferredAllyDistance.getDistanceScores().length) {
                                         value += preferredAllyDistance.getDistanceScores()[distance];
                                     }
